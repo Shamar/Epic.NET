@@ -24,8 +24,8 @@ namespace Challenge00.DDDSample.UnitTests.Location
 				
 		protected override UnLocode CreateMatchingInstance (out Regex regEx)
 		{
-			regEx = new Regex("ITLBA");
-			return new UnLocode("IT.*");
+			regEx = new Regex("IT.*");
+			return new UnLocode("ITLBA");
 		}
 		
 		
