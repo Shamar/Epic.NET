@@ -7,6 +7,9 @@ Thumbs.db
 *.exe
 *.pdb
 *.user
+*.userprefs
+*.pidb
+*.gpState
 *.aps
 *.pch
 *.vspscc

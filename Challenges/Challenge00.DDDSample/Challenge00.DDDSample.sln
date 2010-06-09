@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{996EBBBC-2904-44E6-8ADD-11A6C0958FE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.UnitTests", "UnitTests\Challenge00.DDDSample.UnitTests\Challenge00.DDDSample.UnitTests.csproj", "{C63A1855-8414-4711-B4DF-D3372ACD7069}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3rdParties", "3rdParties", "{E49E1E21-C101-4C4F-B5A3-07370985B624}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rhino.Mocks", "Rhino.Mocks", "{925BD4B9-4E37-4280-B0FD-A69CD31B41FD}"
+	ProjectSection(SolutionItems) = preProject
+		3rdParties\Rhino.Mocks-3.6\acknowledgements.txt = 3rdParties\Rhino.Mocks-3.6\acknowledgements.txt
+		3rdParties\Rhino.Mocks-3.6\license.txt = 3rdParties\Rhino.Mocks-3.6\license.txt
+		3rdParties\Rhino.Mocks-3.6\Rhino.Mocks.dll = 3rdParties\Rhino.Mocks-3.6\Rhino.Mocks.dll
+		3rdParties\Rhino.Mocks-3.6\Rhino.Mocks.xml = 3rdParties\Rhino.Mocks-3.6\Rhino.Mocks.xml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample", "Challenge00.DDDSample\Challenge00.DDDSample.csproj", "{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.Default", "Challenge00.DDDSample.Default\Challenge00.DDDSample.Default.csproj", "{47C7912D-2CF9-4464-BCF6-641A6867577D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47C7912D-2CF9-4464-BCF6-641A6867577D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47C7912D-2CF9-4464-BCF6-641A6867577D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47C7912D-2CF9-4464-BCF6-641A6867577D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47C7912D-2CF9-4464-BCF6-641A6867577D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C63A1855-8414-4711-B4DF-D3372ACD7069} = {996EBBBC-2904-44E6-8ADD-11A6C0958FE4}
+		{925BD4B9-4E37-4280-B0FD-A69CD31B41FD} = {E49E1E21-C101-4C4F-B5A3-07370985B624}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Challenge00.DDDSample\Challenge00.DDDSample.csproj
+	EndGlobalSection
+EndGlobal
