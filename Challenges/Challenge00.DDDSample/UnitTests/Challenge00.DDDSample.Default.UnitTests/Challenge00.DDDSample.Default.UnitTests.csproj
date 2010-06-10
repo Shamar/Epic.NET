@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Shared\AbstractSpecificationTester.cs" />
     <Compile Include="Shared\AndSpecificationTester.cs" />
+    <Compile Include="Shared\OrSpecificationTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
