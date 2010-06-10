@@ -13,7 +13,7 @@ namespace Challenge00.DDDSample.Default.UnitTests
 		protected abstract TSpecification CreateNewSpecification();
 		
 		[Test]
-		public void Test_Equal_01()
+		public void Test_Equals_01()
 		{
 			TSpecification spec = CreateNewSpecification();
 			
@@ -21,7 +21,7 @@ namespace Challenge00.DDDSample.Default.UnitTests
 		}
 		
 		[Test]
-		public void Test_Equal_02()
+		public void Test_Equals_02()
 		{
 			TSpecification spec = CreateNewSpecification();
 			
@@ -29,7 +29,7 @@ namespace Challenge00.DDDSample.Default.UnitTests
 		}
 		
 		[Test]
-		public void Test_Equal_03()
+		public void Test_Equals_03()
 		{
 			// arrange:
 			TSpecification spec1 = null;
@@ -41,6 +41,23 @@ namespace Challenge00.DDDSample.Default.UnitTests
 			// assert:
 			Assert.AreEqual(spec1, spec2);
 			Assert.AreEqual(spec2, spec1);
+		}
+		
+		[Test]
+		public void Test_Equals_04()
+		{
+			// arrange:
+			TSpecification spec1 = null;
+			TSpecification spec2 = null;
+			CreateDifferentSpecification(out spec1, out spec2);
+			
+		
+			// act:
+		
+		
+			// assert:
+			Assert.AreNotEqual(spec1, spec2);
+			Assert.AreNotEqual(spec2, spec1);
 		}
 	}
 }

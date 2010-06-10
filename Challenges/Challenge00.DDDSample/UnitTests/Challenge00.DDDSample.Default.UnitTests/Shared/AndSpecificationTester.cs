@@ -51,6 +51,127 @@ namespace Challenge00.DDDSample.Default.UnitTests
 		}
 		
 		#endregion
+		
+		[Test]
+		public void Test_Ctor_01()
+		{
+			// arrange:
+			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
+			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
+			
+			// act:
+			AndSpecification<object> spec = new AndSpecification<object>(left,right);
+		
+			// assert:
+			Assert.IsNotNull(spec);
+			Assert.AreSame(left, spec.First);
+			Assert.AreSame(right, spec.Second);
+		}
+		
+		[Test()]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void Test_Ctor_02 ()
+		{
+			// arrange:
+			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
+			
+			// act:
+			AndSpecification<object> spec = new AndSpecification<object>(null,right);
+		}
+		
+		[Test()]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void Test_Ctor_03 ()
+		{
+			// arrange:
+			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();	
+			
+			// act:
+			AndSpecification<object> spec = new AndSpecification<object>(left,null);
+		}
+		
+		[Test]
+		public void Test_IsSatisfiedBy_01()
+		{
+			// arrange:
+			object candidate = new object();
+			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
+			left.Expect(s => s.IsSatisfiedBy(candidate)).Return(true);
+			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
+			right.Expect(s => s.IsSatisfiedBy(candidate)).Return(true);
+			
+		
+			// act:
+			ISpecification<object> target = new AndSpecification<object>(left, right);
+			bool satisfied = target.IsSatisfiedBy(candidate);
+		
+			// assert:
+			Assert.IsTrue(satisfied);
+		 	left.VerifyAllExpectations();
+			right.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_IsSatisfiedBy_02()
+		{
+			// arrange:
+			object candidate = new object();
+			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
+			left.Expect(s => s.IsSatisfiedBy(candidate)).Return(true);
+			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
+			right.Expect(s => s.IsSatisfiedBy(candidate)).Return(false);
+			
+		
+			// act:
+			ISpecification<object> target = new AndSpecification<object>(left, right);
+			bool satisfied = target.IsSatisfiedBy(candidate);
+		
+			// assert:
+			Assert.IsFalse(satisfied);
+		 	left.VerifyAllExpectations();
+			right.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_IsSatisfiedBy_03()
+		{
+			// arrange:
+			object candidate = new object();
+			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
+			left.Expect(s => s.IsSatisfiedBy(candidate)).Return(false);
+			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
+			
+		
+			// act:
+			ISpecification<object> target = new AndSpecification<object>(left, right);
+			bool satisfied = target.IsSatisfiedBy(candidate);
+		
+			// assert:
+			Assert.IsFalse(satisfied);
+		 	left.VerifyAllExpectations();
+			right.AssertWasNotCalled(s => s.IsSatisfiedBy(candidate));
+		}
+		
+		[Test]
+		public void Test_IsSatisfiedBy_04()
+		{
+			// arrange:
+			object candidate = new object();
+			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
+			left.Expect(s => s.IsSatisfiedBy(candidate)).Return(false);
+			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
+			right.Expect(s => s.IsSatisfiedBy(candidate)).Return(false);
+			
+		
+			// act:
+			ISpecification<object> target = new AndSpecification<object>(left, right);
+			bool satisfied = target.IsSatisfiedBy(candidate);
+		
+			// assert:
+			Assert.IsFalse(satisfied);
+		 	left.VerifyAllExpectations();
+            right.AssertWasNotCalled(s => s.IsSatisfiedBy(candidate));
+        }
 	}
 }
 

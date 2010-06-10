@@ -33,7 +33,9 @@
     <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\3rdParties\Rhino.Mocks-3.6\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
     </Reference>
   </ItemGroup>
   <ItemGroup>
