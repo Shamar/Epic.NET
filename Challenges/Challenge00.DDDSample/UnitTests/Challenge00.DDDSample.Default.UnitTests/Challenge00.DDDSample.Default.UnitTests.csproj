@@ -50,12 +50,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Shared\" />
+    <Folder Include="Location\" />
+    <Folder Include="Voyage\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Shared\AbstractSpecificationTester.cs" />
     <Compile Include="Shared\AndSpecificationTester.cs" />
     <Compile Include="Shared\OrSpecificationTester.cs" />
     <Compile Include="Shared\NotSpecificationTester.cs" />
+    <Compile Include="Location\LocationTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

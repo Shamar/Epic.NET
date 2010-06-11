@@ -42,11 +42,14 @@
     <Folder Include="Cargo\" />
     <Folder Include="Location\" />
     <Folder Include="Shared\" />
+    <Folder Include="Voyage\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cargo\TrackingIdTester.cs" />
     <Compile Include="Location\UnLocodeTester.cs" />
     <Compile Include="Shared\StringIdentifierTester.cs" />
+    <Compile Include="Voyage\VoyageNumberTester.cs" />
+    <Compile Include="Voyage\IVoyage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
