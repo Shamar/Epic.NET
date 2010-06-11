@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Challenge00.DDDSample.Default.Shared;
 using Challenge00.DDDSample.Shared;
 using Rhino.Mocks;
-namespace Challenge00.DDDSample.Default.UnitTests
+namespace Challenge00.DDDSample.Default.UnitTests.Shared
 {
 	[TestFixture]
 	public class AndSpecificationTester : AbstractSpecificationTester<AndSpecification<object>, object>

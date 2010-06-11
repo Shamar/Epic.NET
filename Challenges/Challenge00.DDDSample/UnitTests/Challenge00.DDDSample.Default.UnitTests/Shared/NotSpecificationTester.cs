@@ -3,7 +3,7 @@ using System;
 using Challenge00.DDDSample.Default.Shared;
 using Challenge00.DDDSample.Shared;
 using Rhino.Mocks;
-namespace Challenge00.DDDSample.Default.UnitTests
+namespace Challenge00.DDDSample.Default.UnitTests.Shared
 {
 	[TestFixture()]
 	public class NotSpecificationTester : AbstractSpecificationTester<NotSpecification<object>, object>
