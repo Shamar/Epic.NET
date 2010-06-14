@@ -49,7 +49,6 @@
     <Compile Include="Location\UnLocodeTester.cs" />
     <Compile Include="Shared\StringIdentifierTester.cs" />
     <Compile Include="Voyage\VoyageNumberTester.cs" />
-    <Compile Include="Voyage\IVoyage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

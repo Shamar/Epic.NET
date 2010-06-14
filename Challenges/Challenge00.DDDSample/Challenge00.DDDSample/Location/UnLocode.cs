@@ -1,7 +1,11 @@
 using System;
 using System.Text.RegularExpressions;
-namespace Challenge00.DDDSample
+namespace Challenge00.DDDSample.Location
 {
+	/// <summary>
+	/// United nations location code.
+    /// http://www.unece.org/cefact/locode/ http://www.unece.org/cefact/locode/DocColumnDescription.htm#LOCODE
+	/// </summary>
 	[Serializable]
 	public class UnLocode : StringIdentifier<UnLocode>
 	{
@@ -19,6 +23,12 @@ namespace Challenge00.DDDSample
 			return identifier;
 		}
 		
+		/// <summary>
+		/// Constructor 
+		/// </summary>
+		/// <param name="identifier">
+		/// A <see cref="System.String"/>
+		/// </param>
 		public UnLocode (string identifier)
 			: base(validIdentifier(identifier))
 		{

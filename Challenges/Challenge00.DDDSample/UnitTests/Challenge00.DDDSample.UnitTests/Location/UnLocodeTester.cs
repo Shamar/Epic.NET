@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
+using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.UnitTests.Location
 {
 	[TestFixture()]
