@@ -50,6 +50,7 @@
     <Compile Include="Voyage\ICarrierMovement.cs" />
     <Compile Include="Voyage\ISchedule.cs" />
     <Compile Include="Handling\IHandlingEvent.cs" />
+    <Compile Include="Cargo\IDelivery.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cargo\" />
