@@ -47,6 +47,7 @@ namespace Challenge00.DDDSample
 		/// </summary>
 		ILocation LastKnownLocation { get; }
 		
+		
 	}
 }
 
