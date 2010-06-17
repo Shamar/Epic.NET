@@ -1,7 +1,7 @@
 using System;
 using Challenge00.DDDSample.Voyage;
 using Challenge00.DDDSample.Location;
-namespace Challenge00.DDDSample
+namespace Challenge00.DDDSample.Cargo
 {
 	/// <summary>
 	/// The actual transportation of the cargo, as opposed to the 
@@ -47,6 +47,15 @@ namespace Challenge00.DDDSample
 		/// </summary>
 		ILocation LastKnownLocation { get; }
 		
+		/// <summary>
+		/// Transport status 
+		/// </summary>
+		TransportStatus TransportStatus { get; }
+		
+		/// <summary>
+		/// Routing status. 
+		/// </summary>
+		RoutingStatus RoutingStatus { get; }
 		
 	}
 }

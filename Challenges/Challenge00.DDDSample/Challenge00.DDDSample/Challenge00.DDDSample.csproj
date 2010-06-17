@@ -51,6 +51,11 @@
     <Compile Include="Voyage\ISchedule.cs" />
     <Compile Include="Handling\IHandlingEvent.cs" />
     <Compile Include="Cargo\IDelivery.cs" />
+    <Compile Include="Cargo\TransportStatus.cs" />
+    <Compile Include="Cargo\RoutingStatus.cs" />
+    <Compile Include="Cargo\ICargo.cs" />
+    <Compile Include="Voyage\VoyageEventArgs.cs" />
+    <Compile Include="Shared\ChangeEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cargo\" />
