@@ -5,16 +5,14 @@ namespace Challenge00.DDDSample.Cargo
 	[Serializable]
 	public class HandlingEventArgs : EventArgs
 	{
-		public readonly ILocation Location;
-		public readonly	DateTime RegistrationDate;
+		public readonly IDelivery Delivery;
 		public readonly DateTime CompletionDate;
 		
-		public HandlingEventArgs (ILocation location, DateTime registrationDate, DateTime completionDate)
+		public HandlingEventArgs (IDelivery delivery, DateTime completionDate)
 		{
-			if (null == location)
-				throw new ArgumentNullException ("location");
-			Location = location;
-			RegistrationDate = registrationDate;
+			if (null == delivery)
+				throw new ArgumentNullException ("delivery");
+			Delivery = delivery;
 			CompletionDate = completionDate;
 		}
 	}

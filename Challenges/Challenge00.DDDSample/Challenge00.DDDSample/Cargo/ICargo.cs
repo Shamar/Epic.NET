@@ -1,13 +1,58 @@
 using System;
 using Challenge00.DDDSample.Voyage;
 using Challenge00.DDDSample.Location;
-using Challenge00.DDDSample.Handling;
 using System.Collections.Generic;
 namespace Challenge00.DDDSample.Cargo
 {
 	/// <summary>
-	/// A Cargo 
+	/// A Cargo.
 	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This is the central class in the domain model, and it is the root of the 
+	/// Cargo-Itinerary-Leg-Delivery-RouteSpecification aggregate.
+	/// </para>
+	/// <para>
+	/// A cargo is identified by a unique <see cref="TrackingId"/>, and it always has an origin and a route specification.
+	/// </para>
+	/// <para>
+	/// The life cycle of a cargo begins with the booking procedure, when the tracking id is assigned. 
+	/// During a (short) period of time, between booking and initial routing, the cargo has no itinerary. 
+	/// </para>
+	/// <para>
+	/// The booking clerk requests a list of possible routes, matching the route specification, 
+	/// and assigns the cargo to one route. 
+	/// The route to which a cargo is assigned is described by an itinerary. 
+	/// </para>
+	/// <para>
+	/// A cargo can be re-routed during transport, on demand of the customer, in which case a 
+	/// new route is specified for the cargo and a new route is requested. 
+	/// The old itinerary, being a value object, is discarded and a new one is attached. 
+	/// </para>
+	/// <para>
+	/// It may also happen that a cargo is accidentally misrouted, which should notify the proper 
+	/// personnel and also trigger a re-routing procedure. 
+	/// </para>
+	/// <para>
+	/// When a cargo is handled, the status of the delivery changes. 
+	/// Everything about the delivery of the cargo is contained in the Delivery value object, 
+	/// which is replaced whenever a cargo is handled by an asynchronous event triggered 
+	/// by the registration of the handling event. 
+	/// </para>
+	/// <para>
+	/// The delivery can also be affected by routing changes, i.e. when a the route specification changes, 
+	/// or the cargo is assigned to a new route. 
+	/// In that case, the delivery update is performed synchronously within the cargo aggregate. 
+	/// </para>
+	/// <para>
+	/// The life cycle of a cargo ends when the cargo is claimed by the customer. 
+	/// </para>
+	/// <para>
+	/// The cargo aggregate, and the entre domain model, is built to solve the problem of booking and tracking cargo. 
+	/// All important business rules for determining whether or not a cargo is misdirected, 
+	/// what the current status of the cargo is (on board carrier, in port etc), are captured in this aggregate. 
+	/// <para>
+	/// </remarks>
 	public interface ICargo : IEquatable<ICargo>
 	{
 		/// <summary>
@@ -39,7 +84,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <exception cref="ArgumentNullException"><paramref name="routeSpecification"/> is <value>null</value></exception>
 		void SpecifyNewRoute (IRouteSpecification routeSpecification);
 
-		event EventHandler<ChangeEventArgs<IRouteSpecification>> RouteChanged;
+		event EventHandler<ChangeEventArgs<IRouteSpecification>> NewRouteSpecified;
 
 		/// <summary>
 		/// Attach a new itinerary to this cargo.  
@@ -63,6 +108,16 @@ namespace Challenge00.DDDSample.Cargo
 		void Recieve(ILocation location, DateTime date);
 		
 		event EventHandler<HandlingEventArgs> Recieved;
+		
+		/// <summary>
+		/// Clear through customs.
+		/// </summary>
+		/// <param name="date">
+		/// A <see cref="DateTime"/> 
+		/// </param>
+		void ClearCustoms(DateTime date);
+		
+		event EventHandler<HandlingEventArgs> CustomsCleared;
 		
 		/// <summary>
 		/// Claim the cargo. 

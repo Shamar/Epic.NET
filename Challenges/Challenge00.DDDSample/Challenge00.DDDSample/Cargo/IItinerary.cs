@@ -1,7 +1,6 @@
 using System;
 using Challenge00.DDDSample.Location;
 using System.Collections.Generic;
-using Challenge00.DDDSample.Handling;
 namespace Challenge00.DDDSample.Cargo
 {
 	/// <summary>
@@ -10,15 +9,14 @@ namespace Challenge00.DDDSample.Cargo
 	public interface IItinerary : IEquatable<IItinerary>, IEnumerable<ILeg>
 	{
 		/// <summary>
-		/// Test if the given handling event is expected when executing this itinerary.
+		/// The location of first departure according to this itinerary. 
 		/// </summary>
-		/// <param name="handlingEvent">
-		/// A <see cref="IHandlingEvent"/> to test
-		/// </param>
-		/// <returns>
-		/// <value>true</value> if the event is expected
-		/// </returns>
-		bool IsExpected(IHandlingEvent handlingEvent);
+		ILocation InitialDepartureLocation { get; }
+		
+		/// <summary>
+		/// The location of last arrival according to this itinerary. 
+		/// </summary>
+		ILocation FinalArrivalLocation { get; }
 	}
 }
 

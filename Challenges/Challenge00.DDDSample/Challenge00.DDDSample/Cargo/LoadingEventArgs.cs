@@ -7,8 +7,8 @@ namespace Challenge00.DDDSample.Cargo
 	public class LoadingEventArgs : HandlingEventArgs
 	{
 		public readonly IVoyage Voyage;
-		public LoadingEventArgs (IVoyage voyage, ILocation location, DateTime registrationDate, DateTime completionDate)
-			: base(location, registrationDate, completionDate)
+		public LoadingEventArgs (IVoyage voyage, IDelivery delivery, DateTime completionDate)
+			: base(delivery, completionDate)
 		{
 			if(null == voyage)
 				throw new ArgumentNullException("voyage");
