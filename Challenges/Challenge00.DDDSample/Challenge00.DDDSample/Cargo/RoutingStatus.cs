@@ -7,9 +7,18 @@ namespace Challenge00.DDDSample.Cargo
 	[Serializable]
 	public enum RoutingStatus
 	{
-		NOT_ROUTED,
-		ROUTED,
-		MISROUTED
+		/// <summary>
+		/// Cargo hasn't been routed yet.
+		/// </summary>
+		NotRouted,
+		/// <summary>
+		/// Cargo is misrouted.
+		/// </summary>
+		Misrouted,
+		/// <summary>
+		/// Cargo is on its route.
+		/// </summary>
+	    Routed
 	}
 }
 

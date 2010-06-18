@@ -1,6 +1,7 @@
 using System;
 using Challenge00.DDDSample.Location;
 using System.Collections.Generic;
+using Challenge00.DDDSample.Handling;
 namespace Challenge00.DDDSample.Cargo
 {
 	/// <summary>
@@ -16,8 +17,8 @@ namespace Challenge00.DDDSample.Cargo
 		/// </param>
 		/// <returns>
 		/// <value>true</value> if the event is expected
-		/// </returns>	
-		bool isExpected(IHandlingEvent handlingEvent);
+		/// </returns>
+		bool IsExpected(IHandlingEvent handlingEvent);
 	}
 }
 

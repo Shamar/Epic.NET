@@ -56,6 +56,9 @@
     <Compile Include="Cargo\ICargo.cs" />
     <Compile Include="Voyage\VoyageEventArgs.cs" />
     <Compile Include="Shared\ChangeEventArgs.cs" />
+    <Compile Include="Handling\HandlingAction.cs" />
+    <Compile Include="Cargo\HandlingEventArgs.cs" />
+    <Compile Include="Cargo\LoadingEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cargo\" />

@@ -2,16 +2,30 @@ using System;
 namespace Challenge00.DDDSample.Cargo
 {
 	/// <summary>
-	/// Represents the different transport statuses for a cargo.
+	/// Describes status of cargo transportation.
 	/// </summary>
-	[Serializable]
 	public enum TransportStatus
 	{
-		CLAIMED,
-		IN_PORT,
-		NOT_RECEIVED,
-		ONBOARD_CARRIER,
-		UNKNOWN
-	}
+		/// <summary>
+		/// Cargo hasn't been received yet.
+		/// </summary>
+		NotReceived,
+		/// <summary>
+		/// Cargo is onboard carrier.
+		/// </summary>
+		OnboardCarrier,
+		/// <summary>
+		/// Cargo is in port.
+		/// </summary>
+		InPort,
+		/// <summary>
+		/// Cargo has been claimed.
+		/// </summary>
+		Claimed,
+		/// <summary>
+		/// Cargo transport state is unknown.
+		/// </summary>
+      	Unknown
+   }
 }
 
