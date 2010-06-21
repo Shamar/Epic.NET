@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using System.Text.RegularExpressions;
 using Challenge00.DDDSample.Voyage;
-namespace Challenge00.DDDSample.UnitTests
+namespace Challenge00.DDDSample.UnitTests.Voyage
 {
 	[TestFixture]
 	public class VoyageNumberTester : StringIdentifierTester<VoyageNumber>

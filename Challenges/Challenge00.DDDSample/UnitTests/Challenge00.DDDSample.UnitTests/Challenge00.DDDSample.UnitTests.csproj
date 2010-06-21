@@ -55,6 +55,7 @@
     <Compile Include="Voyage\VoyageNumberTester.cs" />
     <Compile Include="Cargo\HandlingEventArgsTester.cs" />
     <Compile Include="Shared\ChangeEventArgsTester.cs" />
+    <Compile Include="Voyage\VoyageEventArgsTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
