@@ -40,10 +40,12 @@
     <Compile Include="Shared\AndSpecification.cs" />
     <Compile Include="Shared\NotSpecification.cs" />
     <Compile Include="Shared\OrSpecification.cs" />
+    <Compile Include="Cargo\CarrierMovement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Shared\" />
+    <Folder Include="Cargo\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Challenge00.DDDSample\Challenge00.DDDSample.csproj">
