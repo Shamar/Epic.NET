@@ -1,7 +1,7 @@
 using System;
 using Challenge00.DDDSample.Voyage;
 using Challenge00.DDDSample.Location;
-namespace Challenge00.DDDSample.Default.Cargo
+namespace Challenge00.DDDSample.Default.Voyage
 {
 	[Serializable]
 	public sealed class CarrierMovement : ICarrierMovement
@@ -59,12 +59,22 @@ namespace Challenge00.DDDSample.Default.Cargo
 		{
 			if(null == other)
 				return false;
-			return this._arrivalLocation.Equals(other.ArrivalLocation) 
-				&& this._departureLocation.Equals(other.DepartureLocation) 
-				&& this._arrivalTime.Equals(other.ArrivalTime)
-				&& this._departureTime.Equals(other.DepartureTime);
+			return _departureLocation.Equals(other.DepartureLocation) 
+				&& _arrivalLocation.Equals(other.ArrivalLocation) 
+				&& _arrivalTime.Equals(other.ArrivalTime)
+				&& _departureTime.Equals(other.DepartureTime);
 		}
 		#endregion
+		
+		public override bool Equals (object obj)
+		{
+			return Equals(obj as ICarrierMovement);
+		}
+		
+		public override int GetHashCode ()
+		{
+			return _departureTime.GetHashCode() ^ _arrivalTime.GetHashCode();
+		}
 	}
 }
 

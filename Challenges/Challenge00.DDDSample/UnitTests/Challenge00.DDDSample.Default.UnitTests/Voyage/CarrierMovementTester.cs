@@ -3,7 +3,7 @@ using System;
 using Rhino.Mocks;
 using Challenge00.DDDSample.Location;
 using Challenge00.DDDSample.Voyage;
-using Challenge00.DDDSample.Default.Cargo;
+using Challenge00.DDDSample.Default.Voyage;
 namespace Challenge00.DDDSample.Default.UnitTests
 {
 	[TestFixture()]
@@ -130,6 +130,172 @@ namespace Challenge00.DDDSample.Default.UnitTests
 			// act:
 			ICarrierMovement target = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime);
 			bool areEquals = target.Equals(mock);
+		
+			// assert:
+			Assert.IsTrue(areEquals);
+			dpLocation.VerifyAllExpectations();
+			arLocation.VerifyAllExpectations();
+			targetDpLocation.VerifyAllExpectations();
+			targetArLocation.VerifyAllExpectations();
+			mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Equals_02()
+		{
+			// arrange:
+			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			
+			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
+			targetArLocation.Expect(l => l.Equals(arLocation)).Return(false).Repeat.Once();
+			
+			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+		
+			// act:
+			ICarrierMovement target = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime);
+			bool areEquals = target.Equals(mock);
+		
+			// assert:
+			Assert.IsFalse(areEquals);
+			dpLocation.VerifyAllExpectations();
+			arLocation.VerifyAllExpectations();
+			targetDpLocation.VerifyAllExpectations();
+			targetArLocation.VerifyAllExpectations();
+			mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Equals_03()
+		{
+			// arrange:
+			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			
+			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(false).Repeat.Once();
+			
+			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
+		
+			// act:
+			ICarrierMovement target = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime);
+			bool areEquals = target.Equals(mock);
+		
+			// assert:
+			Assert.IsFalse(areEquals);
+			dpLocation.VerifyAllExpectations();
+			arLocation.VerifyAllExpectations();
+			targetDpLocation.VerifyAllExpectations();
+			targetArLocation.VerifyAllExpectations();
+			mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Equals_04()
+		{
+			// arrange:
+			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			
+			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
+			targetArLocation.Expect(l => l.Equals(arLocation)).Return(true).Repeat.Once();
+			
+			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+			mock.Expect(m => m.ArrivalTime).Return(arTime).Repeat.Once();
+			mock.Expect(m => m.DepartureTime).Return(dpTime).Repeat.Once();
+			
+		
+			// act:
+			ICarrierMovement target = new CarrierMovement(targetDpLocation, dpTime - new TimeSpan(48,0,0), targetArLocation, arTime);
+			bool areEquals = target.Equals(mock);
+		
+			// assert:
+			Assert.IsFalse(areEquals);
+			dpLocation.VerifyAllExpectations();
+			arLocation.VerifyAllExpectations();
+			targetDpLocation.VerifyAllExpectations();
+			targetArLocation.VerifyAllExpectations();
+			mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Equals_05()
+		{
+			// arrange:
+			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			
+			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
+			targetArLocation.Expect(l => l.Equals(arLocation)).Return(true).Repeat.Once();
+			
+			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+			mock.Expect(m => m.ArrivalTime).Return(arTime).Repeat.Once();
+			
+		
+			// act:
+			ICarrierMovement target = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime + new TimeSpan(48,0,0));
+			bool areEquals = target.Equals(mock);
+		
+			// assert:
+			Assert.IsFalse(areEquals);
+			dpLocation.VerifyAllExpectations();
+			arLocation.VerifyAllExpectations();
+			targetDpLocation.VerifyAllExpectations();
+			targetArLocation.VerifyAllExpectations();
+			mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Equals_06()
+		{
+			// arrange:
+			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			
+			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
+			targetArLocation.Expect(l => l.Equals(arLocation)).Return(true).Repeat.Once();
+			
+			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+			mock.Expect(m => m.ArrivalTime).Return(arTime).Repeat.Once();
+			mock.Expect(m => m.DepartureTime).Return(dpTime).Repeat.Once();
+			
+		
+			// act:
+			ICarrierMovement target = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime);
+			bool areEquals = target.Equals((object)mock);
 		
 			// assert:
 			Assert.IsTrue(areEquals);
