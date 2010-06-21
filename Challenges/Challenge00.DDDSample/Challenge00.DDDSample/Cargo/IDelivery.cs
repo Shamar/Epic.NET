@@ -5,7 +5,7 @@ namespace Challenge00.DDDSample.Cargo
 {
 	/// <summary>
 	/// The actual transportation of the cargo, as opposed to the 
-	/// customer requirement (RouteSpecification) and the plan (Itinerary). 
+	/// customer requirement (<see cref="IRouteSpecification"/>) and the plan (<see cref="IItinerary"/>). 
 	/// </summary>
 	public interface IDelivery : IEquatable<IDelivery>
 	{
@@ -30,7 +30,7 @@ namespace Challenge00.DDDSample.Cargo
 		bool IsUnloadedAtDestination { get; }
 		
 		/// <summary>
-		/// True if cargo is misdirected.  
+		/// True if cargo is misdirected.
 		/// </summary>
 		/// <remarks>
 		/// <list type="bullet">

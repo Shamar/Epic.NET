@@ -137,7 +137,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <exception cref="ArgumentNullException"><paramref name="voyage"/> is <value>null</value></exception>
 		void LoadOn(IVoyage voyage, DateTime date);
 		
-		event EventHandler<LoadingEventArgs> Loaded;
+		event EventHandler<HandlingEventArgs> Loaded;
 
 		/// <summary>
 		/// Unload the cargo from the current vassel. 
@@ -145,7 +145,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <param name="date">Date of occurence.</param>
 		void Unload(DateTime date);
 		
-		event EventHandler<LoadingEventArgs> Unloaded;
+		event EventHandler<HandlingEventArgs> Unloaded;
 	}
 }
 
