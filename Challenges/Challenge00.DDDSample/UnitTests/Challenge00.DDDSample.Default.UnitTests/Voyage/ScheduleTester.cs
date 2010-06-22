@@ -172,6 +172,54 @@ namespace Challenge00.DDDSample.Default.UnitTests.Voyage
 			Assert.IsTrue(equals);
 			Assert.AreEqual(schedule1.GetHashCode(), schedule2.GetHashCode());
 		}
+		
+		[Test]
+		public void Test_Equals_04()
+		{
+			// arrange:
+			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			m1.Expect(m => m.Equals(m2)).Return(true).Repeat.AtLeastOnce();
+			m2.Expect(m => m.Equals(m1)).Return(true).Repeat.AtLeastOnce();
+			
+			ISchedule empty = new Schedule();
+			ISchedule schedule1 = empty.Append(m1);
+			ISchedule schedule2 = empty.Append(m2);
+		
+			// act:
+			bool equals1 = schedule1.Equals(schedule2);
+			bool equals2 = schedule2.Equals(schedule1);
+		
+			// assert:
+			Assert.IsTrue(equals1);
+			Assert.IsTrue(equals2);
+			m1.VerifyAllExpectations();
+			m2.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Equals_05()
+		{
+			// arrange:
+			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			m1.Expect(m => m.Equals(m2)).Return(false).Repeat.AtLeastOnce();
+			m2.Expect(m => m.Equals(m1)).Return(false).Repeat.AtLeastOnce();
+			
+			ISchedule empty = new Schedule();
+			ISchedule schedule1 = empty.Append(m1);
+			ISchedule schedule2 = empty.Append(m2);
+		
+			// act:
+			bool equals1 = schedule1.Equals(schedule2);
+			bool equals2 = schedule2.Equals(schedule1);
+		
+			// assert:
+			Assert.IsFalse(equals1);
+			Assert.IsFalse(equals2);
+			m1.VerifyAllExpectations();
+			m2.VerifyAllExpectations();
+		}
 	}
 }
 
