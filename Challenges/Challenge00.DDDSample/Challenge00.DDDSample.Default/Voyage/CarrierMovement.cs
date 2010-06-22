@@ -73,7 +73,7 @@ namespace Challenge00.DDDSample.Default.Voyage
 		
 		public override int GetHashCode ()
 		{
-			return _departureTime.GetHashCode() ^ _arrivalTime.GetHashCode();
+			return _departureLocation.GetHashCode() ^ _arrivalLocation.GetHashCode();
 		}
 	}
 }

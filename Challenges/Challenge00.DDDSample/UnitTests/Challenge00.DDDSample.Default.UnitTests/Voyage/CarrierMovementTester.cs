@@ -4,7 +4,7 @@ using Rhino.Mocks;
 using Challenge00.DDDSample.Location;
 using Challenge00.DDDSample.Voyage;
 using Challenge00.DDDSample.Default.Voyage;
-namespace Challenge00.DDDSample.Default.UnitTests
+namespace Challenge00.DDDSample.Default.UnitTests.Voyage
 {
 	[TestFixture()]
 	public class CarrierMovementTester

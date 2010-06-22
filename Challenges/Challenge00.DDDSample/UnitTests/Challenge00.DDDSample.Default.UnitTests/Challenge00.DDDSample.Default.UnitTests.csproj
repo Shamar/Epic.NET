@@ -60,6 +60,7 @@
     <Compile Include="Shared\NotSpecificationTester.cs" />
     <Compile Include="Location\LocationTester.cs" />
     <Compile Include="Voyage\CarrierMovementTester.cs" />
+    <Compile Include="Voyage\ScheduleTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

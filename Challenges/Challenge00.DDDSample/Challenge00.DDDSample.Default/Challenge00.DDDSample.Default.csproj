@@ -41,6 +41,7 @@
     <Compile Include="Shared\NotSpecification.cs" />
     <Compile Include="Shared\OrSpecification.cs" />
     <Compile Include="Voyage\CarrierMovement.cs" />
+    <Compile Include="Voyage\Schedule.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
