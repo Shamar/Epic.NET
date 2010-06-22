@@ -31,7 +31,7 @@
     <Reference Include="System" />
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
     </Reference>

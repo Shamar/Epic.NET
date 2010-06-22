@@ -105,7 +105,7 @@ namespace Challenge00.DDDSample.Default.UnitTests.Voyage
 			ISchedule schedule1 = empty.Append(m1);
 		
 			// act:
-			ISchedule schedule2 = schedule1.Append(m2);
+			schedule1.Append(m2);
 		}
 		
 		[Test]
@@ -128,7 +128,7 @@ namespace Challenge00.DDDSample.Default.UnitTests.Voyage
 			ISchedule schedule1 = empty.Append(m1);
 		
 			// act:
-			ISchedule schedule2 = schedule1.Append(m2);
+			schedule1.Append(m2);
 		}
 		
 		[Test]

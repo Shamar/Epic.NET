@@ -76,7 +76,7 @@ namespace Challenge00.DDDSample.Default.UnitTests.Shared
 			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
 			
 			// act:
-			OrSpecification<object> spec = new OrSpecification<object>(null,right);
+			new OrSpecification<object>(null,right);
 		}
 		
 		[Test()]
@@ -87,7 +87,7 @@ namespace Challenge00.DDDSample.Default.UnitTests.Shared
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();	
 			
 			// act:
-			OrSpecification<object> spec = new OrSpecification<object>(left,null);
+			new OrSpecification<object>(left,null);
 		}
 		
 		[Test]

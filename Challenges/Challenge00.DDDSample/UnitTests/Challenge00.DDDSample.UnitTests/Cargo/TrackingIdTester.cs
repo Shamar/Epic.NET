@@ -14,6 +14,7 @@ namespace Challenge00.DDDSample.UnitTests.Cargo
 		{
 			string idString = "test";
 			TrackingId id = new TrackingId(idString);
+			Assert.AreEqual(idString, id.ToString());
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.UnitTests.StringIdentifierTester[TrackingId]
