@@ -45,7 +45,7 @@ namespace NUnitRunner
 			else if(!File.Exists(SolutionDirFile))
 			{
 				Console.WriteLine("Missing "+SolutionDirFile+": can not find All.nunit");
-				Console.WriteLine("Write a post-build action like this: NUnitRunner.exe init ${SolutionDir}");
+				Console.WriteLine("Write a post-build action like this: mono NUnitRunner.exe init ${SolutionDir}");
 			}
 			else
 			{
