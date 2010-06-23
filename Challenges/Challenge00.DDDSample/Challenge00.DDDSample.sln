@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.UnitT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.Default.UnitTests", "UnitTests\Challenge00.DDDSample.Default.UnitTests\Challenge00.DDDSample.Default.UnitTests.csproj", "{E26B8AEF-2856-4040-BE65-97B7735ADABE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitRunner", "..\..\Tools\NUnitRunner\NUnitRunner.csproj", "{D467C632-FDA1-40C6-95FF-FFF3C2CABBE6}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample", "Challenge00.DDDSample\Challenge00.DDDSample.csproj", "{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.Default", "Challenge00.DDDSample.Default\Challenge00.DDDSample.Default.csproj", "{47C7912D-2CF9-4464-BCF6-641A6867577D}"
@@ -29,6 +31,10 @@ Global
 		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D467C632-FDA1-40C6-95FF-FFF3C2CABBE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D467C632-FDA1-40C6-95FF-FFF3C2CABBE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D467C632-FDA1-40C6-95FF-FFF3C2CABBE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D467C632-FDA1-40C6-95FF-FFF3C2CABBE6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E26B8AEF-2856-4040-BE65-97B7735ADABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E26B8AEF-2856-4040-BE65-97B7735ADABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E26B8AEF-2856-4040-BE65-97B7735ADABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,8 +43,12 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C63A1855-8414-4711-B4DF-D3372ACD7069} = {996EBBBC-2904-44E6-8ADD-11A6C0958FE4}
 		{E26B8AEF-2856-4040-BE65-97B7735ADABE} = {996EBBBC-2904-44E6-8ADD-11A6C0958FE4}
+		{D467C632-FDA1-40C6-95FF-FFF3C2CABBE6} = {996EBBBC-2904-44E6-8ADD-11A6C0958FE4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Challenge00.DDDSample\Challenge00.DDDSample.csproj
+		StartupItem = ..\..\Tools\NUnitRunner\NUnitRunner.csproj
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
