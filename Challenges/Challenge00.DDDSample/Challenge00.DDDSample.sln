@@ -47,6 +47,10 @@ Global
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = ..\..\Tools\NUnitRunner\NUnitRunner.csproj
+		Policies = $0
+		$0.StandardHeader = $1
+		$1.Text = "@ \n ${FileName}\n \n Author:\n      ${AuthorName} <${AuthorEmail}>\n\n Copyright (c) ${Year} ${CopyrightHolder}\n\n This file is part of Epic.NET.\n\n Epic.NET is free software: you can redistribute it and/or modify\n it under the terms of the GNU Affero General Public License as published by\n the Free Software Foundation, either version 3 of the License, or\n (at your option) any later version.\n\n Epic.NET is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of\n MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n GNU Affero General Public License for more details.\n\n You should have received a copy of the GNU Affero General Public License\n along with this program.  If not, see <http://www.gnu.org/licenses/>.\n "
+		$1.inheritsSet = Apache2License
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
