@@ -22,7 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-namespace Challenge00.DDDSample
+namespace Challenge00.DDDSample.Shared
 {
 	/// <summary>
 	/// Generic event argument that hold a status change.

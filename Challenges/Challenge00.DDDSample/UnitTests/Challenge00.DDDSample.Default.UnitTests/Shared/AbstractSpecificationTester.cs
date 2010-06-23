@@ -24,7 +24,7 @@
 using System;
 using NUnit.Framework;
 using Challenge00.DDDSample.Default.Shared;
-namespace Challenge00.DDDSample.Default.UnitTests.Shared
+namespace DefaultImplementation.Shared
 {
 	public abstract class AbstractSpecificationTester<TSpecification, TCandidate>
 		where TSpecification : AbstractSpecification<TCandidate>

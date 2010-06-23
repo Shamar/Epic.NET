@@ -26,8 +26,9 @@ using System;
 using System.Text.RegularExpressions;
 using Challenge00.DDDSample.Cargo;
 using System.Text;
+using Contracts.Shared;
 
-namespace Challenge00.DDDSample.UnitTests.Cargo
+namespace Contracts.Cargo
 {
 	[TestFixture()]
 	public class TrackingIdTester : StringIdentifierTester<TrackingId>
@@ -40,7 +41,7 @@ namespace Challenge00.DDDSample.UnitTests.Cargo
 			Assert.AreEqual(idString, id.ToString());
 		}
 		
-		#region implemented abstract members of Challenge00.DDDSample.UnitTests.StringIdentifierTester[TrackingId]
+		#region implemented abstract members of Contracts.StringIdentifierTester[TrackingId]
 		
 		protected override TrackingId CreateNewInstance (out string stringUsed)
 		{

@@ -22,6 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Challenge00.DDDSample.Shared;
 using Challenge00.DDDSample.Voyage;
 using Challenge00.DDDSample.Location;
 using System.Collections.Generic;

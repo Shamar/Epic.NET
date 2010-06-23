@@ -23,7 +23,8 @@
 //  
 using System;
 using NUnit.Framework;
-namespace Challenge00.DDDSample.UnitTests
+using Challenge00.DDDSample.Shared;
+namespace Contracts.Shared
 {
 	[TestFixture]
 	public class ChangeEventArgsTester

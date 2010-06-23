@@ -25,7 +25,7 @@ using System;
 using NUnit.Framework;
 using Challenge00.DDDSample.Cargo;
 using Rhino.Mocks;
-namespace Challenge00.DDDSample.UnitTests
+namespace Contracts.Cargo
 {
 	[TestFixture]
 	public class HandlingEventArgsTester

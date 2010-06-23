@@ -28,7 +28,7 @@ using System.Linq;
 using Challenge00.DDDSample.Default.Voyage;
 using Rhino.Mocks;
 using Challenge00.DDDSample.Location;
-namespace Challenge00.DDDSample.Default.UnitTests.Voyage
+namespace DefaultImplementation.Voyage
 {
 	[TestFixture()]
 	public class ScheduleTester

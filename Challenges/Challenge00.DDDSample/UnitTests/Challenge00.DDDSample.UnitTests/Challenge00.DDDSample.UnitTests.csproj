@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C63A1855-8414-4711-B4DF-D3372ACD7069}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Challenge00.DDDSample.UnitTests</RootNamespace>
+    <RootNamespace>Contracts</RootNamespace>
     <AssemblyName>Challenge00.DDDSample.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>

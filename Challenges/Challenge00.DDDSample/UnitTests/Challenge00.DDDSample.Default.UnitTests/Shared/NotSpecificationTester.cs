@@ -26,12 +26,12 @@ using System;
 using Challenge00.DDDSample.Default.Shared;
 using Challenge00.DDDSample.Shared;
 using Rhino.Mocks;
-namespace Challenge00.DDDSample.Default.UnitTests.Shared
+namespace DefaultImplementation.Shared
 {
 	[TestFixture()]
 	public class NotSpecificationTester : AbstractSpecificationTester<NotSpecification<object>, object>
 	{
-		#region implemented abstract members of Challenge00.DDDSample.Default.UnitTests.AbstractSpecificationTester[NotSpecification[System.Object],System.Object]
+		#region implemented abstract members of DefaultImplementation.AbstractSpecificationTester[NotSpecification[System.Object],System.Object]
 		protected override void CreateEqualsSpecification (out NotSpecification<object> spec1, out NotSpecification<object> spec2)
 		{
 			ISpecification<object> n1 = MockRepository.GenerateMock<ISpecification<object>>();

@@ -26,7 +26,7 @@ using System;
 using Challenge00.DDDSample.Location;
 using Rhino.Mocks;
 using Challenge00.DDDSample.Voyage;
-namespace Challenge00.DDDSample.UnitTests.Voyage
+namespace Contracts.Voyage
 {
 	[TestFixture()]
 	public class VoyageEventArgsTester

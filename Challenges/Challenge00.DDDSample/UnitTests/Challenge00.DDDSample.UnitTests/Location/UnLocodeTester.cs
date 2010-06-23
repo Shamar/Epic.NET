@@ -25,12 +25,13 @@ using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
 using Challenge00.DDDSample.Location;
-namespace Challenge00.DDDSample.UnitTests.Location
+using Contracts.Shared;
+namespace Contracts.Location
 {
 	[TestFixture()]
 	public class UnLocodeTester : StringIdentifierTester<UnLocode>
 	{
-		#region implemented abstract members of Challenge00.DDDSample.UnitTests.StringIdentifierTester[UnLocode]
+		#region implemented abstract members of Contracts.StringIdentifierTester[UnLocode]
 		
 		protected override UnLocode CreateNewInstance (out string stringUsed)
 		{

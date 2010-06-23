@@ -24,7 +24,9 @@
 using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
-namespace Challenge00.DDDSample.UnitTests
+using Challenge00.DDDSample;
+
+namespace Contracts.Shared
 {
 	public abstract class StringIdentifierTester<TIdentifier>
 		where TIdentifier : StringIdentifier<TIdentifier>

@@ -26,12 +26,12 @@ using NUnit.Framework;
 using Challenge00.DDDSample.Default.Shared;
 using Challenge00.DDDSample.Shared;
 using Rhino.Mocks;
-namespace Challenge00.DDDSample.Default.UnitTests.Shared
+namespace DefaultImplementation.Shared
 {
 	[TestFixture]
 	public class OrSpecificationTester : AbstractSpecificationTester<OrSpecification<object>, object>
 	{
-		#region implemented abstract members of Challenge00.DDDSample.Default.UnitTests.AbstractSpecificationTester[OrSpecification[System.Object],System.Object]
+		#region implemented abstract members of DefaultImplementation.AbstractSpecificationTester[OrSpecification[System.Object],System.Object]
 		protected override void CreateEqualsSpecification (out OrSpecification<object> spec1, out OrSpecification<object> spec2)
 		{
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();

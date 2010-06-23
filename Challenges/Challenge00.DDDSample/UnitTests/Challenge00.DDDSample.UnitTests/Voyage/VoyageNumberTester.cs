@@ -25,12 +25,13 @@ using System;
 using NUnit.Framework;
 using System.Text.RegularExpressions;
 using Challenge00.DDDSample.Voyage;
-namespace Challenge00.DDDSample.UnitTests.Voyage
+using Contracts.Shared;
+namespace Contracts.Voyage
 {
 	[TestFixture]
 	public class VoyageNumberTester : StringIdentifierTester<VoyageNumber>
 	{
-		#region implemented abstract members of Challenge00.DDDSample.UnitTests.StringIdentifierTester[UnLocode]
+		#region implemented abstract members of Contracts.StringIdentifierTester[UnLocode]
 		
 		protected override VoyageNumber CreateNewInstance (out string stringUsed)
 		{

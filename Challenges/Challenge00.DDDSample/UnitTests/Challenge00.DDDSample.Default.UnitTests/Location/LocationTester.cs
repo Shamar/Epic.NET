@@ -23,7 +23,7 @@
 //  
 using NUnit.Framework;
 using System;
-namespace Challenge00.DDDSample.Default.UnitTests
+namespace DefaultImplementation.Cargo
 {
 	[TestFixture()]
 	public class LocationTester
