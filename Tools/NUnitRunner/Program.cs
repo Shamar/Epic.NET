@@ -24,18 +24,37 @@
 using System;
 using System.Windows.Forms;
 using NUnit.Gui;
+using System.IO;
 
 namespace NUnitRunner
 {
     static class Program
     {
+		static string SolutionDirFile = "SolutionDir.txt";
+		
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] argv)
         {
-            AppEntry.Main(new string[1] { "/runselected" });
+			if(argv.Length == 2 && argv[0] == "init")
+			{
+				File.WriteAllText(SolutionDirFile, argv[1]);
+			}
+			else if(!File.Exists(SolutionDirFile))
+			{
+				Console.WriteLine("Missing "+SolutionDirFile+": can not find All.nunit");
+				Console.WriteLine("Write a post-build action like this: NUnitRunner.exe init ${SolutionDir}");
+			}
+			else
+			{
+				using(StreamReader rdr = File.OpenText(SolutionDirFile))
+				{
+					string solutionDir = rdr.ReadToEnd();
+					AppEntry.Main(new string[2] { solutionDir + "/All.nunit", "-run" });
+				}
+			}
         }
     }
 }
