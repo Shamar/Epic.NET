@@ -140,6 +140,16 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
+		public void Test_Operator_05()
+		{
+			string idString = null;
+			TIdentifier id1 = CreateNewInstance(out idString);
+			
+			Assert.IsFalse(id1 == null);
+			Assert.IsFalse(null == id1);
+		}
+
+		[Test()]
 		public void Test_Contains_01 ()
 		{
 			string idString = null;

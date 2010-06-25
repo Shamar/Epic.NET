@@ -34,12 +34,12 @@ namespace Challenge00.DDDSample.Voyage
 		/// <summary>
 		/// Previous location.
 		/// </summary>
-		public readonly ILocation PreviousLocation;
+		public readonly UnLocode PreviousLocation;
 
 		/// <summary>
 		/// Destination location.
 		/// </summary>
-		public readonly ILocation DestinationLocation;
+		public readonly UnLocode DestinationLocation;
 
 		/// <summary>
 		/// Constructor
@@ -51,7 +51,7 @@ namespace Challenge00.DDDSample.Voyage
 		/// A <see cref="ILocation"/>
 		/// </param>
 		/// <exception cref="ArgumentNullException">Any argument is <value>null</value>.</exception>
-		public VoyageEventArgs (ILocation previousLocation, ILocation destinationLocation)
+		public VoyageEventArgs (UnLocode previousLocation, UnLocode destinationLocation)
 		{
 			if (null == previousLocation)
 				throw new ArgumentNullException ("previousLocation");

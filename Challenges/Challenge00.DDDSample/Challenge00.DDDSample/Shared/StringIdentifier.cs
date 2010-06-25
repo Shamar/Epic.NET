@@ -96,11 +96,25 @@ namespace Challenge00.DDDSample
 		
 		public static bool operator ==(StringIdentifier<TIdentifier> left, TIdentifier right)
         {
+			if(object.ReferenceEquals(left, null))
+			{
+				if(object.ReferenceEquals(right, null))
+					return true; // both null
+				else
+					return false; // one null
+			}
             return left.Equals(right);
         }
 
         public static bool operator !=(StringIdentifier<TIdentifier> left, TIdentifier right)
         {
+			if(object.ReferenceEquals(left, null))
+			{
+				if(object.ReferenceEquals(right, null))
+					return false; // both null
+				else
+					return true; // one null
+			}
             return !left.Equals(right);
         }
 	}

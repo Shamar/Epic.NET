@@ -136,18 +136,26 @@ namespace Challenge00.DDDSample.Cargo
 		/// <summary>
 		/// Clear through customs.
 		/// </summary>
+		/// <param name="location">
+		/// A <see cref="ILocation"/>. May not be null.
+		/// </param>
 		/// <param name="date">
 		/// A <see cref="DateTime"/> 
 		/// </param>
-		void ClearCustoms(DateTime date);
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value></exception>
+		void ClearCustoms(ILocation location, DateTime date);
 		
 		event EventHandler<HandlingEventArgs> CustomsCleared;
 		
 		/// <summary>
 		/// Claim the cargo. 
 		/// </summary>
+		/// <param name="location">
+		/// A <see cref="ILocation"/>. May not be null.
+		/// </param>
 		/// <param name="date">Date of occurence.</param>
-		void Claim(DateTime date);
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value></exception>
+		void Claim(ILocation location, DateTime date);
 		
 		event EventHandler<HandlingEventArgs> Claimed;
 		
@@ -166,8 +174,12 @@ namespace Challenge00.DDDSample.Cargo
 		/// <summary>
 		/// Unload the cargo from the current vassel. 
 		/// </summary>
+		/// <param name="voyage">
+		/// A <see cref="IVoyage"/>. May not be null. 
+		/// </param>
 		/// <param name="date">Date of occurence.</param>
-		void Unload(DateTime date);
+		/// <exception cref="ArgumentNullException"><paramref name="voyage"/> is <value>null</value></exception>
+		void Unload(IVoyage voyage, DateTime date);
 		
 		event EventHandler<HandlingEventArgs> Unloaded;
 	}

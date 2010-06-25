@@ -44,7 +44,7 @@ namespace Challenge00.DDDSample.Voyage
 		/// <summary>
 		/// Last known location. 
 		/// </summary>
-		ILocation LastKnownLocation { get; }
+		UnLocode LastKnownLocation { get; }
 		
 		/// <summary>
 		/// True if the voyage is moving toward the next arrival. 

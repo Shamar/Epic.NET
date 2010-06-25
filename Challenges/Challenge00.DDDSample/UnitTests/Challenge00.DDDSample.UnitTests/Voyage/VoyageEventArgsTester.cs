@@ -36,7 +36,7 @@ namespace Contracts.Voyage
 		public void Test_Ctor_01 ()
 		{
 			// arrange:
-			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
+			UnLocode destination = new UnLocode("CDDES");
 		
 			// act:
 			new VoyageEventArgs(null, destination);
@@ -47,7 +47,7 @@ namespace Contracts.Voyage
 		public void Test_Ctor_02 ()
 		{
 			// arrange:
-			ILocation previous = MockRepository.GenerateStrictMock<ILocation>();
+			UnLocode previous = new UnLocode("CDPRV");
 		
 			// act:
 			new VoyageEventArgs(previous, null);
@@ -57,8 +57,9 @@ namespace Contracts.Voyage
 		public void Test_Ctor_03()
 		{
 			// arrange:
-			ILocation previous = MockRepository.GenerateStrictMock<ILocation>();
-			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
+			UnLocode previous = new UnLocode("CDPRV");
+			UnLocode destination = new UnLocode("CDDES");
+			
 			// act:
 			VoyageEventArgs args = new VoyageEventArgs(previous, destination);
 		
