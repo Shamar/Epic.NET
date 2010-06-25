@@ -39,12 +39,12 @@ namespace Challenge00.DDDSample.Cargo
 		/// <summary>
 		/// Specfied destination location.
 		/// </summary>
-		ILocation Destination { get; }
+		UnLocode Destination { get; }
 		
 		/// <summary>
 		/// Specified origin location. 
 		/// </summary>
-		ILocation Origin { get; }
+		UnLocode Origin { get; }
 	}
 }
 

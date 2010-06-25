@@ -34,7 +34,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <summary>
 		/// Voyage 
 		/// </summary>
-		IVoyage Voyage { get; }
+		VoyageNumber Voyage { get; }
 		
 		/// <summary>
 		/// Load time
@@ -44,7 +44,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <summary>
 		/// Load location 
 		/// </summary>
-		ILocation LoadLocation { get; }
+		UnLocode LoadLocation { get; }
 		
 		/// <summary>
 		/// Unload time 
@@ -54,7 +54,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <summary>
 		/// Unload location 
 		/// </summary>
-		ILocation UnloadLocation { get; }
+		UnLocode UnloadLocation { get; }
 	}
 }
 

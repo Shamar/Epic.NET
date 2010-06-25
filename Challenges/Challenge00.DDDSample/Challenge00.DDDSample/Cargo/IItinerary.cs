@@ -34,12 +34,12 @@ namespace Challenge00.DDDSample.Cargo
 		/// <summary>
 		/// The location of first departure according to this itinerary. 
 		/// </summary>
-		ILocation InitialDepartureLocation { get; }
+		UnLocode InitialDepartureLocation { get; }
 		
 		/// <summary>
 		/// The location of last arrival according to this itinerary. 
 		/// </summary>
-		ILocation FinalArrivalLocation { get; }
+		UnLocode FinalArrivalLocation { get; }
 		
 		/// <summary>
 		/// Create a new itinerary by appending a new <paramref name="leg"/>.
