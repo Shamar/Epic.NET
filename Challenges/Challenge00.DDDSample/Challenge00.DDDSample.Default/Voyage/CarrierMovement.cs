@@ -29,9 +29,9 @@ namespace Challenge00.DDDSample.Default.Voyage
 	[Serializable]
 	public sealed class CarrierMovement : ICarrierMovement
 	{
-		private readonly ILocation _departureLocation;
+		private readonly UnLocode _departureLocation;
 		private readonly DateTime _departureTime;
-		private readonly ILocation _arrivalLocation;
+		private readonly UnLocode _arrivalLocation;
 		private readonly DateTime _arrivalTime;
 		
 		public CarrierMovement (ILocation departureLocation, DateTime departureTime, ILocation arrivalLocation, DateTime arrivalTime)
@@ -45,20 +45,20 @@ namespace Challenge00.DDDSample.Default.Voyage
 			if(departureTime >= arrivalTime)
 				throw new ArgumentOutOfRangeException("arrivalTime", "Arrival time must follow the departure time.");
 			
-			_departureLocation = departureLocation;
+			_departureLocation = departureLocation.UnLocode;
 			_departureTime = departureTime;
-			_arrivalLocation = arrivalLocation;
+			_arrivalLocation = arrivalLocation.UnLocode;
 			_arrivalTime = arrivalTime;
 		}
 
 		#region ICarrierMovement implementation
-		public ILocation ArrivalLocation {
+		public UnLocode ArrivalLocation {
 			get {
 				return _arrivalLocation;
 			}
 		}
 
-		public ILocation DepartureLocation {
+		public UnLocode DepartureLocation {
 			get {
 				return _departureLocation;
 			}

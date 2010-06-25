@@ -36,9 +36,13 @@ namespace DefaultImplementation.Voyage
 		public void Test_Ctor_01()
 		{
 			// arrange:
+			UnLocode dpLocode = new UnLocode("DPLOC");
 			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			dpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.Once();
 			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
+			arLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.Once();
 			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
 			dpLocation.Expect(l => l.Equals(arLocation)).Return(false).Repeat.Once();
 		
@@ -48,8 +52,8 @@ namespace DefaultImplementation.Voyage
 			// assert:
 			Assert.AreEqual(dpTime, target.DepartureTime);
 			Assert.AreEqual(arTime, target.ArrivalTime);
-			Assert.AreSame(dpLocation, target.DepartureLocation);
-			Assert.AreSame(arLocation, target.ArrivalLocation);
+			Assert.AreSame(dpLocode, target.DepartureLocation);
+			Assert.AreSame(arLocode, target.ArrivalLocation);
 			dpLocation.VerifyAllExpectations();
 			arLocation.VerifyAllExpectations();
 		}
@@ -132,20 +136,19 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_01()
 		{
 			// arrange:
+			UnLocode dpLocode = new UnLocode("DPLOC");
+			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.Once();
+			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.Once();
 			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
 			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
 			
-			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
-			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
-			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
-			targetArLocation.Expect(l => l.Equals(arLocation)).Return(true).Repeat.Once();
-			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
-			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(arLocode).Repeat.Once();
 			mock.Expect(m => m.ArrivalTime).Return(arTime).Repeat.Once();
 			mock.Expect(m => m.DepartureTime).Return(dpTime).Repeat.Once();
 			
@@ -156,8 +159,6 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.IsTrue(areEquals);
-			dpLocation.VerifyAllExpectations();
-			arLocation.VerifyAllExpectations();
 			targetDpLocation.VerifyAllExpectations();
 			targetArLocation.VerifyAllExpectations();
 			mock.VerifyAllExpectations();
@@ -167,20 +168,19 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_02()
 		{
 			// arrange:
+			UnLocode dpLocode = new UnLocode("DPLOC");
+			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.Once();
+			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.Once();
 			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
 			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
 			
-			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
-			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
-			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
-			targetArLocation.Expect(l => l.Equals(arLocation)).Return(false).Repeat.Once();
-			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
-			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(new UnLocode("ARNEW")).Repeat.Once();
 		
 			// act:
 			ICarrierMovement target = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime);
@@ -188,8 +188,6 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.IsFalse(areEquals);
-			dpLocation.VerifyAllExpectations();
-			arLocation.VerifyAllExpectations();
 			targetDpLocation.VerifyAllExpectations();
 			targetArLocation.VerifyAllExpectations();
 			mock.VerifyAllExpectations();
@@ -199,18 +197,18 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_03()
 		{
 			// arrange:
+			UnLocode dpLocode = new UnLocode("DPLOC");
+			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.Once();
+			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.Once();
 			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
 			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
 			
-			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
-			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
-			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(false).Repeat.Once();
-			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
+			mock.Expect(m => m.DepartureLocation).Return(new UnLocode("DPNEW")).Repeat.Once();
 		
 			// act:
 			ICarrierMovement target = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime);
@@ -218,8 +216,6 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.IsFalse(areEquals);
-			dpLocation.VerifyAllExpectations();
-			arLocation.VerifyAllExpectations();
 			targetDpLocation.VerifyAllExpectations();
 			targetArLocation.VerifyAllExpectations();
 			mock.VerifyAllExpectations();
@@ -229,20 +225,19 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_04()
 		{
 			// arrange:
+			UnLocode dpLocode = new UnLocode("DPLOC");
+			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.Once();
+			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.Once();
 			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
 			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
 			
-			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
-			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
-			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
-			targetArLocation.Expect(l => l.Equals(arLocation)).Return(true).Repeat.Once();
-			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
-			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(arLocode).Repeat.Once();
 			mock.Expect(m => m.ArrivalTime).Return(arTime).Repeat.Once();
 			mock.Expect(m => m.DepartureTime).Return(dpTime).Repeat.Once();
 			
@@ -253,8 +248,6 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.IsFalse(areEquals);
-			dpLocation.VerifyAllExpectations();
-			arLocation.VerifyAllExpectations();
 			targetDpLocation.VerifyAllExpectations();
 			targetArLocation.VerifyAllExpectations();
 			mock.VerifyAllExpectations();
@@ -264,20 +257,19 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_05()
 		{
 			// arrange:
+			UnLocode dpLocode = new UnLocode("DPLOC");
+			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.Once();
+			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.Once();
 			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
 			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
 			
-			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
-			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
-			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
-			targetArLocation.Expect(l => l.Equals(arLocation)).Return(true).Repeat.Once();
-			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
-			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(arLocode).Repeat.Once();
 			mock.Expect(m => m.ArrivalTime).Return(arTime).Repeat.Once();
 			
 		
@@ -287,8 +279,6 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.IsFalse(areEquals);
-			dpLocation.VerifyAllExpectations();
-			arLocation.VerifyAllExpectations();
 			targetDpLocation.VerifyAllExpectations();
 			targetArLocation.VerifyAllExpectations();
 			mock.VerifyAllExpectations();
@@ -298,20 +288,19 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_06()
 		{
 			// arrange:
+			UnLocode dpLocode = new UnLocode("DPLOC");
+			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.Equals(targetArLocation)).Return(false).Repeat.Once();
+			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.Once();
+			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.Once();
 			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
 			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
 			
-			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
-			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
-			targetDpLocation.Expect(l => l.Equals(dpLocation)).Return(true).Repeat.Once();
-			targetArLocation.Expect(l => l.Equals(arLocation)).Return(true).Repeat.Once();
-			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			mock.Expect(m => m.DepartureLocation).Return(dpLocation).Repeat.Once();
-			mock.Expect(m => m.ArrivalLocation).Return(arLocation).Repeat.Once();
+			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
+			mock.Expect(m => m.ArrivalLocation).Return(arLocode).Repeat.Once();
 			mock.Expect(m => m.ArrivalTime).Return(arTime).Repeat.Once();
 			mock.Expect(m => m.DepartureTime).Return(dpTime).Repeat.Once();
 			
@@ -322,8 +311,6 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.IsTrue(areEquals);
-			dpLocation.VerifyAllExpectations();
-			arLocation.VerifyAllExpectations();
 			targetDpLocation.VerifyAllExpectations();
 			targetArLocation.VerifyAllExpectations();
 			mock.VerifyAllExpectations();

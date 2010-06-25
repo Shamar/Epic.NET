@@ -80,16 +80,18 @@ namespace DefaultImplementation.Voyage
 		public void Test_Append_03()
 		{
 			// arrange:
+			UnLocode c1 = new UnLocode("LOCDA");
+			UnLocode c2 = new UnLocode("LOCDA");
 			ILocation l1 = MockRepository.GenerateStub<ILocation>();
 			ILocation l2 = MockRepository.GenerateStub<ILocation>();
 			l1.Expect(l => l.Equals(l2)).Return(true);
 			l2.Expect(l => l.Equals(l1)).Return(true);
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			m1.Expect(m => m.ArrivalLocation).Return(l1).Repeat.Any();
+			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
 			m1.Expect(m => m.ArrivalTime).Return(DateTime.Now + new TimeSpan(48, 0, 0)).Repeat.Any();
 			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			m2.Expect(m => m.DepartureLocation).Return(l2).Repeat.Any();
+			m2.Expect(m => m.DepartureLocation).Return(c2).Repeat.Any();
 			m2.Expect(m => m.DepartureTime).Return(DateTime.Now + new TimeSpan(72, 0, 0)).Repeat.Any();
 			ISchedule empty = new Schedule();
 			ISchedule schedule1 = empty.Append(m1);
@@ -113,16 +115,18 @@ namespace DefaultImplementation.Voyage
 		public void Test_Append_04()
 		{
 			// arrange:
+			UnLocode c1 = new UnLocode("LOCDA");
+			UnLocode c2 = new UnLocode("LOCDB");
 			ILocation l1 = MockRepository.GenerateStub<ILocation>();
 			ILocation l2 = MockRepository.GenerateStub<ILocation>();
 			l1.Expect(l => l.Equals(l2)).Return(false);
 			l2.Expect(l => l.Equals(l1)).Return(false);
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			m1.Expect(m => m.ArrivalLocation).Return(l1).Repeat.Any();
+			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
 			m1.Expect(m => m.ArrivalTime).Return(DateTime.Now + new TimeSpan(48, 0, 0)).Repeat.Any();
 			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			m2.Expect(m => m.DepartureLocation).Return(l2).Repeat.Any();
+			m2.Expect(m => m.DepartureLocation).Return(c2).Repeat.Any();
 			m2.Expect(m => m.DepartureTime).Return(DateTime.Now + new TimeSpan(72, 0, 0)).Repeat.Any();
 			ISchedule empty = new Schedule();
 			ISchedule schedule1 = empty.Append(m1);
@@ -136,16 +140,18 @@ namespace DefaultImplementation.Voyage
 		public void Test_Append_05()
 		{
 			// arrange:
+			UnLocode c1 = new UnLocode("LOCDA");
+			UnLocode c2 = new UnLocode("LOCDB");
 			ILocation l1 = MockRepository.GenerateStub<ILocation>();
 			ILocation l2 = MockRepository.GenerateStub<ILocation>();
 			l1.Expect(l => l.Equals(l2)).Return(true);
 			l2.Expect(l => l.Equals(l1)).Return(true);
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			m1.Expect(m => m.ArrivalLocation).Return(l1).Repeat.Any();
+			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
 			m1.Expect(m => m.ArrivalTime).Return(DateTime.Now + new TimeSpan(48, 0, 0)).Repeat.Any();
 			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			m2.Expect(m => m.DepartureLocation).Return(l2).Repeat.Any();
+			m2.Expect(m => m.DepartureLocation).Return(c2).Repeat.Any();
 			m2.Expect(m => m.DepartureTime).Return(DateTime.Now).Repeat.Any();
 			ISchedule empty = new Schedule();
 			ISchedule schedule1 = empty.Append(m1);

@@ -53,9 +53,9 @@ namespace Challenge00.DDDSample.Default.Voyage
 			
 			ICarrierMovement lastMovement = _movements[_movements.Length - 1];
 			if(!lastMovement.ArrivalLocation.Equals(movement.DepartureLocation))
-				throw new ArgumentException(string.Format("The provided movement do not depart from {0}.", lastMovement.ArrivalLocation.Name), "movement");
+				throw new ArgumentException(string.Format("The provided movement do not depart from {0}.", lastMovement.ArrivalLocation), "movement");
 			if(lastMovement.ArrivalTime > movement.DepartureTime)
-				throw new ArgumentException(string.Format("The provided movement depart from {0} too early.", lastMovement.ArrivalLocation.Name), "movement");
+				throw new ArgumentException(string.Format("The provided movement depart from {0} too early.", lastMovement.ArrivalLocation), "movement");
 			
 			ICarrierMovement[] movements = new ICarrierMovement[_movements.Length + 1];
 			_movements.CopyTo(movements, 0);

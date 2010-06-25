@@ -42,12 +42,12 @@ namespace Challenge00.DDDSample.Voyage
 		/// <summary>
 		/// Departure location. 
 		/// </summary>
-		ILocation DepartureLocation { get; }
+		UnLocode DepartureLocation { get; }
 		
 		/// <summary>
 		/// Arrival location. 
 		/// </summary>
-		ILocation ArrivalLocation { get; }
+		UnLocode ArrivalLocation { get; }
 		
 		/// <summary>
 		/// Time of departure. 
