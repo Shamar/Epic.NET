@@ -23,7 +23,6 @@
 //  
 using NUnit.Framework;
 using System;
-using Challenge00.DDDSample.Default.Shared;
 using Challenge00.DDDSample.Shared;
 using Rhino.Mocks;
 namespace DefaultImplementation.Shared

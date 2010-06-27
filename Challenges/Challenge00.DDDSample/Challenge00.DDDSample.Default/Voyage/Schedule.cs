@@ -25,7 +25,7 @@ using System;
 using System.Linq;
 using Challenge00.DDDSample.Voyage;
 using System.Collections.Generic;
-namespace Challenge00.DDDSample.Default.Voyage
+namespace Challenge00.DDDSample.Voyage
 {
 	[Serializable]
 	public sealed class Schedule : ISchedule

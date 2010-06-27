@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E26B8AEF-2856-4040-BE65-97B7735ADABE}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Challenge00.DDDSample.Default.UnitTests</RootNamespace>
+    <RootNamespace>DefaultImplementation</RootNamespace>
     <AssemblyName>Challenge00.DDDSample.Default.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -61,6 +61,16 @@
     <Compile Include="Location\LocationTester.cs" />
     <Compile Include="Voyage\CarrierMovementTester.cs" />
     <Compile Include="Voyage\ScheduleTester.cs" />
+    <Compile Include="Voyage\VoyageTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>
