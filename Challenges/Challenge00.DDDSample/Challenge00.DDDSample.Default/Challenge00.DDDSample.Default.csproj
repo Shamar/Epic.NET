@@ -42,12 +42,14 @@
     <Compile Include="Shared\OrSpecification.cs" />
     <Compile Include="Voyage\CarrierMovement.cs" />
     <Compile Include="Voyage\Schedule.cs" />
+    <Compile Include="Location\Location.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Shared\" />
     <Folder Include="Cargo\" />
     <Folder Include="Voyage\" />
+    <Folder Include="Location\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Challenge00.DDDSample\Challenge00.DDDSample.csproj">
