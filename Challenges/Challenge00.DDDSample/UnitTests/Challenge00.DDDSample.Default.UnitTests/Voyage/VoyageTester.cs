@@ -36,6 +36,7 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			
 			// act:
 			IVoyage voyage = new Challenge00.DDDSample.Voyage.Voyage(number, schedule);

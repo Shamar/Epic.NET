@@ -26,7 +26,7 @@ using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Voyage
 {
 	[Serializable]
-	public abstract class VoyageState
+	public abstract class VoyageState : IEquatable<VoyageState>
 	{
 		private readonly ISchedule _schedule;
 		
@@ -56,6 +56,23 @@ namespace Challenge00.DDDSample.Voyage
 		public abstract bool IsMoving { get; }
 		
 		public abstract bool IsLost { get; }
+	
+
+		#region IEquatable[VoyageState] implementation
+		
+		public abstract bool Equals (VoyageState other);
+		
+		#endregion
+		
+		public sealed override bool Equals (object obj)
+		{
+			return Equals(obj as VoyageState);
+		}
+		
+		public sealed override int GetHashCode ()
+		{
+			return this.GetType().GetHashCode() ^ LastKnownLocation.GetHashCode();
+		}
 	}
 }
 

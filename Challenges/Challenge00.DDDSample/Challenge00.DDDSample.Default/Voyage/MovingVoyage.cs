@@ -1,5 +1,5 @@
 //  
-//  InitialVoyageState.cs
+//  MovingVoyage.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -26,12 +26,15 @@ using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Voyage
 {
 	[Serializable]
-	public class AtPortVoyage : VoyageState
+	public class MovingVoyage : VoyageState 
 	{
 		private readonly int _movementIndex;
-		public AtPortVoyage (ISchedule schedule, int movementIndex)
+		public MovingVoyage (ISchedule schedule, int movementIndex)
 			: base(schedule)
 		{
+			if(movementIndex < 0 || movementIndex >= schedule.MovementsCount)
+				throw new ArgumentOutOfRangeException("movementIndex");
+			_movementIndex = movementIndex;
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.Voyage.VoyageState
@@ -43,7 +46,7 @@ namespace Challenge00.DDDSample.Voyage
 		
 		public override VoyageState Depart ()
 		{
-			throw new System.NotImplementedException();
+			return this;
 		}
 		
 		
@@ -57,7 +60,7 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			get 
 			{
-				return Schedule[0].DepartureLocation;
+				return Schedule[_movementIndex].DepartureLocation;
 			}
 		}
 		
@@ -66,7 +69,7 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			get 
 			{
-				return false;
+				throw new System.NotImplementedException();
 			}
 		}
 		
@@ -75,8 +78,14 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			get 
 			{
-				return false;
+				throw new System.NotImplementedException();
 			}
+		}
+		
+		
+		public override bool Equals (VoyageState other)
+		{
+			throw new System.NotImplementedException();
 		}
 		
 		#endregion
