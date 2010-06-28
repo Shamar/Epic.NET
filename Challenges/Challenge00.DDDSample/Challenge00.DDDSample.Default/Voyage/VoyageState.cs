@@ -31,11 +31,11 @@ namespace Challenge00.DDDSample.Voyage
 		{
 		}
 		
-		public VoyageState Arrive ();
+		public abstract VoyageState Arrive ();
 		
-		public VoyageState Depart();
+		public abstract VoyageState Depart();
 		
-		public VoyageState MarkAsLost(Location.ILocation lastKnownLocation);
+		public abstract VoyageState MarkAsLost(Location.ILocation lastKnownLocation);
 	}
 }
 
