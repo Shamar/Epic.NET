@@ -38,7 +38,7 @@ namespace DefaultImplementation.Location
 			
 		
 			// act:
-			new Location(null, "Name");
+			new Challenge00.DDDSample.Location.Location(null, "Name");
 		}
 		
 		[Test]
@@ -49,7 +49,7 @@ namespace DefaultImplementation.Location
 			UnLocode code = new UnLocode("UNLOC");
 		
 			// act:
-			new Location(code, null);
+			new Challenge00.DDDSample.Location.Location(code, null);
 		}
 
 		[Test]
@@ -60,7 +60,7 @@ namespace DefaultImplementation.Location
 			UnLocode code = new UnLocode("UNLOC");
 		
 			// act:
-			new Location(code, string.Empty);
+			new Challenge00.DDDSample.Location.Location(code, string.Empty);
 		}
 		
 		[Test]
@@ -71,7 +71,7 @@ namespace DefaultImplementation.Location
 			string name = "Test Location";
 		
 			// act:
-			ILocation location = new Location(code, name);
+			ILocation location = new Challenge00.DDDSample.Location.Location(code, name);
 		
 			// assert:
 			Assert.AreEqual(code, location.UnLocode);
@@ -88,7 +88,7 @@ namespace DefaultImplementation.Location
 			loc.Expect(l => l.UnLocode).Return(new UnLocode("UNLOC")).Repeat.Once();
 		
 			// act:
-			ILocation location = new Location(code, name);
+			ILocation location = new Challenge00.DDDSample.Location.Location(code, name);
 			bool equalsLocations = location.Equals(loc);
 		
 			// assert:
@@ -107,7 +107,7 @@ namespace DefaultImplementation.Location
 			loc.Expect(l => l.UnLocode).Return(new UnLocode("UNLOC")).Repeat.Once();
 		
 			// act:
-			ILocation location = new Location(code, name);
+			ILocation location = new Challenge00.DDDSample.Location.Location(code, name);
 			bool equalsObjects = location.Equals((object)loc);
 		
 			// assert:
@@ -126,7 +126,7 @@ namespace DefaultImplementation.Location
 			loc.Expect(l => l.UnLocode).Return(new UnLocode("UNDIF")).Repeat.Once();
 		
 			// act:
-			ILocation location = new Location(code, name);
+			ILocation location = new Challenge00.DDDSample.Location.Location(code, name);
 			bool equalsObjects = location.Equals((object)loc);
 		
 			// assert:
@@ -145,7 +145,7 @@ namespace DefaultImplementation.Location
 			loc.Expect(l => l.UnLocode).Return(new UnLocode("UNDIF")).Repeat.Once();
 		
 			// act:
-			ILocation location = new Location(code, name);
+			ILocation location = new Challenge00.DDDSample.Location.Location(code, name);
 			bool equalsLocations = location.Equals(loc);
 		
 			// assert:
@@ -163,7 +163,7 @@ namespace DefaultImplementation.Location
 			ILocation loc = MockRepository.GenerateStrictMock<ILocation>();
 		
 			// act:
-			ILocation location = new Location(code, name);
+			ILocation location = new Challenge00.DDDSample.Location.Location(code, name);
 			bool equalsLocations = location.Equals(null);
 		
 			// assert:
