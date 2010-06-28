@@ -23,7 +23,7 @@
 //  
 using System;
 using NUnit.Framework;
-using Challenge00.DDDSample.Default.Shared;
+using Challenge00.DDDSample.Shared;
 namespace DefaultImplementation.Shared
 {
 	public abstract class AbstractSpecificationTester<TSpecification, TCandidate>
