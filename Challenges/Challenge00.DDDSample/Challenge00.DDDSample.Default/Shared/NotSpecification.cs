@@ -23,7 +23,7 @@
 //  
 using System;
 using Challenge00.DDDSample.Shared;
-namespace Challenge00.DDDSample.Default.Shared
+namespace Challenge00.DDDSample.Shared
 {
 	[Serializable]
 	public sealed class NotSpecification<TCandidate> : AbstractSpecification<TCandidate>

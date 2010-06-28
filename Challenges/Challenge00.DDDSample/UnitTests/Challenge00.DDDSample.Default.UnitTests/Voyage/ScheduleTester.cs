@@ -25,7 +25,6 @@ using NUnit.Framework;
 using System;
 using Challenge00.DDDSample.Voyage;
 using System.Linq;
-using Challenge00.DDDSample.Default.Voyage;
 using Rhino.Mocks;
 using Challenge00.DDDSample.Location;
 namespace DefaultImplementation.Voyage

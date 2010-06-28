@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{47C7912D-2CF9-4464-BCF6-641A6867577D}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Challenge00.DDDSample.Default</RootNamespace>
+    <RootNamespace>Challenge00.DDDSample</RootNamespace>
     <AssemblyName>Challenge00.DDDSample.Default</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -43,6 +43,8 @@
     <Compile Include="Voyage\CarrierMovement.cs" />
     <Compile Include="Voyage\Schedule.cs" />
     <Compile Include="Location\Location.cs" />
+    <Compile Include="Voyage\Voyage.cs" />
+    <Compile Include="Voyage\VoyageState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -57,4 +59,13 @@
       <Name>Challenge00.DDDSample</Name>
     </ProjectReference>
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

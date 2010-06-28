@@ -24,7 +24,7 @@
 using System;
 using Challenge00.DDDSample.Voyage;
 using Challenge00.DDDSample.Location;
-namespace Challenge00.DDDSample.Default.Voyage
+namespace Challenge00.DDDSample.Voyage
 {
 	[Serializable]
 	public sealed class CarrierMovement : ICarrierMovement

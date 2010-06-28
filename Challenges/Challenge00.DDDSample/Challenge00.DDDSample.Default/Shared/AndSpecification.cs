@@ -24,7 +24,7 @@
 using System;
 using System.Linq.Expressions;
 using Challenge00.DDDSample.Shared;
-namespace Challenge00.DDDSample.Default.Shared
+namespace Challenge00.DDDSample.Shared
 {
 	[Serializable]
 	public sealed class AndSpecification<TCandidate> : AbstractSpecification<TCandidate>
