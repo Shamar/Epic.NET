@@ -45,6 +45,7 @@
     <Compile Include="Location\Location.cs" />
     <Compile Include="Voyage\Voyage.cs" />
     <Compile Include="Voyage\VoyageState.cs" />
+    <Compile Include="Voyage\AtPortVoyage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

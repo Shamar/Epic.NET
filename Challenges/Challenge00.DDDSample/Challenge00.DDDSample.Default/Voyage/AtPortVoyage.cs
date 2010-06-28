@@ -1,5 +1,5 @@
 //  
-//  VoyageState.cs
+//  InitialVoyageState.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -26,36 +26,61 @@ using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Voyage
 {
 	[Serializable]
-	public abstract class VoyageState
+	public class AtPortVoyage : VoyageState
 	{
-		private readonly ISchedule _schedule;
-		
-		protected VoyageState(ISchedule schedule)
+		private readonly int _movementIndex;
+		public AtPortVoyage (ISchedule schedule, int movementIndex)
+			: base(schedule)
 		{
-			if(null == schedule)
-				throw new ArgumentNullException("schedule");
-			_schedule = schedule;
 		}
 		
-		public ISchedule Schedule
+		#region implemented abstract members of Challenge00.DDDSample.Voyage.VoyageState
+		public override VoyageState Arrive ()
 		{
-			get
+			throw new System.NotImplementedException();
+		}
+		
+		
+		public override VoyageState Depart ()
+		{
+			throw new System.NotImplementedException();
+		}
+		
+		
+		public override VoyageState MarkAsLost (ILocation lastKnownLocation)
+		{
+			throw new System.NotImplementedException();
+		}
+		
+		
+		public override UnLocode LastKnownLocation 
+		{
+			get 
 			{
-				return _schedule;
+				return Schedule[0].DepartureLocation;
 			}
 		}
 		
-		public abstract VoyageState Arrive ();
 		
-		public abstract VoyageState Depart();
+		public override bool IsMoving 
+		{
+			get 
+			{
+				return false;
+			}
+		}
 		
-		public abstract VoyageState MarkAsLost(ILocation lastKnownLocation);
 		
-		public abstract UnLocode LastKnownLocation { get; }
+		public override bool IsLost 
+		{
+			get 
+			{
+				return false;
+			}
+		}
 		
-		public abstract bool IsMoving { get; }
-		
-		public abstract bool IsLost { get; }
+		#endregion
+
 	}
 }
 

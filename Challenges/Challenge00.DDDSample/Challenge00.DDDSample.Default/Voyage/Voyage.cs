@@ -28,17 +28,16 @@ namespace Challenge00.DDDSample.Voyage
 	public class Voyage : IVoyage
 	{
 		private readonly VoyageNumber _identifier;
-		private readonly ISchedule _schedule;
-		private Voyage _state;
+		private VoyageState _state;
 		public Voyage (VoyageNumber identifier, ISchedule schedule)
-			: this(identifier, schedule, null)
+			: this(identifier, new AtPortVoyage(schedule, 0))
 		{
 		}
 	
-		protected Voyage (VoyageNumber identifier, ISchedule schedule, VoyageState initialState)
+		protected Voyage (VoyageNumber identifier, VoyageState initialState)
 		{
 			_identifier = identifier;
-			_schedule = schedule;
+			_state = initialState;
 		}
 
 		#region IVoyage implementation
@@ -71,7 +70,7 @@ namespace Challenge00.DDDSample.Voyage
 
 		public ISchedule Schedule {
 			get {
-				return _schedule;
+				return _state.Schedule;
 			}
 		}
 
@@ -81,15 +80,19 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 
-		public bool IsMoving {
-			get {
-				throw new NotImplementedException ();
+		public bool IsMoving 
+		{
+			get 
+			{
+				return _state.IsMoving;
 			}
 		}
 
-		public bool IsLost {
-			get {
-				throw new NotImplementedException ();
+		public bool IsLost 
+		{
+			get 
+			{
+				return _state.IsLost;
 			}
 		}
 		#endregion
