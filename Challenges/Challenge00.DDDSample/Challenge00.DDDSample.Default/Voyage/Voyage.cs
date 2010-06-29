@@ -55,8 +55,6 @@ namespace Challenge00.DDDSample.Voyage
 
 		public event EventHandler<VoyageEventArgs> Departed;
 
-		public event EventHandler<VoyageEventArgs> Losing;
-
 		public void StopOverAt (ILocation location)
 		{
 			throw new NotImplementedException ();
@@ -64,7 +62,19 @@ namespace Challenge00.DDDSample.Voyage
 
 		public void DepartFrom (ILocation location)
 		{
-			throw new NotImplementedException ();
+			if(null == location)
+				throw new ArgumentNullException("location");
+			VoyageState newState = CurrentState.DepartFrom(location);
+			if(!CurrentState.Equals(newState))
+			{
+				VoyageEventArgs args = new VoyageEventArgs(newState.LastKnownLocation, newState.NextExpectedLocation);
+				
+				CurrentState = newState;
+				
+				EventHandler<VoyageEventArgs> handler = Departed;
+				if(null != handler)
+					handler(this, args);
+			}
 		}
 
 		public VoyageNumber Number 
@@ -87,7 +97,7 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return CurrentState.LastKnownLocation;
 			}
 		}
 		
@@ -95,7 +105,7 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return CurrentState.NextExpectedLocation;
 			}
 		}
 
@@ -115,6 +125,6 @@ namespace Challenge00.DDDSample.Voyage
 			throw new NotImplementedException ();
 		}
 		#endregion
-}
+	}
 }
 
