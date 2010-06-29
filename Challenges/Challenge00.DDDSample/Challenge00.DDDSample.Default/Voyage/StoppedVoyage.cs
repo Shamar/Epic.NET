@@ -45,7 +45,7 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			if(LastKnownLocation.Equals(location.UnLocode))
 				return this;
-			string message = string.Format("The voyage stopped over at {0}.", location.Name);
+			string message = string.Format("The voyage stopped over at {0}.", LastKnownLocation);
 			throw new ArgumentException(message, "location");
 		}
 		

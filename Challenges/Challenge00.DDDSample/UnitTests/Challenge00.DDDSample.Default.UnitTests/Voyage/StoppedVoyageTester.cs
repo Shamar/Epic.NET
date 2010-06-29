@@ -29,7 +29,7 @@ using Challenge00.DDDSample.Location;
 namespace DefaultImplementation.Voyage
 {
 	[TestFixture()]
-	public class InPortVoyageTester
+	public class StoppedVoyageTester
 	{
 		[Test]
 		public void Test_Ctor_01()
@@ -134,7 +134,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Arrive_01()
+		public void Test_StopOverAt_01()
 		{
 			// arrange:
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
@@ -159,7 +159,30 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Depart_01()
+		public void Test_StopOverAt_02()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode initialLocation = new UnLocode("DPLOC");
+			ICarrierMovement movement = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			movement.Expect(m => m.DepartureLocation).Return(initialLocation).Repeat.Twice();
+			schedule.Expect(s => s[0]).Return(movement).Repeat.Twice();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(new UnLocode("ONTHR")).Repeat.Any();
+			
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 0);
+			Assert.Throws<ArgumentException>(delegate {state.StopOverAt(location);});
+
+			// assert:
+			schedule.VerifyAllExpectations();
+			movement.VerifyAllExpectations();
+			location.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_DepartFrom_01()
 		{
 			// arrange:
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
