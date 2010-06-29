@@ -69,6 +69,8 @@
     <Compile Include="Voyage\ScheduleTester.cs" />
     <Compile Include="Voyage\VoyageTester.cs" />
     <Compile Include="Voyage\StoppedVoyageTester.cs" />
+    <Compile Include="Voyage\MovingVoyageTester.cs" />
+    <Compile Include="Voyage\CompletedVoyageTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

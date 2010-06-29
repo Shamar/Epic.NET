@@ -83,8 +83,18 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 
-		public Location.UnLocode LastKnownLocation {
-			get {
+		public UnLocode LastKnownLocation 
+		{
+			get 
+			{
+				throw new NotImplementedException ();
+			}
+		}
+		
+		public UnLocode NextExpectedLocation 
+		{
+			get 
+			{
 				throw new NotImplementedException ();
 			}
 		}

@@ -52,7 +52,10 @@ namespace Challenge00.DDDSample.Voyage
 		
 		public override VoyageState DepartFrom (ILocation location)
 		{
-			return new MovingVoyage(Schedule, _movementIndex);
+			if(LastKnownLocation.Equals(location.UnLocode))
+				return new MovingVoyage(Schedule, _movementIndex);
+			string message = string.Format("The voyage stopped over at {0}.", LastKnownLocation);
+			throw new ArgumentException(message, "location");
 		}
 		
 		public override UnLocode LastKnownLocation 
@@ -63,6 +66,13 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 		
+		public override UnLocode NextExpectedLocation 
+		{
+			get 
+			{
+				return Schedule[_movementIndex].ArrivalLocation;
+			}
+		}
 		
 		public override bool IsMoving 
 		{
@@ -83,7 +93,7 @@ namespace Challenge00.DDDSample.Voyage
 			StoppedVoyage voyage = other as StoppedVoyage;
 			if(null == voyage)
 				return false;
-			return LastKnownLocation.Equals(voyage.LastKnownLocation) && Schedule.Equals(voyage.Schedule);
+			return _movementIndex == voyage._movementIndex && Schedule.Equals(voyage.Schedule);
 		}
 		
 		#endregion

@@ -50,7 +50,9 @@ namespace Challenge00.DDDSample.Voyage
 		public abstract VoyageState DepartFrom (ILocation location);
 		
 		public abstract UnLocode LastKnownLocation { get; }
-		
+
+		public abstract UnLocode NextExpectedLocation { get; }
+
 		public abstract bool IsMoving { get; }
 
 		#region IEquatable[VoyageState] implementation

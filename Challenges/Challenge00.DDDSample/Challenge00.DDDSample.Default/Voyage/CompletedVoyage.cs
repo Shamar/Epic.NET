@@ -1,5 +1,5 @@
 //  
-//  MovingVoyage.cs
+//  CompletedVoyage.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -26,45 +26,30 @@ using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Voyage
 {
 	[Serializable]
-	public class MovingVoyage : VoyageState 
+	public class CompletedVoyage : VoyageState
 	{
-		private readonly int _movementIndex;
-		public MovingVoyage (ISchedule schedule, int movementIndex)
+		public CompletedVoyage (ISchedule schedule)
 			: base(schedule)
 		{
-			if(movementIndex < 0 || movementIndex >= schedule.MovementsCount)
-				throw new ArgumentOutOfRangeException("movementIndex");
-			_movementIndex = movementIndex;
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.Voyage.VoyageState
-		
 		public override VoyageState StopOverAt (ILocation location)
 		{
-			if(NextExpectedLocation.Equals(location.UnLocode))
-			{
-				if(_movementIndex < Schedule.MovementsCount - 1)
-					return new StoppedVoyage(Schedule, _movementIndex + 1);
-				else
-					return new CompletedVoyage(Schedule);
-			}
-			string message = string.Format("The voyage should stop over at {0}.", NextExpectedLocation);
-			throw new ArgumentException(message, "location");
+			throw new InvalidOperationException("The voyage has been completed.");
 		}
+		
 		
 		public override VoyageState DepartFrom (ILocation location)
 		{
-			if(LastKnownLocation.Equals(location.UnLocode))
-				return this;
-			string message = string.Format("The voyage departed from {0}.", LastKnownLocation);
-			throw new ArgumentException(message, "location");
+			throw new InvalidOperationException("The voyage has been completed.");
 		}
-	
+		
 		public override UnLocode LastKnownLocation 
 		{
 			get 
 			{
-				return Schedule[_movementIndex].DepartureLocation;
+				return Schedule[Schedule.MovementsCount - 1].ArrivalLocation;
 			}
 		}
 		
@@ -72,15 +57,13 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			get 
 			{
-				return Schedule[_movementIndex].ArrivalLocation;
+				return Schedule[Schedule.MovementsCount - 1].ArrivalLocation;
 			}
 		}
 		
-		public override bool IsMoving 
-		{
-			get 
-			{
-				return true;
+		public override bool IsMoving {
+			get {
+				return false;
 			}
 		}
 		
@@ -88,10 +71,11 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			if(object.ReferenceEquals(this, other))
 				return true;
-			MovingVoyage voyage = other as MovingVoyage;
+			CompletedVoyage voyage = other as CompletedVoyage;
 			if(null == voyage)
 				return false;
-			return _movementIndex == voyage._movementIndex && Schedule.Equals(voyage.Schedule);
+			return Schedule.Equals(voyage.Schedule);
+
 		}
 		
 		#endregion

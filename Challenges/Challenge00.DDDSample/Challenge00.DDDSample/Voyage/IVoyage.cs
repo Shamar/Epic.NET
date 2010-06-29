@@ -47,6 +47,11 @@ namespace Challenge00.DDDSample.Voyage
 		UnLocode LastKnownLocation { get; }
 		
 		/// <summary>
+		/// Next expected location.
+		/// </summary>
+		UnLocode NextExpectedLocation { get; }
+		
+		/// <summary>
 		/// True if the voyage is moving toward the next arrival. 
 		/// </summary>
 		bool IsMoving { get; }
@@ -54,6 +59,8 @@ namespace Challenge00.DDDSample.Voyage
 		/// <summary>
 		/// Move the last knwon location to the next scheduled arrival.
 		/// </summary>
+		/// <param name="location">Location reached.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value></exception>
 		void StopOverAt(ILocation location);
 		
 		event EventHandler<VoyageEventArgs> Stopped;
@@ -61,6 +68,8 @@ namespace Challenge00.DDDSample.Voyage
 		/// <summary>
 		/// Start a voyage movement.
 		/// </summary>
+		/// <param name="location">Location leave.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value></exception>
 		void DepartFrom(ILocation location);
 		
 		event EventHandler<VoyageEventArgs> Departed;
