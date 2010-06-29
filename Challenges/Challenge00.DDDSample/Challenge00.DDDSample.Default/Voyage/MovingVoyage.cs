@@ -38,24 +38,17 @@ namespace Challenge00.DDDSample.Voyage
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.Voyage.VoyageState
-		public override VoyageState Arrive ()
+		
+		public override VoyageState StopOverAt (ILocation location)
 		{
 			throw new System.NotImplementedException();
 		}
 		
-		
-		public override VoyageState Depart ()
+		public override VoyageState DepartFrom (ILocation location)
 		{
-			return this;
+			return new MovingVoyage(Schedule, _movementIndex);
 		}
-		
-		
-		public override VoyageState MarkAsLost (ILocation lastKnownLocation)
-		{
-			throw new System.NotImplementedException();
-		}
-		
-		
+	
 		public override UnLocode LastKnownLocation 
 		{
 			get 
@@ -64,7 +57,6 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 		
-		
 		public override bool IsMoving 
 		{
 			get 
@@ -72,16 +64,6 @@ namespace Challenge00.DDDSample.Voyage
 				throw new System.NotImplementedException();
 			}
 		}
-		
-		
-		public override bool IsLost 
-		{
-			get 
-			{
-				throw new System.NotImplementedException();
-			}
-		}
-		
 		
 		public override bool Equals (VoyageState other)
 		{

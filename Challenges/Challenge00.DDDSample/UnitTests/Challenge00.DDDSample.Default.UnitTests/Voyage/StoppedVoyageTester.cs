@@ -39,11 +39,10 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 		
 			// act:
-			InPortVoyage state = new InPortVoyage(schedule, 0);
+			StoppedVoyage state = new StoppedVoyage(schedule, 0);
 		
 			// assert:
 			Assert.AreSame(schedule, state.Schedule);
-			Assert.IsFalse(state.IsLost);
 			Assert.IsFalse(state.IsMoving);
 		}
 		
@@ -55,7 +54,7 @@ namespace DefaultImplementation.Voyage
 			
 		
 			// act:
-			new InPortVoyage(null, 0);
+			new StoppedVoyage(null, 0);
 		}
 		
 		[Test]
@@ -67,7 +66,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 		
 			// act:
-			new InPortVoyage(schedule, 3);
+			new StoppedVoyage(schedule, 3);
 		}
 
 		[Test]
@@ -79,7 +78,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s.MovementsCount).Return(2).Repeat.Any();
 		
 			// act:
-			new InPortVoyage(schedule, 3);
+			new StoppedVoyage(schedule, 3);
 		}
 		
 		[Test]
@@ -91,7 +90,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s.MovementsCount).Return(2).Repeat.Any();
 		
 			// act:
-			new InPortVoyage(schedule, -1);
+			new StoppedVoyage(schedule, -1);
 		}
 		
 		[Test]
@@ -106,7 +105,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s[0]).Return(movement).Repeat.Once();
 		
 			// act:
-			InPortVoyage state = new InPortVoyage(schedule, 0);
+			StoppedVoyage state = new StoppedVoyage(schedule, 0);
 		
 			// assert:
 			Assert.AreSame(initialLocation, state.LastKnownLocation);
@@ -126,7 +125,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s[2]).Return(movement).Repeat.Once();
 		
 			// act:
-			InPortVoyage state = new InPortVoyage(schedule, 2);
+			StoppedVoyage state = new StoppedVoyage(schedule, 2);
 		
 			// assert:
 			Assert.AreSame(initialLocation, state.LastKnownLocation);
@@ -140,14 +139,23 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode initialLocation = new UnLocode("DPLOC");
+			ICarrierMovement movement = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			movement.Expect(m => m.DepartureLocation).Return(initialLocation).Repeat.Once();
+			schedule.Expect(s => s[0]).Return(movement).Repeat.Once();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(initialLocation).Repeat.Any();
+
 			
 			// act:
-			InPortVoyage state = new InPortVoyage(schedule, 0);
-			VoyageState arrived = state.Arrive();
+			StoppedVoyage state = new StoppedVoyage(schedule, 0);
+			VoyageState arrived = state.StopOverAt(location);
 		
 			// assert:
 			Assert.AreSame(state, arrived);
 			schedule.VerifyAllExpectations();
+			movement.VerifyAllExpectations();
+			location.VerifyAllExpectations();
 		}
 		
 		[Test]
@@ -160,14 +168,19 @@ namespace DefaultImplementation.Voyage
 			ICarrierMovement movement = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			movement.Expect(m => m.DepartureLocation).Return(initialLocation).Repeat.Twice();
 			schedule.Expect(s => s[0]).Return(movement).Repeat.Twice();
-
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(initialLocation).Repeat.Any();
+			
 			// act:
-			InPortVoyage state = new InPortVoyage(schedule, 0);
-			VoyageState moving = state.Depart();
+			StoppedVoyage state = new StoppedVoyage(schedule, 0);
+			VoyageState moving = state.DepartFrom(location);
 		
 			// assert:
 			Assert.IsInstanceOfType(typeof(MovingVoyage), moving);
 			Assert.AreSame(state.LastKnownLocation, moving.LastKnownLocation);
+			schedule.VerifyAllExpectations();
+			movement.VerifyAllExpectations();
+			location.VerifyAllExpectations();
 		} 
 	}
 }

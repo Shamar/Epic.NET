@@ -44,7 +44,6 @@ namespace DefaultImplementation.Voyage
 			// assert:
 			Assert.AreEqual(number, voyage.Number);
 			Assert.AreSame(schedule, voyage.Schedule);
-			Assert.IsFalse(voyage.IsLost);
 			Assert.IsFalse(voyage.IsMoving);
 		}
 		

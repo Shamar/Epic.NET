@@ -52,33 +52,19 @@ namespace Challenge00.DDDSample.Voyage
 		bool IsMoving { get; }
 		
 		/// <summary>
-		/// The voyage is lost.
-		/// </summary>
-		bool IsLost { get; }
-		
-		/// <summary>
 		/// Move the last knwon location to the next scheduled arrival.
 		/// </summary>
-		void Arrive();
+		void StopOverAt(ILocation location);
 		
-		event EventHandler<VoyageEventArgs> Arrived;
+		event EventHandler<VoyageEventArgs> Stopped;
 		
 		/// <summary>
 		/// Start a voyage movement.
 		/// </summary>
-		void Depart();
+		void DepartFrom(ILocation location);
 		
 		event EventHandler<VoyageEventArgs> Departed;
-		
-		/// <summary>
-		/// Mark the voyage as lost. 
-		/// </summary>
-		/// <param name="lastKnownLocation">
-		/// The last known <see cref="ILocation"/>
-		/// </param>
-		void MarkAsLost(ILocation lastKnownLocation);
-		
-		event EventHandler<VoyageEventArgs> Losing;
+
 	}
 }
 

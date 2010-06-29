@@ -45,18 +45,13 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 		
-		public abstract VoyageState Arrive ();
+		public abstract VoyageState StopOverAt (ILocation location);
 		
-		public abstract VoyageState Depart();
-		
-		public abstract VoyageState MarkAsLost(ILocation lastKnownLocation);
+		public abstract VoyageState DepartFrom (ILocation location);
 		
 		public abstract UnLocode LastKnownLocation { get; }
 		
 		public abstract bool IsMoving { get; }
-		
-		public abstract bool IsLost { get; }
-	
 
 		#region IEquatable[VoyageState] implementation
 		

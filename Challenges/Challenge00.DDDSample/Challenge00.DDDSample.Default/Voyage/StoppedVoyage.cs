@@ -26,13 +26,13 @@ using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Voyage
 {
 	/// <summary>
-	/// State of a Voyage when in port.
+	/// State of a Voyage when stopped off.
 	/// </summary>
 	[Serializable]
-	public class InPortVoyage : VoyageState 
+	public class StoppedVoyage : VoyageState 
 	{
 		private readonly int _movementIndex;
-		public InPortVoyage (ISchedule schedule, int movementIndex)
+		public StoppedVoyage (ISchedule schedule, int movementIndex)
 			: base(schedule)
 		{
 			if(movementIndex < 0 || movementIndex >= schedule.MovementsCount)
@@ -41,23 +41,19 @@ namespace Challenge00.DDDSample.Voyage
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.Voyage.VoyageState
-		public override VoyageState Arrive ()
+		public override VoyageState StopOverAt (ILocation location)
 		{
-			return this;
+			if(LastKnownLocation.Equals(location.UnLocode))
+				return this;
+			string message = string.Format("The voyage stopped over at {0}.", location.Name);
+			throw new ArgumentException(message, "location");
 		}
 		
 		
-		public override VoyageState Depart ()
+		public override VoyageState DepartFrom (ILocation location)
 		{
 			return new MovingVoyage(Schedule, _movementIndex);
 		}
-		
-		
-		public override VoyageState MarkAsLost (ILocation lastKnownLocation)
-		{
-			throw new System.NotImplementedException();
-		}
-		
 		
 		public override UnLocode LastKnownLocation 
 		{
@@ -76,15 +72,6 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 		
-		
-		public override bool IsLost 
-		{
-			get 
-			{
-				return false;
-			}
-		}
-		
 		#endregion
 		
 		#region implemented abstract members of Challenge00.DDDSample.Voyage.VoyageState
@@ -93,7 +80,7 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			if(object.ReferenceEquals(this, other))
 				return true;
-			InPortVoyage voyage = other as InPortVoyage;
+			StoppedVoyage voyage = other as StoppedVoyage;
 			if(null == voyage)
 				return false;
 			return LastKnownLocation.Equals(voyage.LastKnownLocation) && Schedule.Equals(voyage.Schedule);

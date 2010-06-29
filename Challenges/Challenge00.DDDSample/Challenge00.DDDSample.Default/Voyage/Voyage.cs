@@ -22,6 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Voyage
 {
 	[Serializable]
@@ -35,7 +36,7 @@ namespace Challenge00.DDDSample.Voyage
 		protected VoyageState CurrentState;
 		
 		public Voyage (VoyageNumber identifier, ISchedule schedule)
-			: this(identifier, new InPortVoyage(schedule, 0))
+			: this(identifier, new StoppedVoyage(schedule, 0))
 		{
 		}
 	
@@ -50,23 +51,18 @@ namespace Challenge00.DDDSample.Voyage
 		}
 
 		#region IVoyage implementation
-		public event EventHandler<VoyageEventArgs> Arrived;
+		public event EventHandler<VoyageEventArgs> Stopped;
 
 		public event EventHandler<VoyageEventArgs> Departed;
 
 		public event EventHandler<VoyageEventArgs> Losing;
 
-		public void Arrive ()
+		public void StopOverAt (ILocation location)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Depart ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public void MarkAsLost (Location.ILocation lastKnownLocation)
+		public void DepartFrom (ILocation location)
 		{
 			throw new NotImplementedException ();
 		}
@@ -101,13 +97,6 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 
-		public bool IsLost 
-		{
-			get 
-			{
-				return CurrentState.IsLost;
-			}
-		}
 		#endregion
 
 		#region IEquatable[Challenge00.DDDSample.Voyage.IVoyage] implementation
