@@ -89,6 +89,8 @@ namespace Challenge00.DDDSample
         {
             if (object.ReferenceEquals(other, null))
                 return false;
+			if (object.ReferenceEquals(this, other))
+                return true;
             return _identifier.Equals(other._identifier);
         }
 		

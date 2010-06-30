@@ -80,8 +80,10 @@ namespace Challenge00.DDDSample.Voyage
 		#region IEquatable[Challenge00.DDDSample.Voyage.ICarrierMovement] implementation
 		public bool Equals (ICarrierMovement other)
 		{
-			if(null == other)
+			if(object.ReferenceEquals(other, null))
 				return false;
+			if(object.ReferenceEquals(this, other))
+				return true;
 			return _departureLocation.Equals(other.DepartureLocation) 
 				&& _arrivalLocation.Equals(other.ArrivalLocation) 
 				&& _arrivalTime.Equals(other.ArrivalTime)

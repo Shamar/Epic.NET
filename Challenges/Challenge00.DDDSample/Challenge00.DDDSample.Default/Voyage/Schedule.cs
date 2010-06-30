@@ -94,9 +94,9 @@ namespace Challenge00.DDDSample.Voyage
 		#region IEquatable<ISchedule> implementation
 		public bool Equals(ISchedule other)
 		{
-			if(null == other)
+			if(object.ReferenceEquals(other, null))
 				return false;
-			if(this == other)
+			if(object.ReferenceEquals(this, other))
 				return true;
 			ICarrierMovement[] otherMovements = other.ToArray();
 			if(_movements.Length != otherMovements.Length)

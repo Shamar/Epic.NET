@@ -134,7 +134,11 @@ namespace Challenge00.DDDSample.Voyage
 		#region IEquatable[Challenge00.DDDSample.Voyage.IVoyage] implementation
 		public bool Equals (IVoyage other)
 		{
-			throw new NotImplementedException ();
+			if(object.ReferenceEquals(other, null))
+				return false;
+			if(object.ReferenceEquals(this, other))
+				return true;
+			return _identifier.Equals(other.Number);
 		}
 		#endregion
 	}

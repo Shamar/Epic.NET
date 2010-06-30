@@ -40,9 +40,10 @@ namespace Challenge00.DDDSample.Shared
 		public bool Equals (ISpecification<TCandidate> other)
 		{
 			AbstractSpecification<TCandidate> candidate = other as AbstractSpecification<TCandidate>;
-			if(null == candidate)
+			if(object.ReferenceEquals(other, null))
 				return false;
-			
+			if(object.ReferenceEquals(this, other))
+				return true;
 			return Equals(candidate);
 		}
 		
