@@ -59,12 +59,13 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			if(null == location)
 				throw new ArgumentNullException("location");
-			VoyageState newState = CurrentState.StopOverAt(location);
-			if(!CurrentState.Equals(newState))
+			
+			VoyageState oldState = CurrentState;
+			CurrentState = CurrentState.StopOverAt(location);
+			
+			if(!oldState.Equals(CurrentState))
 			{
-				VoyageEventArgs args = new VoyageEventArgs(newState.LastKnownLocation, newState.NextExpectedLocation);
-				
-				CurrentState = newState;
+				VoyageEventArgs args = new VoyageEventArgs(CurrentState.LastKnownLocation, CurrentState.NextExpectedLocation);
 				
 				EventHandler<VoyageEventArgs> handler = Stopped;
 				if(null != handler)
@@ -76,12 +77,13 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			if(null == location)
 				throw new ArgumentNullException("location");
-			VoyageState newState = CurrentState.DepartFrom(location);
-			if(!CurrentState.Equals(newState))
+			
+			VoyageState oldState = CurrentState;
+			CurrentState = CurrentState.DepartFrom(location);
+			
+			if(!oldState.Equals(CurrentState))
 			{
-				VoyageEventArgs args = new VoyageEventArgs(newState.LastKnownLocation, newState.NextExpectedLocation);
-				
-				CurrentState = newState;
+				VoyageEventArgs args = new VoyageEventArgs(CurrentState.LastKnownLocation, CurrentState.NextExpectedLocation);
 				
 				EventHandler<VoyageEventArgs> handler = Departed;
 				if(null != handler)
