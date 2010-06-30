@@ -57,7 +57,19 @@ namespace Challenge00.DDDSample.Voyage
 
 		public void StopOverAt (ILocation location)
 		{
-			throw new NotImplementedException ();
+			if(null == location)
+				throw new ArgumentNullException("location");
+			VoyageState newState = CurrentState.StopOverAt(location);
+			if(!CurrentState.Equals(newState))
+			{
+				VoyageEventArgs args = new VoyageEventArgs(newState.LastKnownLocation, newState.NextExpectedLocation);
+				
+				CurrentState = newState;
+				
+				EventHandler<VoyageEventArgs> handler = Stopped;
+				if(null != handler)
+					handler(this, args);
+			}
 		}
 
 		public void DepartFrom (ILocation location)
