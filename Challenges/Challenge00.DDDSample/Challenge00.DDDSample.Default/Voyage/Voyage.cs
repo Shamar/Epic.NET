@@ -74,7 +74,7 @@ namespace Challenge00.DDDSample.Voyage
 
 			if(!previousState.Equals(this.CurrentState))
 			{
-				VoyageEventArgs args = new VoyageEventArgs(CurrentState.LastKnownLocation, CurrentState.NextExpectedLocation);
+				VoyageEventArgs args = new VoyageEventArgs(previousState.LastKnownLocation, previousState.NextExpectedLocation);
 				
 				EventHandler<VoyageEventArgs> handler = Stopped;
 				if(null != handler)
