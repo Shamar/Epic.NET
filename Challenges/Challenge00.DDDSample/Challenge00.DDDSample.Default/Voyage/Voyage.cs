@@ -23,6 +23,7 @@
 //  
 using System;
 using Challenge00.DDDSample.Location;
+using System.Threading;
 namespace Challenge00.DDDSample.Voyage
 {
 	[Serializable]
@@ -60,10 +61,18 @@ namespace Challenge00.DDDSample.Voyage
 			if(null == location)
 				throw new ArgumentNullException("location");
 			
-			VoyageState oldState = CurrentState;
-			CurrentState = CurrentState.StopOverAt(location);
-			
-			if(!oldState.Equals(CurrentState))
+			// Thread safe, lock free sincronization
+	        VoyageState stateBeforeTransition;
+	        VoyageState previousState = CurrentState;
+	        do
+	        {
+	            stateBeforeTransition = previousState;
+	            VoyageState newValue = stateBeforeTransition.StopOverAt(location);
+	            previousState = Interlocked.CompareExchange<VoyageState>(ref this.CurrentState, newValue, stateBeforeTransition);
+	        }
+	        while (previousState != stateBeforeTransition);
+
+			if(!previousState.Equals(this.CurrentState))
 			{
 				VoyageEventArgs args = new VoyageEventArgs(CurrentState.LastKnownLocation, CurrentState.NextExpectedLocation);
 				
@@ -78,10 +87,17 @@ namespace Challenge00.DDDSample.Voyage
 			if(null == location)
 				throw new ArgumentNullException("location");
 			
-			VoyageState oldState = CurrentState;
-			CurrentState = CurrentState.DepartFrom(location);
+	        VoyageState stateBeforeTransition;
+	        VoyageState previousState = CurrentState;
+	        do
+	        {
+	            stateBeforeTransition = previousState;
+	            VoyageState newValue = stateBeforeTransition.DepartFrom(location);
+	            previousState = Interlocked.CompareExchange<VoyageState>(ref this.CurrentState, newValue, stateBeforeTransition);
+	        }
+	        while (previousState != stateBeforeTransition);
 			
-			if(!oldState.Equals(CurrentState))
+			if(!previousState.Equals(this.CurrentState))
 			{
 				VoyageEventArgs args = new VoyageEventArgs(CurrentState.LastKnownLocation, CurrentState.NextExpectedLocation);
 				

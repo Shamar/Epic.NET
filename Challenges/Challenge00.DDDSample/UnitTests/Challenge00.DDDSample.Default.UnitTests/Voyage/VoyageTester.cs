@@ -382,7 +382,6 @@ namespace DefaultImplementation.Voyage
 			location.VerifyAllExpectations();
 		}
 		
-		
 		[Test]
 		public void Test_Equals_01()
 		{
@@ -449,6 +448,8 @@ namespace DefaultImplementation.Voyage
 			// assert:
 			Assert.IsFalse(equals);
 		}
+		
+
 	}
 }
 
