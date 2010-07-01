@@ -56,6 +56,7 @@
     <Folder Include="Shared\" />
     <Folder Include="Location\" />
     <Folder Include="Voyage\" />
+    <Folder Include="Cargo\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Shared\AbstractSpecificationTester.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Voyage\MovingVoyageTester.cs" />
     <Compile Include="Voyage\CompletedVoyageTester.cs" />
     <Compile Include="Voyage\IntegrationTests.cs" />
+    <Compile Include="Cargo\LegTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -48,6 +48,7 @@
     <Compile Include="Voyage\MovingVoyage.cs" />
     <Compile Include="Voyage\StoppedVoyage.cs" />
     <Compile Include="Voyage\CompletedVoyage.cs" />
+    <Compile Include="Cargo\Leg.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
