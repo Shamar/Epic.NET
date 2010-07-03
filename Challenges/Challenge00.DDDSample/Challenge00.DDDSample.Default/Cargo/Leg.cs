@@ -22,22 +22,47 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Challenge00.DDDSample.Voyage;
+using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
 	public class Leg : ILeg
 	{
-		public Leg ()
+		private readonly VoyageNumber _voyage;
+		private readonly DateTime _loadTime;
+		private readonly DateTime _unloadTime;
+		private readonly UnLocode _loadLocation;
+		private readonly UnLocode _unloadLocation;
+		public Leg (IVoyage voyage, ILocation loadLocation, DateTime loadTime, ILocation unloadLocation, DateTime unloadTime)
 		{
+			if(null == voyage)
+				throw new ArgumentNullException("voyage");
+			if(null == loadLocation)
+				throw new ArgumentNullException("loadLocation");
+			if(loadTime > unloadTime)
+				throw new ArgumentException("Unload time must follow the load time.","unloadTime");
+			if(null == loadLocation)
+				throw new ArgumentNullException("loadLocation");
+			if(null == unloadLocation)
+				throw new ArgumentNullException("unloadLocation");
+			if(loadLocation.Equals(unloadLocation))
+				throw new ArgumentException("The locations must not be equal.", "unloadLocation");
+			
+			_voyage = voyage.Number;
+			_loadLocation = loadLocation.UnLocode;
+			_unloadLocation = unloadLocation.UnLocode;
+			_loadTime = loadTime;
+			_unloadTime = unloadTime;
 		}
 	
 
 		#region ILeg implementation
-		public Voyage.VoyageNumber Voyage 
+		public VoyageNumber Voyage 
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return _voyage;
 			}
 		}
 
@@ -45,15 +70,15 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return _loadTime;
 			}
 		}
 
-		public Location.UnLocode LoadLocation 
+		public UnLocode LoadLocation 
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return _loadLocation;
 			}
 		}
 
@@ -61,15 +86,15 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return _unloadTime;
 			}
 		}
 
-		public Location.UnLocode UnloadLocation 
+		public UnLocode UnloadLocation 
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return _unloadLocation;
 			}
 		}
 		#endregion
@@ -77,9 +102,23 @@ namespace Challenge00.DDDSample.Cargo
 		#region IEquatable[Challenge00.DDDSample.Cargo.ILeg] implementation
 		public bool Equals (ILeg other)
 		{
-			throw new NotImplementedException ();
+			if(null == other)
+				return false;
+			if(object.ReferenceEquals(this, other))
+				return true;
+			return _voyage.Equals(other.Voyage) && _loadLocation.Equals(other.LoadLocation) && _unloadLocation.Equals(other.UnloadLocation);
 		}
 		#endregion
+		
+		public override bool Equals (object obj)
+		{
+			return Equals (obj as ILeg);
+		}
+		
+		public override int GetHashCode ()
+		{
+			return _voyage.GetHashCode() ^ _loadLocation.GetHashCode() ^ _unloadLocation.GetHashCode();
+		}
 	}
 }
 

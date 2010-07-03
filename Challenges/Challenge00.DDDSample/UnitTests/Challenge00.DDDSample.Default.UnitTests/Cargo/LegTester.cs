@@ -26,6 +26,7 @@ using NUnit.Framework;
 using Challenge00.DDDSample.Voyage;
 using Rhino.Mocks;
 using Challenge00.DDDSample.Location;
+using Challenge00.DDDSample.Cargo;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture()]
@@ -35,6 +36,9 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_01()
 		{
 			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			
 			VoyageNumber voyageNumber = new VoyageNumber("VYGTEST");
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
 			voyage.Expect(v => v.Number).Return(voyageNumber).Repeat.Any();
@@ -49,10 +53,14 @@ namespace DefaultImplementation.Cargo
 			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
 
 			// act:
-			
+			ILeg leg = new Leg(voyage, loc1, loadTime, loc2, unloadTime);
 		
 			// assert:
-		
+			Assert.AreEqual(voyageNumber, leg.Voyage);
+			Assert.AreEqual(code1, leg.LoadLocation);
+			Assert.AreEqual(code2, leg.UnloadLocation);
+			Assert.AreEqual(loadTime, leg.LoadTime);
+			Assert.AreEqual(unloadTime, leg.UnloadTime);
 		}
 		
 		
