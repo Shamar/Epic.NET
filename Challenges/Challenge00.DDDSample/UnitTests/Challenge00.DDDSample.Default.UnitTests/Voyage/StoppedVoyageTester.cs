@@ -326,6 +326,234 @@ namespace DefaultImplementation.Voyage
 			schedule.VerifyAllExpectations();
 			state2.VerifyAllExpectations();
 		}
+		
+		[Test]
+		public void Test_WillStopOverAt_01()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode loc1 = new UnLocode("DPLOC");
+			UnLocode loc2 = new UnLocode("ARLCA");
+			UnLocode loc3 = new UnLocode("ARLCB");
+			UnLocode loc4 = new UnLocode("ARLCC");
+			ICarrierMovement mov1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mov1.Expect(m => m.DepartureLocation).Return(loc1).Repeat.AtLeastOnce();
+			mov1.Expect(m => m.ArrivalLocation).Return(loc2).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[0]).Return(mov1).Repeat.Any();
+			ICarrierMovement mov2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			//mov2.Expect(m => m.DepartureLocation).Return(loc2).Repeat.Any();
+			mov2.Expect(m => m.ArrivalLocation).Return(loc3).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[1]).Return(mov2).Repeat.Any();
+			ICarrierMovement mov3 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			//mov3.Expect(m => m.DepartureLocation).Return(loc3).Repeat.Any();
+			mov3.Expect(m => m.ArrivalLocation).Return(loc4).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[2]).Return(mov3).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(loc4).Repeat.AtLeastOnce();
+	
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 0);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsTrue(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			mov1.VerifyAllExpectations();
+			mov2.VerifyAllExpectations();
+			mov3.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_WillStopOverAt_02()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode loc2 = new UnLocode("ARLCA");
+			UnLocode loc3 = new UnLocode("ARLCB");
+			UnLocode loc4 = new UnLocode("ARLCC");
+			ICarrierMovement mov2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mov2.Expect(m => m.DepartureLocation).Return(loc2).Repeat.Any();
+			mov2.Expect(m => m.ArrivalLocation).Return(loc3).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[1]).Return(mov2).Repeat.Any();
+			ICarrierMovement mov3 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			//mov3.Expect(m => m.DepartureLocation).Return(loc3).Repeat.Any();
+			mov3.Expect(m => m.ArrivalLocation).Return(loc4).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[2]).Return(mov3).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(loc4).Repeat.AtLeastOnce();
+	
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 1);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsTrue(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			mov2.VerifyAllExpectations();
+			mov3.VerifyAllExpectations();
+		}
+				
+		[Test]
+		public void Test_WillStopOverAt_03()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode loc3 = new UnLocode("ARLCB");
+			UnLocode loc4 = new UnLocode("ARLCC");
+			ICarrierMovement mov3 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mov3.Expect(m => m.DepartureLocation).Return(loc3).Repeat.Any();
+			mov3.Expect(m => m.ArrivalLocation).Return(loc4).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[2]).Return(mov3).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(loc4).Repeat.AtLeastOnce();
+	
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 2);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsTrue(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			mov3.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_WillStopOverAt_04()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode loc1 = new UnLocode("DPLOC");
+			UnLocode loc2 = new UnLocode("ARLCA");
+			UnLocode loc3 = new UnLocode("ARLCB");
+			UnLocode loc4 = new UnLocode("ARLCC");
+			ICarrierMovement mov1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mov1.Expect(m => m.DepartureLocation).Return(loc1).Repeat.AtLeastOnce();
+			mov1.Expect(m => m.ArrivalLocation).Return(loc2).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[0]).Return(mov1).Repeat.Any();
+			ICarrierMovement mov2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			//mov2.Expect(m => m.DepartureLocation).Return(loc2).Repeat.Any();
+			mov2.Expect(m => m.ArrivalLocation).Return(loc3).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[1]).Return(mov2).Repeat.Any();
+			ICarrierMovement mov3 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			//mov3.Expect(m => m.DepartureLocation).Return(loc3).Repeat.Any();
+			mov3.Expect(m => m.ArrivalLocation).Return(loc4).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[2]).Return(mov3).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			UnLocode outLocation = new UnLocode("LCOUT");
+			location.Expect(l => l.UnLocode).Return(outLocation).Repeat.AtLeastOnce();
+	
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 0);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsFalse(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			mov1.VerifyAllExpectations();
+			mov2.VerifyAllExpectations();
+			mov3.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_WillStopOverAt_05()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode loc2 = new UnLocode("ARLCA");
+			UnLocode loc3 = new UnLocode("ARLCB");
+			UnLocode loc4 = new UnLocode("ARLCC");
+			ICarrierMovement mov2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mov2.Expect(m => m.DepartureLocation).Return(loc2).Repeat.Any();
+			mov2.Expect(m => m.ArrivalLocation).Return(loc3).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[1]).Return(mov2).Repeat.Any();
+			ICarrierMovement mov3 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			//mov3.Expect(m => m.DepartureLocation).Return(loc3).Repeat.Any();
+			mov3.Expect(m => m.ArrivalLocation).Return(loc4).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[2]).Return(mov3).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			UnLocode outLocation = new UnLocode("LCOUT");
+			location.Expect(l => l.UnLocode).Return(outLocation).Repeat.AtLeastOnce();
+	
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 1);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsFalse(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			mov2.VerifyAllExpectations();
+			mov3.VerifyAllExpectations();
+		}
+				
+		[Test]
+		public void Test_WillStopOverAt_06()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode loc3 = new UnLocode("ARLCB");
+			UnLocode loc4 = new UnLocode("ARLCC");
+			ICarrierMovement mov3 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mov3.Expect(m => m.DepartureLocation).Return(loc3).Repeat.Any();
+			mov3.Expect(m => m.ArrivalLocation).Return(loc4).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[2]).Return(mov3).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			UnLocode outLocation = new UnLocode("LCOUT");
+			location.Expect(l => l.UnLocode).Return(outLocation).Repeat.AtLeastOnce();
+	
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 2);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsFalse(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			mov3.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_WillStopOverAt_07()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode loc1 = new UnLocode("DPLOC");
+			UnLocode loc2 = new UnLocode("ARLCA");
+			UnLocode loc3 = new UnLocode("ARLCB");
+			UnLocode loc4 = new UnLocode("ARLCC");
+			ICarrierMovement mov2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mov2.Expect(m => m.DepartureLocation).Return(loc2).Repeat.Any();
+			mov2.Expect(m => m.ArrivalLocation).Return(loc3).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[1]).Return(mov2).Repeat.Any();
+			ICarrierMovement mov3 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			//mov3.Expect(m => m.DepartureLocation).Return(loc3).Repeat.Any();
+			mov3.Expect(m => m.ArrivalLocation).Return(loc4).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[2]).Return(mov3).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(loc1).Repeat.AtLeastOnce();
+	
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 1);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsFalse(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			mov2.VerifyAllExpectations();
+			mov3.VerifyAllExpectations();
+		}
 	}
 }
 

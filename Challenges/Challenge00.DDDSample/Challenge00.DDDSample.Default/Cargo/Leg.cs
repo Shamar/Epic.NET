@@ -40,7 +40,7 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("voyage");
 			if(null == loadLocation)
 				throw new ArgumentNullException("loadLocation");
-			if(loadTime > unloadTime)
+			if(loadTime >= unloadTime)
 				throw new ArgumentException("Unload time must follow the load time.","unloadTime");
 			if(null == loadLocation)
 				throw new ArgumentNullException("loadLocation");

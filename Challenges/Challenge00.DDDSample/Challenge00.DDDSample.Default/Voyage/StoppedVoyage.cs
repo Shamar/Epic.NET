@@ -82,6 +82,19 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 		
+		public override bool WillStopOverAt (ILocation location)
+		{
+			UnLocode locationCode = location.UnLocode;
+			if(locationCode.Equals(Schedule[_movementIndex].DepartureLocation))
+				return true;
+			for(int i = _movementIndex; i < Schedule.MovementsCount; ++i)
+			{
+				if(locationCode.Equals(Schedule[i].ArrivalLocation))
+					return true;
+			}
+			return false;
+		}
+		
 		#endregion
 		
 		#region implemented abstract members of Challenge00.DDDSample.Voyage.VoyageState

@@ -147,6 +147,13 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 
+		public bool WillStopOverAt(ILocation location)
+		{
+			if(null == location)
+				throw new ArgumentNullException("location");
+			return CurrentState.WillStopOverAt(location);
+		}
+		
 		#endregion
 
 		#region IEquatable[Challenge00.DDDSample.Voyage.IVoyage] implementation

@@ -67,6 +67,11 @@ namespace Challenge00.DDDSample.Voyage
 			}
 		}
 		
+		public override bool WillStopOverAt (ILocation location)
+		{
+			return false;
+		}
+		
 		public override bool Equals (VoyageState other)
 		{
 			if(object.ReferenceEquals(this, other))

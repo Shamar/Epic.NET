@@ -78,6 +78,18 @@ namespace Challenge00.DDDSample.Voyage
 		
 		event EventHandler<VoyageEventArgs> Departed;
 
+		/// <summary>
+		/// True if the voyage will stop over at <paramref name="location"/>. 
+		/// Will return <value>false</value> when either the location is not on the schedule or it was already left.
+		/// </summary>
+		/// <param name="location">
+		/// A <see cref="ILocation"/>.
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.Boolean"/>
+		/// </returns>
+		bool WillStopOverAt(ILocation location);
+		
 	}
 }
 

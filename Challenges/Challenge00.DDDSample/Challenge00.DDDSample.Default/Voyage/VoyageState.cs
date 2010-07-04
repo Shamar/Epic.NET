@@ -54,6 +54,8 @@ namespace Challenge00.DDDSample.Voyage
 		public abstract UnLocode NextExpectedLocation { get; }
 
 		public abstract bool IsMoving { get; }
+		
+		public abstract bool WillStopOverAt(ILocation location);
 
 		#region IEquatable[VoyageState] implementation
 		

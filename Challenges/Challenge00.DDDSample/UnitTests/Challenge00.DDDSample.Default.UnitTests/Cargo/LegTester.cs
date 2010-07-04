@@ -63,7 +63,106 @@ namespace DefaultImplementation.Cargo
 			Assert.AreEqual(unloadTime, leg.UnloadTime);
 		}
 		
+		[Test]
+		public void Test_Ctor_02()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			
+			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+
+			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
 		
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new Leg(null, loc1, loadTime, loc2, unloadTime);});
+		}
+		
+		[Test]
+		public void Test_Ctor_03()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+
+			ILocation loc = MockRepository.GenerateStrictMock<ILocation>();
+		
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new Leg(voyage, null, loadTime, loc, unloadTime);});
+		}
+		
+		[Test]
+		public void Test_Ctor_04()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+
+			ILocation loc = MockRepository.GenerateStrictMock<ILocation>();
+		
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new Leg(voyage, loc, loadTime, null, unloadTime);});
+		}
+		
+		
+		[Test]
+		public void Test_Ctor_05()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+
+			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+
+			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
+			loc1.Expect(l => l.Equals(loc2)).Return(true).Repeat.Any();
+		
+			// assert:
+			Assert.Throws<ArgumentException>(delegate { new Leg(voyage, loc1, loadTime, loc2, unloadTime);});
+			loc1.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Ctor_06()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = loadTime;
+			
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+
+			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+
+			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
+		
+			// assert:
+			Assert.Throws<ArgumentException>(delegate { new Leg(voyage, loc1, loadTime, loc2, unloadTime);});
+		}
+		
+		[Test]
+		public void Test_Ctor_07()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = loadTime - TimeSpan.FromDays(1);
+			
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+
+			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+
+			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
+			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
+		
+			// assert:
+			Assert.Throws<ArgumentException>(delegate { new Leg(voyage, loc1, loadTime, loc2, unloadTime);});
+			loc1.VerifyAllExpectations();
+		}
 	}
 }
 
