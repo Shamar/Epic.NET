@@ -235,6 +235,24 @@ namespace DefaultImplementation.Voyage
 			schedule.VerifyAllExpectations();
 			state2.VerifyAllExpectations();
 		}
+		
+		[Test]
+		public void Test_WillStopOverAt_01()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+	
+			// act:
+			CompletedVoyage state = new CompletedVoyage(schedule);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsFalse(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+		}
 	}
 }
 

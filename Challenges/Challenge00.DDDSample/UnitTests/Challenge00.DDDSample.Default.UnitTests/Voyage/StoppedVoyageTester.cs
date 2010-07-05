@@ -554,6 +554,34 @@ namespace DefaultImplementation.Voyage
 			mov2.VerifyAllExpectations();
 			mov3.VerifyAllExpectations();
 		}
+		
+		[Test]
+		public void Test_WillStopOverAt_08()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+			UnLocode loc1 = new UnLocode("DPLOC");
+			UnLocode loc2 = new UnLocode("ARLCA");
+			UnLocode loc3 = new UnLocode("ARLCB");
+			UnLocode loc4 = new UnLocode("ARLCC");
+			ICarrierMovement mov1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			mov1.Expect(m => m.DepartureLocation).Return(loc1).Repeat.AtLeastOnce();
+			//mov1.Expect(m => m.ArrivalLocation).Return(loc2).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[0]).Return(mov1).Repeat.Any();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(loc1).Repeat.AtLeastOnce();
+	
+			// act:
+			StoppedVoyage state = new StoppedVoyage(schedule, 0);
+			bool willStopOverAtLocation = state.WillStopOverAt(location);
+		
+			// assert:
+			Assert.IsTrue(willStopOverAtLocation);
+			location.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			mov1.VerifyAllExpectations();
+		}
 	}
 }
 
