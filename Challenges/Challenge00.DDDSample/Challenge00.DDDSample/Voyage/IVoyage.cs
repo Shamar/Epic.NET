@@ -88,6 +88,7 @@ namespace Challenge00.DDDSample.Voyage
 		/// <returns>
 		/// A <see cref="System.Boolean"/>
 		/// </returns>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value>.</exception>
 		bool WillStopOverAt(ILocation location);
 		
 	}

@@ -445,7 +445,66 @@ namespace DefaultImplementation.Voyage
 			Assert.IsFalse(equals);
 		}
 		
-
+		
+		[TestCase(true)]
+		[TestCase(false)]
+		public void Test_WillStopOverAt_01 (bool returnedValue)
+		{
+			// arrange:
+			VoyageNumber number = new VoyageNumber("VYG01");
+			UnLocode locCode = new UnLocode("DPLOC");
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			state.Expect(s => s.WillStopOverAt(location)).Return(returnedValue).Repeat.Once();
+			
+			// act:
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			bool willStopOverAt = voyage.WillStopOverAt(location);
+			
+			// assert:
+			Assert.AreEqual(returnedValue, willStopOverAt);
+			location.VerifyAllExpectations();
+			state.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_WillStopOverAt_02 ()
+		{
+			// arrange:
+			VoyageNumber number = new VoyageNumber("VYG01");
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			state.Expect(s => s.WillStopOverAt(location)).Throw(new InvalidOperationException()).Repeat.Once();
+			
+			// act:
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			
+			// assert:
+			Assert.Throws<InvalidOperationException>( delegate{ voyage.WillStopOverAt(location); });
+			location.VerifyAllExpectations();
+			state.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_WillStopOverAt_03 ()
+		{
+			// arrange:
+			VoyageNumber number = new VoyageNumber("VYG01");
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			
+			// act:
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			
+			// assert:
+			Assert.Throws<ArgumentNullException>( delegate{ voyage.WillStopOverAt(null); });
+			state.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+		}
 	}
 }
 
