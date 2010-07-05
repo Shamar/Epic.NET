@@ -51,7 +51,10 @@ namespace DefaultImplementation.Cargo
 			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
 			loc2.Expect(l => l.UnLocode).Return(code2).Repeat.Any();
 			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
-
+			
+			voyage.Expect(v => v.WillStopOverAt(loc1)).Return(true).Repeat.AtLeastOnce();
+			voyage.Expect(v => v.WillStopOverAt(loc2)).Return(true).Repeat.AtLeastOnce();
+			
 			// act:
 			ILeg leg = new Leg(voyage, loc1, loadTime, loc2, unloadTime);
 		
@@ -162,6 +165,55 @@ namespace DefaultImplementation.Cargo
 			// assert:
 			Assert.Throws<ArgumentException>(delegate { new Leg(voyage, loc1, loadTime, loc2, unloadTime);});
 			loc1.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Ctor_08()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = loadTime + TimeSpan.FromDays(1);
+			
+			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+			loc1.Expect(l => l.UnLocode).Return(new UnLocode("FSTLC")).Repeat.Once();
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+			voyage.Expect(v => v.Number).Return(new VoyageNumber("VYGTEST")).Repeat.Once();
+
+			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
+			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
+			voyage.Expect(v => v.WillStopOverAt(loc1)).Return(false).Repeat.Once();
+		
+			// assert:
+			Assert.Throws<ArgumentException>(delegate { 
+				new Leg(voyage, loc1, loadTime, loc2, unloadTime);
+			});
+			voyage.VerifyAllExpectations();
+			loc1.VerifyAllExpectations();
+			loc2.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Ctor_09()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.Now;
+			DateTime unloadTime = loadTime + TimeSpan.FromDays(1);
+			
+			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+
+			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
+			loc2.Expect(l => l.UnLocode).Return(new UnLocode("SNDLC")).Repeat.Once();
+			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+			voyage.Expect(v => v.Number).Return(new VoyageNumber("VYGTEST")).Repeat.Once();
+			voyage.Expect(v => v.WillStopOverAt(loc1)).Return(true).Repeat.Once();
+			voyage.Expect(v => v.WillStopOverAt(loc2)).Return(false).Repeat.Once();
+		
+			// assert:
+			Assert.Throws<ArgumentException>(delegate { new Leg(voyage, loc1, loadTime, loc2, unloadTime);});
+			voyage.VerifyAllExpectations();
+			loc1.VerifyAllExpectations();
+			loc2.VerifyAllExpectations();
 		}
 	}
 }

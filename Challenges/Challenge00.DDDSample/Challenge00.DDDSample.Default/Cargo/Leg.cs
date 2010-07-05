@@ -48,6 +48,16 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("unloadLocation");
 			if(loadLocation.Equals(unloadLocation))
 				throw new ArgumentException("The locations must not be equal.", "unloadLocation");
+			if(!voyage.WillStopOverAt(loadLocation))
+			{
+				string message = string.Format("The voyage {0} will not stop over the load location {1}.", voyage.Number, loadLocation.UnLocode);
+				throw new ArgumentException(message, "loadLocation");
+			}
+			if(!voyage.WillStopOverAt(unloadLocation))
+			{
+				string message = string.Format("The voyage {0} will not stop over the unload location {1}.", voyage.Number, unloadLocation.UnLocode);
+				throw new ArgumentException(message, "unloadLocation");
+			}
 			
 			_voyage = voyage.Number;
 			_loadLocation = loadLocation.UnLocode;
