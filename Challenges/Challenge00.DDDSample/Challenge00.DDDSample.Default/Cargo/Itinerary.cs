@@ -45,7 +45,19 @@ namespace Challenge00.DDDSample.Cargo
 		#region IItinerary implementation
 		public IItinerary Append (ILeg leg)
 		{
-			throw new NotImplementedException ();
+			if(null == leg)
+				throw new ArgumentNullException("leg");
+			if(_legs.Length > 0)
+			{
+				if(leg.LoadLocation != _legs[_legs.Length - 1].UnloadLocation)
+					throw new ArgumentException("Invalid load location.", "leg");
+				if(leg.LoadTime < _legs[_legs.Length - 1].UnloadTime)
+					throw new ArgumentException("Invalid load time.", "leg");
+			}
+			ILeg[] newLegs = new ILeg[_legs.Length + 1];
+			Array.Copy(_legs, newLegs, _legs.Length);
+			newLegs[_legs.Length] = leg;
+			return new Itinerary(newLegs);
 		}
 
 		public IItinerary Replace (ILeg fromLeg, ILeg toLeg, IEnumerable<ILeg> legs)

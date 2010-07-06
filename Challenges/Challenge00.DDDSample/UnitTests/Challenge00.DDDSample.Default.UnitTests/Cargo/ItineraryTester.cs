@@ -24,6 +24,8 @@
 using NUnit.Framework;
 using System;
 using Challenge00.DDDSample.Cargo;
+using Rhino.Mocks;
+using Challenge00.DDDSample.Location;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture()]
@@ -33,7 +35,6 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_01()
 		{
 			// arrange:
-			
 		
 			// act:
 			IItinerary itinerary = new Itinerary();
@@ -42,6 +43,27 @@ namespace DefaultImplementation.Cargo
 			Assert.IsNull(itinerary.InitialDepartureLocation);
 			Assert.IsNull(itinerary.FinalArrivalLocation);
 		}
+		
+		[Test]
+		public void Test_Append_01()
+		{
+			// arrange:
+			UnLocode loc1 = new UnLocode("CODLD");
+			UnLocode loc2 = new UnLocode("CODUN");
+			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
+			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.Once();
+			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Once();
+			Itinerary empty = new Itinerary();
+		
+			// act:
+			IItinerary tested = empty.Append(leg);
+		
+			// assert:
+			Assert.IsNotNull(tested);
+			Assert.AreEqual(loc1, tested.InitialDepartureLocation);
+			Assert.AreEqual(loc2, tested.FinalArrivalLocation);
+		}
+		
 	}
 }
 
