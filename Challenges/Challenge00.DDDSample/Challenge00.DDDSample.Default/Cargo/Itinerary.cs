@@ -71,7 +71,7 @@ namespace Challenge00.DDDSample.Cargo
 			{
 				if(_legs.Length == 0)
 					return null;
-				throw new NotImplementedException ();
+				return _legs[0].LoadLocation;
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Challenge00.DDDSample.Cargo
 			{
 				if(_legs.Length == 0)
 					return null;
-				throw new NotImplementedException ();
+				return _legs[_legs.Length - 1].UnloadLocation;
 			}
 		}
 		#endregion
@@ -89,7 +89,8 @@ namespace Challenge00.DDDSample.Cargo
 		#region IEnumerable[Challenge00.DDDSample.Cargo.ILeg] implementation
 		public IEnumerator<ILeg> GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			IEnumerable<ILeg> legs = _legs;
+			return legs.GetEnumerator();
 		}
 		#endregion
 
@@ -103,7 +104,28 @@ namespace Challenge00.DDDSample.Cargo
 		#region IEquatable[IItinerary] implementation
 		public bool Equals(IItinerary other)
 		{
-			throw new NotImplementedException ();
+			if(object.ReferenceEquals(other, null))
+				return false;
+			if(object.ReferenceEquals(this, other))
+				return true;
+			
+			if(! InitialDepartureLocation.Equals(other.InitialDepartureLocation))
+				return false;
+			if(! FinalArrivalLocation.Equals(other.FinalArrivalLocation))
+				return false;
+			int i = 0;
+			foreach(ILeg l in other)
+			{
+				if(i == _legs.Length)
+					return false;
+				if(! _legs[i].Equals(l))
+					return false;
+				
+				++i;
+			}
+			if(i == _legs.Length)
+				return true;
+			return false;
 		}
 		#endregion
 		
