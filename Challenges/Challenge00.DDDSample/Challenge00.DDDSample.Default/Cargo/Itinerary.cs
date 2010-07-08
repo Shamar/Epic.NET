@@ -23,6 +23,8 @@
 //  
 using System;
 using System.Collections.Generic;
+using Challenge00.DDDSample.Location;
+using System.Linq;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
@@ -60,9 +62,12 @@ namespace Challenge00.DDDSample.Cargo
 			return new Itinerary(newLegs);
 		}
 
-		public IItinerary Replace (ILeg fromLeg, ILeg toLeg, IEnumerable<ILeg> legs)
+		public IItinerary Replace (IEnumerable<ILeg> legs)
 		{
-			throw new NotImplementedException ();
+			if(null == legs)
+				throw new ArgumentNullException("legs");
+			
+			return null;
 		}
 
 		public Location.UnLocode InitialDepartureLocation 
