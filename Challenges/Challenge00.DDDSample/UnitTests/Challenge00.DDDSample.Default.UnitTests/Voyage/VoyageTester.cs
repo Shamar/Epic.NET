@@ -64,13 +64,13 @@ namespace DefaultImplementation.Voyage
 			UnLocode departure = new UnLocode("DPLOC");
 			UnLocode arrival = new UnLocode("ARLOC");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.LastKnownLocation).Return(departure).Repeat.Once();
 			state.Expect(s => s.NextExpectedLocation).Return(arrival).Repeat.Once();
 			state.Expect(s => s.IsMoving).Return(false).Repeat.Once();
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			
 			// assert:
 			Assert.AreEqual(number, voyage.Number);
@@ -91,8 +91,8 @@ namespace DefaultImplementation.Voyage
 			UnLocode arrival = new UnLocode("ARLOC");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
-			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
+			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.DepartFrom(location)).Return(state2).Repeat.Once();
 			state.Expect(s => s.Equals(state2)).Return(false).Repeat.Once();
 			state2.Expect(s => s.LastKnownLocation).Return(departure).Repeat.Once();
@@ -101,7 +101,7 @@ namespace DefaultImplementation.Voyage
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Departed += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -126,14 +126,14 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.DepartFrom(location)).Return(state).Repeat.Once();
 			state.Expect(s => s.Equals(state)).Return(true).Repeat.Once();
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Departed += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -155,12 +155,12 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Departed += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -181,13 +181,13 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.DepartFrom(location)).Throw(new ArgumentException()).Repeat.Once();
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Departed += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -209,13 +209,13 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.DepartFrom(location)).Throw(new InvalidOperationException()).Repeat.Once();
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Departed += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -239,8 +239,8 @@ namespace DefaultImplementation.Voyage
 			UnLocode arrival = new UnLocode("ARLOC");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
-			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
+			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.StopOverAt(location)).Return(state2).Repeat.Once();
 			state.Expect(s => s.Equals(state2)).Return(false).Repeat.Once();
 			state.Expect(s => s.LastKnownLocation).Return(departure).Repeat.Once();
@@ -249,7 +249,7 @@ namespace DefaultImplementation.Voyage
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Stopped += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -274,14 +274,14 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.StopOverAt(location)).Return(state).Repeat.Once();
 			state.Expect(s => s.Equals(state)).Return(true).Repeat.Once();
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Stopped += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -303,12 +303,12 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Stopped += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -329,13 +329,13 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.StopOverAt(location)).Throw(new ArgumentException()).Repeat.Once();
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Stopped += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -357,13 +357,13 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.StopOverAt(location)).Throw(new InvalidOperationException()).Repeat.Once();
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			voyage.Stopped += delegate(object sender, VoyageEventArgs e) {
 				eventArguments = e;
 				eventSender = sender as IVoyage;
@@ -455,11 +455,11 @@ namespace DefaultImplementation.Voyage
 			UnLocode locCode = new UnLocode("DPLOC");
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.WillStopOverAt(location)).Return(returnedValue).Repeat.Once();
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			bool willStopOverAt = voyage.WillStopOverAt(location);
 			
 			// assert:
@@ -476,11 +476,11 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.WillStopOverAt(location)).Throw(new InvalidOperationException()).Repeat.Once();
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			
 			// assert:
 			Assert.Throws<InvalidOperationException>( delegate{ voyage.WillStopOverAt(location); });
@@ -495,10 +495,10 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			
 			// act:
-			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(number, state);
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
 			
 			// assert:
 			Assert.Throws<ArgumentNullException>( delegate{ voyage.WillStopOverAt(null); });

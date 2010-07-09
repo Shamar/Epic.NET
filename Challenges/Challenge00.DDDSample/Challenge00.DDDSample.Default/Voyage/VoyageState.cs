@@ -30,11 +30,16 @@ namespace Challenge00.DDDSample.Voyage
 	{
 		private readonly ISchedule _schedule;
 		
-		protected VoyageState(ISchedule schedule)
+		public readonly VoyageNumber Number;
+		
+		protected VoyageState(VoyageNumber number, ISchedule schedule)
 		{
 			if(null == schedule)
 				throw new ArgumentNullException("schedule");
+			if(null == number)
+				throw new ArgumentNullException("number");
 			_schedule = schedule;
+			Number = number;
 		}
 		
 		public ISchedule Schedule

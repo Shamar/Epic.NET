@@ -28,8 +28,8 @@ namespace Challenge00.DDDSample.Voyage
 	[Serializable]
 	public class CompletedVoyage : VoyageState
 	{
-		public CompletedVoyage (ISchedule schedule)
-			: base(schedule)
+		public CompletedVoyage (VoyageNumber number, ISchedule schedule)
+			: base(number, schedule)
 		{
 		}
 		
@@ -79,7 +79,7 @@ namespace Challenge00.DDDSample.Voyage
 			CompletedVoyage voyage = other as CompletedVoyage;
 			if(null == voyage)
 				return false;
-			return Schedule.Equals(voyage.Schedule);
+			return Number.Equals(voyage.Number) && Schedule.Equals(voyage.Schedule);
 
 		}
 		

@@ -35,11 +35,12 @@ namespace DefaultImplementation.Voyage
 		public void Test_Ctor_01()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 		
 			// act:
-			CompletedVoyage state = new CompletedVoyage(schedule);
+			CompletedVoyage state = new CompletedVoyage(number, schedule);
 		
 			// assert:
 			Assert.AreSame(schedule, state.Schedule);
@@ -51,16 +52,29 @@ namespace DefaultImplementation.Voyage
 		public void Test_Ctor_02 ()
 		{
 			// arrange:
-			
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 		
 			// act:
-			new CompletedVoyage(null);
+			new CompletedVoyage(number, null);
+		}
+		
+		[Test()]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void Test_Ctor_03 ()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+		
+			// act:
+			new CompletedVoyage(null, schedule);
 		}
 		
 		[Test]
 		public void Test_LastKnownLocation_01()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode arrivalLocation = new UnLocode("ATEND");
@@ -69,7 +83,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s[2]).Return(movement).Repeat.Once();
 		
 			// act:
-			CompletedVoyage state = new CompletedVoyage(schedule);
+			CompletedVoyage state = new CompletedVoyage(number, schedule);
 		
 			// assert:
 			Assert.AreSame(arrivalLocation, state.LastKnownLocation);
@@ -82,6 +96,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_NextExpectedLocation_01()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode arrivalLocation = new UnLocode("ATEND");
@@ -90,7 +105,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s[2]).Return(movement).Repeat.Once();
 		
 			// act:
-			CompletedVoyage state = new CompletedVoyage(schedule);
+			CompletedVoyage state = new CompletedVoyage(number, schedule);
 		
 			// assert:
 			Assert.AreSame(arrivalLocation, state.NextExpectedLocation);
@@ -102,10 +117,11 @@ namespace DefaultImplementation.Voyage
 		public void Test_StopOverAt_01()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			
 			// act:
-			CompletedVoyage state = new CompletedVoyage(schedule);
+			CompletedVoyage state = new CompletedVoyage(number, schedule);
 			
 			// assert:
 			Assert.Throws<InvalidOperationException>(delegate {state.StopOverAt(MockRepository.GenerateStrictMock<ILocation>());});
@@ -116,10 +132,11 @@ namespace DefaultImplementation.Voyage
 		public void Test_DepartFrom_01()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			
 			// act:
-			CompletedVoyage state = new CompletedVoyage(schedule);
+			CompletedVoyage state = new CompletedVoyage(number, schedule);
 			
 			// assert:
 			Assert.Throws<InvalidOperationException>(delegate {state.DepartFrom(MockRepository.GenerateStrictMock<ILocation>());});
@@ -131,13 +148,14 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_01()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			schedule.Expect(s => s.Equals(schedule)).Return(true).Repeat.Any();
 
 			// act:
-			CompletedVoyage state1 = new CompletedVoyage(schedule);
-			CompletedVoyage state2 = new CompletedVoyage(schedule);
+			CompletedVoyage state1 = new CompletedVoyage(number, schedule);
+			CompletedVoyage state2 = new CompletedVoyage(number, schedule);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(null));
@@ -149,13 +167,14 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_02()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(4).Repeat.Any();
 			schedule.Expect(s => s.Equals(schedule)).Return(true).Repeat.Any();
 
 			// act:
-			CompletedVoyage state1 = new CompletedVoyage(schedule);
-			CompletedVoyage state2 = new CompletedVoyage(schedule);
+			CompletedVoyage state1 = new CompletedVoyage(number, schedule);
+			CompletedVoyage state2 = new CompletedVoyage(number, schedule);
 			
 			// assert:
 			Assert.IsTrue(state1.Equals(state2));
@@ -167,6 +186,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_03()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule1 = MockRepository.GenerateStrictMock<ISchedule>();
 			ISchedule schedule2 = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule1.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
@@ -175,8 +195,8 @@ namespace DefaultImplementation.Voyage
 			schedule2.Expect(s => s.Equals(schedule1)).Return(false).Repeat.Any();
 
 			// act:
-			CompletedVoyage state1 = new CompletedVoyage(schedule1);
-			CompletedVoyage state2 = new CompletedVoyage(schedule2);
+			CompletedVoyage state1 = new CompletedVoyage(number, schedule1);
+			CompletedVoyage state2 = new CompletedVoyage(number, schedule2);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
@@ -189,13 +209,14 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_04()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			schedule.Expect(s => s.Equals(schedule)).Return(true).Repeat.Any();
 
 			// act:
-			CompletedVoyage state1 = new CompletedVoyage(schedule);
-			VoyageState state2 = new MovingVoyage(schedule, 2);
+			CompletedVoyage state1 = new CompletedVoyage(number, schedule);
+			VoyageState state2 = new MovingVoyage(number, schedule, 2);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
@@ -206,13 +227,14 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_05()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			schedule.Expect(s => s.Equals(schedule)).Return(true).Repeat.Any();
 
 			// act:
-			CompletedVoyage state1 = new CompletedVoyage(schedule);
-			VoyageState state2 = new StoppedVoyage(schedule, 2);
+			CompletedVoyage state1 = new CompletedVoyage(number, schedule);
+			VoyageState state2 = new StoppedVoyage(number, schedule, 2);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
@@ -223,12 +245,13 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_06()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 
 			// act:
-			CompletedVoyage state1 = new CompletedVoyage(schedule);
-			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			CompletedVoyage state1 = new CompletedVoyage(number, schedule);
+			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
@@ -240,12 +263,13 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_01()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
 	
 			// act:
-			CompletedVoyage state = new CompletedVoyage(schedule);
+			CompletedVoyage state = new CompletedVoyage(number, schedule);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:

@@ -29,25 +29,20 @@ namespace Challenge00.DDDSample.Voyage
 	[Serializable]
 	public class Voyage : IVoyage
 	{
-		private readonly VoyageNumber _identifier;
-		
 		/// <summary>
 		/// Current voyage state.
 		/// </summary>
 		protected VoyageState CurrentState;
 		
 		public Voyage (VoyageNumber identifier, ISchedule schedule)
-			: this(identifier, new StoppedVoyage(schedule, 0))
+			: this(new StoppedVoyage(identifier, schedule, 0))
 		{
 		}
 	
-		protected Voyage (VoyageNumber identifier, VoyageState initialState)
+		protected Voyage (VoyageState initialState)
 		{
-			if(null == identifier)
-				throw new ArgumentNullException("identifier");
 			if(null == initialState)
 				throw new ArgumentNullException("initialState");
-			_identifier = identifier;
 			CurrentState = initialState;
 		}
 
@@ -111,7 +106,7 @@ namespace Challenge00.DDDSample.Voyage
 		{
 			get 
 			{
-				return _identifier;
+				return CurrentState.Number;
 			}
 		}
 
@@ -163,7 +158,7 @@ namespace Challenge00.DDDSample.Voyage
 				return false;
 			if(object.ReferenceEquals(this, other))
 				return true;
-			return _identifier.Equals(other.Number);
+			return CurrentState.Number.Equals(other.Number);
 		}
 		#endregion
 	}

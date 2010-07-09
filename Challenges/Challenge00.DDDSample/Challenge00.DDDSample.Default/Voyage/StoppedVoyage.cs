@@ -32,8 +32,8 @@ namespace Challenge00.DDDSample.Voyage
 	public class StoppedVoyage : VoyageState 
 	{
 		private readonly int _movementIndex;
-		public StoppedVoyage (ISchedule schedule, int movementIndex)
-			: base(schedule)
+		public StoppedVoyage (VoyageNumber number, ISchedule schedule, int movementIndex)
+			: base(number, schedule)
 		{
 			if(movementIndex < 0 || movementIndex >= schedule.MovementsCount)
 				throw new ArgumentOutOfRangeException("movementIndex");
@@ -53,7 +53,7 @@ namespace Challenge00.DDDSample.Voyage
 		public override VoyageState DepartFrom (ILocation location)
 		{
 			if(LastKnownLocation.Equals(location.UnLocode))
-				return new MovingVoyage(Schedule, _movementIndex);
+				return new MovingVoyage(Number, Schedule, _movementIndex);
 			string message = string.Format("The voyage stopped over at {0}.", LastKnownLocation);
 			throw new ArgumentException(message, "location");
 		}
@@ -106,7 +106,9 @@ namespace Challenge00.DDDSample.Voyage
 			StoppedVoyage voyage = other as StoppedVoyage;
 			if(null == voyage)
 				return false;
-			return _movementIndex == voyage._movementIndex && Schedule.Equals(voyage.Schedule);
+			return 	Number.Equals(voyage.Number) &&
+					_movementIndex == voyage._movementIndex && 
+					Schedule.Equals(voyage.Schedule);
 		}
 		
 		#endregion

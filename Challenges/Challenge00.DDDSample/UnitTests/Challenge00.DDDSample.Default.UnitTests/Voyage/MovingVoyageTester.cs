@@ -37,13 +37,15 @@ namespace DefaultImplementation.Voyage
 		public void Test_Ctor_01(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 		
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, index);
+			MovingVoyage state = new MovingVoyage(number, schedule, index);
 		
 			// assert:
+			Assert.AreSame(number, state.Number);
 			Assert.AreSame(schedule, state.Schedule);
 			Assert.IsTrue(state.IsMoving);
 		}
@@ -53,10 +55,10 @@ namespace DefaultImplementation.Voyage
 		public void Test_Ctor_02 ()
 		{
 			// arrange:
-			
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 		
 			// act:
-			new MovingVoyage(null, 0);
+			new MovingVoyage(number, null, 0);
 		}
 		
 		[TestCase(-1)]
@@ -66,11 +68,24 @@ namespace DefaultImplementation.Voyage
 		public void Test_Ctor_03(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 		
 			// act:
-			new MovingVoyage(schedule, index);
+			new MovingVoyage(number, schedule, index);
+		}
+		
+		[Test()]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void Test_Ctor_04 ()
+		{
+			// arrange:
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
+		
+			// act:
+			new MovingVoyage(null, schedule, 0);
 		}
 		
 		[TestCase(0)]
@@ -79,6 +94,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_LastKnownLocation_01(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode initialLocation = new UnLocode("DPLOC");
@@ -87,7 +103,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s[index]).Return(movement).Repeat.Once();
 		
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, index);
+			MovingVoyage state = new MovingVoyage(number, schedule, index);
 		
 			// assert:
 			Assert.AreSame(initialLocation, state.LastKnownLocation);
@@ -102,6 +118,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_NextExpectedLocation_01(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode initialLocation = new UnLocode("ARLOC");
@@ -110,7 +127,7 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s[index]).Return(movement).Repeat.Once();
 		
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, index);
+			MovingVoyage state = new MovingVoyage(number, schedule, index);
 		
 			// assert:
 			Assert.AreSame(initialLocation, state.NextExpectedLocation);
@@ -124,6 +141,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_StopOverAt_01(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(4).Repeat.Any();
 			UnLocode arrivalLocation = new UnLocode("ARLOC");
@@ -138,7 +156,7 @@ namespace DefaultImplementation.Voyage
 
 			
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, index);
+			MovingVoyage state = new MovingVoyage(number, schedule, index);
 			VoyageState stopped = state.StopOverAt(location);
 		
 			// assert:
@@ -157,6 +175,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_StopOverAt_02(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode arrivalLocation = new UnLocode("ARLOC");
@@ -167,7 +186,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(new UnLocode("ANTHR")).Repeat.Any();
 			
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, index);
+			MovingVoyage state = new MovingVoyage(number, schedule, index);
 
 			// assert:
 			Assert.Throws<ArgumentException>(delegate {state.StopOverAt(location);});
@@ -183,6 +202,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_StopOverAt_Destination_01(int index, int movementsCount)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(movementsCount).Repeat.Any();
 			UnLocode arrivalLocation = new UnLocode("ARLOC");
@@ -194,7 +214,7 @@ namespace DefaultImplementation.Voyage
 
 			
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, index);
+			MovingVoyage state = new MovingVoyage(number, schedule, index);
 			VoyageState stopped = state.StopOverAt(location);
 		
 			// assert:
@@ -212,6 +232,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_DepartFrom_01(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode initialLocation = new UnLocode("DPLOC");
@@ -224,7 +245,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(initialLocation).Repeat.Any();
 			
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, index);
+			MovingVoyage state = new MovingVoyage(number, schedule, index);
 			VoyageState moving = state.DepartFrom(location);
 		
 			// assert:
@@ -240,6 +261,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_DepartFrom_02(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode initialLocation = new UnLocode("DPLOC");
@@ -250,7 +272,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(new UnLocode("ANTHR")).Repeat.Any();
 			
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, index);
+			MovingVoyage state = new MovingVoyage(number, schedule, index);
 
 			// assert:
 			Assert.Throws<ArgumentException>(delegate {state.DepartFrom(location);});
@@ -265,13 +287,14 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_01(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			schedule.Expect(s => s.Equals(schedule)).Return(true).Repeat.Any();
 
 			// act:
-			MovingVoyage state1 = new MovingVoyage(schedule, index);
-			MovingVoyage state2 = new MovingVoyage(schedule, index);
+			MovingVoyage state1 = new MovingVoyage(number, schedule, index);
+			MovingVoyage state2 = new MovingVoyage(number, schedule, index);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(null));
@@ -285,13 +308,14 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_02(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(4).Repeat.Any();
 			schedule.Expect(s => s.Equals(schedule)).Return(true).Repeat.Any();
 
 			// act:
-			MovingVoyage state1 = new MovingVoyage(schedule, index);
-			MovingVoyage state2 = new MovingVoyage(schedule, index + 1);
+			MovingVoyage state1 = new MovingVoyage(number, schedule, index);
+			MovingVoyage state2 = new MovingVoyage(number, schedule, index + 1);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
@@ -305,6 +329,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_03(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule1 = MockRepository.GenerateStrictMock<ISchedule>();
 			ISchedule schedule2 = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule1.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
@@ -313,8 +338,8 @@ namespace DefaultImplementation.Voyage
 			schedule2.Expect(s => s.Equals(schedule1)).Return(false).Repeat.Any();
 
 			// act:
-			MovingVoyage state1 = new MovingVoyage(schedule1, index);
-			MovingVoyage state2 = new MovingVoyage(schedule2, index);
+			MovingVoyage state1 = new MovingVoyage(number, schedule1, index);
+			MovingVoyage state2 = new MovingVoyage(number, schedule2, index);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
@@ -329,13 +354,14 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_04(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			schedule.Expect(s => s.Equals(schedule)).Return(true).Repeat.Any();
 
 			// act:
-			MovingVoyage state1 = new MovingVoyage(schedule, index);
-			VoyageState state2 = new StoppedVoyage(schedule, index);
+			MovingVoyage state1 = new MovingVoyage(number, schedule, index);
+			VoyageState state2 = new StoppedVoyage(number, schedule, index);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
@@ -348,12 +374,13 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_05(int index)
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 
 			// act:
-			MovingVoyage state1 = new MovingVoyage(schedule, index);
-			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(schedule);
+			MovingVoyage state1 = new MovingVoyage(number, schedule, index);
+			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
@@ -365,6 +392,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_01()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc1 = new UnLocode("DPLOC");
@@ -386,7 +414,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(loc4).Repeat.AtLeastOnce();
 	
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, 0);
+			MovingVoyage state = new MovingVoyage(number, schedule, 0);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:
@@ -402,6 +430,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_02()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc2 = new UnLocode("ARLCA");
@@ -419,7 +448,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(loc4).Repeat.AtLeastOnce();
 	
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, 1);
+			MovingVoyage state = new MovingVoyage(number, schedule, 1);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:
@@ -434,6 +463,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_03()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc3 = new UnLocode("ARLCB");
@@ -446,7 +476,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(loc4).Repeat.AtLeastOnce();
 	
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, 2);
+			MovingVoyage state = new MovingVoyage(number, schedule, 2);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:
@@ -460,6 +490,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_04()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc1 = new UnLocode("DPLOC");
@@ -482,7 +513,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(outLocation).Repeat.AtLeastOnce();
 	
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, 0);
+			MovingVoyage state = new MovingVoyage(number, schedule, 0);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:
@@ -498,6 +529,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_05()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc2 = new UnLocode("ARLCA");
@@ -516,7 +548,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(outLocation).Repeat.AtLeastOnce();
 	
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, 1);
+			MovingVoyage state = new MovingVoyage(number, schedule, 1);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:
@@ -531,6 +563,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_06()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc3 = new UnLocode("ARLCB");
@@ -544,7 +577,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(outLocation).Repeat.AtLeastOnce();
 	
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, 2);
+			MovingVoyage state = new MovingVoyage(number, schedule, 2);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:
@@ -558,6 +591,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_07()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc1 = new UnLocode("DPLOC");
@@ -576,7 +610,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(loc1).Repeat.AtLeastOnce();
 	
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, 1);
+			MovingVoyage state = new MovingVoyage(number, schedule, 1);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:
@@ -591,6 +625,7 @@ namespace DefaultImplementation.Voyage
 		public void Test_WillStopOverAt_08()
 		{
 			// arrange:
+			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc1 = new UnLocode("DPLOC");
@@ -612,7 +647,7 @@ namespace DefaultImplementation.Voyage
 			location.Expect(l => l.UnLocode).Return(loc1).Repeat.AtLeastOnce();
 	
 			// act:
-			MovingVoyage state = new MovingVoyage(schedule, 0);
+			MovingVoyage state = new MovingVoyage(number, schedule, 0);
 			bool willStopOverAtLocation = state.WillStopOverAt(location);
 		
 			// assert:
