@@ -62,12 +62,39 @@ namespace Challenge00.DDDSample.Cargo
 			return new Itinerary(newLegs);
 		}
 
-		public IItinerary Replace (IEnumerable<ILeg> legs)
+		public IItinerary ReplaceSegment (IItinerary legs)
 		{
 			if(null == legs)
 				throw new ArgumentNullException("legs");
 			
-			return null;
+			IItinerary newItinerary = null;
+			int i = 0;
+			while(i < _legs.Length)
+			{
+				if(null != newItinerary && newItinerary.FinalArrivalLocation.Equals(_legs[i].LoadLocation))
+				{
+					newItinerary = newItinerary.Append(_legs[i]);
+				}
+				else if(_legs[i].UnloadLocation.Equals(legs.InitialDepartureLocation))
+				{
+					ILeg[] newLegs = new ILeg[i + 1];
+					Array.Copy(_legs, newLegs, i + 1);
+					newItinerary = new Itinerary(newLegs);
+					foreach(ILeg l in legs)
+					{
+						newItinerary = newItinerary.Append(l);
+					}
+				}
+				
+				++i;
+			}
+			if(null == newItinerary)
+			{
+				string message = string.Format("The legs departure location ({0}) is not in the itinerary.", legs.InitialDepartureLocation);
+				throw new ArgumentOutOfRangeException("legs", message);
+			}
+			
+			return newItinerary;
 		}
 
 		public Location.UnLocode InitialDepartureLocation 

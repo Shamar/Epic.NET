@@ -65,11 +65,11 @@ namespace Challenge00.DDDSample.Cargo
 		/// A <see cref="IItinerary"/>
 		/// </returns>
 		/// <exception cref="ArgumentNullException">Any argument is <value>null</value>.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">The first load location of <paramref name="legs"/> do not belong to this itinerary.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">The first load time of <paramref name="legs"/> is before the corrisponding unload location in the itinerary.</exception>
+		/// <exception cref="ArgumentException">The first load location of <paramref name="legs"/> do not belong to this itinerary.</exception>
+		/// <exception cref="ArgumentException">The first load time of <paramref name="legs"/> is before the corrisponding unload location in the itinerary.</exception>
 		/// <exception cref="ArgumentException">The first and the last legs in <paramref name="legs"/> 
 		/// do not match the previous legs requirements.</exception>
-		IItinerary Replace(IEnumerable<ILeg> legs);
+		IItinerary ReplaceSegment(IItinerary legs);
 	}
 }
 

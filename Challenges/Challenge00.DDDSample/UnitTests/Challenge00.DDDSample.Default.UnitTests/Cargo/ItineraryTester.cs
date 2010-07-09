@@ -402,24 +402,38 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Replace_01()
+		public void Test_ReplaceSegment_01()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
 			UnLocode loc2 = new UnLocode("CODAB");
 			UnLocode loc3 = new UnLocode("CODAC");
 			UnLocode loc4 = new UnLocode("CODAD");
+			UnLocode loc5 = new UnLocode("CODAE");
 			
 			List<ILeg> newLegs = new List<ILeg>();
 			ILeg newLeg1 = MockRepository.GenerateStrictMock<ILeg>();
 			newLeg1.Expect(l => l.LoadLocation).Return(loc2).Repeat.AtLeastOnce();
 			newLeg1.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(1)).Repeat.AtLeastOnce();
+			newLeg1.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(3)).Repeat.Any();
+			newLeg1.Expect(l => l.UnloadLocation).Return(loc3).Repeat.AtLeastOnce();
 			newLegs.Add(newLeg1);
 			ILeg newLeg2 = MockRepository.GenerateStrictMock<ILeg>();
+			newLeg2.Expect(l => l.LoadLocation).Return(loc3).Repeat.AtLeastOnce();
+			newLeg2.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(4)).Repeat.Any();
+			newLeg2.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(6)).Repeat.Any();
+			newLeg2.Expect(l => l.UnloadLocation).Return(loc4).Repeat.AtLeastOnce();
 			newLegs.Add(newLeg2);
 			ILeg newLeg3 = MockRepository.GenerateStrictMock<ILeg>();
-			newLeg3.Expect(l => l.UnloadLocation).Return(loc4).Repeat.AtLeastOnce();
+			newLeg3.Expect(l => l.LoadLocation).Return(loc4).Repeat.AtLeastOnce();
+			newLeg3.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(10)).Repeat.Any();
+			newLeg3.Expect(l => l.UnloadLocation).Return(loc5).Repeat.AtLeastOnce();
+			newLeg3.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(13)).Repeat.Any();
 			newLegs.Add(newLeg3);
+			IItinerary newSegment = MockRepository.GenerateStrictMock<IItinerary>();
+			newSegment.Expect(s => s.GetEnumerator()).Return(newLegs.GetEnumerator()).Repeat.AtLeastOnce();
+			newSegment.Expect(s => s.InitialDepartureLocation).Return(loc2).Repeat.AtLeastOnce();
+			newSegment.Expect(s => s.FinalArrivalLocation).Return(loc5).Repeat.Any();
 			
 			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
 			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.Any();
@@ -434,11 +448,11 @@ namespace DefaultImplementation.Cargo
 			tested = tested.Append(leg2);
 		
 			// act:
-			IItinerary replaced = tested.Replace(newLegs);
+			IItinerary replaced = tested.ReplaceSegment(newSegment);
 		
 			// assert:
 			Assert.IsNotNull(replaced);
-			Assert.AreEqual(5, replaced.Count());
+			Assert.AreEqual(4, replaced.Count());
 			leg.VerifyAllExpectations();
 			leg2.VerifyAllExpectations();
 			foreach(ILeg l in newLegs)
@@ -446,6 +460,140 @@ namespace DefaultImplementation.Cargo
 				l.VerifyAllExpectations();
 			}
 		}
+		
+		[Test]
+		public void Test_ReplaceSegment_02()
+		{
+			// arrange:
+			UnLocode loc1 = new UnLocode("CODAA");
+			UnLocode loc2 = new UnLocode("CODAB");
+			UnLocode loc3 = new UnLocode("CODAC");
+			UnLocode loc4 = new UnLocode("CODAD");
+			UnLocode loc5 = new UnLocode("CODAE");
+			UnLocode loc6 = new UnLocode("CODAF");
+			
+			List<ILeg> newLegs = new List<ILeg>();
+			ILeg newLeg1 = MockRepository.GenerateStrictMock<ILeg>();
+			newLeg1.Expect(l => l.LoadLocation).Return(loc3).Repeat.AtLeastOnce();
+			newLeg1.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(1)).Repeat.AtLeastOnce();
+			newLeg1.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(3)).Repeat.Any();
+			newLeg1.Expect(l => l.UnloadLocation).Return(loc4).Repeat.AtLeastOnce();
+			newLegs.Add(newLeg1);
+			ILeg newLeg2 = MockRepository.GenerateStrictMock<ILeg>();
+			newLeg2.Expect(l => l.LoadLocation).Return(loc4).Repeat.AtLeastOnce();
+			newLeg2.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(4)).Repeat.Any();
+			newLeg2.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(6)).Repeat.Any();
+			newLeg2.Expect(l => l.UnloadLocation).Return(loc5).Repeat.AtLeastOnce();
+			newLegs.Add(newLeg2);
+			ILeg newLeg3 = MockRepository.GenerateStrictMock<ILeg>();
+			newLeg3.Expect(l => l.LoadLocation).Return(loc5).Repeat.AtLeastOnce();
+			newLeg3.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(10)).Repeat.Any();
+			newLeg3.Expect(l => l.UnloadLocation).Return(loc6).Repeat.AtLeastOnce();
+			newLeg3.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(13)).Repeat.Any();
+			newLegs.Add(newLeg3);
+			IItinerary newSegment = MockRepository.GenerateStrictMock<IItinerary>();
+			newSegment.Expect(s => s.GetEnumerator()).Return(newLegs.GetEnumerator()).Repeat.AtLeastOnce();
+			newSegment.Expect(s => s.InitialDepartureLocation).Return(loc3).Repeat.AtLeastOnce();
+			newSegment.Expect(s => s.FinalArrivalLocation).Return(loc6).Repeat.Any();
+			
+			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
+			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.Any();
+			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Any();
+			leg.Expect(l => l.UnloadTime).Return(DateTime.Now).Repeat.Any();
+			ILeg leg2 = MockRepository.GenerateStrictMock<ILeg>();
+			leg2.Expect(l => l.LoadLocation).Return(loc2).Repeat.Any();
+			leg2.Expect(l => l.UnloadLocation).Return(loc3).Repeat.Any();
+			leg2.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromHours(5)).Repeat.Any();
+			leg2.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromHours(20)).Repeat.Any();
+			IItinerary tested = new Itinerary();
+			tested = tested.Append(leg);
+			tested = tested.Append(leg2);
+		
+			// act:
+			IItinerary replaced = tested.ReplaceSegment(newSegment);
+		
+			// assert:
+			Assert.IsNotNull(replaced);
+			Assert.AreEqual(5, replaced.Count());
+			Assert.AreEqual(loc1, replaced.InitialDepartureLocation);
+			Assert.AreEqual(loc6, replaced.FinalArrivalLocation);
+			leg.VerifyAllExpectations();
+			leg2.VerifyAllExpectations();
+			foreach(ILeg l in newLegs)
+			{
+				l.VerifyAllExpectations();
+			}
+		}
+		
+		[Test]
+		public void Test_ReplaceSegment_03()
+		{
+			// arrange:
+			UnLocode loc1 = new UnLocode("CODAA");
+			UnLocode loc2 = new UnLocode("CODAB");
+			UnLocode loc3 = new UnLocode("CODAC");
+			UnLocode loc4 = new UnLocode("CODAD");
+			UnLocode loc5 = new UnLocode("CODAE");
+			UnLocode loc6 = new UnLocode("CODAF");
+			
+			List<ILeg> newLegs = new List<ILeg>();
+			ILeg newLeg1 = MockRepository.GenerateStrictMock<ILeg>();
+			newLeg1.Expect(l => l.LoadLocation).Return(loc2).Repeat.AtLeastOnce();
+			newLeg1.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(1)).Repeat.AtLeastOnce();
+			newLeg1.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(3)).Repeat.Any();
+			newLeg1.Expect(l => l.UnloadLocation).Return(loc5).Repeat.AtLeastOnce();
+			newLegs.Add(newLeg1);
+			ILeg newLeg2 = MockRepository.GenerateStrictMock<ILeg>();
+			newLeg2.Expect(l => l.LoadLocation).Return(loc5).Repeat.AtLeastOnce();
+			newLeg2.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(4)).Repeat.Any();
+			newLeg2.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(6)).Repeat.Any();
+			newLeg2.Expect(l => l.UnloadLocation).Return(loc6).Repeat.AtLeastOnce();
+			newLegs.Add(newLeg2);
+			ILeg newLeg3 = MockRepository.GenerateStrictMock<ILeg>();
+			newLeg3.Expect(l => l.LoadLocation).Return(loc6).Repeat.AtLeastOnce();
+			newLeg3.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(10)).Repeat.Any();
+			newLeg3.Expect(l => l.UnloadLocation).Return(loc3).Repeat.AtLeastOnce();
+			newLeg3.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromDays(13)).Repeat.Any();
+			newLegs.Add(newLeg3);
+			IItinerary newSegment = MockRepository.GenerateStrictMock<IItinerary>();
+			newSegment.Expect(s => s.GetEnumerator()).Return(newLegs.GetEnumerator()).Repeat.AtLeastOnce();
+			newSegment.Expect(s => s.InitialDepartureLocation).Return(loc2).Repeat.AtLeastOnce();
+			newSegment.Expect(s => s.FinalArrivalLocation).Return(loc3).Repeat.Any();
+			
+			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
+			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.Any();
+			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Any();
+			leg.Expect(l => l.UnloadTime).Return(DateTime.Now).Repeat.Any();
+			ILeg leg2 = MockRepository.GenerateStrictMock<ILeg>();
+			leg2.Expect(l => l.LoadLocation).Return(loc2).Repeat.Any();
+			leg2.Expect(l => l.UnloadLocation).Return(loc3).Repeat.Any();
+			leg2.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromHours(5)).Repeat.Any();
+			leg2.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromHours(20)).Repeat.Any();
+			ILeg leg3 = MockRepository.GenerateStrictMock<ILeg>();
+			leg3.Expect(l => l.LoadLocation).Return(loc3).Repeat.Any();
+			leg3.Expect(l => l.UnloadLocation).Return(loc4).Repeat.Any();
+			leg3.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(30)).Repeat.Any();
+			leg3.Expect(l => l.UnloadTime).Return(DateTime.Now + TimeSpan.FromHours(32)).Repeat.Any();
+			IItinerary tested = new Itinerary();
+			tested = tested.Append(leg);
+			tested = tested.Append(leg2);
+			tested = tested.Append(leg3);
+		
+			// act:
+			IItinerary replaced = tested.ReplaceSegment(newSegment);
+		
+			// assert:
+			Assert.IsNotNull(replaced);
+			Assert.AreEqual(5, replaced.Count());
+			Assert.AreEqual(loc1, replaced.InitialDepartureLocation);
+			Assert.AreEqual(loc4, replaced.FinalArrivalLocation);
+			leg.VerifyAllExpectations();
+			leg2.VerifyAllExpectations();
+			leg3.VerifyAllExpectations();
+			foreach(ILeg l in newLegs)
+			{
+				l.VerifyAllExpectations();
+			}
+		}
 	}
 }
-
