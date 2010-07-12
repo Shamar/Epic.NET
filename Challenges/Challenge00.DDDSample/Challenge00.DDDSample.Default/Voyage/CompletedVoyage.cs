@@ -36,13 +36,15 @@ namespace Challenge00.DDDSample.Voyage
 		#region implemented abstract members of Challenge00.DDDSample.Voyage.VoyageState
 		public override VoyageState StopOverAt (ILocation location)
 		{
-			throw new InvalidOperationException("The voyage has been completed.");
+			string message = string.Format("The voyage {0} has been completed.", Number);
+			throw new InvalidOperationException(message);
 		}
 		
 		
 		public override VoyageState DepartFrom (ILocation location)
 		{
-			throw new InvalidOperationException("The voyage has been completed.");
+			string message = string.Format("The voyage {0} has been completed.", Number);
+			throw new InvalidOperationException(message);
 		}
 		
 		public override UnLocode LastKnownLocation 
