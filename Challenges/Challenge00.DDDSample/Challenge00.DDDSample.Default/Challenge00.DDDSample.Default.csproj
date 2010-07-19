@@ -50,6 +50,7 @@
     <Compile Include="Voyage\CompletedVoyage.cs" />
     <Compile Include="Cargo\Leg.cs" />
     <Compile Include="Cargo\Itinerary.cs" />
+    <Compile Include="Cargo\RouteSpecification.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
