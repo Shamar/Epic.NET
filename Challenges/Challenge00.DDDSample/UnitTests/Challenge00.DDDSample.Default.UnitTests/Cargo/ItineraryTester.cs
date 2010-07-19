@@ -44,6 +44,7 @@ namespace DefaultImplementation.Cargo
 			// assert:
 			Assert.IsNull(itinerary.InitialDepartureLocation);
 			Assert.IsNull(itinerary.FinalArrivalLocation);
+			Assert.AreEqual(DateTime.MaxValue, itinerary.FinalArrivalDate);
 		}
 		
 		[Test]
@@ -52,9 +53,11 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODLD");
 			UnLocode loc2 = new UnLocode("CODUN");
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(10);
 			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
 			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.Once();
 			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Once();
+			leg.Expect(l => l.UnloadTime).Return(arrivalDate).Repeat.Once();
 			Itinerary empty = new Itinerary();
 		
 			// act:
@@ -67,6 +70,7 @@ namespace DefaultImplementation.Cargo
 			Assert.AreSame(leg, tested.Last());
 			Assert.AreEqual(loc1, tested.InitialDepartureLocation);
 			Assert.AreEqual(loc2, tested.FinalArrivalLocation);
+			Assert.AreEqual(arrivalDate, tested.FinalArrivalDate);
 			leg.VerifyAllExpectations();
 		}
 		
@@ -87,6 +91,7 @@ namespace DefaultImplementation.Cargo
 			UnLocode loc1 = new UnLocode("CODAA");
 			UnLocode loc2 = new UnLocode("CODAB");
 			UnLocode loc3 = new UnLocode("CODAC");
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(2);
 			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
 			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.Once();
 			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Once();
@@ -95,6 +100,7 @@ namespace DefaultImplementation.Cargo
 			leg2.Expect(l => l.LoadLocation).Return(loc2).Repeat.Once();
 			leg2.Expect(l => l.UnloadLocation).Return(loc3).Repeat.Once();
 			leg2.Expect(l => l.LoadTime).Return(DateTime.Now + TimeSpan.FromDays(1)).Repeat.Once();
+			leg2.Expect(l => l.UnloadTime).Return(arrivalDate).Repeat.Once();
 			IItinerary initial = new Itinerary();
 			initial = initial.Append(leg);
 		
@@ -108,6 +114,7 @@ namespace DefaultImplementation.Cargo
 			Assert.AreSame(leg2, tested.Last());
 			Assert.AreEqual(loc1, tested.InitialDepartureLocation);
 			Assert.AreEqual(loc3, tested.FinalArrivalLocation);
+			Assert.AreEqual(arrivalDate, tested.FinalArrivalDate);
 			leg.VerifyAllExpectations();
 			leg2.VerifyAllExpectations();
 		}
@@ -116,10 +123,8 @@ namespace DefaultImplementation.Cargo
 		public void Test_Append_04()
 		{
 			// arrange:
-			UnLocode loc1 = new UnLocode("CODAA");
 			UnLocode loc2 = new UnLocode("CODAB");
 			UnLocode loc3 = new UnLocode("CDOUT");
-			UnLocode loc4 = new UnLocode("CODAC");
 			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
 			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Once();
 			ILeg leg2 = MockRepository.GenerateStrictMock<ILeg>();
@@ -139,7 +144,6 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
 			UnLocode loc2 = new UnLocode("CODAB");
-			UnLocode loc3 = new UnLocode("CODAC");
 			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
 			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.Any();
 			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Once();

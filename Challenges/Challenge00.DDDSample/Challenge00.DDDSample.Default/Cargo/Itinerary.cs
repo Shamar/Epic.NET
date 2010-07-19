@@ -116,6 +116,17 @@ namespace Challenge00.DDDSample.Cargo
 				return _legs[_legs.Length - 1].UnloadLocation;
 			}
 		}
+		
+		public DateTime FinalArrivalDate
+		{
+			get
+			{
+				if(_legs.Length == 0)
+					return DateTime.MaxValue;
+				return _legs[_legs.Length - 1].UnloadTime;
+			}
+		}
+		
 		#endregion
 
 		#region IEnumerable[Challenge00.DDDSample.Cargo.ILeg] implementation

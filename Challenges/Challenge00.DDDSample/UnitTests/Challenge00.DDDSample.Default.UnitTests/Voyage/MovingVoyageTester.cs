@@ -395,7 +395,6 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
-			UnLocode loc1 = new UnLocode("DPLOC");
 			UnLocode loc2 = new UnLocode("ARLCA");
 			UnLocode loc3 = new UnLocode("ARLCB");
 			UnLocode loc4 = new UnLocode("ARLCC");
@@ -493,7 +492,6 @@ namespace DefaultImplementation.Voyage
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
-			UnLocode loc1 = new UnLocode("DPLOC");
 			UnLocode loc2 = new UnLocode("ARLCA");
 			UnLocode loc3 = new UnLocode("ARLCB");
 			UnLocode loc4 = new UnLocode("ARLCC");

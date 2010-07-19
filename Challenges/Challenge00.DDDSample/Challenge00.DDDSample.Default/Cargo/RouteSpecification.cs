@@ -28,7 +28,7 @@ using System.Linq;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
-	public class RouteSpecification : ISpecification<IItinerary>
+	public class RouteSpecification : IRouteSpecification
 	{
 		private readonly UnLocode _origin;
 		private readonly UnLocode _destination;
@@ -38,8 +38,8 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			if(null == origin || origin is Unknown)
 				throw new ArgumentNullException("origin");
-			if(null == origin || destination is Unknown)
-				throw new ArgumentNullException("origin");
+			if(null == destination || destination is Unknown)
+				throw new ArgumentNullException("destination");
 			if(origin.Equals(destination))
 				throw new ArgumentException("Origin and destination can't be the same: " + origin.UnLocode);
 			if(arrivalDeadline <= DateTime.Now)
@@ -50,6 +50,31 @@ namespace Challenge00.DDDSample.Cargo
 			_arrivalDeadline = arrivalDeadline;
 		}
 	
+		#region IRouteSpecification implementation
+		public DateTime ArrivalDeadline 
+		{
+			get 
+			{
+				return _arrivalDeadline;
+			}
+		}
+
+		public UnLocode Destination 
+		{
+			get 
+			{
+				return _destination;
+			}
+		}
+
+		public UnLocode Origin 
+		{
+			get 
+			{
+				return _origin;
+			}
+		}
+		#endregion
 
 		#region ISpecification[IItinerary] implementation
 		public virtual bool IsSatisfiedBy (IItinerary candidate)
@@ -60,7 +85,7 @@ namespace Challenge00.DDDSample.Cargo
 				return false;
 			if(!_destination.Equals(candidate.FinalArrivalLocation))
 				return false;
-			if(_arrivalDeadline < candidate.Last().UnloadTime)
+			if(_arrivalDeadline < candidate.FinalArrivalDate)
 				return false;
 			return true;
 		}
@@ -69,20 +94,22 @@ namespace Challenge00.DDDSample.Cargo
 		#region IEquatable[Challenge00.DDDSample.Shared.ISpecification[IItinerary]] implementation
 		public virtual bool Equals (ISpecification<IItinerary> other)
 		{
-			RouteSpecification otherRoute = other as RouteSpecification;
-			if(null == otherRoute)
+			IRouteSpecification otherRoute = other as IRouteSpecification;
+			if(object.ReferenceEquals(otherRoute, null))
 				return false;
-			if(!_origin.Equals(otherRoute._origin))
+			if(object.ReferenceEquals(this, other))
+				return true;
+			if(!_origin.Equals(otherRoute.Origin))
 				return false;
-			if(!_destination.Equals(otherRoute._destination))
+			if(!_destination.Equals(otherRoute.Destination))
 				return false;
-			if(!_arrivalDeadline.Equals(otherRoute._arrivalDeadline))
+			if(!_arrivalDeadline.Equals(otherRoute.ArrivalDeadline))
 				return false;
 			return true;
 		}
 		#endregion
 		
-		public override bool Equals (object obj)
+		public sealed override bool Equals (object obj)
 		{
 			return Equals (obj as ISpecification<IItinerary>);
 		}

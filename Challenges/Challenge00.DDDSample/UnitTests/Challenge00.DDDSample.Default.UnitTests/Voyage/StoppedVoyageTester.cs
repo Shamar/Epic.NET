@@ -595,9 +595,6 @@ namespace DefaultImplementation.Voyage
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode loc1 = new UnLocode("DPLOC");
-			UnLocode loc2 = new UnLocode("ARLCA");
-			UnLocode loc3 = new UnLocode("ARLCB");
-			UnLocode loc4 = new UnLocode("ARLCC");
 			ICarrierMovement mov1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			mov1.Expect(m => m.DepartureLocation).Return(loc1).Repeat.AtLeastOnce();
 			//mov1.Expect(m => m.ArrivalLocation).Return(loc2).Repeat.AtLeastOnce();

@@ -37,9 +37,14 @@ namespace Challenge00.DDDSample.Cargo
 		UnLocode InitialDepartureLocation { get; }
 		
 		/// <summary>
-		/// The location of last arrival according to this itinerary. 
+		/// The location of final destination according to this itinerary. 
 		/// </summary>
 		UnLocode FinalArrivalLocation { get; }
+		
+		/// <summary>
+		/// Date when cargo arrives at final destination.
+		/// </summary>
+		DateTime FinalArrivalDate { get; }
 		
 		/// <summary>
 		/// Create a new itinerary by appending a new <paramref name="leg"/>.

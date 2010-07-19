@@ -452,7 +452,6 @@ namespace DefaultImplementation.Voyage
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
-			UnLocode locCode = new UnLocode("DPLOC");
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
