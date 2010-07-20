@@ -38,11 +38,9 @@ namespace DefaultImplementation.Cargo
 			UnLocode first = new UnLocode("CDFST");
 			UnLocode second = new UnLocode("CDSND");
 			ILocation origin = MockRepository.GenerateStrictMock<ILocation>();
-			origin.Expect(l => l.UnLocode).Return(first).Repeat.Once();
+			origin.Expect(l => l.UnLocode).Return(first).Repeat.AtLeastOnce();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
-			destination.Expect(l => l.UnLocode).Return(second).Repeat.Once();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
+			destination.Expect(l => l.UnLocode).Return(second).Repeat.AtLeastOnce();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 		
 			// act:
@@ -129,8 +127,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Once();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Once();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			IRouteSpecification specification = new RouteSpecification(origin, destination, arrivalDeadline);
 		
@@ -152,8 +148,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Any();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Any();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			IRouteSpecification specification1 = new RouteSpecification(origin, destination, arrivalDeadline);
 			IRouteSpecification specification2 = new RouteSpecification(origin, destination, arrivalDeadline);
@@ -177,8 +171,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Any();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Any();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			IRouteSpecification specification1 = new RouteSpecification(origin, destination, arrivalDeadline);
 			IRouteSpecification specification2 = new RouteSpecification(origin, destination, arrivalDeadline + TimeSpan.FromDays(5));
@@ -205,10 +197,6 @@ namespace DefaultImplementation.Cargo
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Any();
 			ILocation origin2 = MockRepository.GenerateStrictMock<ILocation>();
 			origin2.Expect(l => l.UnLocode).Return(third).Repeat.Any();
-			origin2.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin2)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			IRouteSpecification specification1 = new RouteSpecification(origin, destination, arrivalDeadline);
 			IRouteSpecification specification2 = new RouteSpecification(origin2, destination, arrivalDeadline);
@@ -235,10 +223,6 @@ namespace DefaultImplementation.Cargo
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Any();
 			ILocation destination2 = MockRepository.GenerateStrictMock<ILocation>();
 			destination2.Expect(l => l.UnLocode).Return(third).Repeat.Any();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			origin.Expect(l => l.Equals(destination2)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
-			destination2.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			IRouteSpecification specification1 = new RouteSpecification(origin, destination, arrivalDeadline);
 			IRouteSpecification specification2 = new RouteSpecification(origin, destination2, arrivalDeadline);
@@ -262,8 +246,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Once();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Once();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			
 			IItinerary candidate = MockRepository.GenerateStrictMock<IItinerary>();
@@ -293,8 +275,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Once();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Once();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			
 			IItinerary candidate = MockRepository.GenerateStrictMock<IItinerary>();
@@ -324,8 +304,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Once();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Once();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			
 			IItinerary candidate = MockRepository.GenerateStrictMock<IItinerary>();
@@ -355,8 +333,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Once();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Once();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			
 			IRouteSpecification specification = new RouteSpecification(origin, destination, arrivalDeadline);
@@ -381,8 +357,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Once();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Once();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			
 			IItinerary candidate = MockRepository.GenerateStrictMock<IItinerary>();
@@ -413,8 +387,6 @@ namespace DefaultImplementation.Cargo
 			origin.Expect(l => l.UnLocode).Return(first).Repeat.Once();
 			ILocation destination = MockRepository.GenerateStrictMock<ILocation>();
 			destination.Expect(l => l.UnLocode).Return(second).Repeat.Once();
-			origin.Expect(l => l.Equals(destination)).Return(false).Repeat.Any();
-			destination.Expect(l => l.Equals(origin)).Return(false).Repeat.Any();
 			DateTime arrivalDeadline = DateTime.Now + TimeSpan.FromDays(5);
 			
 			IItinerary candidate = MockRepository.GenerateStrictMock<IItinerary>();

@@ -47,10 +47,6 @@ namespace DefaultImplementation.Voyage
 			ILocation loc3 = MockRepository.GenerateStrictMock<ILocation>();
 			loc3.Expect(l => l.UnLocode).Return(code3).Repeat.Any();
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
-			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc1)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc3)).Return(false).Repeat.Any();
-			loc3.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
 			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
@@ -97,10 +93,6 @@ namespace DefaultImplementation.Voyage
 			ILocation loc3 = MockRepository.GenerateStrictMock<ILocation>();
 			loc3.Expect(l => l.UnLocode).Return(code3).Repeat.Any();
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
-			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc1)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc3)).Return(false).Repeat.Any();
-			loc3.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
 			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
@@ -150,10 +142,6 @@ namespace DefaultImplementation.Voyage
 			ILocation loc3 = MockRepository.GenerateStrictMock<ILocation>();
 			loc3.Expect(l => l.UnLocode).Return(code3).Repeat.Any();
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
-			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc1)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc3)).Return(false).Repeat.Any();
-			loc3.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
 			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
@@ -204,10 +192,6 @@ namespace DefaultImplementation.Voyage
 			ILocation loc3 = MockRepository.GenerateStrictMock<ILocation>();
 			loc3.Expect(l => l.UnLocode).Return(code3).Repeat.Any();
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
-			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc1)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc3)).Return(false).Repeat.Any();
-			loc3.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
 			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
@@ -259,10 +243,6 @@ namespace DefaultImplementation.Voyage
 			ILocation loc3 = MockRepository.GenerateStrictMock<ILocation>();
 			loc3.Expect(l => l.UnLocode).Return(code3).Repeat.Any();
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
-			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc1)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc3)).Return(false).Repeat.Any();
-			loc3.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
 			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
@@ -315,10 +295,6 @@ namespace DefaultImplementation.Voyage
 			ILocation loc3 = MockRepository.GenerateStrictMock<ILocation>();
 			loc3.Expect(l => l.UnLocode).Return(code3).Repeat.Any();
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
-			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc1)).Return(false).Repeat.Any();
-			loc2.Expect(l => l.Equals(loc3)).Return(false).Repeat.Any();
-			loc3.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
 			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));

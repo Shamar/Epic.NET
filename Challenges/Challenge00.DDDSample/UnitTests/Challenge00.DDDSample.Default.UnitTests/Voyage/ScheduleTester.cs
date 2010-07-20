@@ -81,10 +81,6 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			UnLocode c1 = new UnLocode("LOCDA");
 			UnLocode c2 = new UnLocode("LOCDA");
-			ILocation l1 = MockRepository.GenerateStub<ILocation>();
-			ILocation l2 = MockRepository.GenerateStub<ILocation>();
-			l1.Expect(l => l.Equals(l2)).Return(true);
-			l2.Expect(l => l.Equals(l1)).Return(true);
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
@@ -116,10 +112,6 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			UnLocode c1 = new UnLocode("LOCDA");
 			UnLocode c2 = new UnLocode("LOCDB");
-			ILocation l1 = MockRepository.GenerateStub<ILocation>();
-			ILocation l2 = MockRepository.GenerateStub<ILocation>();
-			l1.Expect(l => l.Equals(l2)).Return(false);
-			l2.Expect(l => l.Equals(l1)).Return(false);
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
@@ -141,10 +133,6 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			UnLocode c1 = new UnLocode("LOCDA");
 			UnLocode c2 = new UnLocode("LOCDB");
-			ILocation l1 = MockRepository.GenerateStub<ILocation>();
-			ILocation l2 = MockRepository.GenerateStub<ILocation>();
-			l1.Expect(l => l.Equals(l2)).Return(true);
-			l2.Expect(l => l.Equals(l1)).Return(true);
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
