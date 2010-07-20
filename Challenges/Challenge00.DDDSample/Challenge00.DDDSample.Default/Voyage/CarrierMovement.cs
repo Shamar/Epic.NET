@@ -40,7 +40,7 @@ namespace Challenge00.DDDSample.Voyage
 				throw new ArgumentNullException("departureLocation");
 			if(null == arrivalLocation)
 				throw new ArgumentNullException("arrivalLocation");
-			if(departureLocation.Equals(arrivalLocation))
+			if(departureLocation.UnLocode.Equals(arrivalLocation.UnLocode))
 				throw new ArgumentException("Departure location and arrival location must not be equals.");
 			if(departureTime >= arrivalTime)
 				throw new ArgumentOutOfRangeException("arrivalTime", "Arrival time must follow the departure time.");

@@ -29,7 +29,7 @@ namespace Challenge00.DDDSample.Voyage
 	/// <summary>
 	/// A Voyage.  
 	/// </summary>
-	public interface IVoyage : IEquatable<IVoyage>
+	public interface IVoyage
 	{
 		/// <summary>
 		/// Voyage identification number. 

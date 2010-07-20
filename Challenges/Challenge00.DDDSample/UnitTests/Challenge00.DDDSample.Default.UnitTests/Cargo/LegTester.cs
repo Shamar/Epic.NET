@@ -50,7 +50,6 @@ namespace DefaultImplementation.Cargo
 			UnLocode code2 = new UnLocode("CODAB");
 			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
 			loc2.Expect(l => l.UnLocode).Return(code2).Repeat.Any();
-			loc1.Expect(l => l.Equals(loc2)).Return(false).Repeat.Any();
 			
 			voyage.Expect(v => v.WillStopOverAt(loc1)).Return(true).Repeat.AtLeastOnce();
 			voyage.Expect(v => v.WillStopOverAt(loc2)).Return(true).Repeat.AtLeastOnce();
@@ -116,15 +115,17 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_05()
 		{
 			// arrange:
+			UnLocode code = new UnLocode("UNCOD");
 			DateTime loadTime = DateTime.Now;
 			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
 			
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
 
 			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+			loc1.Expect(l => l.UnLocode).Return(code).Repeat.Any();
 
 			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
-			loc1.Expect(l => l.Equals(loc2)).Return(true).Repeat.Any();
+			loc2.Expect(l => l.UnLocode).Return(code).Repeat.Any();
 		
 			// assert:
 			Assert.Throws<ArgumentException>(delegate { new Leg(voyage, loc1, loadTime, loc2, unloadTime);});
@@ -135,14 +136,18 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_06()
 		{
 			// arrange:
+			UnLocode code1 = new UnLocode("UNFST");
+			UnLocode code2 = new UnLocode("UNSND");
 			DateTime loadTime = DateTime.Now;
 			DateTime unloadTime = loadTime;
 			
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
 
 			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+			loc1.Expect(l => l.UnLocode).Return(code1).Repeat.Any();
 
 			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
+			loc2.Expect(l => l.UnLocode).Return(code2).Repeat.Any();
 		
 			// assert:
 			Assert.Throws<ArgumentException>(delegate { new Leg(voyage, loc1, loadTime, loc2, unloadTime);});

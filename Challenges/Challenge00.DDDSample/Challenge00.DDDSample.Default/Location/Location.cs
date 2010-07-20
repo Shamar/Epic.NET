@@ -57,27 +57,6 @@ namespace Challenge00.DDDSample.Location
 			}
 		}
 		#endregion
-
-		#region IEquatable[Challenge00.DDDSample.Location.ILocation] implementation
-		public bool Equals (ILocation other)
-		{
-			if(object.ReferenceEquals(other, null))
-				return false;
-			if(object.ReferenceEquals(this, other))
-				return true;
-			return this.UnLocode.Equals(other.UnLocode);
-		}
-		#endregion
-		
-		public override bool Equals (object obj)
-		{
-			return Equals (obj as ILocation);
-		}	
-		
-		public override int GetHashCode ()
-		{
-			return _identifier.GetHashCode();
-		}
 	}
 }
 

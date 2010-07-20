@@ -378,73 +378,7 @@ namespace DefaultImplementation.Voyage
 			location.VerifyAllExpectations();
 		}
 		
-		[Test]
-		public void Test_Equals_01()
-		{
-			// arrange:
-			VoyageNumber number = new VoyageNumber("VYG01");
-			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
-		
-			// act:
-			Challenge00.DDDSample.Voyage.Voyage voyage = new Challenge00.DDDSample.Voyage.Voyage(number, schedule);
-			bool equals = voyage.Equals(voyage);
-		
-			// assert:
-			Assert.IsTrue(equals);
-		}
-		
-		[Test]
-		public void Test_Equals_02()
-		{
-			// arrange:
-			VoyageNumber number = new VoyageNumber("VYG01");
-			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 
-			// act:
-			Challenge00.DDDSample.Voyage.Voyage voyage = new Challenge00.DDDSample.Voyage.Voyage(number, schedule);
-			bool equals = voyage.Equals(null);
-		
-			// assert:
-			Assert.IsFalse(equals);
-		}
-		
-		[Test]
-		public void Test_Equals_03()
-		{
-			// arrange:
-			VoyageNumber number = new VoyageNumber("VYG01");
-			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
-
-			// act:
-			Challenge00.DDDSample.Voyage.Voyage voyage1 = new Challenge00.DDDSample.Voyage.Voyage(number, schedule);
-			Challenge00.DDDSample.Voyage.Voyage voyage2 = new Challenge00.DDDSample.Voyage.Voyage(number, schedule);
-			bool equals = voyage1.Equals(voyage2);
-		
-			// assert:
-			Assert.IsTrue(equals);
-		}
-		
-		[Test]
-		public void Test_Equals_04()
-		{
-			// arrange:
-			VoyageNumber number1 = new VoyageNumber("VYG01");
-			VoyageNumber number2 = new VoyageNumber("VYG02");
-			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
-			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
-
-			// act:
-			Challenge00.DDDSample.Voyage.Voyage voyage1 = new Challenge00.DDDSample.Voyage.Voyage(number1, schedule);
-			Challenge00.DDDSample.Voyage.Voyage voyage2 = new Challenge00.DDDSample.Voyage.Voyage(number2, schedule);
-			bool equals = voyage1.Equals(voyage2);
-		
-			// assert:
-			Assert.IsFalse(equals);
-		}
-		
 		
 		[TestCase(true)]
 		[TestCase(false)]

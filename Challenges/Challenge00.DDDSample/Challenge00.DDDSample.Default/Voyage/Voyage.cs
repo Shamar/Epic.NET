@@ -150,17 +150,6 @@ namespace Challenge00.DDDSample.Voyage
 		}
 		
 		#endregion
-
-		#region IEquatable[Challenge00.DDDSample.Voyage.IVoyage] implementation
-		public bool Equals (IVoyage other)
-		{
-			if(object.ReferenceEquals(other, null))
-				return false;
-			if(object.ReferenceEquals(this, other))
-				return true;
-			return CurrentState.Number.Equals(other.Number);
-		}
-		#endregion
 	}
 }
 

@@ -77,7 +77,7 @@ namespace Challenge00.DDDSample.Cargo
 	/// what the current status of the cargo is (on board carrier, in port etc), are captured in this aggregate. 
 	/// <para>
 	/// </remarks>
-	public interface ICargo : IEquatable<ICargo>
+	public interface ICargo
 	{
 		/// <summary>
 		/// Cargo identifier. 

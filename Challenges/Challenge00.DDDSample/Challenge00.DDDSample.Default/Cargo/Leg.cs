@@ -46,8 +46,8 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("loadLocation");
 			if(null == unloadLocation)
 				throw new ArgumentNullException("unloadLocation");
-			if(loadLocation.Equals(unloadLocation))
-				throw new ArgumentException("The locations must not be equal.", "unloadLocation");
+			if(loadLocation.UnLocode.Equals(unloadLocation.UnLocode))
+				throw new ArgumentException("The locations must not be differents.", "unloadLocation");
 			if(!voyage.WillStopOverAt(loadLocation))
 			{
 				string message = string.Format("The voyage {0} will not stop over the load location {1}.", voyage.Number, loadLocation.UnLocode);
