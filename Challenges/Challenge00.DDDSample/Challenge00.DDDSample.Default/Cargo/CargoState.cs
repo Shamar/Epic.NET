@@ -26,10 +26,10 @@ using Challenge00.DDDSample.Shared;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
-	public abstract class CargoState
+	public class CargoState
 	{
 		private readonly DateTime _creationDate;
-		protected CargoState (TrackingId identifier, IRouteSpecification routeSpecification)
+		public CargoState (TrackingId identifier, IRouteSpecification routeSpecification)
 		{
 			if(null == identifier)
 				throw new ArgumentNullException("identifier");
@@ -37,7 +37,18 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("routeSpecification");
 			this.Identifier = identifier;
 			this.RouteSpecification = routeSpecification;
-			this._creationDate = DateTime.Now;
+		}
+		
+		protected CargoState (CargoState previousState, IItinerary newItinerary)
+		{
+		}
+		
+		protected CargoState (CargoState previousState, IRouteSpecification newRoute)
+		{
+		}
+		
+		protected CargoState (CargoState previousState, IDelivery newDelivery)
+		{
 		}
 		
 		public readonly TrackingId Identifier;
@@ -50,12 +61,12 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
 		{
-			throw new NotImplementedException ();
+			return new CargoState(this, routeSpecification);
 		}
 
 		public CargoState AssignToRoute (IItinerary itinerary)
 		{
-			throw new NotImplementedException ();
+			return new CargoState(this, routeSpecification);
 		}
 
 		public CargoState Recieve (Location.ILocation location, DateTime date)
