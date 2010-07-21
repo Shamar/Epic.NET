@@ -51,6 +51,7 @@
     <Compile Include="Cargo\Leg.cs" />
     <Compile Include="Cargo\Itinerary.cs" />
     <Compile Include="Cargo\RouteSpecification.cs" />
+    <Compile Include="Cargo\CargoState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
