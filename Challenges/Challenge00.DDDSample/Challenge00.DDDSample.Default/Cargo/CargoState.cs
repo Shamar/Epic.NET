@@ -41,6 +41,12 @@ namespace Challenge00.DDDSample.Cargo
 		
 		protected CargoState (CargoState previousState, IItinerary newItinerary)
 		{
+			if(!previousState.RouteSpecification.IsSatisfiedBy(newItinerary))
+			{
+				string message = string.Format("The itinerary provided do not satisfy the route of {0}.", Identifier);
+				throw new ArgumentException(message, "itinerary");
+			}
+			
 		}
 		
 		protected CargoState (CargoState previousState, IRouteSpecification newRoute)
@@ -59,37 +65,37 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public readonly IDelivery Delivery;
 		
-		public CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
+		public virtual CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
 		{
 			return new CargoState(this, routeSpecification);
 		}
 
-		public CargoState AssignToRoute (IItinerary itinerary)
+		public virtual CargoState AssignToRoute (IItinerary itinerary)
 		{
 			return new CargoState(this, routeSpecification);
 		}
 
-		public CargoState Recieve (Location.ILocation location, DateTime date)
+		public virtual CargoState Recieve (Location.ILocation location, DateTime date)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public CargoState ClearCustoms (Location.ILocation location, DateTime date)
+		public virtual CargoState ClearCustoms (Location.ILocation location, DateTime date)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public CargoState Claim (Location.ILocation location, DateTime date)
+		public virtual CargoState Claim (Location.ILocation location, DateTime date)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public CargoState LoadOn (Voyage.IVoyage voyage, DateTime date)
+		public virtual CargoState LoadOn (Voyage.IVoyage voyage, DateTime date)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public CargoState Unload (Voyage.IVoyage voyage, DateTime date)
+		public virtual CargoState Unload (Voyage.IVoyage voyage, DateTime date)
 		{
 			throw new NotImplementedException ();
 		}
