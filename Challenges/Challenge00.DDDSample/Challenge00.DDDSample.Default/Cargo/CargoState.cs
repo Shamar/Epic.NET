@@ -26,11 +26,21 @@ using Challenge00.DDDSample.Shared;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
-	public abstract class CargoState : IDelivery
+	public abstract class CargoState : IDelivery, IEquatable<CargoState>
 	{
 		private readonly DateTime _calculationDate;
 		private readonly RoutingStatus _routingStatus;
 		private readonly DateTime? _estimatedTimeOfArrival;
+		
+		protected CargoState (CargoState previousState)
+		{
+			_calculationDate = DateTime.UtcNow;
+			_routingStatus = previousState.RoutingStatus;
+			_estimatedTimeOfArrival = previousState.EstimatedTimeOfArrival;
+			this.Identifier = previousState.Identifier;
+			this.RouteSpecification = previousState.RouteSpecification;
+			this.Itinerary = previousState.Itinerary;
+		}
 		
 		protected CargoState (TrackingId identifier, IRouteSpecification routeSpecification)
 		{
@@ -38,10 +48,12 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("identifier");
 			if(null == routeSpecification)
 				throw new ArgumentNullException("routeSpecification");
+			
+			_calculationDate = DateTime.UtcNow;
+			
 			this.Identifier = identifier;
 			this.RouteSpecification = routeSpecification;
 			_routingStatus = RoutingStatus.NotRouted;
-			_calculationDate = DateTime.UtcNow;
 			_estimatedTimeOfArrival = null;
 		}
 		
@@ -61,7 +73,7 @@ namespace Challenge00.DDDSample.Cargo
 			: this(previousState.Identifier, newRoute)
 		{
 			this.Itinerary = previousState.Itinerary;
-			if(newRoute.IsSatisfiedBy(previousState.Itinerary))
+			if(null != this.Itinerary && newRoute.IsSatisfiedBy(previousState.Itinerary))
 			{
 				_routingStatus = RoutingStatus.Routed;
 				_estimatedTimeOfArrival = this.Itinerary.FinalArrivalDate;
@@ -136,10 +148,49 @@ namespace Challenge00.DDDSample.Cargo
 		#region IEquatable[Challenge00.DDDSample.Cargo.IDelivery] implementation
 		public bool Equals (IDelivery other)
 		{
-			throw new NotImplementedException ();
+			if(null == other)
+				return false;
+			if(object.ReferenceEquals(this, other))
+				return true;
+			if(!_calculationDate.Equals(other.CalculationDate))
+				return false;
+			if(!CurrentVoyage.Equals(other.CurrentVoyage))
+				return false;
+			if(!LastKnownLocation.Equals(other.LastKnownLocation))
+				return false;
+			if(TransportStatus != other.TransportStatus)
+				return false;
+			if(_routingStatus != other.RoutingStatus)
+				return false;
+			if(IsUnloadedAtDestination != other.IsUnloadedAtDestination)
+				return false;
+			if(EstimatedTimeOfArrival.HasValue != other.EstimatedTimeOfArrival.HasValue)
+				return false;
+			if(EstimatedTimeOfArrival.HasValue && EstimatedTimeOfArrival.Value != other.EstimatedTimeOfArrival.Value)
+				return false;
+			return true;
 		}
+		
 		#endregion
 		
+		#region IEquatable[CargoState] implementation
+		
+		public virtual bool Equals (CargoState other)
+		{
+			if(! Equals(other as IDelivery))
+				return false;
+			if(object.ReferenceEquals(this, other))
+				return true;
+			if(!Identifier.Equals(other.Identifier))
+				return false;
+			if(!RouteSpecification.Equals(other.RouteSpecification))
+				return false;
+			if(!Itinerary.Equals(other.Itinerary))
+				return false;
+			return true;
+		}
+		
+		#endregion
 	}
 }
 
