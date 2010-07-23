@@ -26,10 +26,13 @@ using Challenge00.DDDSample.Shared;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
-	public class CargoState
+	public abstract class CargoState : IDelivery
 	{
-		private readonly DateTime _creationDate;
-		public CargoState (TrackingId identifier, IRouteSpecification routeSpecification)
+		private readonly DateTime _calculationDate;
+		private readonly RoutingStatus _routingStatus;
+		private readonly DateTime? _estimatedTimeOfArrival;
+		
+		protected CargoState (TrackingId identifier, IRouteSpecification routeSpecification)
 		{
 			if(null == identifier)
 				throw new ArgumentNullException("identifier");
@@ -37,24 +40,36 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("routeSpecification");
 			this.Identifier = identifier;
 			this.RouteSpecification = routeSpecification;
+			_routingStatus = RoutingStatus.NotRouted;
+			_calculationDate = DateTime.UtcNow;
+			_estimatedTimeOfArrival = null;
 		}
 		
 		protected CargoState (CargoState previousState, IItinerary newItinerary)
+			: this(previousState.Identifier, previousState.RouteSpecification)
 		{
 			if(!previousState.RouteSpecification.IsSatisfiedBy(newItinerary))
 			{
 				string message = string.Format("The itinerary provided do not satisfy the route of {0}.", Identifier);
 				throw new ArgumentException(message, "itinerary");
 			}
-			
+			Itinerary = newItinerary;
+			_routingStatus = RoutingStatus.Routed;
 		}
 		
 		protected CargoState (CargoState previousState, IRouteSpecification newRoute)
+			: this(previousState.Identifier, newRoute)
 		{
-		}
-		
-		protected CargoState (CargoState previousState, IDelivery newDelivery)
-		{
+			this.Itinerary = previousState.Itinerary;
+			if(newRoute.IsSatisfiedBy(previousState.Itinerary))
+			{
+				_routingStatus = RoutingStatus.Routed;
+				_estimatedTimeOfArrival = this.Itinerary.FinalArrivalDate;
+			}
+			else
+			{
+				_routingStatus = RoutingStatus.Misrouted;
+			}
 		}
 		
 		public readonly TrackingId Identifier;
@@ -63,42 +78,68 @@ namespace Challenge00.DDDSample.Cargo
 
 		public readonly IRouteSpecification RouteSpecification;
 		
-		public readonly IDelivery Delivery;
+		public abstract CargoState SpecifyNewRoute (IRouteSpecification routeSpecification);
 		
-		public virtual CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
+		public abstract CargoState AssignToRoute (IItinerary itinerary);
+
+		public abstract CargoState Recieve (Location.ILocation location, DateTime date);
+
+		public abstract CargoState ClearCustoms (Location.ILocation location, DateTime date);
+
+		public abstract CargoState Claim (Location.ILocation location, DateTime date);
+		
+		public abstract CargoState LoadOn (Voyage.IVoyage voyage, DateTime date);
+
+		public abstract CargoState Unload (Voyage.IVoyage voyage, DateTime date);
+
+		#region IDelivery implementation
+		
+		public DateTime CalculationDate 
 		{
-			return new CargoState(this, routeSpecification);
+			get 
+			{
+				return _calculationDate;
+			}
 		}
 
-		public virtual CargoState AssignToRoute (IItinerary itinerary)
+		public abstract Voyage.VoyageNumber CurrentVoyage  { get; }
+
+		public abstract Location.UnLocode LastKnownLocation { get; }
+
+		public abstract TransportStatus TransportStatus { get; }
+		
+		public DateTime? EstimatedTimeOfArrival 
 		{
-			return new CargoState(this, routeSpecification);
+			get 
+			{
+				return _estimatedTimeOfArrival;
+			}
 		}
 
-		public virtual CargoState Recieve (Location.ILocation location, DateTime date)
+		public virtual bool IsUnloadedAtDestination 
+		{
+			get 
+			{
+				return LastKnownLocation.Equals(Itinerary.FinalArrivalLocation);
+			}
+		}
+
+		public RoutingStatus RoutingStatus 
+		{
+			get 
+			{
+				return _routingStatus;
+			}
+		}
+		#endregion
+
+		#region IEquatable[Challenge00.DDDSample.Cargo.IDelivery] implementation
+		public bool Equals (IDelivery other)
 		{
 			throw new NotImplementedException ();
 		}
-
-		public virtual CargoState ClearCustoms (Location.ILocation location, DateTime date)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public virtual CargoState Claim (Location.ILocation location, DateTime date)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public virtual CargoState LoadOn (Voyage.IVoyage voyage, DateTime date)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public virtual CargoState Unload (Voyage.IVoyage voyage, DateTime date)
-		{
-			throw new NotImplementedException ();
-		}
+		#endregion
+		
 	}
 }
 

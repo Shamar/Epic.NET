@@ -35,7 +35,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// </summary>
 		NotRouted,
 		/// <summary>
-		/// Cargo is misrouted.
+		/// Cargo is misrouted. (assigned to an itinerary that do not satisfy the RouteSpecification)
 		/// </summary>
 		Misrouted,
 		/// <summary>
