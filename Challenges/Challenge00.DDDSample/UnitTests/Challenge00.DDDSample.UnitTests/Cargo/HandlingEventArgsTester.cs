@@ -35,7 +35,7 @@ namespace Contracts.Cargo
 		public void Test_Ctor_01 ()
 		{
 			// act:
-			new HandlingEventArgs(null, DateTime.Now);
+			new HandlingEventArgs(null, DateTime.UtcNow);
 		}
 		
 		[Test]
@@ -43,7 +43,7 @@ namespace Contracts.Cargo
 		{
 			// arrange:
 			IDelivery mDelivery = MockRepository.GenerateStrictMock<IDelivery>();
-			DateTime cTime = DateTime.Now;
+			DateTime cTime = DateTime.UtcNow;
 		
 			// act:
 			HandlingEventArgs args = new HandlingEventArgs(mDelivery, cTime);

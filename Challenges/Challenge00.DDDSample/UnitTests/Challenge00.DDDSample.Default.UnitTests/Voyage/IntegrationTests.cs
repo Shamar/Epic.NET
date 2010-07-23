@@ -49,8 +49,8 @@ namespace DefaultImplementation.Voyage
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
-			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
-			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.Now + TimeSpan.FromDays(3), loc3, DateTime.Now + TimeSpan.FromDays(4)));
+			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.UtcNow, loc2, DateTime.UtcNow + TimeSpan.FromDays(2)));
+			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.UtcNow + TimeSpan.FromDays(3), loc3, DateTime.UtcNow + TimeSpan.FromDays(4)));
 
 			VoyageNumber number = new VoyageNumber("TESTVYG");
 			VoyageEventArgs departedEvent = null;
@@ -95,8 +95,8 @@ namespace DefaultImplementation.Voyage
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
-			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
-			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.Now + TimeSpan.FromDays(3), loc3, DateTime.Now + TimeSpan.FromDays(4)));
+			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.UtcNow, loc2, DateTime.UtcNow + TimeSpan.FromDays(2)));
+			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.UtcNow + TimeSpan.FromDays(3), loc3, DateTime.UtcNow + TimeSpan.FromDays(4)));
 
 			VoyageNumber number = new VoyageNumber("TESTVYG");
 			VoyageEventArgs departedEvent = null;
@@ -144,8 +144,8 @@ namespace DefaultImplementation.Voyage
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
-			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
-			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.Now + TimeSpan.FromDays(3), loc3, DateTime.Now + TimeSpan.FromDays(4)));
+			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.UtcNow, loc2, DateTime.UtcNow + TimeSpan.FromDays(2)));
+			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.UtcNow + TimeSpan.FromDays(3), loc3, DateTime.UtcNow + TimeSpan.FromDays(4)));
 
 			VoyageNumber number = new VoyageNumber("TESTVYG");
 			VoyageEventArgs departedEvent = null;
@@ -194,8 +194,8 @@ namespace DefaultImplementation.Voyage
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
-			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
-			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.Now + TimeSpan.FromDays(3), loc3, DateTime.Now + TimeSpan.FromDays(4)));
+			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.UtcNow, loc2, DateTime.UtcNow + TimeSpan.FromDays(2)));
+			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.UtcNow + TimeSpan.FromDays(3), loc3, DateTime.UtcNow + TimeSpan.FromDays(4)));
 
 			VoyageNumber number = new VoyageNumber("TESTVYG");
 			VoyageEventArgs departedEvent = null;
@@ -245,8 +245,8 @@ namespace DefaultImplementation.Voyage
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
-			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
-			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.Now + TimeSpan.FromDays(3), loc3, DateTime.Now + TimeSpan.FromDays(4)));
+			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.UtcNow, loc2, DateTime.UtcNow + TimeSpan.FromDays(2)));
+			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.UtcNow + TimeSpan.FromDays(3), loc3, DateTime.UtcNow + TimeSpan.FromDays(4)));
 
 			VoyageNumber number = new VoyageNumber("TESTVYG");
 			VoyageEventArgs departedEvent = null;
@@ -297,8 +297,8 @@ namespace DefaultImplementation.Voyage
 			loc3.Expect(l => l.Name).Return("Third location").Repeat.Any();
 			
 			ISchedule schedule = new Schedule();
-			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.Now, loc2, DateTime.Now + TimeSpan.FromDays(2)));
-			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.Now + TimeSpan.FromDays(3), loc3, DateTime.Now + TimeSpan.FromDays(4)));
+			schedule = schedule.Append(new CarrierMovement(loc1, DateTime.UtcNow, loc2, DateTime.UtcNow + TimeSpan.FromDays(2)));
+			schedule = schedule.Append(new CarrierMovement(loc2, DateTime.UtcNow + TimeSpan.FromDays(3), loc3, DateTime.UtcNow + TimeSpan.FromDays(4)));
 
 			VoyageNumber number = new VoyageNumber("TESTVYG");
 			VoyageEventArgs departedEvent = null;

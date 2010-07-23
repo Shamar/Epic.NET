@@ -36,8 +36,8 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_01()
 		{
 			// arrange:
-			DateTime loadTime = DateTime.Now;
-			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			DateTime loadTime = DateTime.UtcNow;
+			DateTime unloadTime = DateTime.UtcNow + TimeSpan.FromDays(3);
 			
 			VoyageNumber voyageNumber = new VoyageNumber("VYGTEST");
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
@@ -69,8 +69,8 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_02()
 		{
 			// arrange:
-			DateTime loadTime = DateTime.Now;
-			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			DateTime loadTime = DateTime.UtcNow;
+			DateTime unloadTime = DateTime.UtcNow + TimeSpan.FromDays(3);
 			
 			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
 
@@ -84,8 +84,8 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_03()
 		{
 			// arrange:
-			DateTime loadTime = DateTime.Now;
-			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			DateTime loadTime = DateTime.UtcNow;
+			DateTime unloadTime = DateTime.UtcNow + TimeSpan.FromDays(3);
 			
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
 
@@ -99,8 +99,8 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_04()
 		{
 			// arrange:
-			DateTime loadTime = DateTime.Now;
-			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			DateTime loadTime = DateTime.UtcNow;
+			DateTime unloadTime = DateTime.UtcNow + TimeSpan.FromDays(3);
 			
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
 
@@ -116,8 +116,8 @@ namespace DefaultImplementation.Cargo
 		{
 			// arrange:
 			UnLocode code = new UnLocode("UNCOD");
-			DateTime loadTime = DateTime.Now;
-			DateTime unloadTime = DateTime.Now + TimeSpan.FromDays(3);
+			DateTime loadTime = DateTime.UtcNow;
+			DateTime unloadTime = DateTime.UtcNow + TimeSpan.FromDays(3);
 			
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
 
@@ -138,7 +138,7 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			UnLocode code1 = new UnLocode("UNFST");
 			UnLocode code2 = new UnLocode("UNSND");
-			DateTime loadTime = DateTime.Now;
+			DateTime loadTime = DateTime.UtcNow;
 			DateTime unloadTime = loadTime;
 			
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
@@ -161,7 +161,7 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			UnLocode code1 = new UnLocode("UNFST");
 			UnLocode code2 = new UnLocode("UNSND");
-			DateTime loadTime = DateTime.Now;
+			DateTime loadTime = DateTime.UtcNow;
 			DateTime unloadTime = loadTime - TimeSpan.FromDays(1);
 			
 			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
@@ -184,7 +184,7 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			UnLocode code1 = new UnLocode("UNFST");
 			UnLocode code2 = new UnLocode("UNSND");
-			DateTime loadTime = DateTime.Now;
+			DateTime loadTime = DateTime.UtcNow;
 			DateTime unloadTime = loadTime + TimeSpan.FromDays(1);
 			
 			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
@@ -210,7 +210,7 @@ namespace DefaultImplementation.Cargo
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("UNFST");
-			DateTime loadTime = DateTime.Now;
+			DateTime loadTime = DateTime.UtcNow;
 			DateTime unloadTime = loadTime + TimeSpan.FromDays(1);
 			
 			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();

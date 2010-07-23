@@ -84,10 +84,10 @@ namespace DefaultImplementation.Voyage
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
-			m1.Expect(m => m.ArrivalTime).Return(DateTime.Now + new TimeSpan(48, 0, 0)).Repeat.Any();
+			m1.Expect(m => m.ArrivalTime).Return(DateTime.UtcNow + new TimeSpan(48, 0, 0)).Repeat.Any();
 			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m2.Expect(m => m.DepartureLocation).Return(c2).Repeat.Any();
-			m2.Expect(m => m.DepartureTime).Return(DateTime.Now + new TimeSpan(72, 0, 0)).Repeat.Any();
+			m2.Expect(m => m.DepartureTime).Return(DateTime.UtcNow + new TimeSpan(72, 0, 0)).Repeat.Any();
 			ISchedule empty = new Schedule();
 			ISchedule schedule1 = empty.Append(m1);
 		
@@ -115,10 +115,10 @@ namespace DefaultImplementation.Voyage
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
-			m1.Expect(m => m.ArrivalTime).Return(DateTime.Now + new TimeSpan(48, 0, 0)).Repeat.Any();
+			m1.Expect(m => m.ArrivalTime).Return(DateTime.UtcNow + new TimeSpan(48, 0, 0)).Repeat.Any();
 			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m2.Expect(m => m.DepartureLocation).Return(c2).Repeat.Any();
-			m2.Expect(m => m.DepartureTime).Return(DateTime.Now + new TimeSpan(72, 0, 0)).Repeat.Any();
+			m2.Expect(m => m.DepartureTime).Return(DateTime.UtcNow + new TimeSpan(72, 0, 0)).Repeat.Any();
 			ISchedule empty = new Schedule();
 			ISchedule schedule1 = empty.Append(m1);
 		
@@ -136,10 +136,10 @@ namespace DefaultImplementation.Voyage
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
-			m1.Expect(m => m.ArrivalTime).Return(DateTime.Now + new TimeSpan(48, 0, 0)).Repeat.Any();
+			m1.Expect(m => m.ArrivalTime).Return(DateTime.UtcNow + new TimeSpan(48, 0, 0)).Repeat.Any();
 			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m2.Expect(m => m.DepartureLocation).Return(c2).Repeat.Any();
-			m2.Expect(m => m.DepartureTime).Return(DateTime.Now).Repeat.Any();
+			m2.Expect(m => m.DepartureTime).Return(DateTime.UtcNow).Repeat.Any();
 			ISchedule empty = new Schedule();
 			ISchedule schedule1 = empty.Append(m1);
 		

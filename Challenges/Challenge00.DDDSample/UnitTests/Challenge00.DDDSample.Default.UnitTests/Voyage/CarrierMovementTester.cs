@@ -38,11 +38,11 @@ namespace DefaultImplementation.Voyage
 			UnLocode dpLocode = new UnLocode("DPLOC");
 			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			dpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
 			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
 			arLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 		
 			// act:
 			ICarrierMovement target = new CarrierMovement(dpLocation, dpTime, arLocation, arTime);
@@ -62,8 +62,8 @@ namespace DefaultImplementation.Voyage
 		{
 			// arrange:
 			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			
 			// act:
 			new CarrierMovement(dpLocation, dpTime, null, arTime);
@@ -75,8 +75,8 @@ namespace DefaultImplementation.Voyage
 		{
 			// arrange:
 			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			
 			// act:
 			new CarrierMovement(null, dpTime, arLocation, arTime);
@@ -91,7 +91,7 @@ namespace DefaultImplementation.Voyage
 			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			dpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
 			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
 			arLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
 			DateTime arTime = dpTime;
@@ -111,7 +111,7 @@ namespace DefaultImplementation.Voyage
 			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
 			dpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
 			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
 			arLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
 			DateTime arTime = dpTime - new TimeSpan(48,0,0);
@@ -129,8 +129,8 @@ namespace DefaultImplementation.Voyage
 			// arrange:
 			UnLocode arLocode = new UnLocode("ARLOC");
 			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			arLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
 			
 			// act:
@@ -147,8 +147,8 @@ namespace DefaultImplementation.Voyage
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
 			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.AtLeastOnce();
@@ -178,8 +178,8 @@ namespace DefaultImplementation.Voyage
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
 			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
@@ -206,8 +206,8 @@ namespace DefaultImplementation.Voyage
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
 			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			mock.Expect(m => m.DepartureLocation).Return(new UnLocode("DPNEW")).Repeat.Once();
@@ -233,8 +233,8 @@ namespace DefaultImplementation.Voyage
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
 			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
@@ -264,8 +264,8 @@ namespace DefaultImplementation.Voyage
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
 			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
@@ -294,8 +294,8 @@ namespace DefaultImplementation.Voyage
 			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
 			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
 			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
-			DateTime dpTime = DateTime.Now - new TimeSpan(48,0,0);
-			DateTime arTime = DateTime.Now + new TimeSpan(48,0,0);
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
 			
 			ICarrierMovement mock = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			mock.Expect(m => m.DepartureLocation).Return(dpLocode).Repeat.Once();
