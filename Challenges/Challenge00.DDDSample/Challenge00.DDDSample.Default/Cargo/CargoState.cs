@@ -187,6 +187,8 @@ namespace Challenge00.DDDSample.Cargo
 				return false;
 			if(!Itinerary.Equals(other.Itinerary))
 				return false;
+			if(!this.GetType().Equals(other.GetType()))
+			    return false;
 			return true;
 		}
 		

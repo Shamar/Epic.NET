@@ -47,7 +47,7 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			if(null == routeSpecification)
 				throw new ArgumentNullException("routeSpecification");
-			return NewCargo(this, routeSpecification);
+			return new NewCargo(this, routeSpecification);
 		}
 		
 		
@@ -55,7 +55,7 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			if(null == itinerary)
 				throw new ArgumentNullException("itinerary");
-			return NewCargo(this, itinerary);
+			return new NewCargo(this, itinerary);
 		}
 		
 		
@@ -63,6 +63,7 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			if(null == location)
 				throw new ArgumentNullException("location");
+			return new InPortCargo(this, location, date);
 		}
 		
 		

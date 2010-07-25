@@ -60,7 +60,7 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			if(null == routeSpecification)
 				throw new ArgumentNullException("routeSpecification");
-			return InPortCargo(this, routeSpecification);
+			return new InPortCargo(this, routeSpecification);
 		}
 		
 		
@@ -68,7 +68,7 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			if(null == itinerary)
 				throw new ArgumentNullException("itinerary");
-			return InPortCargo(this, itinerary);
+			return new InPortCargo(this, itinerary);
 		}
 		
 		public override CargoState Recieve (ILocation location, DateTime date)
@@ -145,6 +145,16 @@ namespace Challenge00.DDDSample.Cargo
 		}
 		
 		#endregion
+		
+		public override bool Equals (CargoState other)
+		{
+			if(!base.Equals (other))
+				return false;
+			InPortCargo cargo = other as InPortCargo;
+			if(!_customCleared.Equals(cargo._customCleared))
+				return false;
+			return true;
+		}
 	}
 }
 
