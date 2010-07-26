@@ -41,8 +41,11 @@ namespace DefaultImplementation.Cargo
 			NewCargo state = new NewCargo(id, specification);
 		
 			// assert:
+			Assert.IsTrue(state.Equals(state));
+			Assert.IsFalse(state.Equals(null));
 			Assert.AreSame(id, state.Identifier);
 			Assert.AreSame(specification, state.RouteSpecification);
+			Assert.IsNull(state.LastKnownLocation);
 			Assert.IsNull(state.Itinerary);
 			Assert.IsNull(state.CurrentVoyage);
 			Assert.IsNull(state.EstimatedTimeOfArrival);
@@ -80,6 +83,7 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false);
 			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
 			NewCargo state = new NewCargo(id, specification);
@@ -89,6 +93,8 @@ namespace DefaultImplementation.Cargo
 		
 			// assert:
 			Assert.IsNotNull(newState);
+			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			Assert.AreEqual(RoutingStatus.Routed, newState.RoutingStatus);
 			Assert.AreSame(itinerary, newState.Itinerary);
 			Assert.AreNotSame(state, newState);
 			Assert.IsFalse(state.Equals(newState));
@@ -103,6 +109,7 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false);
 			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(false).Repeat.Once();
 			NewCargo state = new NewCargo(id, specification);
@@ -113,6 +120,117 @@ namespace DefaultImplementation.Cargo
 			// assert:
 			itinerary.VerifyAllExpectations();
 			specification.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_SpecifyNewRoute_01()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			NewCargo state = new NewCargo(id, specification);
+			IRouteSpecification specification2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.Equals(specification2)).Return(false).Repeat.Any();
+			specification2.Expect(s => s.Equals(specification)).Return(false).Repeat.Any();
+		
+			// act:
+			CargoState newState = state.SpecifyNewRoute(specification2);
+		
+			// assert:
+			Assert.IsNotNull(newState);
+			Assert.AreNotSame(state, newState);
+			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			Assert.AreEqual(RoutingStatus.NotRouted, newState.RoutingStatus);
+			Assert.AreSame(specification2, newState.RouteSpecification);
+			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			specification.VerifyAllExpectations();
+			specification2.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_SpecifyNewRoute_02()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			IRouteSpecification specification2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.Equals(specification2)).Return(true).Repeat.Any();
+			specification2.Expect(s => s.Equals(specification)).Return(true).Repeat.Any();
+			NewCargo state = new NewCargo(id, specification);
+		
+			// act:
+			CargoState newState = state.SpecifyNewRoute(specification2);
+		
+			// assert:
+			Assert.IsNotNull(newState);
+			Assert.AreSame(state, newState);
+			specification.VerifyAllExpectations();
+			specification2.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_SpecifyNewRoute_03()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			IRouteSpecification specification2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.Equals(specification2)).Return(false).Repeat.Any();
+			specification2.Expect(s => s.Equals(specification)).Return(false).Repeat.Any();
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false);
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1));
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
+			specification2.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
+			CargoState state = new NewCargo(id, specification);
+			state = state.AssignToRoute(itinerary);
+		
+			// act:
+			CargoState newState = state.SpecifyNewRoute(specification2);
+		
+			// assert:
+			Assert.IsNotNull(newState);
+			Assert.AreNotSame(state, newState);
+			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			Assert.AreEqual(RoutingStatus.Routed, newState.RoutingStatus);
+			Assert.AreSame(specification2, newState.RouteSpecification);
+			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			specification.VerifyAllExpectations();
+			specification2.VerifyAllExpectations();
+			itinerary.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_SpecifyNewRoute_04()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			IRouteSpecification specification2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.Equals(specification2)).Return(false).Repeat.Any();
+			specification2.Expect(s => s.Equals(specification)).Return(false).Repeat.Any();
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false);
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
+			specification2.Expect(s => s.IsSatisfiedBy(itinerary)).Return(false).Repeat.Once();
+			CargoState state = new NewCargo(id, specification);
+			state = state.AssignToRoute(itinerary);
+		
+			// act:
+			CargoState newState = state.SpecifyNewRoute(specification2);
+		
+			// assert:
+			Assert.IsNotNull(newState);
+			Assert.AreNotSame(state, newState);
+			Assert.IsFalse(state.Equals(newState));
+			Assert.IsFalse(newState.Equals(state));
+			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			Assert.AreEqual(RoutingStatus.Misrouted, newState.RoutingStatus);
+			Assert.AreSame(specification2, newState.RouteSpecification);
+			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			specification.VerifyAllExpectations();
+			specification2.VerifyAllExpectations();
+			itinerary.VerifyAllExpectations();
 		}
 	}
 }

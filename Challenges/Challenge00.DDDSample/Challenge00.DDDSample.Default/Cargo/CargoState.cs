@@ -73,14 +73,17 @@ namespace Challenge00.DDDSample.Cargo
 			: this(previousState.Identifier, newRoute)
 		{
 			this.Itinerary = previousState.Itinerary;
-			if(null != this.Itinerary && newRoute.IsSatisfiedBy(previousState.Itinerary))
+			if(null != this.Itinerary)
 			{
-				_routingStatus = RoutingStatus.Routed;
-				_estimatedTimeOfArrival = this.Itinerary.FinalArrivalDate;
-			}
-			else
-			{
-				_routingStatus = RoutingStatus.Misrouted;
+				if(this.RouteSpecification.IsSatisfiedBy(this.Itinerary))
+				{
+					_routingStatus = RoutingStatus.Routed;
+					_estimatedTimeOfArrival = this.Itinerary.FinalArrivalDate;
+				}
+				else
+				{
+					_routingStatus = RoutingStatus.Misrouted;
+				}
 			}
 		}
 		
@@ -193,6 +196,11 @@ namespace Challenge00.DDDSample.Cargo
 		}
 		
 		#endregion
+		
+		public override string ToString ()
+		{
+			return string.Format ("[{7}: CalculationDate={0}, CurrentVoyage={1}, LastKnownLocation={2}, TransportStatus={3}, EstimatedTimeOfArrival={4}, IsUnloadedAtDestination={5}, RoutingStatus={6}]", CalculationDate, CurrentVoyage, LastKnownLocation, TransportStatus, EstimatedTimeOfArrival, IsUnloadedAtDestination, RoutingStatus, GetType().Name);
+		}
 	}
 }
 
