@@ -74,6 +74,7 @@
     <Compile Include="Cargo\LegTester.cs" />
     <Compile Include="Cargo\ItineraryTester.cs" />
     <Compile Include="Cargo\RouteSpecificationTester.cs" />
+    <Compile Include="Cargo\NewCargoTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

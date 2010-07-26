@@ -132,7 +132,7 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			get 
 			{
-				return LastKnownLocation.Equals(Itinerary.FinalArrivalLocation);
+				return false;
 			}
 		}
 
@@ -154,7 +154,7 @@ namespace Challenge00.DDDSample.Cargo
 				return true;
 			if(!_calculationDate.Equals(other.CalculationDate))
 				return false;
-			if(!CurrentVoyage.Equals(other.CurrentVoyage))
+			if(object.ReferenceEquals(null, CurrentVoyage) || !CurrentVoyage.Equals(other.CurrentVoyage))
 				return false;
 			if(!LastKnownLocation.Equals(other.LastKnownLocation))
 				return false;

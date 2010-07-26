@@ -45,32 +45,24 @@ namespace Challenge00.DDDSample.Cargo
 		#region implemented abstract members of Challenge00.DDDSample.Cargo.CargoState
 		public override CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
 		{
-			if(null == routeSpecification)
-				throw new ArgumentNullException("routeSpecification");
 			return new NewCargo(this, routeSpecification);
 		}
 		
 		
 		public override CargoState AssignToRoute (IItinerary itinerary)
 		{
-			if(null == itinerary)
-				throw new ArgumentNullException("itinerary");
 			return new NewCargo(this, itinerary);
 		}
 		
 		
 		public override CargoState Recieve (Challenge00.DDDSample.Location.ILocation location, DateTime date)
 		{
-			if(null == location)
-				throw new ArgumentNullException("location");
 			return new InPortCargo(this, location, date);
 		}
 		
 		
 		public override CargoState ClearCustoms (Challenge00.DDDSample.Location.ILocation location, DateTime date)
 		{
-			if(null == location)
-				throw new ArgumentNullException("location");
 			string message = string.Format("Can not clear customs for the {0} cargo, since it's not yet recieved.", Identifier);
 			throw new System.InvalidOperationException(message);
 		}
@@ -78,8 +70,6 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public override CargoState Claim (Challenge00.DDDSample.Location.ILocation location, DateTime date)
 		{
-			if(null == location)
-				throw new ArgumentNullException("location");
 			string message = string.Format("Can not claim the {0} cargo, since it's not yet recieved.", Identifier);
 			throw new System.InvalidOperationException(message);
 		}
@@ -87,8 +77,6 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public override CargoState LoadOn (Challenge00.DDDSample.Voyage.IVoyage voyage, DateTime date)
 		{
-			if(null == voyage)
-				throw new ArgumentNullException("voyage");
 			string message = string.Format("Can not load the {0} cargo on the {1} voyage, since it's not yet recieved.", Identifier, voyage.Number);
 			throw new System.InvalidOperationException(message);
 		}
@@ -96,8 +84,6 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public override CargoState Unload (Challenge00.DDDSample.Voyage.IVoyage voyage, DateTime date)
 		{
-			if(null == voyage)
-				throw new ArgumentNullException("voyage");
 			string message = string.Format("Can not unload the {0} cargo from the {1} voyage, since it's not yet recieved.", Identifier, voyage.Number);
 			throw new System.InvalidOperationException(message);
 		}
