@@ -36,10 +36,13 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			_calculationDate = DateTime.UtcNow;
 			_routingStatus = previousState.RoutingStatus;
-			_estimatedTimeOfArrival = previousState.EstimatedTimeOfArrival;
 			this.Identifier = previousState.Identifier;
 			this.RouteSpecification = previousState.RouteSpecification;
 			this.Itinerary = previousState.Itinerary;
+			if(_routingStatus == RoutingStatus.Routed)
+				_estimatedTimeOfArrival = this.Itinerary.FinalArrivalDate;
+			else
+				_estimatedTimeOfArrival = null;
 		}
 		
 		protected CargoState (TrackingId identifier, IRouteSpecification routeSpecification)

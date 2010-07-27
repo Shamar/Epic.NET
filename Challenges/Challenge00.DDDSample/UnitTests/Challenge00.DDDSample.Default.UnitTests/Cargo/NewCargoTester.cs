@@ -268,9 +268,9 @@ namespace DefaultImplementation.Cargo
 			ILocation location = MockRepository.GenerateMock<ILocation>();
 			location.Expect(l => l.UnLocode).Return(code).Repeat.AtLeastOnce();
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
-			itinerary.Expect(i => i.InitialDepartureLocation).Return(code);
-			itinerary.Expect(i => i.Equals(null)).Return(false);
-			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1));
+			itinerary.Expect(i => i.InitialDepartureLocation).Return(code).Repeat.AtLeastOnce();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Any();
 			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
 			CargoState state = new NewCargo(id, specification);
 			state = state.AssignToRoute(itinerary);
@@ -282,7 +282,51 @@ namespace DefaultImplementation.Cargo
 			Assert.IsNotNull(newState);
 			Assert.IsInstanceOf<InPortCargo>(newState);
 			Assert.AreSame(code, newState.LastKnownLocation);
+			Assert.IsTrue(newState.EstimatedTimeOfArrival.HasValue);
 			Assert.IsTrue(TransportStatus.InPort == newState.TransportStatus);
+			location.VerifyAllExpectations();
+			itinerary.VerifyAllExpectations();
+			specification.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Recieve_02()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			UnLocode start = new UnLocode("START");
+			UnLocode other = new UnLocode("OTHER");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			ILocation location = MockRepository.GenerateMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(other).Repeat.AtLeastOnce();
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.InitialDepartureLocation).Return(start).Repeat.AtLeastOnce();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Any();
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
+			CargoState state = new NewCargo(id, specification);
+			state = state.AssignToRoute(itinerary);
+		
+			// assert:
+			Assert.Throws<ArgumentException>(delegate {state.Recieve(location, DateTime.UtcNow);});
+			location.VerifyAllExpectations();
+			itinerary.VerifyAllExpectations();
+			specification.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Recieve_03()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			ILocation location = MockRepository.GenerateMock<ILocation>();
+			CargoState state = new NewCargo(id, specification);
+		
+			// assert:
+			Assert.Throws<InvalidOperationException>(delegate {state.Recieve(location, DateTime.UtcNow);});
+			location.VerifyAllExpectations();
+			specification.VerifyAllExpectations();
 		}
 		
 		[Test]

@@ -74,6 +74,11 @@ namespace Challenge00.DDDSample.Cargo
 				}
 				throw new InvalidOperationException(message);
 			}
+			if(!this.Itinerary.InitialDepartureLocation.Equals(location.UnLocode))
+			{
+				string message = string.Format("Can not recieve cargo {0} at {1}. The planned route start from {2}.", Identifier, location.UnLocode, Itinerary.InitialDepartureLocation);
+				throw new ArgumentException();
+			}
 			return new InPortCargo(this, location, date);
 		}
 		
