@@ -25,6 +25,8 @@ using System;
 using NUnit.Framework;
 using Challenge00.DDDSample.Cargo;
 using Rhino.Mocks;
+using Challenge00.DDDSample.Location;
+using Challenge00.DDDSample.Voyage;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture]
@@ -93,7 +95,7 @@ namespace DefaultImplementation.Cargo
 		
 			// assert:
 			Assert.IsNotNull(newState);
-			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			Assert.IsTrue(state.CalculationDate <= newState.CalculationDate);
 			Assert.AreEqual(RoutingStatus.Routed, newState.RoutingStatus);
 			Assert.AreSame(itinerary, newState.Itinerary);
 			Assert.AreNotSame(state, newState);
@@ -139,10 +141,9 @@ namespace DefaultImplementation.Cargo
 			// assert:
 			Assert.IsNotNull(newState);
 			Assert.AreNotSame(state, newState);
-			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
 			Assert.AreEqual(RoutingStatus.NotRouted, newState.RoutingStatus);
 			Assert.AreSame(specification2, newState.RouteSpecification);
-			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			Assert.IsTrue(state.CalculationDate <= newState.CalculationDate);
 			specification.VerifyAllExpectations();
 			specification2.VerifyAllExpectations();
 		}
@@ -191,10 +192,9 @@ namespace DefaultImplementation.Cargo
 			// assert:
 			Assert.IsNotNull(newState);
 			Assert.AreNotSame(state, newState);
-			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
 			Assert.AreEqual(RoutingStatus.Routed, newState.RoutingStatus);
 			Assert.AreSame(specification2, newState.RouteSpecification);
-			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			Assert.IsTrue(state.CalculationDate <= newState.CalculationDate);
 			specification.VerifyAllExpectations();
 			specification2.VerifyAllExpectations();
 			itinerary.VerifyAllExpectations();
@@ -224,13 +224,91 @@ namespace DefaultImplementation.Cargo
 			Assert.AreNotSame(state, newState);
 			Assert.IsFalse(state.Equals(newState));
 			Assert.IsFalse(newState.Equals(state));
-			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
 			Assert.AreEqual(RoutingStatus.Misrouted, newState.RoutingStatus);
 			Assert.AreSame(specification2, newState.RouteSpecification);
-			Assert.IsTrue(state.CalculationDate < newState.CalculationDate);
+			Assert.IsTrue(state.CalculationDate <= newState.CalculationDate);
 			specification.VerifyAllExpectations();
 			specification2.VerifyAllExpectations();
 			itinerary.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_ClearCustoms_01()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			ILocation location = MockRepository.GenerateMock<ILocation>();
+			CargoState state = new NewCargo(id, specification);
+		
+			// assert:
+			Assert.Throws<InvalidOperationException>(delegate { state.ClearCustoms(location, DateTime.Now); });
+		}
+		
+		[Test]
+		public void Test_Claim_01()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			ILocation location = MockRepository.GenerateMock<ILocation>();
+			CargoState state = new NewCargo(id, specification);
+		
+			// assert:
+			Assert.Throws<InvalidOperationException>(delegate { state.Claim(location, DateTime.Now); });
+		}
+		
+		[Test]
+		public void Test_Recieve_01()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			UnLocode code = new UnLocode("START");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			ILocation location = MockRepository.GenerateMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(code).Repeat.AtLeastOnce();
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.InitialDepartureLocation).Return(code);
+			itinerary.Expect(i => i.Equals(null)).Return(false);
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1));
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
+			CargoState state = new NewCargo(id, specification);
+			state = state.AssignToRoute(itinerary);
+		
+			// act:
+			CargoState newState = state.Recieve(location, DateTime.UtcNow);
+		
+			// assert:
+			Assert.IsNotNull(newState);
+			Assert.IsInstanceOf<InPortCargo>(newState);
+			Assert.AreSame(code, newState.LastKnownLocation);
+			Assert.IsTrue(TransportStatus.InPort == newState.TransportStatus);
+		}
+		
+		[Test]
+		public void Test_LoadOn_01()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			IVoyage voyage = MockRepository.GenerateMock<IVoyage>();
+			CargoState state = new NewCargo(id, specification);
+		
+			// assert:
+			Assert.Throws<InvalidOperationException>(delegate { state.LoadOn(voyage, DateTime.Now); });
+		}
+		
+		[Test]
+		public void Test_Unload_01()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			IVoyage voyage = MockRepository.GenerateMock<IVoyage>();
+			CargoState state = new NewCargo(id, specification);
+		
+			// assert:
+			Assert.Throws<InvalidOperationException>(delegate { state.Unload(voyage, DateTime.Now); });
 		}
 	}
 }
