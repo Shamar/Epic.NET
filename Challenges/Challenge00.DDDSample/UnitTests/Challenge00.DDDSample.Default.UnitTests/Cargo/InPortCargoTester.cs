@@ -23,6 +23,9 @@
 //  
 using System;
 using NUnit.Framework;
+using Challenge00.DDDSample.Cargo;
+using Rhino.Mocks;
+using Challenge00.DDDSample.Location;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture()]
@@ -32,12 +35,15 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_01()
 		{
 			// arrange:
-			Assert.Fail();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			DateTime arrival = DateTime.UtcNow;
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>();
 		
 			// act:
+			InPortCargo state = new InPortCargo(previousState, location, arrival);
 		
 			// assert:
-		
+			Assert.IsTrue(TransportStatus.InPort == state.TransportStatus);
 		}
 		
 	}
