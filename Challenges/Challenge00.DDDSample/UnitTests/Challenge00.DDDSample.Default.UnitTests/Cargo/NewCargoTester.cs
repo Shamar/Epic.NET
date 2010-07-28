@@ -179,8 +179,8 @@ namespace DefaultImplementation.Cargo
 			specification.Expect(s => s.Equals(specification2)).Return(false).Repeat.Any();
 			specification2.Expect(s => s.Equals(specification)).Return(false).Repeat.Any();
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
-			itinerary.Expect(i => i.Equals(null)).Return(false);
-			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1));
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.AtLeastOnce();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.AtLeastOnce();
 			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
 			specification2.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
 			CargoState state = new NewCargo(id, specification);
@@ -211,6 +211,7 @@ namespace DefaultImplementation.Cargo
 			specification2.Expect(s => s.Equals(specification)).Return(false).Repeat.Any();
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
 			itinerary.Expect(i => i.Equals(null)).Return(false);
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Any();
 			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
 			specification2.Expect(s => s.IsSatisfiedBy(itinerary)).Return(false).Repeat.Once();
 			CargoState state = new NewCargo(id, specification);

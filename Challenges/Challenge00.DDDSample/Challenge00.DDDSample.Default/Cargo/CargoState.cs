@@ -34,6 +34,8 @@ namespace Challenge00.DDDSample.Cargo
 		
 		protected CargoState (CargoState previousState)
 		{
+			if(null == previousState)
+				throw new ArgumentNullException("previousState");
 			_calculationDate = DateTime.UtcNow;
 			_routingStatus = previousState.RoutingStatus;
 			this.Identifier = previousState.Identifier;
@@ -61,8 +63,10 @@ namespace Challenge00.DDDSample.Cargo
 		}
 		
 		protected CargoState (CargoState previousState, IItinerary newItinerary)
-			: this(previousState.Identifier, previousState.RouteSpecification)
+			: this(previousState)
 		{
+			if(null == newItinerary)
+				throw new ArgumentNullException("newItinerary");
 			if(!previousState.RouteSpecification.IsSatisfiedBy(newItinerary))
 			{
 				string message = string.Format("The itinerary provided do not satisfy the route of {0}.", Identifier);
@@ -73,9 +77,11 @@ namespace Challenge00.DDDSample.Cargo
 		}
 		
 		protected CargoState (CargoState previousState, IRouteSpecification newRoute)
-			: this(previousState.Identifier, newRoute)
+			: this(previousState)
 		{
-			this.Itinerary = previousState.Itinerary;
+			if(null == newRoute)
+				throw new ArgumentNullException("newRoute");
+			this.RouteSpecification = newRoute;
 			if(null != this.Itinerary)
 			{
 				if(this.RouteSpecification.IsSatisfiedBy(this.Itinerary))

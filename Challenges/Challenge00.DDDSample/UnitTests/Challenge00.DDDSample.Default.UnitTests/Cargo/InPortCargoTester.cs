@@ -35,9 +35,13 @@ namespace DefaultImplementation.Cargo
 		public void Test_Ctor_01()
 		{
 			// arrange:
+			UnLocode code = new UnLocode("START");
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(code).Repeat.AtLeastOnce();
 			DateTime arrival = DateTime.UtcNow;
-			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>();
+			TrackingId id = new TrackingId("CARGO01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
 		
 			// act:
 			InPortCargo state = new InPortCargo(previousState, location, arrival);

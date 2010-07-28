@@ -77,7 +77,7 @@ namespace Challenge00.DDDSample.Cargo
 			if(!this.Itinerary.InitialDepartureLocation.Equals(location.UnLocode))
 			{
 				string message = string.Format("Can not recieve cargo {0} at {1}. The planned route start from {2}.", Identifier, location.UnLocode, Itinerary.InitialDepartureLocation);
-				throw new ArgumentException();
+				throw new ArgumentException(message);
 			}
 			return new InPortCargo(this, location, date);
 		}
