@@ -168,7 +168,9 @@ namespace Challenge00.DDDSample.Cargo
 				return false;
 			if(object.ReferenceEquals(null, CurrentVoyage) || !CurrentVoyage.Equals(other.CurrentVoyage))
 				return false;
-			if(!LastKnownLocation.Equals(other.LastKnownLocation))
+			if(null != LastKnownLocation || !LastKnownLocation.Equals(other.LastKnownLocation))
+				return false;
+			if(null == LastKnownLocation && null != other.LastKnownLocation)
 				return false;
 			if(TransportStatus != other.TransportStatus)
 				return false;

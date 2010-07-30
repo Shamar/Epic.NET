@@ -31,6 +31,7 @@ namespace Challenge00.DDDSample.Cargo
 		private readonly UnLocode _lastKnownLocation;
 		private readonly DateTime _date;
 		private readonly bool _customCleared;
+		
 		public InPortCargo (CargoState previousState, ILocation location, DateTime arrivalDate)
 			: base(previousState)
 		{
@@ -42,17 +43,25 @@ namespace Challenge00.DDDSample.Cargo
 		protected InPortCargo(InPortCargo previousState, DateTime clearCustomDate)
 			: base(previousState)
 		{
+			_lastKnownLocation = previousState._lastKnownLocation;
 			_customCleared = true;
+			_date = clearCustomDate;
 		}
 		
-		protected InPortCargo(CargoState previousState, IRouteSpecification newRoute)
+		protected InPortCargo(InPortCargo previousState, IRouteSpecification newRoute)
 			: base(previousState, newRoute)
 		{
+			_lastKnownLocation = previousState._lastKnownLocation;
+			_date = previousState._date;
+			_customCleared = previousState._customCleared;
 		}
 		
-		protected InPortCargo(CargoState previousState, IItinerary newItinerary)
+		protected InPortCargo(InPortCargo previousState, IItinerary newItinerary)
 			: base(previousState, newItinerary)
 		{
+			_lastKnownLocation = previousState._lastKnownLocation;
+			_date = previousState._date;
+			_customCleared = previousState._customCleared;
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.Cargo.CargoState
@@ -88,7 +97,7 @@ namespace Challenge00.DDDSample.Cargo
 				string message = string.Format("The cargo is in port at {0}. You can't clear customs in {1}.", _lastKnownLocation, location.UnLocode);
 				throw new ArgumentException(message, "location");
 			}
-			if(date <= this._date)
+			if(date < this._date)
 			{
 				string message = string.Format("The cargo arrived in port at {0}. You can't clear customs at {1}.", this._date, date);
 				throw new ArgumentException(message, "date");
