@@ -76,12 +76,12 @@ namespace Challenge00.DDDSample.Cargo
 			_routingStatus = RoutingStatus.Routed;
 		}
 		
-		protected CargoState (CargoState previousState, IRouteSpecification newRoute)
+		protected CargoState (CargoState previousState, IRouteSpecification routeSpecification)
 			: this(previousState)
 		{
-			if(null == newRoute)
-				throw new ArgumentNullException("newRoute");
-			this.RouteSpecification = newRoute;
+			if(null == routeSpecification)
+				throw new ArgumentNullException("routeSpecification");
+			this.RouteSpecification = routeSpecification;
 			if(null != this.Itinerary)
 			{
 				if(this.RouteSpecification.IsSatisfiedBy(this.Itinerary))

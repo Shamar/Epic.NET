@@ -23,6 +23,7 @@
 //  
 using System;
 using Challenge00.DDDSample.Location;
+using Challenge00.DDDSample.Voyage;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
@@ -90,12 +91,12 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			if(!_lastKnownLocation.Equals(location.UnLocode))
 			{
-				string message = string.Format("The cargo is in port at {0}. You can't clear customs in {1}.", _lastKnownLocation, location.UnLocode);
+				string message = string.Format("The cargo is in port at {0}. Can not clear customs in {1}.", _lastKnownLocation, location.UnLocode);
 				throw new ArgumentException(message, "location");
 			}
 			if(date < this._date)
 			{
-				string message = string.Format("The cargo arrived in port at {0}. You can't clear customs at {1}.", this._date, date);
+				string message = string.Format("The cargo arrived in port at {0}. Can not clear customs at {1}.", this._date, date);
 				throw new ArgumentException(message, "date");
 			}
 			if(_customCleared)
@@ -107,19 +108,49 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public override CargoState Claim (ILocation location, DateTime date)
 		{
-			throw new System.NotImplementedException();
+			if(null == location)
+				throw new ArgumentNullException("location");
+			if(!_lastKnownLocation.Equals(location.UnLocode))
+			{
+				string message = string.Format("The cargo is in port at {0}.", _lastKnownLocation);
+				throw new ArgumentException(message, "location");
+			}
+			if(date < this._date)
+			{
+				string message = string.Format("The cargo arrived in port at {0}. Can not be claimed at {1}.", this._date, date);
+				throw new ArgumentException(message, "date");
+			}
+			return new ClaimedCargo(this);
 		}
 		
 		
-		public override CargoState LoadOn (Challenge00.DDDSample.Voyage.IVoyage voyage, DateTime date)
+		public override CargoState LoadOn (IVoyage voyage, DateTime date)
 		{
-			throw new System.NotImplementedException();
+			if(null == voyage)
+				throw new ArgumentNullException("voyage");
+			if(voyage.IsMoving)
+			{
+				string message = string.Format("Can not load the cargo {0} on the voyage {1} since it is moving.", Identifier, voyage.Number);
+				throw new ArgumentException(message);
+			}
+			if(!_lastKnownLocation.Equals(voyage.LastKnownLocation))
+			{
+				string message = string.Format("Can not load the cargo {0} (waiting in {2}) on the voyage {1} since it stopped over at {3}.", Identifier, voyage.Number, _lastKnownLocation, voyage.LastKnownLocation);
+				throw new ArgumentException(message);
+			}
+			if(date < this._date)
+			{
+				string message = string.Format("The cargo {2} arrived in port at {0}. Can not be loaded on the voyage {3} at {1}.", this._date, date, Identifier, voyage.Number);
+				throw new ArgumentException(message, "date");
+			}
+			return new OnboardCarrierCargo(this, voyage, date);
 		}
 		
 		
-		public override CargoState Unload (Challenge00.DDDSample.Voyage.IVoyage voyage, DateTime date)
+		public override CargoState Unload (IVoyage voyage, DateTime date)
 		{
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} is waiting at {1}, so it can not be unloaded from the voyage {2}.", Identifier, _lastKnownLocation, voyage.Number);
+			throw new InvalidOperationException(message);
 		}
 		
 		

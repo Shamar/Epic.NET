@@ -325,6 +325,25 @@ namespace DefaultImplementation.Cargo
 			Assert.IsNotNull(newState);
 			Assert.AreSame(state, newState);
 		}
+
+		[Test]
+		public void Test_Recieve_01()
+		{
+			// arrange:
+			UnLocode code = new UnLocode("START");
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(code).Repeat.AtLeastOnce();
+			DateTime arrival = DateTime.UtcNow;
+			TrackingId id = new TrackingId("CARGO01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+			previousState.Expect(s => s.LastKnownLocation).Return(code).Repeat.Any();
+			InPortCargo state = new InPortCargo(previousState, location, arrival);
+		
+			// assert:
+			Assert.Throws<InvalidOperationException>(delegate { state.Recieve(location, arrival); });
+		}
+		
 	}
 }
 

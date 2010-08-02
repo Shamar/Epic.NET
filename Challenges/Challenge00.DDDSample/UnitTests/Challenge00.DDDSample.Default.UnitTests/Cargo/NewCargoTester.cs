@@ -125,6 +125,30 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
+		public void Test_AssignToRoute_03()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.AtLeastOnce();
+			IItinerary itinerary2 = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary2.Expect(i => i.Equals(itinerary)).Return(true).Repeat.AtLeastOnce();
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
+			CargoState initialState = new NewCargo(id, specification);
+			CargoState state = initialState.AssignToRoute(itinerary);
+		
+			// act:
+			CargoState newState = state.AssignToRoute(itinerary2);
+		
+			// assert:
+			Assert.AreEqual(initialState.GetType(), state.GetType());
+			Assert.AreNotSame(initialState, state);
+			Assert.IsNotNull(newState);
+			Assert.AreSame(state, newState);
+		}
+		
+		[Test]
 		public void Test_SpecifyNewRoute_01()
 		{
 			// arrange:
@@ -328,6 +352,38 @@ namespace DefaultImplementation.Cargo
 			Assert.Throws<InvalidOperationException>(delegate {state.Recieve(location, DateTime.UtcNow);});
 			location.VerifyAllExpectations();
 			specification.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Recieve_04()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Any();
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			IRouteSpecification specification2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification2.Expect(s => s.IsSatisfiedBy(itinerary)).Return(false).Repeat.AtLeastOnce();
+			specification.Expect(s => s.Equals(specification2)).Return(false).Repeat.Any();
+			specification2.Expect(s => s.Equals(specification)).Return(false).Repeat.Any();
+			ILocation location = MockRepository.GenerateMock<ILocation>();
+			CargoState initialState = new NewCargo(id, specification);
+			CargoState routedState = initialState.AssignToRoute(itinerary);
+			CargoState misroutedState = routedState.SpecifyNewRoute(specification2);
+		
+			// assert:
+			Assert.AreEqual(initialState.GetType(), routedState.GetType());
+			Assert.AreNotSame(initialState, routedState);
+			Assert.AreEqual(routedState.GetType(), misroutedState.GetType());
+			Assert.AreNotSame(routedState, misroutedState);
+			Assert.IsTrue(RoutingStatus.Misrouted == misroutedState.RoutingStatus);
+			Assert.Throws<InvalidOperationException>(delegate {misroutedState.Recieve(location, DateTime.UtcNow);});
+			location.VerifyAllExpectations();
+			specification.VerifyAllExpectations();
+			specification2.VerifyAllExpectations();
+			itinerary.VerifyAllExpectations();
 		}
 		
 		[Test]
