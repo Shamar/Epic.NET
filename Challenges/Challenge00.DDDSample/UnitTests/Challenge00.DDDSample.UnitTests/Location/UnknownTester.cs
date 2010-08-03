@@ -1,5 +1,5 @@
 //  
-//  VoyageNumber.cs
+//  UnknownTester.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,18 +22,27 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Challenge00.DDDSample.Shared;
-namespace Challenge00.DDDSample.Voyage
+using NUnit.Framework;
+using Challenge00.DDDSample.Location;
+using Rhino.Mocks;
+namespace Contracts.Location
 {
-	/// <summary>
-	/// Identifies a voyage.  
-	/// </summary>
-	public class VoyageNumber : StringIdentifier<VoyageNumber>
+	[TestFixture()]
+	public class UnknownTester
 	{
-		public VoyageNumber (string identifier)
-			: base(identifier)
+		[Test]
+		public void Test_Singleton_01()
 		{
+			// act:
+			ILocation location = Unknown.Location;
+		
+			// assert:
+			Assert.IsNotNull(location);
+			Assert.AreEqual("Unknown", location.Name);
+			Assert.IsNull(location.UnLocode);
+			Assert.IsTrue(location is Unknown);
 		}
+		
 	}
 }
 

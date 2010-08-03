@@ -28,7 +28,7 @@ namespace Challenge00.DDDSample.Voyage
 	[Serializable]
 	public abstract class VoyageState : IEquatable<VoyageState>
 	{
-		private readonly ISchedule _schedule;
+		public readonly ISchedule Schedule;
 		
 		public readonly VoyageNumber Number;
 		
@@ -38,16 +38,8 @@ namespace Challenge00.DDDSample.Voyage
 				throw new ArgumentNullException("schedule");
 			if(null == number)
 				throw new ArgumentNullException("number");
-			_schedule = schedule;
+			Schedule = schedule;
 			Number = number;
-		}
-		
-		public ISchedule Schedule
-		{
-			get
-			{
-				return _schedule;
-			}
 		}
 		
 		public abstract VoyageState StopOverAt (ILocation location);

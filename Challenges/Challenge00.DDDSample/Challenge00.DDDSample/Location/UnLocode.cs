@@ -23,6 +23,7 @@
 //  
 using System;
 using System.Text.RegularExpressions;
+using Challenge00.DDDSample.Shared;
 namespace Challenge00.DDDSample.Location
 {
 	/// <summary>
@@ -32,10 +33,10 @@ namespace Challenge00.DDDSample.Location
 	[Serializable]
 	public class UnLocode : StringIdentifier<UnLocode>
 	{
-        private static readonly Regex _pattern = new Regex("[a-zA-Z]{2}[a-zA-Z2-9]{3}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+        private static readonly Regex _pattern = new Regex("^[a-zA-Z]{2}[a-zA-Z2-9]{3}$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static string validIdentifier(string identifier)
 		{
-	        if(identifier == null)
+	        if(string.IsNullOrEmpty(identifier))
 	        {
 	            throw new ArgumentNullException("identifier");
 	        }

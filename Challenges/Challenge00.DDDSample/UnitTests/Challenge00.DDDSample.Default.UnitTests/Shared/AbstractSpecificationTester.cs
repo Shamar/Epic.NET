@@ -24,6 +24,7 @@
 using System;
 using NUnit.Framework;
 using Challenge00.DDDSample.Shared;
+using Rhino.Mocks;
 namespace DefaultImplementation.Shared
 {
 	public abstract class AbstractSpecificationTester<TSpecification, TCandidate>
@@ -49,6 +50,7 @@ namespace DefaultImplementation.Shared
 			TSpecification spec = CreateNewSpecification();
 			
 			Assert.IsFalse(spec.Equals(null));
+			Assert.IsFalse(spec.Equals(MockRepository.GenerateStrictMock<ISpecification<TCandidate>>()));
 		}
 		
 		[Test]
@@ -64,6 +66,7 @@ namespace DefaultImplementation.Shared
 			// assert:
 			Assert.AreEqual(spec1, spec2);
 			Assert.AreEqual(spec2, spec1);
+			Assert.AreEqual(spec1.GetHashCode(), spec2.GetHashCode());
 		}
 		
 		[Test]

@@ -33,14 +33,6 @@ namespace Contracts.Cargo
 	[TestFixture()]
 	public class TrackingIdTester : StringIdentifierTester<TrackingId>
 	{
-		[Test()]
-		public void Test_Constructor_01 ()
-		{
-			string idString = "test";
-			TrackingId id = new TrackingId(idString);
-			Assert.AreEqual(idString, id.ToString());
-		}
-		
 		#region implemented abstract members of Contracts.StringIdentifierTester[TrackingId]
 		
 		protected override TrackingId CreateNewInstance (out string stringUsed)
@@ -70,5 +62,20 @@ namespace Contracts.Cargo
 		
 		#endregion
 
+		[Test()]
+		public void Test_Ctor_01 ()
+		{
+			string idString = "test";
+			TrackingId id = new TrackingId(idString);
+			Assert.AreEqual(idString, id.ToString());
+		}
+		
+		[Test]
+		public void Test_Ctor_02()
+		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new TrackingId(null); });
+			Assert.Throws<ArgumentNullException>(delegate { new TrackingId(string.Empty); });
+		}
 	}
 }

@@ -24,7 +24,7 @@
 using NUnit.Framework;
 using System;
 using System.Text.RegularExpressions;
-using Challenge00.DDDSample;
+using Challenge00.DDDSample.Shared;
 
 namespace Contracts.Shared
 {
@@ -107,6 +107,7 @@ namespace Contracts.Shared
 			TIdentifier id2 = CreateNewInstance(out idString2);
 			
 			Assert.IsTrue(id1 == id2);
+			Assert.IsFalse(id1 != id2);
 		}
 		
 		[Test()]
@@ -117,6 +118,7 @@ namespace Contracts.Shared
 			TIdentifier id1 = CreateNewInstance(out idString);
 			TIdentifier id2 = CreateDifferentInstance(out idString2);
 			
+			Assert.IsFalse(id1 == id2);
 			Assert.IsTrue(id1 != id2);
 		}
 		
@@ -127,6 +129,7 @@ namespace Contracts.Shared
 			TIdentifier id1 = CreateNewInstance(out idString);
 #pragma warning disable 1718
 			Assert.IsTrue(id1 == id1);
+			Assert.IsFalse(id1 != id1);
 #pragma warning restore 1718
 		}
 		
@@ -147,6 +150,9 @@ namespace Contracts.Shared
 			
 			Assert.IsFalse(id1 == null);
 			Assert.IsFalse(null == id1);
+			Assert.IsTrue(id1 != null);
+			Assert.IsTrue(null != id1);
+			Assert.IsFalse((new object() as TIdentifier) != (new object() as TIdentifier));
 		}
 
 		[Test()]

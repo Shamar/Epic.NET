@@ -61,6 +61,15 @@ namespace Contracts.Voyage
 		}
 		
 		#endregion
+		
+		[Test]
+		public void Test_Ctor_01()
+		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new VoyageNumber(null); });
+			Assert.Throws<ArgumentNullException>(delegate { new VoyageNumber(string.Empty); });
+		}
+		
 	}
 }
 

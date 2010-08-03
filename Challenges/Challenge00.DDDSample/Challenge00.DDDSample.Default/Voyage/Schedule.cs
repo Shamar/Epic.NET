@@ -38,8 +38,6 @@ namespace Challenge00.DDDSample.Voyage
 	
 		private Schedule (ICarrierMovement[] movements)
 		{
-			if(null == movements)
-				throw new ArgumentNullException("movements");
 			_movements = movements;
 		}
 

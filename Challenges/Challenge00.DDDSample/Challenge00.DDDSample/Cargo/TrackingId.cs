@@ -23,6 +23,7 @@
 //  
 using System;
 using System.Text.RegularExpressions;
+using Challenge00.DDDSample.Shared;
 
 namespace Challenge00.DDDSample.Cargo
 {

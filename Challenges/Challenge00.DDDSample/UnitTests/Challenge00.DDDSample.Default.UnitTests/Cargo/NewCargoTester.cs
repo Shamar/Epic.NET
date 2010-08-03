@@ -149,6 +149,19 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
+		public void Test_AssignToRoute_04()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			NewCargo state = new NewCargo(id, specification);
+		
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { state.AssignToRoute(null); } );
+			specification.VerifyAllExpectations();
+		}	
+		
+		[Test]
 		public void Test_SpecifyNewRoute_01()
 		{
 			// arrange:
@@ -255,6 +268,19 @@ namespace DefaultImplementation.Cargo
 			specification.VerifyAllExpectations();
 			specification2.VerifyAllExpectations();
 			itinerary.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_SpecifyNewRoute_05()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			NewCargo state = new NewCargo(id, specification);
+		
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { state.SpecifyNewRoute(null); });
+			specification.VerifyAllExpectations();
 		}
 		
 		[Test]
@@ -384,6 +410,19 @@ namespace DefaultImplementation.Cargo
 			specification.VerifyAllExpectations();
 			specification2.VerifyAllExpectations();
 			itinerary.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Recieve_05()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CRG01");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			CargoState state = new NewCargo(id, specification);
+		
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate {state.Recieve(null, DateTime.UtcNow);});
+			specification.VerifyAllExpectations();
 		}
 		
 		[Test]

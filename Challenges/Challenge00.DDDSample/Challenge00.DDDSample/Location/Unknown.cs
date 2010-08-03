@@ -59,14 +59,6 @@ namespace Challenge00.DDDSample.Location
 		}
 		
 		#endregion
-		#region IEquatable<ILocation> implementation
-		
-		public bool Equals (ILocation other)
-		{
-			return false;
-		}
-		
-		#endregion
 	}
 }
 

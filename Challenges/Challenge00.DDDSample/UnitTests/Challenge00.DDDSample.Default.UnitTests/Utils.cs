@@ -1,5 +1,5 @@
 //  
-//  VoyageNumber.cs
+//  Utils.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,18 +22,25 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Challenge00.DDDSample.Shared;
-namespace Challenge00.DDDSample.Voyage
+using System.Collections;
+namespace DefaultImplementation
 {
-	/// <summary>
-	/// Identifies a voyage.  
-	/// </summary>
-	public class VoyageNumber : StringIdentifier<VoyageNumber>
+	public static class Utils
 	{
-		public VoyageNumber (string identifier)
-			: base(identifier)
+		public static IEnumerable AsWeakEnumerable(this IEnumerable source)
 		{
+		    foreach (object o in source)
+		    {
+		        yield return o;
+		    }
 		}
+	}
+	
+	public interface IObject
+	{
+		bool Equals(object obj);
+		
+		int GetHashCode();
 	}
 }
 

@@ -28,6 +28,14 @@ using Rhino.Mocks;
 using Challenge00.DDDSample.Location;
 namespace DefaultImplementation.Voyage
 {
+	class FakeVoyage : Challenge00.DDDSample.Voyage.Voyage
+	{
+		public FakeVoyage(VoyageState initialState)
+			: base(initialState)
+		{
+		}
+	}
+	
 	[TestFixture]
 	public class VoyageTester
 	{
@@ -81,6 +89,14 @@ namespace DefaultImplementation.Voyage
 			state.VerifyAllExpectations();
 			schedule.VerifyAllExpectations();
 		}
+		
+		[Test]
+		public void Test_Ctor_03()
+		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate{ new FakeVoyage(null); });
+		}
+		
 		
 		[Test]
 		public void Test_DepartFrom_01 ()
@@ -231,6 +247,45 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
+		public void Test_DepartFrom_06 ()
+		{
+			// arrange:
+			VoyageNumber number = new VoyageNumber("VYG01");
+			UnLocode departure = new UnLocode("DPLOC");
+			UnLocode arrival = new UnLocode("ARLOC");
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
+			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
+			state.Expect(s => s.DepartFrom(location)).Return(state2).Repeat.Once();
+			state.Expect(s => s.Equals(state2)).Return(false).Repeat.Once();
+			state2.Expect(s => s.LastKnownLocation).Return(departure).Repeat.Once();
+			state2.Expect(s => s.NextExpectedLocation).Return(arrival).Repeat.Once();
+			VoyageEventArgs eventArguments = null;
+			IVoyage eventSender = null;
+			
+			// act:
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
+			
+			EventHandler<VoyageEventArgs> handler = delegate(object sender, VoyageEventArgs e) {
+				eventArguments = e;
+				eventSender = sender as IVoyage;
+			};
+			voyage.Departed += handler;
+			voyage.Departed -= handler;
+			voyage.DepartFrom(location);
+			
+			// assert:
+			Assert.AreEqual(number, voyage.Number);
+			Assert.IsNull(eventSender);
+			Assert.IsNull(eventArguments);
+			state.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			location.VerifyAllExpectations();
+			state2.VerifyAllExpectations();
+		}
+		
+		[Test]
 		public void Test_StopOverAt_01 ()
 		{
 			// arrange:
@@ -378,8 +433,43 @@ namespace DefaultImplementation.Voyage
 			location.VerifyAllExpectations();
 		}
 		
-
-		
+		[Test]
+		public void Test_StopOverAt_06 ()
+		{
+			// arrange:
+			VoyageNumber number = new VoyageNumber("VYG01");
+			UnLocode departure = new UnLocode("DPLOC");
+			UnLocode arrival = new UnLocode("ARLOC");
+			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			VoyageState state = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
+			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
+			state.Expect(s => s.StopOverAt(location)).Return(state2).Repeat.Once();
+			state.Expect(s => s.Equals(state2)).Return(false).Repeat.Once();
+			state.Expect(s => s.LastKnownLocation).Return(departure).Repeat.Once();
+			state.Expect(s => s.NextExpectedLocation).Return(arrival).Repeat.Once();
+			VoyageEventArgs eventArguments = null;
+			IVoyage eventSender = null;
+			
+			// act:
+			IVoyage voyage = MockRepository.GeneratePartialMock<Challenge00.DDDSample.Voyage.Voyage>(state);
+			EventHandler<VoyageEventArgs> handler = delegate(object sender, VoyageEventArgs e) {
+				eventArguments = e;
+				eventSender = sender as IVoyage;
+			};
+			voyage.Stopped += handler;
+			voyage.Stopped -= handler;
+			voyage.StopOverAt(location);
+			
+			// assert:
+			Assert.AreEqual(number, voyage.Number);
+			Assert.IsNull(eventSender);
+			Assert.IsNull(eventArguments);
+			state.VerifyAllExpectations();
+			schedule.VerifyAllExpectations();
+			location.VerifyAllExpectations();
+			state2.VerifyAllExpectations();
+		}	
 		[TestCase(true)]
 		[TestCase(false)]
 		public void Test_WillStopOverAt_01 (bool returnedValue)

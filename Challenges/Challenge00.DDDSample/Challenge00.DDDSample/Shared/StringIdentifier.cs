@@ -23,7 +23,7 @@
 //  
 using System;
 using System.Text.RegularExpressions;
-namespace Challenge00.DDDSample
+namespace Challenge00.DDDSample.Shared
 {
 	[Serializable]
 	public abstract class StringIdentifier

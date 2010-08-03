@@ -27,6 +27,7 @@ using Challenge00.DDDSample.Voyage;
 using System.Linq;
 using Rhino.Mocks;
 using Challenge00.DDDSample.Location;
+using System.Collections;
 namespace DefaultImplementation.Voyage
 {
 	[TestFixture()]
@@ -43,6 +44,7 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.AreEqual(0, schedule.Count());
+			CollectionAssert.AreEqual(schedule, schedule.AsWeakEnumerable());
 			Assert.AreEqual(0, schedule.MovementsCount);
 		}
 		
@@ -132,13 +134,12 @@ namespace DefaultImplementation.Voyage
 		{
 			// arrange:
 			UnLocode c1 = new UnLocode("LOCDA");
-			UnLocode c2 = new UnLocode("LOCDB");
 			
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
 			m1.Expect(m => m.ArrivalLocation).Return(c1).Repeat.Any();
 			m1.Expect(m => m.ArrivalTime).Return(DateTime.UtcNow + new TimeSpan(48, 0, 0)).Repeat.Any();
 			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			m2.Expect(m => m.DepartureLocation).Return(c2).Repeat.Any();
+			m2.Expect(m => m.DepartureLocation).Return(c1).Repeat.Any();
 			m2.Expect(m => m.DepartureTime).Return(DateTime.UtcNow).Repeat.Any();
 			ISchedule empty = new Schedule();
 			ISchedule schedule1 = empty.Append(m1);
@@ -159,6 +160,7 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.IsTrue(equals);
+			Assert.AreEqual(schedule1.GetHashCode(), schedule2.GetHashCode());
 		}
 		
 		[Test]
@@ -193,10 +195,12 @@ namespace DefaultImplementation.Voyage
 		public void Test_Equals_04()
 		{
 			// arrange:
-			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement>();
+			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement, IObject>();
+			ICarrierMovement m2 = MockRepository.GenerateStrictMock<ICarrierMovement, IObject>();
 			m1.Expect(m => m.Equals(m2)).Return(true).Repeat.AtLeastOnce();
 			m2.Expect(m => m.Equals(m1)).Return(true).Repeat.AtLeastOnce();
+			m1.Expect(m => m.GetHashCode()).Return(543210).Repeat.AtLeastOnce();
+			m2.Expect(m => m.GetHashCode()).Return(543210).Repeat.AtLeastOnce();
 			
 			ISchedule empty = new Schedule();
 			ISchedule schedule1 = empty.Append(m1);
@@ -209,6 +213,7 @@ namespace DefaultImplementation.Voyage
 			// assert:
 			Assert.IsTrue(equals1);
 			Assert.IsTrue(equals2);
+			Assert.AreEqual(schedule1.GetHashCode(), schedule2.GetHashCode());
 			m1.VerifyAllExpectations();
 			m2.VerifyAllExpectations();
 		}

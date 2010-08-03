@@ -68,6 +68,8 @@ namespace Challenge00.DDDSample.Cargo
 		#region implemented abstract members of Challenge00.DDDSample.Cargo.CargoState
 		public override CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
 		{
+			if(null == routeSpecification)
+				throw new ArgumentNullException("routeSpecification");
 			if(this.RouteSpecification.Equals(routeSpecification))
 				return this;
 			return new InPortCargo(this, routeSpecification);
@@ -76,6 +78,8 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public override CargoState AssignToRoute (IItinerary itinerary)
 		{
+			if(null == itinerary)
+				throw new ArgumentNullException("itinerary");
 			if(itinerary.Equals(this.Itinerary))
 				return this;
 			return new InPortCargo(this, itinerary);

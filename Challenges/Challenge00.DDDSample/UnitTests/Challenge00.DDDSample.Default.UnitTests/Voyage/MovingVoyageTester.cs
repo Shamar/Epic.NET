@@ -300,6 +300,11 @@ namespace DefaultImplementation.Voyage
 			Assert.IsFalse(state1.Equals(null));
 			Assert.IsTrue(state1.Equals(state1));
 			Assert.IsTrue(state1.Equals(state2));
+			Assert.IsTrue(state2.Equals(state1));
+			Assert.IsTrue(state1.Equals((object)state1));
+			Assert.IsTrue(state1.Equals((object)state2));
+			Assert.IsTrue(state2.Equals((object)state1));
+			schedule.VerifyAllExpectations();
 		}
 		
 		[TestCase(0)]

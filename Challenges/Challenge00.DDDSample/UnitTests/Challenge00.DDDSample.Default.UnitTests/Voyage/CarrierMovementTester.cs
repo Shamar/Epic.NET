@@ -163,6 +163,8 @@ namespace DefaultImplementation.Voyage
 		
 			// assert:
 			Assert.IsTrue(areEquals);
+			Assert.IsTrue(target.Equals(target));
+			Assert.IsFalse(target.Equals(null));
 			targetDpLocation.VerifyAllExpectations();
 			targetArLocation.VerifyAllExpectations();
 			mock.VerifyAllExpectations();
@@ -313,6 +315,33 @@ namespace DefaultImplementation.Voyage
 			targetDpLocation.VerifyAllExpectations();
 			targetArLocation.VerifyAllExpectations();
 			mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Equals_07()
+		{
+			// arrange:
+			UnLocode dpLocode = new UnLocode("DPLOC");
+			UnLocode arLocode = new UnLocode("ARLOC");
+			ILocation targetDpLocation = MockRepository.GenerateStrictMock<ILocation>();
+			ILocation targetArLocation = MockRepository.GenerateStrictMock<ILocation>();
+			targetDpLocation.Expect(l => l.UnLocode).Return(dpLocode).Repeat.AtLeastOnce();
+			targetArLocation.Expect(l => l.UnLocode).Return(arLocode).Repeat.AtLeastOnce();
+			DateTime dpTime = DateTime.UtcNow - new TimeSpan(48,0,0);
+			DateTime arTime = DateTime.UtcNow + new TimeSpan(48,0,0);
+			
+			// act:
+			ICarrierMovement target1 = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime);
+			ICarrierMovement target2 = new CarrierMovement(targetDpLocation, dpTime, targetArLocation, arTime);
+		
+			// assert:
+			Assert.IsTrue(target1.Equals(target2));
+			Assert.IsTrue(target2.Equals(target1));
+			Assert.IsTrue(target1.Equals((object)target2));
+			Assert.IsTrue(target2.Equals((object)target1));
+			Assert.AreEqual(target1.GetHashCode(), target2.GetHashCode());
+			targetDpLocation.VerifyAllExpectations();
+			targetArLocation.VerifyAllExpectations();
 		}
 	}
 }

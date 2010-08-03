@@ -252,9 +252,13 @@ namespace DefaultImplementation.Voyage
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
+			UnLocode initialLocation = new UnLocode("DPLOC");
+			ICarrierMovement movement = MockRepository.GenerateStrictMock<ICarrierMovement, IObject>();
+			movement.Expect(m => m.DepartureLocation).Return(initialLocation).Repeat.Any();
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			schedule.Expect(s => s.Equals(schedule)).Return(true).Repeat.Any();
+			schedule.Expect(s => s[index]).Return(movement).Repeat.Any();
 
 			// act:
 			StoppedVoyage state1 = new StoppedVoyage(number, schedule, index);
@@ -264,6 +268,13 @@ namespace DefaultImplementation.Voyage
 			Assert.IsFalse(state1.Equals(null));
 			Assert.IsTrue(state1.Equals(state1));
 			Assert.IsTrue(state1.Equals(state2));
+			Assert.IsTrue(state2.Equals(state1));
+			Assert.IsTrue(state1.Equals((object)state1));
+			Assert.IsTrue(state1.Equals((object)state2));
+			Assert.IsTrue(state2.Equals((object)state1));
+			Assert.AreEqual(state1.GetHashCode(), state2.GetHashCode());
+			schedule.VerifyAllExpectations();
+			movement.VerifyAllExpectations();
 		}
 		
 		[TestCase(0)]

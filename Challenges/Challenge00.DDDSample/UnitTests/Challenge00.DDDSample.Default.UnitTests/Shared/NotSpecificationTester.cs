@@ -33,10 +33,12 @@ namespace DefaultImplementation.Shared
 		#region implemented abstract members of DefaultImplementation.AbstractSpecificationTester[NotSpecification[System.Object],System.Object]
 		protected override void CreateEqualsSpecification (out NotSpecification<object> spec1, out NotSpecification<object> spec2)
 		{
-			ISpecification<object> n1 = MockRepository.GenerateMock<ISpecification<object>>();
-			ISpecification<object> n2 = MockRepository.GenerateMock<ISpecification<object>>();
+			ISpecification<object> n1 = MockRepository.GenerateMock<ISpecification<object>, IObject>();
+			ISpecification<object> n2 = MockRepository.GenerateMock<ISpecification<object>, IObject>();
 			n1.Expect(s => s.Equals(n2)).Return(true);
+			n1.Expect(s => s.GetHashCode()).Return(543210).Repeat.Any();
 			n2.Expect(s => s.Equals(n1)).Return(true);
+			n2.Expect(s => s.GetHashCode()).Return(543210).Repeat.Any();
 			
 			spec1 = new NotSpecification<object>(n1);
 			spec2 = new NotSpecification<object>(n2);
