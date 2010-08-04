@@ -39,8 +39,6 @@ namespace Challenge00.DDDSample.Cargo
 		
 		private Itinerary (ILeg[] legs)
 		{
-			if(null == legs)
-				throw new ArgumentNullException("legs");
 			_legs = legs;
 		}
 
@@ -152,6 +150,12 @@ namespace Challenge00.DDDSample.Cargo
 			if(object.ReferenceEquals(this, other))
 				return true;
 			
+			if(_legs.Length != other.Count())
+				return false;
+			
+			if(_legs.Length == 0)
+				return true;
+			
 			if(! InitialDepartureLocation.Equals(other.InitialDepartureLocation))
 				return false;
 			if(! FinalArrivalLocation.Equals(other.FinalArrivalLocation))
@@ -166,13 +170,21 @@ namespace Challenge00.DDDSample.Cargo
 				
 				++i;
 			}
-			if(i == _legs.Length)
-				return true;
-			return false;
+			return true;
 		}
 		#endregion
 		
+		public override bool Equals (object obj)
+		{
+			return Equals (obj as IItinerary);
+		}
 		
+		public override int GetHashCode ()
+		{
+			if(_legs.Length == 0)
+				return 0;
+			return _legs.Length ^ _legs[0].GetHashCode();
+		}
 	}
 }
 

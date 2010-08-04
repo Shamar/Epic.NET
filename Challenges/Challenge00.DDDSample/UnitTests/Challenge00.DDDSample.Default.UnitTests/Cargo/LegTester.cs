@@ -58,11 +58,17 @@ namespace DefaultImplementation.Cargo
 			ILeg leg = new Leg(voyage, loc1, loadTime, loc2, unloadTime);
 		
 			// assert:
+			Assert.IsTrue(leg.Equals(leg));
+			Assert.IsTrue(leg.Equals((object)leg));
+			Assert.IsFalse(leg.Equals(null));
 			Assert.AreEqual(voyageNumber, leg.Voyage);
 			Assert.AreEqual(code1, leg.LoadLocation);
 			Assert.AreEqual(code2, leg.UnloadLocation);
 			Assert.AreEqual(loadTime, leg.LoadTime);
 			Assert.AreEqual(unloadTime, leg.UnloadTime);
+			voyage.VerifyAllExpectations();
+			loc1.VerifyAllExpectations();
+			loc2.VerifyAllExpectations();
 		}
 		
 		[Test]
@@ -130,6 +136,7 @@ namespace DefaultImplementation.Cargo
 			// assert:
 			Assert.Throws<ArgumentException>(delegate { new Leg(voyage, loc1, loadTime, loc2, unloadTime);});
 			loc1.VerifyAllExpectations();
+			loc2.VerifyAllExpectations();
 		}
 		
 		[Test]
@@ -229,6 +236,55 @@ namespace DefaultImplementation.Cargo
 			loc1.VerifyAllExpectations();
 			loc2.VerifyAllExpectations();
 		}
+		
+		[Test]
+		public void Test_Equals_01()
+		{
+			// arrange:
+			DateTime loadTime = DateTime.UtcNow;
+			DateTime unloadTime = DateTime.UtcNow + TimeSpan.FromDays(3);
+			
+			VoyageNumber voyageNumber = new VoyageNumber("VYGTEST");
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+			voyage.Expect(v => v.Number).Return(voyageNumber).Repeat.Any();
+			
+			UnLocode code1 = new UnLocode("CODAA");
+			ILocation loc1 = MockRepository.GenerateStrictMock<ILocation>();
+			loc1.Expect(l => l.UnLocode).Return(code1).Repeat.Any();
+
+			UnLocode code2 = new UnLocode("CODAB");
+			ILocation loc2 = MockRepository.GenerateStrictMock<ILocation>();
+			loc2.Expect(l => l.UnLocode).Return(code2).Repeat.Any();
+			
+			voyage.Expect(v => v.WillStopOverAt(loc1)).Return(true).Repeat.AtLeastOnce();
+			voyage.Expect(v => v.WillStopOverAt(loc2)).Return(true).Repeat.AtLeastOnce();
+			
+			// act:
+			ILeg leg1 = new Leg(voyage, loc1, loadTime, loc2, unloadTime);
+			ILeg leg2 = new Leg(voyage, loc1, loadTime, loc2, unloadTime);
+			ILeg leg3 = MockRepository.GenerateStrictMock<ILeg>();
+			leg3.Expect(l => l.Voyage).Return(voyageNumber).Repeat.AtLeastOnce();
+			leg3.Expect(l => l.LoadLocation).Return(code1).Repeat.AtLeastOnce();
+			leg3.Expect(l => l.UnloadLocation).Return(code2).Repeat.AtLeastOnce();
+			leg3.Expect(l => l.LoadTime).Return(loadTime).Repeat.AtLeastOnce();
+			leg3.Expect(l => l.UnloadTime).Return(unloadTime).Repeat.AtLeastOnce();
+		
+			// assert:
+			Assert.AreEqual(leg1.GetHashCode(), leg2.GetHashCode());
+			Assert.IsTrue(leg1.Equals(leg2));
+			Assert.IsTrue(leg1.Equals(leg3));
+			Assert.IsTrue(leg2.Equals(leg1));
+			Assert.IsTrue(leg2.Equals(leg3));
+			Assert.IsTrue(leg1.Equals((object)leg2));
+			Assert.IsTrue(leg1.Equals((object)leg3));
+			Assert.IsTrue(leg2.Equals((object)leg1));
+			Assert.IsTrue(leg2.Equals((object)leg3));
+			voyage.VerifyAllExpectations();
+			loc1.VerifyAllExpectations();
+			loc2.VerifyAllExpectations();
+			leg3.VerifyAllExpectations();
+		}
+		
 	}
 }
 

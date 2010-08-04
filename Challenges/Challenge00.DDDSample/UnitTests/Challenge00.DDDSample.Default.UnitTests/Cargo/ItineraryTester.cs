@@ -40,11 +40,18 @@ namespace DefaultImplementation.Cargo
 		
 			// act:
 			IItinerary itinerary = new Itinerary();
+			IItinerary itinerary2 = new Itinerary();
 		
 			// assert:
 			Assert.IsNull(itinerary.InitialDepartureLocation);
 			Assert.IsNull(itinerary.FinalArrivalLocation);
 			Assert.AreEqual(DateTime.MaxValue, itinerary.FinalArrivalDate);
+			Assert.IsTrue(itinerary.Equals(itinerary));
+			Assert.IsTrue(itinerary.Equals(itinerary2));
+			Assert.IsFalse(itinerary.Equals(null));
+			Assert.IsTrue(itinerary2.Equals(itinerary));
+			Assert.AreEqual(itinerary.GetHashCode(), itinerary2.GetHashCode());
+			CollectionAssert.AreEqual(itinerary, itinerary.AsWeakEnumerable());
 		}
 		
 		[Test]
@@ -186,6 +193,7 @@ namespace DefaultImplementation.Cargo
 			// assert:
 			Assert.IsFalse(tested.Equals(null));
 			Assert.IsTrue(tested.Equals(tested));
+			Assert.IsTrue(tested.Equals((object)tested));
 		}
 		
 		[Test]
@@ -200,28 +208,47 @@ namespace DefaultImplementation.Cargo
 			legs.Add(legCopy);
 			ILeg leg2Copy = MockRepository.GenerateStrictMock<ILeg>();
 			legs.Add(leg2Copy);
-			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
-			leg.Expect(l => l.Equals(legCopy)).Return(true).Repeat.Once();
-			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.Once();
-			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Once();
-			leg.Expect(l => l.UnloadTime).Return(DateTime.UtcNow).Repeat.Once();
-			ILeg leg2 = MockRepository.GenerateStrictMock<ILeg>();
-			leg2.Expect(l => l.Equals(leg2Copy)).Return(true).Repeat.Once();
-			leg2.Expect(l => l.LoadLocation).Return(loc2).Repeat.Once();
-			leg2.Expect(l => l.UnloadLocation).Return(loc3).Repeat.Once();
-			leg2.Expect(l => l.LoadTime).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Once();
+			ILeg leg = MockRepository.GenerateStrictMock<ILeg, IObject>();
+			leg.Expect(l => l.Equals(leg)).Return(true).Repeat.AtLeastOnce();
+			leg.Expect(l => l.Equals((object)leg)).Return(true).Repeat.AtLeastOnce();
+			leg.Expect(l => l.Equals(legCopy)).Return(true).Repeat.AtLeastOnce();
+			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.AtLeastOnce();
+			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.AtLeastOnce();
+			leg.Expect(l => l.UnloadTime).Return(DateTime.UtcNow).Repeat.AtLeastOnce();
+			leg.Expect(l => l.GetHashCode()).Return(543210).Repeat.AtLeastOnce();
+			ILeg leg2 = MockRepository.GenerateStrictMock<ILeg, IObject>();
+			leg2.Expect(l => l.Equals(leg2)).Return(true).Repeat.AtLeastOnce();
+			leg2.Expect(l => l.Equals((object)leg2)).Return(true).Repeat.AtLeastOnce();
+			leg2.Expect(l => l.Equals(leg2Copy)).Return(true).Repeat.AtLeastOnce();
+			leg2.Expect(l => l.LoadLocation).Return(loc2).Repeat.AtLeastOnce();
+			leg2.Expect(l => l.UnloadLocation).Return(loc3).Repeat.AtLeastOnce();
+			leg2.Expect(l => l.LoadTime).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.AtLeastOnce();
 			IItinerary candidate = MockRepository.GenerateStrictMock<IItinerary>();
-			candidate.Expect(c => c.InitialDepartureLocation).Return(loc1).Repeat.Once();
-			candidate.Expect(c => c.FinalArrivalLocation).Return(loc3).Repeat.Once();
+			candidate.Expect(c => c.InitialDepartureLocation).Return(loc1).Repeat.AtLeastOnce();
+			candidate.Expect(c => c.FinalArrivalLocation).Return(loc3).Repeat.AtLeastOnce();
+			candidate.Expect(c => c.GetEnumerator()).Return(legs.GetEnumerator()).Repeat.Once();
+			candidate.Expect(c => c.GetEnumerator()).Return(legs.GetEnumerator()).Repeat.Once();
+			candidate.Expect(c => c.GetEnumerator()).Return(legs.GetEnumerator()).Repeat.Once();
 			candidate.Expect(c => c.GetEnumerator()).Return(legs.GetEnumerator()).Repeat.Once();
 		
 			// act:
 			IItinerary tested = new Itinerary();
 			tested = tested.Append(leg);
 			tested = tested.Append(leg2);
+			IItinerary tested2 = new Itinerary();
+			tested2 = tested2.Append(leg);
+			tested2 = tested2.Append(leg2);
 		
 			// assert:
 			Assert.IsTrue(tested.Equals(candidate));
+			Assert.IsTrue(tested.Equals((object)candidate));
+			Assert.IsTrue(tested.Equals(tested2));
+			Assert.IsTrue(tested.Equals((object)tested2));
+			Assert.IsTrue(tested2.Equals(tested));
+			Assert.IsTrue(tested2.Equals((object)tested));
+			Assert.AreEqual(tested.GetHashCode(), tested2.GetHashCode());
+			CollectionAssert.AreEqual(tested, tested.AsWeakEnumerable());
+			CollectionAssert.AreEqual(tested, tested2);
 			candidate.VerifyAllExpectations();
 			leg.VerifyAllExpectations();
 			leg2.VerifyAllExpectations();
@@ -256,6 +283,7 @@ namespace DefaultImplementation.Cargo
 			IItinerary candidate = MockRepository.GenerateStrictMock<IItinerary>();
 			candidate.Expect(c => c.InitialDepartureLocation).Return(loc1).Repeat.Once();
 			candidate.Expect(c => c.FinalArrivalLocation).Return(loc3).Repeat.Once();
+			candidate.Expect(c => c.GetEnumerator()).Return(legs.GetEnumerator()).Repeat.Once();
 			candidate.Expect(c => c.GetEnumerator()).Return(legs.GetEnumerator()).Repeat.Once();
 		
 			// act:
@@ -300,7 +328,8 @@ namespace DefaultImplementation.Cargo
 			candidate.Expect(c => c.InitialDepartureLocation).Return(loc1).Repeat.Once();
 			candidate.Expect(c => c.FinalArrivalLocation).Return(loc3).Repeat.Once();
 			candidate.Expect(c => c.GetEnumerator()).Return(legs.GetEnumerator()).Repeat.Once();
-		
+			candidate.Expect(c => c.GetEnumerator()).Return(legs.GetEnumerator()).Repeat.Once();
+	
 			// act:
 			IItinerary tested = new Itinerary();
 			tested = tested.Append(leg);

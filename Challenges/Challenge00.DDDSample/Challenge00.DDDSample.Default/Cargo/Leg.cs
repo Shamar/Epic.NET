@@ -40,12 +40,10 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("voyage");
 			if(null == loadLocation)
 				throw new ArgumentNullException("loadLocation");
-			if(loadTime >= unloadTime)
-				throw new ArgumentException("Unload time must follow the load time.","unloadTime");
-			if(null == loadLocation)
-				throw new ArgumentNullException("loadLocation");
 			if(null == unloadLocation)
 				throw new ArgumentNullException("unloadLocation");
+			if(loadTime >= unloadTime)
+				throw new ArgumentException("Unload time must follow the load time.","unloadTime");
 			if(loadLocation.UnLocode.Equals(unloadLocation.UnLocode))
 				throw new ArgumentException("The locations must not be differents.", "unloadLocation");
 			if(!voyage.WillStopOverAt(loadLocation))
@@ -116,7 +114,11 @@ namespace Challenge00.DDDSample.Cargo
 				return false;
 			if(object.ReferenceEquals(this, other))
 				return true;
-			return _voyage.Equals(other.Voyage) && _loadLocation.Equals(other.LoadLocation) && _unloadLocation.Equals(other.UnloadLocation);
+			return _voyage.Equals(other.Voyage) 
+					&& _loadLocation.Equals(other.LoadLocation) 
+					&& _unloadLocation.Equals(other.UnloadLocation) 
+					&& _loadTime.Equals(other.LoadTime) 
+					&& _unloadTime.Equals(other.UnloadTime);
 		}
 		#endregion
 		
