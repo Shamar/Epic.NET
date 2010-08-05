@@ -30,6 +30,12 @@ namespace Challenge00.DDDSample.Cargo
 		public ClaimedCargo (CargoState previousState)
 			: base(previousState)
 		{
+			if(previousState.RoutingStatus == RoutingStatus.Misrouted)
+				throw new ArgumentException(string.Format("Can not claim the misrouted cargo {0}.", Identifier));
+			if(previousState.RoutingStatus == RoutingStatus.NotRouted)
+				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not routed.", Identifier));
+			if(previousState.RoutingStatus != TransportStatus.InPort)
+				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not in port.", Identifier));
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.Cargo.CargoState
@@ -76,8 +82,9 @@ namespace Challenge00.DDDSample.Cargo
 		
 		
 		public override Challenge00.DDDSample.Voyage.VoyageNumber CurrentVoyage {
-			get {
-				throw new System.NotImplementedException();
+			get 
+			{
+				return null;
 			}
 		}
 		
