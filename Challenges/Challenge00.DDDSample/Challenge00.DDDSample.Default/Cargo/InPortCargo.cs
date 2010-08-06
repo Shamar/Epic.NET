@@ -119,6 +119,11 @@ namespace Challenge00.DDDSample.Cargo
 				string message = string.Format("The cargo is in port at {0}.", _lastKnownLocation);
 				throw new ArgumentException(message, "location");
 			}
+			if(!_lastKnownLocation.Equals(this.Itinerary.FinalArrivalLocation))
+			{
+				string message = string.Format("The cargo is in port at {0} and can not be claimed until it reach {1}.", _lastKnownLocation, this.Itinerary.FinalArrivalLocation);
+				throw new ArgumentException(message, "location");
+			}
 			if(date < this._date)
 			{
 				string message = string.Format("The cargo arrived in port at {0}. Can not be claimed at {1}.", this._date, date);
