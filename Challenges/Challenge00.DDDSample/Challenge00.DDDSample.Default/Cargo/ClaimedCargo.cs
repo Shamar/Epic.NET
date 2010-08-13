@@ -22,66 +22,92 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Challenge00.DDDSample.Voyage;
+using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
 	public class ClaimedCargo : CargoState
 	{
-		public ClaimedCargo (CargoState previousState)
+		private readonly DateTime _claimDate;
+		public ClaimedCargo (CargoState previousState, DateTime claimDate)
 			: base(previousState)
 		{
 			if(previousState.RoutingStatus == RoutingStatus.Misrouted)
 				throw new ArgumentException(string.Format("Can not claim the misrouted cargo {0}.", Identifier));
 			if(previousState.RoutingStatus == RoutingStatus.NotRouted)
 				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not routed.", Identifier));
-			if(previousState.RoutingStatus != TransportStatus.InPort)
-				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not in port.", Identifier));
+			if(previousState.TransportStatus != TransportStatus.InPort)
+				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not yet in port.", Identifier));
+			if(!previousState.IsUnloadedAtDestination)
+				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not yet been unloaded at destination.", Identifier
+			_claimDate = claimDate;
+		}
+		
+		public override bool IsUnloadedAtDestination 
+		{
+			get 
+			{
+				return true;
+			}
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.Cargo.CargoState
 		public override CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
 		{
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} has been claimed.", Identifier);
+			throw new System.InvalidOperationException(message);
 		}
 		
 		
 		public override CargoState AssignToRoute (IItinerary itinerary)
 		{
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} has been claimed.", Identifier);
+			throw new System.InvalidOperationException(message);
 		}
 		
 		
-		public override CargoState Recieve (Challenge00.DDDSample.Location.ILocation location, DateTime date)
+		public override CargoState Recieve (ILocation location, DateTime date)
 		{
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} has been claimed.", Identifier);
+			throw new System.InvalidOperationException(message);
 		}
 		
 		
-		public override CargoState ClearCustoms (Challenge00.DDDSample.Location.ILocation location, DateTime date)
+		public override CargoState ClearCustoms (ILocation location, DateTime date)
 		{
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} has been claimed.", Identifier);
+			throw new System.InvalidOperationException(message);
 		}
 		
 		
-		public override CargoState Claim (Challenge00.DDDSample.Location.ILocation location, DateTime date)
+		public override CargoState Claim (ILocation location, DateTime date)
 		{
-			throw new System.NotImplementedException();
+			if(null == location)
+				throw new ArgumentNullException("location");
+			if(location.UnLocode.Equals(LastKnownLocation) && date == _claimDate)
+				return this;
+			string message = string.Format("The cargo {0} has been claimed.", Identifier);
+			throw new System.InvalidOperationException(message);
 		}
 		
 		
-		public override CargoState LoadOn (Challenge00.DDDSample.Voyage.IVoyage voyage, DateTime date)
+		public override CargoState LoadOn (IVoyage voyage, DateTime date)
 		{
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} has been claimed.", Identifier);
+			throw new System.InvalidOperationException(message);
 		}
 		
 		
-		public override CargoState Unload (Challenge00.DDDSample.Voyage.IVoyage voyage, DateTime date)
+		public override CargoState Unload (IVoyage voyage, DateTime date)
 		{
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} has been claimed.", Identifier);
+			throw new System.InvalidOperationException(message);
 		}
 		
 		
-		public override Challenge00.DDDSample.Voyage.VoyageNumber CurrentVoyage {
+		public override VoyageNumber CurrentVoyage 
+		{
 			get 
 			{
 				return null;
@@ -89,11 +115,11 @@ namespace Challenge00.DDDSample.Cargo
 		}
 		
 		
-		public override Challenge00.DDDSample.Location.UnLocode LastKnownLocation 
+		public override UnLocode LastKnownLocation 
 		{
 			get 
 			{
-				throw new System.NotImplementedException();
+				return Itinerary.FinalArrivalLocation;
 			}
 		}
 		

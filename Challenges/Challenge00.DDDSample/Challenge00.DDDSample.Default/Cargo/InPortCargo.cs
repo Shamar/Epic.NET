@@ -129,7 +129,7 @@ namespace Challenge00.DDDSample.Cargo
 				string message = string.Format("The cargo arrived in port at {0}. Can not be claimed at {1}.", this._date, date);
 				throw new ArgumentException(message, "date");
 			}
-			return new ClaimedCargo(this);
+			return new ClaimedCargo(this, date);
 		}
 		
 		
