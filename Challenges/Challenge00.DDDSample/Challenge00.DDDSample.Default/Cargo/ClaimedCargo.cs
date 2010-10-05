@@ -40,7 +40,7 @@ namespace Challenge00.DDDSample.Cargo
 			if(previousState.TransportStatus != TransportStatus.InPort)
 				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not yet in port.", Identifier));
 			if(!previousState.IsUnloadedAtDestination)
-				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not yet been unloaded at destination.", Identifier
+				throw new ArgumentException(string.Format("Can not claim the cargo {0} since it is not yet been unloaded at destination.", Identifier));
 			_claimDate = claimDate;
 		}
 		

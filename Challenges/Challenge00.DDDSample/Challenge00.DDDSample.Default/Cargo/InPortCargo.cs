@@ -171,6 +171,13 @@ namespace Challenge00.DDDSample.Cargo
 			}
 		}
 		
+		public override bool IsUnloadedAtDestination 
+		{
+			get 
+			{
+				return _lastKnownLocation.Equals(Itinerary.FinalArrivalLocation);
+			}
+		}
 		
 		public override UnLocode LastKnownLocation 
 		{
