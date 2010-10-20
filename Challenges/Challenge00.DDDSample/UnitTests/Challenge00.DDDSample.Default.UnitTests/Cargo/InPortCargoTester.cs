@@ -27,6 +27,7 @@ using Challenge00.DDDSample.Cargo;
 using Rhino.Mocks;
 using Challenge00.DDDSample.Location;
 using System.Collections.Generic;
+using Challenge00.DDDSample.Voyage;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture()]
@@ -639,6 +640,106 @@ namespace DefaultImplementation.Cargo
             foreach (object mock in mocks)
                 mock.VerifyAllExpectations();
         }
+		
+		[Test]
+		public void Test_LoadOn_01()
+		{
+			// arrange:
+            List<object> mocks = new List<object>();
+
+            UnLocode code = new UnLocode("FINAL");
+            TrackingId id = new TrackingId("CRG01");
+            DateTime arrival = DateTime.UtcNow;
+			UnLocode voyageLocation = new UnLocode("OTHER");
+            ILocation location2 = MockRepository.GenerateStrictMock<ILocation>();
+            location2.Expect(l => l.UnLocode).Return(voyageLocation).Repeat.AtLeastOnce();
+            mocks.Add(location2);
+            IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+            itinerary.Expect(i => i.Equals(null)).IgnoreArguments().Return(false).Repeat.Any();
+            itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Any();
+            itinerary.Expect(i => i.FinalArrivalLocation).Return(code).Repeat.AtLeastOnce();
+            mocks.Add(itinerary);
+            IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+            specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+            mocks.Add(specification);
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+			voyage.Expect(v => v.IsMoving).Return(false).Repeat.AtLeastOnce();
+			voyage.Expect(v => v.LastKnownLocation).Return(voyageLocation).Repeat.AtLeastOnce();
+			mocks.Add(voyage);
+            CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+            previousState.Expect(s => s.LastKnownLocation).Return(code).Repeat.Any();
+            mocks.Add(previousState);
+            previousState = MockRepository.GenerateStrictMock<CargoState>(previousState, itinerary);
+            mocks.Add(previousState);
+            InPortCargo state = new InPortCargo(previousState, location2, arrival);
+			
+			// act:
+			CargoState newState = state.LoadOn(voyage, arrival + TimeSpan.FromDays(2));
+		
+			// assert:
+			Assert.IsNotNull(newState);
+			Assert.IsInstanceOf<OnboardCarrierCargo>(newState);
+			foreach (object mock in mocks)
+                mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_LoadOn_02()
+		{
+			// arrange:
+			UnLocode code = new UnLocode("FINAL");
+			UnLocode voyageLocation = new UnLocode("OTHER");
+			TrackingId id = new TrackingId("CRG01");
+			DateTime arrival = DateTime.UtcNow;
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+            ILocation location2 = MockRepository.GenerateStrictMock<ILocation>();
+            location2.Expect(l => l.UnLocode).Return(voyageLocation).Repeat.AtLeastOnce();
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).IgnoreArguments().Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Any();
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+			previousState.Expect(s => s.LastKnownLocation).Return(code).Repeat.Any();
+			previousState = MockRepository.GenerateStrictMock<CargoState>(previousState, itinerary);
+			InPortCargo state = new InPortCargo(previousState, location2, arrival);
+		
+			// act:
+			Assert.Throws<ArgumentNullException>(delegate { state.LoadOn(null, DateTime.UtcNow + TimeSpan.FromDays(2)); });
+		
+			// assert:
+			location2.VerifyAllExpectations();
+			itinerary.VerifyAllExpectations();
+			specification.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_LoadOn_03()
+		{
+			// arrange:
+			UnLocode code = new UnLocode("FINAL");
+			UnLocode voyageLocation = new UnLocode("OTHER");
+			TrackingId id = new TrackingId("CRG01");
+			DateTime arrival = DateTime.UtcNow;
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
+			location.Expect(l => l.UnLocode).Return(voyageLocation).Repeat.AtLeastOnce();
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).IgnoreArguments().Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Any();
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+			previousState.Expect(s => s.LastKnownLocation).Return(code).Repeat.Any();
+			previousState = MockRepository.GenerateStrictMock<CargoState>(previousState, itinerary);
+			InPortCargo state = new InPortCargo(previousState, location, arrival);
+		
+			// act:
+			Assert.Throws<ArgumentNullException>(delegate { state.LoadOn(null, DateTime.UtcNow + TimeSpan.FromDays(2)); });
+		
+			// assert:
+			location.VerifyAllExpectations();
+			itinerary.VerifyAllExpectations();
+			specification.VerifyAllExpectations();
+		}
 	}
 }
 

@@ -142,6 +142,11 @@ namespace Challenge00.DDDSample.Cargo
 				string message = string.Format("Can not load the cargo {0} on the voyage {1} since it is moving.", Identifier, voyage.Number);
 				throw new ArgumentException(message);
 			}
+			if(this.IsUnloadedAtDestination)
+			{
+				string message = string.Format("Can not load the cargo {0} on the voyage {1} since it already reached the destination.", Identifier, voyage.Number);
+				throw new InvalidOperationException(message);
+			}
 			if(!_lastKnownLocation.Equals(voyage.LastKnownLocation))
 			{
 				string message = string.Format("Can not load the cargo {0} (waiting in {2}) on the voyage {1} since it stopped over at {3}.", Identifier, voyage.Number, _lastKnownLocation, voyage.LastKnownLocation);
