@@ -205,12 +205,10 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public override bool Equals (CargoState other)
 		{
-			if(!base.Equals (other))
-				return false;
 			InPortCargo cargo = other as InPortCargo;
-			if(!_customCleared.Equals(cargo._customCleared))
+			if(null != cargo && !_customCleared.Equals(cargo._customCleared))
 				return false;
-			return true;
+			return base.Equals (other);
 		}
 	}
 }

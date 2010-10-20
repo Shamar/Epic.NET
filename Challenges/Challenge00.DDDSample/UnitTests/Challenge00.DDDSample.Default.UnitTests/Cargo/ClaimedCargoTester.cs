@@ -33,7 +33,7 @@ namespace DefaultImplementation.Cargo
 	public class ClaimedCargoTester
 	{
 		[Test]
-		public void Test_Claim_01()
+		public void Test_Ctor_01()
 		{
 			// arrange:
 			UnLocode final = new UnLocode("FINAL");
@@ -62,8 +62,109 @@ namespace DefaultImplementation.Cargo
 			Assert.IsTrue(state.IsUnloadedAtDestination);
 			itinerary.VerifyAllExpectations();
 			specification.VerifyAllExpectations();
+			previousState.VerifyAllExpectations();
 		}
 		
+		[Test]
+		public void Test_Ctor_02()
+		{
+			// arrange:
+			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
+			TrackingId id = new TrackingId("CLAIM");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow).Repeat.AtLeastOnce();
+			mocks.Add(itinerary);
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+			mocks.Add(specification);
+			IRouteSpecification specification2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification2.Expect(s => s.IsSatisfiedBy(itinerary)).Return(false).Repeat.Any();
+			mocks.Add(specification2);
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+			mocks.Add(previousState);
+			previousState = MockRepository.GenerateStrictMock<CargoState>(previousState, itinerary);
+			mocks.Add(previousState);
+			previousState = MockRepository.GenerateStrictMock<CargoState>(previousState, specification2);
+			mocks.Add(previousState);
+			DateTime claimDate = DateTime.UtcNow;
+			
+		
+			// act:
+			Assert.Throws<ArgumentException>(delegate { new ClaimedCargo(previousState, claimDate); });
+		
+			// assert:
+			foreach(object mock in mocks)
+			{
+				mock.VerifyAllExpectations();
+			}
+		}
+		
+		[Test]
+		public void Test_Ctor_03()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CLAIM");
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+			DateTime claimDate = DateTime.UtcNow;
+			
+		
+			// act:
+			Assert.Throws<ArgumentException>(delegate { new ClaimedCargo(previousState, claimDate); });
+		
+			// assert:
+			specification.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Ctor_04()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CLAIM");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow).Repeat.AtLeastOnce();
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+			previousState = MockRepository.GenerateStrictMock<CargoState>(previousState, itinerary);
+			previousState.Expect(s => s.TransportStatus).Return(TransportStatus.OnboardCarrier).Repeat.AtLeastOnce();
+			DateTime claimDate = DateTime.UtcNow;
+			
+		
+			// act:
+			Assert.Throws<ArgumentException>(delegate { new ClaimedCargo(previousState, claimDate); });
+		
+			// assert:
+			itinerary.VerifyAllExpectations();
+			specification.VerifyAllExpectations();
+			previousState.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Ctor_05()
+		{
+			// arrange:
+			TrackingId id = new TrackingId("CLAIM");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow).Repeat.AtLeastOnce();
+			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+			previousState = MockRepository.GenerateStrictMock<CargoState>(previousState, itinerary);
+			previousState.Expect(s => s.IsUnloadedAtDestination).Return(false).Repeat.AtLeastOnce();
+			previousState.Expect(s => s.TransportStatus).Return(TransportStatus.InPort).Repeat.AtLeastOnce();
+			DateTime claimDate = DateTime.UtcNow;
+			
+		
+			// act:
+			Assert.Throws<ArgumentException>(delegate { new ClaimedCargo(previousState, claimDate); });
+		
+			// assert:
+			itinerary.VerifyAllExpectations();
+			specification.VerifyAllExpectations();
+			previousState.VerifyAllExpectations();
+		}
+
 		[Test]
 		public void Test_StateTransitions_01()
 		{

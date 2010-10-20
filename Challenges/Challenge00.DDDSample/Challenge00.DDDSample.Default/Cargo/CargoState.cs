@@ -164,8 +164,6 @@ namespace Challenge00.DDDSample.Cargo
 				return false;
 			if(object.ReferenceEquals(this, other))
 				return true;
-			if(!_calculationDate.Equals(other.CalculationDate))
-				return false;
 			if(object.ReferenceEquals(null, CurrentVoyage) || !CurrentVoyage.Equals(other.CurrentVoyage))
 				return false;
 			if(null != LastKnownLocation || !LastKnownLocation.Equals(other.LastKnownLocation))
@@ -181,6 +179,8 @@ namespace Challenge00.DDDSample.Cargo
 			if(EstimatedTimeOfArrival.HasValue != other.EstimatedTimeOfArrival.HasValue)
 				return false;
 			if(EstimatedTimeOfArrival.HasValue && EstimatedTimeOfArrival.Value != other.EstimatedTimeOfArrival.Value)
+				return false;
+			if(!_calculationDate.Equals(other.CalculationDate))
 				return false;
 			return true;
 		}

@@ -40,7 +40,7 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("origin");
 			if(null == destination || destination is Unknown)
 				throw new ArgumentNullException("destination");
-			if(origin.Equals(destination))
+			if(origin.UnLocode.Equals(destination.UnLocode))
 				throw new ArgumentException("Origin and destination can't be the same: " + origin.UnLocode);
 			if(arrivalDeadline <= DateTime.UtcNow)
 				throw new ArgumentException("Arrival deadline can't be in the past: " + arrivalDeadline);
