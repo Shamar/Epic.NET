@@ -23,76 +23,99 @@
 //  
 using System;
 using Challenge00.DDDSample.Voyage;
+using Challenge00.DDDSample.Location;
 namespace Challenge00.DDDSample.Cargo
 {
 	[Serializable]
 	public class OnboardCarrierCargo : CargoState
 	{
+		private readonly VoyageNumber _voyage;
+		private readonly DateTime _date;
+		private readonly UnLocode _lastKnownLocation;
 		public OnboardCarrierCargo (CargoState previousState, IVoyage voyage, DateTime loadDate)
 			: base(previousState)
 		{
+			if(null == voyage)
+				throw new ArgumentNullException("voyage");
+			_voyage = voyage.Number;
+			_date = loadDate;
+			_lastKnownLocation = voyage.LastKnownLocation;
 		}
 		
 		#region implemented abstract members of Challenge00.DDDSample.Cargo.CargoState
 		public override CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
 		{
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} has been loaded on the {1} voyage.", Identifier, _voyage);
+			throw new InvalidOperationException(message);
 		}
 		
 		
 		public override CargoState AssignToRoute (IItinerary itinerary)
 		{
+			string message = string.Format("The cargo {0} has been loaded on the {1} voyage.", Identifier, _voyage);
+			throw new InvalidOperationException(message);
+		}
+		
+		
+		public override CargoState Recieve (ILocation location, DateTime date)
+		{
+			throw new InvalidOperationException("Already recieved.");
+		}
+		
+		
+		public override CargoState ClearCustoms (ILocation location, DateTime date)
+		{
+			string message = string.Format("The cargo {0} has been loaded on the {1} voyage.", Identifier, _voyage);
+			throw new InvalidOperationException(message);
+		}
+		
+		
+		public override CargoState Claim (ILocation location, DateTime date)
+		{
+			string message = string.Format("The cargo {0} has been loaded on the {1} voyage.", Identifier, _voyage);
+			throw new InvalidOperationException(message);
+		}
+		
+		
+		public override CargoState LoadOn (IVoyage voyage, DateTime date)
+		{
+			if(null == voyage)
+				throw new ArgumentNullException("voyage");
+			if(voyage.Number.Equals(_voyage))
+				return this;
 			throw new System.NotImplementedException();
 		}
 		
 		
-		public override CargoState Recieve (Challenge00.DDDSample.Location.ILocation location, DateTime date)
+		public override CargoState Unload (IVoyage voyage, DateTime date)
 		{
 			throw new System.NotImplementedException();
 		}
 		
 		
-		public override CargoState ClearCustoms (Challenge00.DDDSample.Location.ILocation location, DateTime date)
+		public override VoyageNumber CurrentVoyage 
 		{
-			throw new System.NotImplementedException();
-		}
-		
-		
-		public override CargoState Claim (Challenge00.DDDSample.Location.ILocation location, DateTime date)
-		{
-			throw new System.NotImplementedException();
-		}
-		
-		
-		public override CargoState LoadOn (Challenge00.DDDSample.Voyage.IVoyage voyage, DateTime date)
-		{
-			throw new System.NotImplementedException();
-		}
-		
-		
-		public override CargoState Unload (Challenge00.DDDSample.Voyage.IVoyage voyage, DateTime date)
-		{
-			throw new System.NotImplementedException();
-		}
-		
-		
-		public override Challenge00.DDDSample.Voyage.VoyageNumber CurrentVoyage {
-			get {
-				throw new System.NotImplementedException();
+			get 
+			{
+				return _voyage;
 			}
 		}
 		
 		
-		public override Challenge00.DDDSample.Location.UnLocode LastKnownLocation {
-			get {
-				throw new System.NotImplementedException();
+		public override UnLocode LastKnownLocation 
+		{
+			get 
+			{
+				return _lastKnownLocation;
 			}
 		}
 		
 		
-		public override TransportStatus TransportStatus {
-			get {
-				throw new System.NotImplementedException();
+		public override TransportStatus TransportStatus 
+		{
+			get 
+			{
+				return TransportStatus.OnboardCarrier;
 			}
 		}
 		
