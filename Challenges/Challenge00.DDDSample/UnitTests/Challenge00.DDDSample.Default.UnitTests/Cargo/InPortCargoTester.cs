@@ -721,7 +721,7 @@ namespace DefaultImplementation.Cargo
 			UnLocode code = new UnLocode("FINAL");
 			UnLocode voyageLocation = new UnLocode("OTHER");
 			TrackingId id = new TrackingId("CRG01");
-			VoyageNumber voyageNumber = new VoyageNumber("PROVA");
+			VoyageNumber voyageNumber = new VoyageNumber("ATEST");
 			DateTime arrival = DateTime.UtcNow;
 			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
@@ -754,7 +754,7 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			UnLocode code = new UnLocode("FINAL");
 			TrackingId id = new TrackingId("CRG01");
-			VoyageNumber voyageNumber = new VoyageNumber("PROVA");
+			VoyageNumber voyageNumber = new VoyageNumber("ATEST");
 			DateTime arrival = DateTime.UtcNow;
 			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
@@ -789,7 +789,7 @@ namespace DefaultImplementation.Cargo
 			UnLocode code = new UnLocode("FINAL");
 			TrackingId id = new TrackingId("CRG01");
 			UnLocode voyageLocation = new UnLocode("OTHER");
-			VoyageNumber voyageNumber = new VoyageNumber("PROVA");
+			VoyageNumber voyageNumber = new VoyageNumber("ATEST");
 			DateTime arrival = DateTime.UtcNow;
 			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
@@ -826,7 +826,7 @@ namespace DefaultImplementation.Cargo
 
             UnLocode code = new UnLocode("FINAL");
             TrackingId id = new TrackingId("CRG01");
-			VoyageNumber voyageNumber = new VoyageNumber("PROVA");
+			VoyageNumber voyageNumber = new VoyageNumber("ATEST");
             DateTime arrival = DateTime.UtcNow;
 			UnLocode voyageLocation = new UnLocode("OTHER");
             ILocation location2 = MockRepository.GenerateStrictMock<ILocation>();
@@ -867,7 +867,7 @@ namespace DefaultImplementation.Cargo
             List<object> mocks = new List<object>();
 
 			UnLocode code = new UnLocode("START");
-			VoyageNumber voyageNumber = new VoyageNumber("PROVA");
+			VoyageNumber voyageNumber = new VoyageNumber("ATEST");
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
 			location.Expect(l => l.UnLocode).Return(code).Repeat.AtLeastOnce();
             mocks.Add(location);
