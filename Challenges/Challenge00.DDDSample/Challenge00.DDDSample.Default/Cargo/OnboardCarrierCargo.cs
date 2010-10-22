@@ -83,12 +83,25 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("voyage");
 			if(voyage.Number.Equals(_voyage))
 				return this;
-			throw new System.NotImplementedException();
+			string message = string.Format("The cargo {0} is loaded on the voyage {1}, so it can not be loaded on the voyage {2}.", Identifier, _voyage, voyage.Number);
+			throw new InvalidOperationException(message);
 		}
 		
 		
 		public override CargoState Unload (IVoyage voyage, DateTime date)
 		{
+			if(null == voyage)
+				throw new ArgumentNullException("voyage");
+			if(!voyage.Number.Equals(_voyage))
+			{
+				string message = string.Format("The cargo {0} is loaded on the voyage {1}, so it can not be unloaded from the voyage {2}.", Identifier, _voyage, voyage.Number);
+				throw new ArgumentException(message, "voyage");
+			}
+			if(voyage.IsMoving)
+			{
+				string message = string.Format("The cargo {0} is loaded on the voyage {1}, since it's moving to {2}.", Identifier, _voyage, voyage.NextExpectedLocation);
+				throw new ArgumentException(message, "voyage");
+			}
 			throw new System.NotImplementedException();
 		}
 		
