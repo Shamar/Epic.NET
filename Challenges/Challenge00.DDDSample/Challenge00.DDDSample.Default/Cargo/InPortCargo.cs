@@ -165,7 +165,7 @@ namespace Challenge00.DDDSample.Cargo
 		{
 			if(null == voyage)
 				throw new ArgumentNullException("voyage");
-			if(_lastKnownLocation.Equals(voyage.LastKnownLocation))
+			if(!_customCleared && _lastKnownLocation.Equals(voyage.LastKnownLocation))
 				return this;
 			string message = string.Format("The cargo {0} is waiting at {1}, so it can not be unloaded from the voyage {2}.", Identifier, _lastKnownLocation, voyage.Number);
 			throw new InvalidOperationException(message);
