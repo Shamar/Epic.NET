@@ -102,7 +102,7 @@ namespace Challenge00.DDDSample.Cargo
 				string message = string.Format("The cargo {0} is loaded on the voyage {1}, since it's moving to {2}.", Identifier, _voyage, voyage.NextExpectedLocation);
 				throw new ArgumentException(message, "voyage");
 			}
-			throw new System.NotImplementedException();
+			return new InPortCargo(this, voyage.LastKnownLocation, date);
 		}
 		
 		

@@ -85,7 +85,7 @@ namespace Challenge00.DDDSample.Cargo
 				string message = string.Format("Can not recieve cargo {0} at {1}. The planned route start from {2}.", Identifier, location.UnLocode, Itinerary.InitialDepartureLocation);
 				throw new ArgumentException(message);
 			}
-			return new InPortCargo(this, location, date);
+			return new InPortCargo(this, location.UnLocode, date);
 		}
 		
 		

@@ -33,10 +33,10 @@ namespace Challenge00.DDDSample.Cargo
 		private readonly DateTime _date;
 		private readonly bool _customCleared;
 		
-		public InPortCargo (CargoState previousState, ILocation location, DateTime arrivalDate)
+		public InPortCargo (CargoState previousState, UnLocode portLocation, DateTime arrivalDate)
 			: base(previousState)
 		{
-			_lastKnownLocation = location.UnLocode;
+			_lastKnownLocation = portLocation;
 			_date = arrivalDate;
 			_customCleared = false;
 		}
