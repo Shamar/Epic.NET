@@ -56,6 +56,7 @@
     <Compile Include="Cargo\InPortCargo.cs" />
     <Compile Include="Cargo\ClaimedCargo.cs" />
     <Compile Include="Cargo\OnboardCarrierCargo.cs" />
+    <Compile Include="Cargo\Cargo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

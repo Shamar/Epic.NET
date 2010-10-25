@@ -45,7 +45,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// Constructor
 		/// </summary>
 		/// <param name="delivery">
-		/// The new cargo <see cref="IDelivery"/> status. May not be null.
+		/// The new cargo <see cref="IDelivery"/> status. Will not be null.
 		/// </param>
 		/// <param name="completionDate">
 		/// The completion <see cref="DateTime"/>
