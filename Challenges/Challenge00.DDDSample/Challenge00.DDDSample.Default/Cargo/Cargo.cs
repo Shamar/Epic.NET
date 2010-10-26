@@ -44,6 +44,7 @@ namespace Challenge00.DDDSample.Cargo
 		}
 
 		#region ICargo implementation
+		
 		public event EventHandler<ChangeEventArgs<IRouteSpecification>> NewRouteSpecified;
 
 		public event EventHandler<ChangeEventArgs<IItinerary>> ItineraryChanged;
@@ -251,6 +252,6 @@ namespace Challenge00.DDDSample.Cargo
 			}
 		}
 		#endregion
-}
+	}
 }
 
