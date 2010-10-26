@@ -86,6 +86,7 @@ namespace DefaultImplementation.Cargo
 			TrackingId id = new TrackingId("CRG01");
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
 			itinerary.Expect(i => i.Equals(null)).Return(false);
+			itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.Now + TimeSpan.FromDays(60)).Repeat.AtLeastOnce();
 			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Once();
 			NewCargo state = new NewCargo(id, specification);
@@ -130,7 +131,10 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			DateTime finalArrival1 = DateTime.Now + TimeSpan.FromDays(30);
+			DateTime finalArrival2 = DateTime.Now + TimeSpan.FromDays(60);
 			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.AtLeastOnce();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(finalArrival1).Repeat.AtLeastOnce();
 			IItinerary itinerary2 = MockRepository.GenerateStrictMock<IItinerary>();
 			itinerary2.Expect(i => i.Equals(itinerary)).Return(true).Repeat.AtLeastOnce();
 			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
@@ -142,6 +146,7 @@ namespace DefaultImplementation.Cargo
 			CargoState newState = state.AssignToRoute(itinerary2);
 		
 			// assert:
+			Assert.AreEqual(finalArrival1, newState.EstimatedTimeOfArrival);
 			Assert.AreEqual(initialState.GetType(), state.GetType());
 			Assert.AreNotSame(initialState, state);
 			Assert.IsNotNull(newState);

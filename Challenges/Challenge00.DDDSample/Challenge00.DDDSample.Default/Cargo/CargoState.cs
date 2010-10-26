@@ -74,6 +74,7 @@ namespace Challenge00.DDDSample.Cargo
 			}
 			Itinerary = newItinerary;
 			_routingStatus = RoutingStatus.Routed;
+			_estimatedTimeOfArrival = this.Itinerary.FinalArrivalDate;
 		}
 		
 		protected CargoState (CargoState previousState, IRouteSpecification routeSpecification)

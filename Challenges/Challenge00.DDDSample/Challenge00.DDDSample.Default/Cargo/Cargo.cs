@@ -38,6 +38,8 @@ namespace Challenge00.DDDSample.Cargo
 	
 		protected Cargo(CargoState state)
 		{
+			if(null == state)
+				throw new ArgumentNullException("state");
 			CurrentState = state;
 		}
 

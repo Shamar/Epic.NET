@@ -26,6 +26,8 @@ using System;
 using Challenge00.DDDSample.Cargo;
 using Rhino.Mocks;
 using TCargo = Challenge00.DDDSample.Cargo.Cargo;
+using Challenge00.DDDSample.Voyage;
+using Challenge00.DDDSample.Location;
 
 namespace DefaultImplementation.Cargo
 {
@@ -62,6 +64,51 @@ namespace DefaultImplementation.Cargo
 			Assert.IsNull(tested.Delivery.LastKnownLocation);
 			Assert.IsNull(tested.Itinerary);
 		}
+		
+		[Test]
+		public void Test_Ctor_02 ()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			VoyageNumber voyage = new VoyageNumber("VYG01");
+			DateTime estimatedTimeOfArrival = DateTime.Now;
+			UnLocode lastKnownLocation = new UnLocode("LSTLC");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(estimatedTimeOfArrival).Repeat.AtLeastOnce();
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			CargoState state = MockRepository.GeneratePartialMock<CargoState>(identifier, route);
+			state = MockRepository.GeneratePartialMock<CargoState>(state, itinerary);
+			state.Expect(s => s.CurrentVoyage).Return(voyage).Repeat.AtLeastOnce();
+			state.Expect(s => s.IsUnloadedAtDestination).Return(false).Repeat.AtLeastOnce();
+			state.Expect(s => s.LastKnownLocation).Return(lastKnownLocation).Repeat.AtLeastOnce();
+			state.Expect(s => s.TransportStatus).Return(TransportStatus.NotReceived).Repeat.AtLeastOnce();
+			
+			// act:
+			ICargo cargo = MockRepository.GeneratePartialMock<TCargo>(state);
+			
+			// assert:
+			Assert.AreSame(identifier, cargo.TrackingId);
+			Assert.IsFalse(cargo.Delivery.IsUnloadedAtDestination);
+			Assert.AreSame(lastKnownLocation, cargo.Delivery.LastKnownLocation);
+			Assert.AreSame(itinerary, cargo.Itinerary);
+			Assert.AreSame(voyage, cargo.Delivery.CurrentVoyage);
+			Assert.AreSame(route, cargo.RouteSpecification);
+			Assert.AreEqual(estimatedTimeOfArrival, cargo.Delivery.EstimatedTimeOfArrival);
+			Assert.AreEqual(RoutingStatus.Routed, cargo.Delivery.RoutingStatus);
+			Assert.AreEqual(TransportStatus.NotReceived, cargo.Delivery.TransportStatus);
+			itinerary.VerifyAllExpectations();
+			state.VerifyAllExpectations();
+			route.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Ctor_03()
+		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate{ new FakeCargo(null); });
+		}
+
 	}
 }
 
