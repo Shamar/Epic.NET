@@ -386,38 +386,115 @@ namespace DefaultImplementation.Cargo
 			GList mocks = new GList();
 			TrackingId identifier = new TrackingId("CARGO01");
 			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
-			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
-			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
-			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
-			mocks.Add(itinerary);
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
-			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			mocks.Add(route);
+			IRouteSpecification route2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			mocks.Add(route2);
 			CargoState mockState1 = MockRepository.GeneratePartialMock<CargoState>(identifier, route);
-			CargoState mockState2 = MockRepository.GeneratePartialMock<CargoState>(mockState1, itinerary);
-			mockState1.Expect(s => s.AssignToRoute(itinerary)).Return(mockState2).Repeat.Once();
+			CargoState mockState2 = MockRepository.GeneratePartialMock<CargoState>(mockState1, route2);
+			mockState1.Expect(s => s.SpecifyNewRoute(route2)).Return(mockState2).Repeat.Once();
 			mockState1.Expect(s => s.Equals(mockState2)).Return(false).Repeat.Any();
 			mocks.Add(mockState1);
 			mocks.Add(mockState2);
 			
-			ChangeEventArgs<IItinerary> eventArguments = null;
+			ChangeEventArgs<IRouteSpecification> eventArguments = null;
 			ICargo eventSender = null;
 		
 			// act:
 			TCargo underTest = new FakeCargo(mockState1);
-			underTest.ItineraryChanged += delegate(object sender, ChangeEventArgs<IItinerary> e) {
+			underTest.NewRouteSpecified += delegate(object sender, ChangeEventArgs<IRouteSpecification> e) {
 				eventArguments = e;
 				eventSender = sender as ICargo;
 			};
-			underTest.AssignToRoute(itinerary);
+			underTest.SpecifyNewRoute(route2);
 		
 			// assert:
-			Assert.AreSame(itinerary, underTest.Itinerary);
+			Assert.AreSame(route2, underTest.RouteSpecification);
 			Assert.IsNotNull(eventArguments);
-			Assert.AreSame(itinerary, eventArguments.NewValue);
+			Assert.AreSame(route2, eventArguments.NewValue);
+			Assert.AreSame(route, eventArguments.OldValue);
 			Assert.AreSame(underTest, eventSender);
 			foreach(object mock in mocks)
 				mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_SpecifyNewRoute_05()
+		{
+			// arrange:
+			GList mocks = new GList();
+			Exception eThrown = new Exception("Catch me.");
+			TrackingId identifier = new TrackingId("CARGO01");
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			mocks.Add(route);
+			IRouteSpecification route2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			mocks.Add(route2);
+			CargoState mockState1 = MockRepository.GeneratePartialMock<CargoState>(identifier, route);
+			mockState1.Expect(s => s.SpecifyNewRoute(route2)).Throw(eThrown);
+			mocks.Add(mockState1);
+			
+			ChangeEventArgs<IRouteSpecification> eventArguments = null;
+			ICargo eventSender = null;
+		
+			// act:
+			TCargo underTest = new FakeCargo(mockState1);
+			underTest.NewRouteSpecified += delegate(object sender, ChangeEventArgs<IRouteSpecification> e) {
+				eventArguments = e;
+				eventSender = sender as ICargo;
+			};
+			Assert.Throws<Exception>(delegate { underTest.SpecifyNewRoute(route2); }, "Catch me.");
+		
+			// assert:
+			Assert.AreSame(route, underTest.RouteSpecification);
+			Assert.IsNull(eventArguments);
+			Assert.IsNull(eventSender);
+			foreach(object mock in mocks)
+				mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Test_Recieve_01()
+		{
+			// arrange:
+			GList mocks = new GList();
+			TrackingId identifier = new TrackingId("CARGO01");
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			DateTime recieveDate = DateTime.Now + TimeSpan.FromDays(1);
+			UnLocode recUnLocode = new UnLocode("RECLC");
+			ILocation recLocation = MockRepository.GenerateStrictMock<ILocation>();
+			recLocation.Expect(l => l.UnLocode).Return(recUnLocode).Repeat.AtLeastOnce();
+			mocks.Add(recLocation);
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			itinerary.Expect(i => i.InitialDepartureLocation).Return(recUnLocode).Repeat.Any();
+			mocks.Add(itinerary);
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			mocks.Add(route);
+			HandlingEventArgs eventArguments = null;
+			ICargo eventSender = null;
+		
+			// act:
+			TCargo underTest = new TCargo(identifier, route);
+			underTest.AssignToRoute(itinerary);
+			underTest.Recieved += delegate(object sender, HandlingEventArgs e) {
+				eventArguments = e;
+				eventSender = sender as ICargo;
+			};
+			underTest.Recieve(recLocation, recieveDate);
+		
+			// assert:
+			Assert.AreEqual(RoutingStatus.Routed, underTest.Delivery.RoutingStatus);
+			Assert.AreEqual(TransportStatus.InPort, underTest.Delivery.TransportStatus);
+			Assert.AreSame(recUnLocode, underTest.Delivery.LastKnownLocation);
+			Assert.IsNotNull(eventArguments);
+			Assert.AreSame(underTest.Delivery.LastKnownLocation, eventArguments.Delivery.LastKnownLocation);
+			Assert.AreSame(eventSender, underTest);
+			foreach(object mock in mocks)
+				mock.VerifyAllExpectations();
+
 		}
 	}
 }
