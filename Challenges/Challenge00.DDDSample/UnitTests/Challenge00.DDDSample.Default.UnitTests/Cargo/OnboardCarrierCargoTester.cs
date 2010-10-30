@@ -535,6 +535,43 @@ namespace DefaultImplementation.Cargo
             foreach (object mock in mocks)
                 mock.VerifyAllExpectations();
 		}
+		
+		[Test]
+		public void Test_Unload_05()
+		{
+			// arrange:
+            GList mocks = new GList();
+
+			UnLocode code = new UnLocode("START");
+			VoyageNumber voyageNumber = new VoyageNumber("ATEST");
+			DateTime arrival = DateTime.UtcNow;
+			TrackingId id = new TrackingId("CARGO01");
+            IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+            itinerary.Expect(i => i.Equals(null)).IgnoreArguments().Return(false).Repeat.Any();
+            itinerary.Expect(i => i.FinalArrivalDate).Return(DateTime.UtcNow + TimeSpan.FromDays(1)).Repeat.Any();
+            itinerary.Expect(i => i.FinalArrivalLocation).Return(code).Repeat.Any();
+            mocks.Add(itinerary);
+            IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
+            specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+            mocks.Add(specification);
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+			voyage.Expect(v => v.Number).Return(voyageNumber).Repeat.Any();
+			voyage.Expect(v => v.LastKnownLocation).Return(code).Repeat.AtLeastOnce();
+			voyage.Expect(v => v.NextExpectedLocation).Return(new UnLocode("NEXTL")).Repeat.Any();
+			voyage.Expect(v => v.IsMoving).Return(false).Repeat.AtLeastOnce();
+			mocks.Add(voyage);
+			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
+            mocks.Add(previousState);
+            previousState = MockRepository.GenerateStrictMock<CargoState>(previousState, itinerary);
+            mocks.Add(previousState);
+            previousState.Expect(s => s.LastKnownLocation).Return(code).Repeat.Any();
+			OnboardCarrierCargo state = new OnboardCarrierCargo(previousState, voyage, arrival);
+		
+			// assert:
+			Assert.Throws<ArgumentException>(delegate {state.Unload(voyage, arrival - TimeSpan.FromDays(2));});
+            foreach (object mock in mocks)
+                mock.VerifyAllExpectations();
+		}
 	}
 }
 

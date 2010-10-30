@@ -102,6 +102,11 @@ namespace Challenge00.DDDSample.Cargo
 				string message = string.Format("The cargo {0} is loaded on the voyage {1}, since it's moving to {2}.", Identifier, _voyage, voyage.NextExpectedLocation);
 				throw new ArgumentException(message, "voyage");
 			}
+			if(date < this._date)
+			{
+				string message = string.Format("The cargo {2} was loaded on the voyage {3} at {0}. Can not be unloaded at {1}.", this._date, date, Identifier, voyage.Number);
+				throw new ArgumentException(message, "date");
+			}
 			return new InPortCargo(this, voyage.LastKnownLocation, date);
 		}
 		

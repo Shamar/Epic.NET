@@ -80,6 +80,7 @@
     <Compile Include="Cargo\ClaimedCargoTester.cs" />
     <Compile Include="Cargo\OnboardCarrierCargoTester.cs" />
     <Compile Include="Cargo\CargoTester.cs" />
+    <Compile Include="Cargo\CargoStateTester.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
