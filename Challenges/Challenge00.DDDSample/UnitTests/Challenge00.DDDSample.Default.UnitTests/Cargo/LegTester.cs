@@ -33,7 +33,7 @@ namespace DefaultImplementation.Cargo
 	public class LegTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			DateTime loadTime = DateTime.UtcNow;
@@ -72,7 +72,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_02()
+		public void Ctor_02()
 		{
 			// arrange:
 			DateTime loadTime = DateTime.UtcNow;
@@ -87,7 +87,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_03()
+		public void Ctor_03()
 		{
 			// arrange:
 			DateTime loadTime = DateTime.UtcNow;
@@ -102,7 +102,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_04()
+		public void Ctor_04()
 		{
 			// arrange:
 			DateTime loadTime = DateTime.UtcNow;
@@ -118,7 +118,7 @@ namespace DefaultImplementation.Cargo
 		
 		
 		[Test]
-		public void Test_Ctor_05()
+		public void Ctor_05()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("UNCOD");
@@ -140,7 +140,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_06()
+		public void Ctor_06()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("UNFST");
@@ -163,7 +163,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_07()
+		public void Ctor_07()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("UNFST");
@@ -186,7 +186,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_08()
+		public void Ctor_08()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("UNFST");
@@ -213,7 +213,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_09()
+		public void Ctor_09()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("UNFST");
@@ -238,7 +238,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_01()
+		public void Equals_01()
 		{
 			// arrange:
 			DateTime loadTime = DateTime.UtcNow;

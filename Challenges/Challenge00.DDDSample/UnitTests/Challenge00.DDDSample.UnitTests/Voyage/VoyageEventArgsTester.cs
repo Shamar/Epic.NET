@@ -33,7 +33,7 @@ namespace Contracts.Voyage
 	{
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_01 ()
+		public void Ctor_01 ()
 		{
 			// arrange:
 			UnLocode destination = new UnLocode("CDDES");
@@ -44,7 +44,7 @@ namespace Contracts.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_02 ()
+		public void Ctor_02 ()
 		{
 			// arrange:
 			UnLocode previous = new UnLocode("CDPRV");
@@ -54,7 +54,7 @@ namespace Contracts.Voyage
 		}
 		
 		[Test]
-		public void Test_Ctor_03()
+		public void Ctor_03()
 		{
 			// arrange:
 			UnLocode previous = new UnLocode("CDPRV");

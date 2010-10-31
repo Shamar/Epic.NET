@@ -75,7 +75,7 @@ namespace DefaultImplementation.Shared
 		#endregion
 		
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
@@ -92,7 +92,7 @@ namespace DefaultImplementation.Shared
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_02 ()
+		public void Ctor_02 ()
 		{
 			// arrange:
 			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
@@ -103,7 +103,7 @@ namespace DefaultImplementation.Shared
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_03 ()
+		public void Ctor_03 ()
 		{
 			// arrange:
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();	
@@ -113,7 +113,7 @@ namespace DefaultImplementation.Shared
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_01()
+		public void IsSatisfiedBy_01()
 		{
 			// arrange:
 			object candidate = new object();
@@ -133,7 +133,7 @@ namespace DefaultImplementation.Shared
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_02()
+		public void IsSatisfiedBy_02()
 		{
 			// arrange:
 			object candidate = new object();
@@ -153,7 +153,7 @@ namespace DefaultImplementation.Shared
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_03()
+		public void IsSatisfiedBy_03()
 		{
 			// arrange:
 			object candidate = new object();
@@ -174,7 +174,7 @@ namespace DefaultImplementation.Shared
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_04()
+		public void IsSatisfiedBy_04()
 		{
 			// arrange:
 			object candidate = new object();

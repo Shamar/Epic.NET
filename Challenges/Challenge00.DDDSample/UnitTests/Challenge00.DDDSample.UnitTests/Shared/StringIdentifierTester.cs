@@ -40,7 +40,7 @@ namespace Contracts.Shared
 		protected abstract TIdentifier CreateUnMatchingInstance(out Regex regEx);
 		
 		[Test()]
-		public void Test_ToString_01 ()
+		public void ToString_01 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -49,7 +49,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Equals_01 ()
+		public void Equals_01 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -58,7 +58,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Equals_02 ()
+		public void Equals_02 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -67,7 +67,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Equals_03 ()
+		public void Equals_03 ()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
@@ -77,7 +77,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Equals_04 ()
+		public void Equals_04 ()
 		{
 			string idString = null;
 			string idString2 = null;
@@ -88,7 +88,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Equals_05 ()
+		public void Equals_05 ()
 		{
 			string idString = null;
 			string idString2 = null;
@@ -99,7 +99,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Operator_01()
+		public void Operator_01()
 		{
 			string idString = null;
 			string idString2 = null;
@@ -111,7 +111,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Operator_02()
+		public void Operator_02()
 		{
 			string idString = null;
 			string idString2 = null;
@@ -123,7 +123,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Operator_03()
+		public void Operator_03()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
@@ -134,7 +134,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Operator_04()
+		public void Operator_04()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
@@ -143,7 +143,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Operator_05()
+		public void Operator_05()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
@@ -156,7 +156,7 @@ namespace Contracts.Shared
 		}
 
 		[Test()]
-		public void Test_Contains_01 ()
+		public void Contains_01 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -165,7 +165,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Contains_02 ()
+		public void Contains_02 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -174,7 +174,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_StartsWith_01 ()
+		public void StartsWith_01 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -183,7 +183,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_StartsWith_02 ()
+		public void StartsWith_02 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -192,7 +192,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_EndsWith_01 ()
+		public void EndsWith_01 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -201,7 +201,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_EndsWith_02 ()
+		public void EndsWith_02 ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -210,7 +210,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Matches_01 ()
+		public void Matches_01 ()
 		{
 			Regex expression = null;
 			
@@ -220,7 +220,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Test_Matches_02()
+		public void Matches_02()
 		{
 			Regex expression = null;
 			TIdentifier id = CreateUnMatchingInstance(out expression);

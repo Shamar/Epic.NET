@@ -33,7 +33,7 @@ namespace DefaultImplementation.Cargo
 	public class NewCargoTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -59,7 +59,7 @@ namespace DefaultImplementation.Cargo
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_02 ()
+		public void Ctor_02 ()
 		{
 			// arrange:
 			TrackingId number = new TrackingId("VYGTEST01");
@@ -70,7 +70,7 @@ namespace DefaultImplementation.Cargo
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_03 ()
+		public void Ctor_03 ()
 		{
 			// arrange:
 			IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
@@ -80,7 +80,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_AssignToRoute_01()
+		public void AssignToRoute_01()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -107,7 +107,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_AssignToRoute_02()
+		public void AssignToRoute_02()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -126,7 +126,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_AssignToRoute_03()
+		public void AssignToRoute_03()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -153,7 +153,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_AssignToRoute_04()
+		public void AssignToRoute_04()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -166,7 +166,7 @@ namespace DefaultImplementation.Cargo
 		}	
 		
 		[Test]
-		public void Test_SpecifyNewRoute_01()
+		public void SpecifyNewRoute_01()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -190,7 +190,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_SpecifyNewRoute_02()
+		public void SpecifyNewRoute_02()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -211,7 +211,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_SpecifyNewRoute_03()
+		public void SpecifyNewRoute_03()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -242,7 +242,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_SpecifyNewRoute_04()
+		public void SpecifyNewRoute_04()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -275,7 +275,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_SpecifyNewRoute_05()
+		public void SpecifyNewRoute_05()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -288,7 +288,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_ClearCustoms_01()
+		public void ClearCustoms_01()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -301,7 +301,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Claim_01()
+		public void Claim_01()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -314,7 +314,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Recieve_01()
+		public void Recieve_01()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -345,7 +345,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Recieve_02()
+		public void Recieve_02()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -370,7 +370,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Recieve_03()
+		public void Recieve_03()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -385,7 +385,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Recieve_04()
+		public void Recieve_04()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -417,7 +417,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Recieve_05()
+		public void Recieve_05()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -430,7 +430,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_LoadOn_01()
+		public void LoadOn_01()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");
@@ -443,7 +443,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Unload_01()
+		public void Unload_01()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CRG01");

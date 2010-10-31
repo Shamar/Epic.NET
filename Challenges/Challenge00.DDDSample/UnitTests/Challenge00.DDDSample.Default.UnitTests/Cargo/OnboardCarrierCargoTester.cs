@@ -35,7 +35,7 @@ namespace DefaultImplementation.Cargo
 	public class OnboardCarrierCargoTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -72,7 +72,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-        public void Test_Ctor_02()
+        public void Ctor_02()
         {
 			// arrange:
 			GList mocks = new GList();
@@ -97,7 +97,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_SpecifyNewRoute_01()
+		public void SpecifyNewRoute_01()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -132,7 +132,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_AssignToRoute_01()
+		public void AssignToRoute_01()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -167,7 +167,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Recieve_01()
+		public void Recieve_01()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -203,7 +203,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_ClearCustoms_01()
+		public void ClearCustoms_01()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -239,7 +239,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Claim_01()
+		public void Claim_01()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -275,7 +275,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_LoadOn_01()
+		public void LoadOn_01()
 		{
 			// arrange:
             GList mocks = new GList();
@@ -313,7 +313,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_LoadOn_02()
+		public void LoadOn_02()
 		{
 			// arrange:
             GList mocks = new GList();
@@ -351,7 +351,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_LoadOn_03()
+		public void LoadOn_03()
 		{
 			// arrange:
             GList mocks = new GList();
@@ -386,7 +386,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Unload_01()
+		public void Unload_01()
 		{
 			// arrange:
             GList mocks = new GList();
@@ -421,7 +421,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Unload_02()
+		public void Unload_02()
 		{
 			// arrange:
             GList mocks = new GList();
@@ -459,7 +459,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Unload_03()
+		public void Unload_03()
 		{
 			// arrange:
             GList mocks = new GList();
@@ -496,7 +496,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Unload_04()
+		public void Unload_04()
 		{
 			// arrange:
             GList mocks = new GList();
@@ -537,7 +537,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Unload_05()
+		public void Unload_05()
 		{
 			// arrange:
             GList mocks = new GList();

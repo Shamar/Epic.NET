@@ -32,7 +32,7 @@ namespace DefaultImplementation.Voyage
 	public class CarrierMovementTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -58,7 +58,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_02 ()
+		public void Ctor_02 ()
 		{
 			// arrange:
 			ILocation dpLocation = MockRepository.GenerateStrictMock<ILocation>();
@@ -71,7 +71,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_03 ()
+		public void Ctor_03 ()
 		{
 			// arrange:
 			ILocation arLocation = MockRepository.GenerateStrictMock<ILocation>();
@@ -84,7 +84,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
-		public void Test_Ctor_04 ()
+		public void Ctor_04 ()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -104,7 +104,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentOutOfRangeException))]
-		public void Test_Ctor_05 ()
+		public void Ctor_05 ()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -124,7 +124,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Test_Ctor_06 ()
+		public void Ctor_06 ()
 		{
 			// arrange:
 			UnLocode arLocode = new UnLocode("ARLOC");
@@ -138,7 +138,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_01()
+		public void Equals_01()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -171,7 +171,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_02()
+		public void Equals_02()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -199,7 +199,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_03()
+		public void Equals_03()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -226,7 +226,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_04()
+		public void Equals_04()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -257,7 +257,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_05()
+		public void Equals_05()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -287,7 +287,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_06()
+		public void Equals_06()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");
@@ -318,7 +318,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_07()
+		public void Equals_07()
 		{
 			// arrange:
 			UnLocode dpLocode = new UnLocode("DPLOC");

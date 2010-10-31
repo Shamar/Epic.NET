@@ -63,7 +63,7 @@ namespace Contracts.Cargo
 		#endregion
 
 		[Test()]
-		public void Test_Ctor_01 ()
+		public void Ctor_01 ()
 		{
 			string idString = "test";
 			TrackingId id = new TrackingId(idString);
@@ -71,7 +71,7 @@ namespace Contracts.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_02()
+		public void Ctor_02()
 		{
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate { new TrackingId(null); });

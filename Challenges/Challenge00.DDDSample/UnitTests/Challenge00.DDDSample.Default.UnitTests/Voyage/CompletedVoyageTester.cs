@@ -32,7 +32,7 @@ namespace DefaultImplementation.Voyage
 	public class CompletedVoyageTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -49,7 +49,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_02 ()
+		public void Ctor_02 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -60,7 +60,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_03 ()
+		public void Ctor_03 ()
 		{
 			// arrange:
 			ISchedule schedule = MockRepository.GenerateStrictMock<ISchedule>();
@@ -71,7 +71,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_LastKnownLocation_01()
+		public void LastKnownLocation_01()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -93,7 +93,7 @@ namespace DefaultImplementation.Voyage
 		
 	
 		[Test]
-		public void Test_NextExpectedLocation_01()
+		public void NextExpectedLocation_01()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -114,7 +114,7 @@ namespace DefaultImplementation.Voyage
 		}
 
 		[Test]
-		public void Test_StopOverAt_01()
+		public void StopOverAt_01()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -129,7 +129,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_DepartFrom_01()
+		public void DepartFrom_01()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -145,7 +145,7 @@ namespace DefaultImplementation.Voyage
 		} 
 		
 		[Test]
-		public void Test_Equals_01()
+		public void Equals_01()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -169,7 +169,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_02()
+		public void Equals_02()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -188,7 +188,7 @@ namespace DefaultImplementation.Voyage
 		}
 
 		[Test]
-		public void Test_Equals_03()
+		public void Equals_03()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -211,7 +211,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_04()
+		public void Equals_04()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -229,7 +229,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_05()
+		public void Equals_05()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -247,7 +247,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_06()
+		public void Equals_06()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");
@@ -265,7 +265,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_WillStopOverAt_01()
+		public void WillStopOverAt_01()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYGTEST01");

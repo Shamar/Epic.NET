@@ -32,14 +32,14 @@ namespace Contracts.Cargo
 	{
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_01 ()
+		public void Ctor_01 ()
 		{
 			// act:
 			new HandlingEventArgs(null, DateTime.UtcNow);
 		}
 		
 		[Test]
-		public void Test_Ctor_02()
+		public void Ctor_02()
 		{
 			// arrange:
 			IDelivery mDelivery = MockRepository.GenerateStrictMock<IDelivery>();

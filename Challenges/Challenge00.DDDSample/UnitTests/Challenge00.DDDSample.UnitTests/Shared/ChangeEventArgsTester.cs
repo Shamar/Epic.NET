@@ -30,7 +30,7 @@ namespace Contracts.Shared
 	public class ChangeEventArgsTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			object oldV = new object();

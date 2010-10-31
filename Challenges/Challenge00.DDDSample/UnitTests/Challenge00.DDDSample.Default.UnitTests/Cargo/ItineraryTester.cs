@@ -34,7 +34,7 @@ namespace DefaultImplementation.Cargo
 	public class ItineraryTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 		
@@ -55,7 +55,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Append_01()
+		public void Append_01()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODLD");
@@ -82,7 +82,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Append_02()
+		public void Append_02()
 		{
 			// arrange:
 			Itinerary empty = new Itinerary();
@@ -92,7 +92,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Append_03()
+		public void Append_03()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -127,7 +127,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Append_04()
+		public void Append_04()
 		{
 			// arrange:
 			UnLocode loc2 = new UnLocode("CODAB");
@@ -146,7 +146,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Append_05()
+		public void Append_05()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -168,7 +168,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_01()
+		public void Equals_01()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -197,7 +197,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_02()
+		public void Equals_02()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -259,7 +259,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_03()
+		public void Equals_03()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -303,7 +303,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_04()
+		public void Equals_04()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -347,7 +347,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_05()
+		public void Equals_05()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -391,7 +391,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_06()
+		public void Equals_06()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -435,7 +435,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_07()
+		public void Equals_07()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -472,7 +472,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_ReplaceSegment_01()
+		public void ReplaceSegment_01()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -532,7 +532,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_ReplaceSegment_02()
+		public void ReplaceSegment_02()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -596,7 +596,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_ReplaceSegment_03()
+		public void ReplaceSegment_03()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");
@@ -667,7 +667,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_ReplaceSegment_04()
+		public void ReplaceSegment_04()
 		{
 			// arrange:
 			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
@@ -682,7 +682,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_ReplaceSegment_05()
+		public void ReplaceSegment_05()
 		{
 			// arrange:
 			UnLocode loc1 = new UnLocode("CODAA");

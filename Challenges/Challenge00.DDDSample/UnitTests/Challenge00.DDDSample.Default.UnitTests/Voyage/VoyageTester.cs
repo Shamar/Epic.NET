@@ -40,7 +40,7 @@ namespace DefaultImplementation.Voyage
 	public class VoyageTester
 	{
 		[Test]
-		public void Test_Ctor_01 ()
+		public void Ctor_01 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -65,7 +65,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Ctor_02 ()
+		public void Ctor_02 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -91,7 +91,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Ctor_03()
+		public void Ctor_03()
 		{
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate{ new FakeVoyage(null); });
@@ -99,7 +99,7 @@ namespace DefaultImplementation.Voyage
 		
 		
 		[Test]
-		public void Test_DepartFrom_01 ()
+		public void DepartFrom_01 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -136,7 +136,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_DepartFrom_02 ()
+		public void DepartFrom_02 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -166,7 +166,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_DepartFrom_03 ()
+		public void DepartFrom_03 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -191,7 +191,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_DepartFrom_04 ()
+		public void DepartFrom_04 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -219,7 +219,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_DepartFrom_05 ()
+		public void DepartFrom_05 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -247,7 +247,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_DepartFrom_06 ()
+		public void DepartFrom_06 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -286,7 +286,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_StopOverAt_01 ()
+		public void StopOverAt_01 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -323,7 +323,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_StopOverAt_02 ()
+		public void StopOverAt_02 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -353,7 +353,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_StopOverAt_03 ()
+		public void StopOverAt_03 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -378,7 +378,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_StopOverAt_04 ()
+		public void StopOverAt_04 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -406,7 +406,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_StopOverAt_05 ()
+		public void StopOverAt_05 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -434,7 +434,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_StopOverAt_06 ()
+		public void StopOverAt_06 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -472,7 +472,7 @@ namespace DefaultImplementation.Voyage
 		}	
 		[TestCase(true)]
 		[TestCase(false)]
-		public void Test_WillStopOverAt_01 (bool returnedValue)
+		public void WillStopOverAt_01 (bool returnedValue)
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -493,7 +493,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_WillStopOverAt_02 ()
+		public void WillStopOverAt_02 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -513,7 +513,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_WillStopOverAt_03 ()
+		public void WillStopOverAt_03 ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");

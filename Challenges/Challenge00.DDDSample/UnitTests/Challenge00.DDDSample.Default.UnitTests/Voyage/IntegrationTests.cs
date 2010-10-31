@@ -32,7 +32,7 @@ namespace DefaultImplementation.Voyage
 	public class IntegrationTests
 	{
 		[Test()]
-		public void Test_Voyage_LiveCycle_01 ()
+		public void Voyage_LiveCycle_01 ()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("CODAA");
@@ -78,7 +78,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test()]
-		public void Test_Voyage_LiveCycle_02 ()
+		public void Voyage_LiveCycle_02 ()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("CODAA");
@@ -127,7 +127,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test()]
-		public void Test_Voyage_LiveCycle_03 ()
+		public void Voyage_LiveCycle_03 ()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("CODAA");
@@ -177,7 +177,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test()]
-		public void Test_Voyage_LiveCycle_04 ()
+		public void Voyage_LiveCycle_04 ()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("CODAA");
@@ -228,7 +228,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test()]
-		public void Test_Voyage_LiveCycle_05 ()
+		public void Voyage_LiveCycle_05 ()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("CODAA");
@@ -280,7 +280,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test()]
-		public void Test_Voyage_LiveCycle_06 ()
+		public void Voyage_LiveCycle_06 ()
 		{
 			// arrange:
 			UnLocode code1 = new UnLocode("CODAA");

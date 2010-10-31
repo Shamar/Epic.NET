@@ -37,7 +37,7 @@ namespace DefaultImplementation.Shared
 		protected abstract TSpecification CreateNewSpecification();
 		
 		[Test]
-		public void Test_Equals_01()
+		public void Equals_01()
 		{
 			TSpecification spec = CreateNewSpecification();
 			
@@ -45,7 +45,7 @@ namespace DefaultImplementation.Shared
 		}
 		
 		[Test]
-		public void Test_Equals_02()
+		public void Equals_02()
 		{
 			TSpecification spec = CreateNewSpecification();
 			
@@ -54,7 +54,7 @@ namespace DefaultImplementation.Shared
 		}
 		
 		[Test]
-		public void Test_Equals_03()
+		public void Equals_03()
 		{
 			// arrange:
 			TSpecification spec1 = null;
@@ -70,7 +70,7 @@ namespace DefaultImplementation.Shared
 		}
 		
 		[Test]
-		public void Test_Equals_04()
+		public void Equals_04()
 		{
 			// arrange:
 			TSpecification spec1 = null;

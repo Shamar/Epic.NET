@@ -32,7 +32,7 @@ namespace DefaultImplementation.Cargo
 	public class RouteSpecificationTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -56,7 +56,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_02()
+		public void Ctor_02()
 		{
 			// arrange:
 			ILocation destination = MockRepository.GenerateStub<ILocation>();
@@ -68,7 +68,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_03()
+		public void Ctor_03()
 		{
 			// arrange:
 			ILocation origin = MockRepository.GenerateStub<ILocation>();
@@ -80,7 +80,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_04()
+		public void Ctor_04()
 		{
 			// arrange:
 			ILocation origin = MockRepository.GenerateStub<ILocation>();
@@ -92,7 +92,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_05()
+		public void Ctor_05()
 		{
 			// arrange:
 			ILocation destination = MockRepository.GenerateStub<ILocation>();
@@ -104,7 +104,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_06()
+		public void Ctor_06()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("LOCCD");
@@ -121,7 +121,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_07()
+		public void Ctor_07()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("LOCCD");
@@ -138,7 +138,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_08()
+		public void Ctor_08()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -157,7 +157,7 @@ namespace DefaultImplementation.Cargo
 			destination.VerifyAllExpectations();
 		}		
 		[Test]
-		public void Test_Equals_01()
+		public void Equals_01()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -178,7 +178,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_02()
+		public void Equals_02()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -201,7 +201,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_03()
+		public void Equals_03()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -224,7 +224,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_04()
+		public void Equals_04()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -250,7 +250,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Equals_05()
+		public void Equals_05()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -276,7 +276,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_01()
+		public void IsSatisfiedBy_01()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -305,7 +305,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_02()
+		public void IsSatisfiedBy_02()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -334,7 +334,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_03()
+		public void IsSatisfiedBy_03()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -363,7 +363,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_04()
+		public void IsSatisfiedBy_04()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -386,7 +386,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_05()
+		public void IsSatisfiedBy_05()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -416,7 +416,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_IsSatisfiedBy_06()
+		public void IsSatisfiedBy_06()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");
@@ -446,7 +446,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_GetHashCode_01()
+		public void GetHashCode_01()
 		{
 			// arrange:
 			UnLocode first = new UnLocode("CDFST");

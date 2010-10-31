@@ -33,7 +33,7 @@ namespace DefaultImplementation.Cargo
 	public class ClaimedCargoTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			UnLocode final = new UnLocode("FINAL");
@@ -66,7 +66,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_02()
+		public void Ctor_02()
 		{
 			// arrange:
 			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
@@ -100,7 +100,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_03()
+		public void Ctor_03()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CLAIM");
@@ -117,7 +117,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_04()
+		public void Ctor_04()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CLAIM");
@@ -141,7 +141,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Test_Ctor_05()
+		public void Ctor_05()
 		{
 			// arrange:
 			TrackingId id = new TrackingId("CLAIM");
@@ -166,7 +166,7 @@ namespace DefaultImplementation.Cargo
 		}
 
 		[Test]
-		public void Test_StateTransitions_01()
+		public void StateTransitions_01()
 		{
 			// arrange:
 			UnLocode final = new UnLocode("FINAL");

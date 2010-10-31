@@ -31,7 +31,7 @@ namespace Contracts.Location
 	public class UnknownTester
 	{
 		[Test]
-		public void Test_Singleton_01()
+		public void Singleton_01()
 		{
 			// act:
 			ILocation location = Unknown.Location;

@@ -34,7 +34,7 @@ namespace DefaultImplementation.Voyage
 	public class ScheduleTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// arrange:
 			
@@ -50,7 +50,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Append_01 ()
+		public void Append_01 ()
 		{
 			// arrange:
 			ISchedule schedule = new Schedule();
@@ -60,7 +60,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Append_02()
+		public void Append_02()
 		{
 			// arrange:
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();
@@ -78,7 +78,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Append_03()
+		public void Append_03()
 		{
 			// arrange:
 			UnLocode c1 = new UnLocode("LOCDA");
@@ -109,7 +109,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Test_Append_04()
+		public void Append_04()
 		{
 			// arrange:
 			UnLocode c1 = new UnLocode("LOCDA");
@@ -130,7 +130,7 @@ namespace DefaultImplementation.Voyage
 		
 		[Test]
 		[ExpectedException(typeof(ArgumentException))]
-		public void Test_Append_05()
+		public void Append_05()
 		{
 			// arrange:
 			UnLocode c1 = new UnLocode("LOCDA");
@@ -149,7 +149,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_01()
+		public void Equals_01()
 		{
 			// arrange:
 			ISchedule schedule1 = new Schedule();
@@ -164,7 +164,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_02()
+		public void Equals_02()
 		{
 			// arrange:
 			ISchedule schedule1 = new Schedule();
@@ -177,7 +177,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_03()
+		public void Equals_03()
 		{
 			// arrange:
 			ISchedule schedule1 = new Schedule();
@@ -192,7 +192,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_04()
+		public void Equals_04()
 		{
 			// arrange:
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement, IObject>();
@@ -219,7 +219,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Test_Equals_05()
+		public void Equals_05()
 		{
 			// arrange:
 			ICarrierMovement m1 = MockRepository.GenerateStrictMock<ICarrierMovement>();

@@ -32,7 +32,7 @@ namespace DefaultImplementation.Location
 	{
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_01 ()
+		public void Ctor_01 ()
 		{
 			// arrange:
 			
@@ -43,7 +43,7 @@ namespace DefaultImplementation.Location
 		
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_02 ()
+		public void Ctor_02 ()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("UNLOC");
@@ -54,7 +54,7 @@ namespace DefaultImplementation.Location
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Test_Ctor_03 ()
+		public void Ctor_03 ()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("UNLOC");
@@ -64,7 +64,7 @@ namespace DefaultImplementation.Location
 		}
 		
 		[Test]
-		public void Test_Ctor_04()
+		public void Ctor_04()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("UNLOC");

@@ -113,14 +113,14 @@ namespace DefaultImplementation.Cargo
 	public class CargoStateTester
 	{
 		[Test]
-		public void Test_Ctor_01()
+		public void Ctor_01()
 		{
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate { new FakeState(null); });
 		}
 	
 		[Test]
-		public void Test_Ctor_02()
+		public void Ctor_02()
 		{
 			// arrange:
 			TrackingId identifier = new TrackingId("CARGO01");
@@ -133,7 +133,7 @@ namespace DefaultImplementation.Cargo
 		
 	
 		[Test]
-		public void Test_Ctor_03()
+		public void Ctor_03()
 		{
 			// arrange:
 			TrackingId identifier = new TrackingId("CARGO01");
