@@ -53,14 +53,14 @@
     <Folder Include="Voyage\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cargo\TrackingIdTester.cs" />
-    <Compile Include="Location\UnLocodeTester.cs" />
-    <Compile Include="Shared\StringIdentifierTester.cs" />
     <Compile Include="Voyage\VoyageNumberTester.cs" />
-    <Compile Include="Cargo\HandlingEventArgsTester.cs" />
-    <Compile Include="Shared\ChangeEventArgsTester.cs" />
     <Compile Include="Voyage\VoyageEventArgsTester.cs" />
-    <Compile Include="Location\UnknownTester.cs" />
+    <Compile Include="Cargo\HandlingEventArgsQA.cs" />
+    <Compile Include="Cargo\QA.cs" />
+    <Compile Include="Shared\StringIdentifierQA.cs" />
+    <Compile Include="Shared\ChangeEventArgsQA.cs" />
+    <Compile Include="Location\UnknownQA.cs" />
+    <Compile Include="Location\UnLocodeQA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

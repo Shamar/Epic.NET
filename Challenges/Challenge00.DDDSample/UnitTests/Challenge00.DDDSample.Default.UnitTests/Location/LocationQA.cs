@@ -28,7 +28,7 @@ using Rhino.Mocks;
 namespace DefaultImplementation.Location
 {
 	[TestFixture()]
-	public class LocationTester
+	public class LocationQA
 	{
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]

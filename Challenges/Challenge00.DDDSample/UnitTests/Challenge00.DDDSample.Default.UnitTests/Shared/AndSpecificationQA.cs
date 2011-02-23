@@ -1,5 +1,5 @@
 //  
-//  OrSpecificationTester.cs
+//  AndSpecificationTester.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -28,10 +28,10 @@ using Rhino.Mocks;
 namespace DefaultImplementation.Shared
 {
 	[TestFixture]
-	public class OrSpecificationTester : AbstractSpecificationTester<OrSpecification<object>, object>
+	public class AndSpecificationQA : AbstractSpecificationQA<AndSpecification<object>, object>
 	{
-		#region implemented abstract members of DefaultImplementation.AbstractSpecificationTester[OrSpecification[System.Object],System.Object]
-		protected override void CreateEqualsSpecification (out OrSpecification<object> spec1, out OrSpecification<object> spec2)
+		#region implemented abstract members of DefaultImplementation.AbstractSpecificationTester[AndSpecification[System.Object],System.Object]
+		protected override void CreateEqualsSpecification (out AndSpecification<object> spec1, out AndSpecification<object> spec2)
 		{
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
 			left.Stub(s => s.Equals(left)).Return(true).Repeat.Any();
@@ -41,12 +41,12 @@ namespace DefaultImplementation.Shared
 			right.Stub(s => s.Equals(left)).Return(false).Repeat.Any();
 			left.Stub(s => s.Equals(right)).Return(false).Repeat.Any();
 			
-			spec1 = new OrSpecification<object>(left, right);
-			spec2 = new OrSpecification<object>(left, right);
+			spec1 = new AndSpecification<object>(left, right);
+			spec2 = new AndSpecification<object>(left, right);
 		}
 		
 		
-		protected override void CreateDifferentSpecification (out OrSpecification<object> spec1, out OrSpecification<object> spec2)
+		protected override void CreateDifferentSpecification (out AndSpecification<object> spec1, out AndSpecification<object> spec2)
 		{
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
 			left.Stub(s => s.Equals(left)).Return(true).Repeat.Any();
@@ -54,12 +54,12 @@ namespace DefaultImplementation.Shared
 			right.Stub(s => s.Equals(right)).Return(true).Repeat.Any();
 			
 
-			spec1 = new OrSpecification<object>(right, right);
-			spec2 = new OrSpecification<object>(left, left);
+			spec1 = new AndSpecification<object>(right, right);
+			spec2 = new AndSpecification<object>(left, left);
 		}
 		
 		
-		protected override OrSpecification<object> CreateNewSpecification ()
+		protected override AndSpecification<object> CreateNewSpecification ()
 		{
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
 			left.Stub(s => s.Equals(left)).Return(true).Repeat.Any();
@@ -69,7 +69,7 @@ namespace DefaultImplementation.Shared
 			right.Stub(s => s.Equals(left)).Return(false).Repeat.Any();
 			left.Stub(s => s.Equals(right)).Return(false).Repeat.Any();
 			
-			return new OrSpecification<object>(left, right);
+			return new AndSpecification<object>(left, right);
 		}
 		
 		#endregion
@@ -82,7 +82,7 @@ namespace DefaultImplementation.Shared
 			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
 			
 			// act:
-			OrSpecification<object> spec = new OrSpecification<object>(left,right);
+			AndSpecification<object> spec = new AndSpecification<object>(left,right);
 		
 			// assert:
 			Assert.IsNotNull(spec);
@@ -98,7 +98,7 @@ namespace DefaultImplementation.Shared
 			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
 			
 			// act:
-			new OrSpecification<object>(null,right);
+			new AndSpecification<object>(null,right);
 		}
 		
 		[Test()]
@@ -109,7 +109,7 @@ namespace DefaultImplementation.Shared
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();	
 			
 			// act:
-			new OrSpecification<object>(left,null);
+			new AndSpecification<object>(left,null);
 		}
 		
 		[Test]
@@ -120,16 +120,17 @@ namespace DefaultImplementation.Shared
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
 			left.Expect(s => s.IsSatisfiedBy(candidate)).Return(true);
 			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
+			right.Expect(s => s.IsSatisfiedBy(candidate)).Return(true);
 			
 		
 			// act:
-			ISpecification<object> target = new OrSpecification<object>(left, right);
+			ISpecification<object> target = new AndSpecification<object>(left, right);
 			bool satisfied = target.IsSatisfiedBy(candidate);
 		
 			// assert:
 			Assert.IsTrue(satisfied);
 		 	left.VerifyAllExpectations();
-			right.AssertWasNotCalled(s => s.IsSatisfiedBy(candidate));
+			right.VerifyAllExpectations();
 		}
 		
 		[Test]
@@ -140,16 +141,17 @@ namespace DefaultImplementation.Shared
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
 			left.Expect(s => s.IsSatisfiedBy(candidate)).Return(true);
 			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
+			right.Expect(s => s.IsSatisfiedBy(candidate)).Return(false);
 			
 		
 			// act:
-			ISpecification<object> target = new OrSpecification<object>(left, right);
+			ISpecification<object> target = new AndSpecification<object>(left, right);
 			bool satisfied = target.IsSatisfiedBy(candidate);
 		
 			// assert:
-			Assert.IsTrue(satisfied);
+			Assert.IsFalse(satisfied);
 		 	left.VerifyAllExpectations();
-			right.AssertWasNotCalled(s => s.IsSatisfiedBy(candidate));
+			right.VerifyAllExpectations();
 		}
 		
 		[Test]
@@ -160,17 +162,16 @@ namespace DefaultImplementation.Shared
 			ISpecification<object> left = MockRepository.GenerateMock<ISpecification<object>>();
 			left.Expect(s => s.IsSatisfiedBy(candidate)).Return(false);
 			ISpecification<object> right = MockRepository.GenerateMock<ISpecification<object>>();	
-			right.Expect(s => s.IsSatisfiedBy(candidate)).Return(true);
-
+			
 		
 			// act:
-			ISpecification<object> target = new OrSpecification<object>(left, right);
+			ISpecification<object> target = new AndSpecification<object>(left, right);
 			bool satisfied = target.IsSatisfiedBy(candidate);
 		
 			// assert:
-			Assert.IsTrue(satisfied);
+			Assert.IsFalse(satisfied);
 		 	left.VerifyAllExpectations();
-			right.VerifyAllExpectations();
+			right.AssertWasNotCalled(s => s.IsSatisfiedBy(candidate));
 		}
 		
 		[Test]
@@ -185,13 +186,13 @@ namespace DefaultImplementation.Shared
 			
 		
 			// act:
-			ISpecification<object> target = new OrSpecification<object>(left, right);
+			ISpecification<object> target = new AndSpecification<object>(left, right);
 			bool satisfied = target.IsSatisfiedBy(candidate);
 		
 			// assert:
 			Assert.IsFalse(satisfied);
 		 	left.VerifyAllExpectations();
-            right.VerifyAllExpectations();
+            right.AssertWasNotCalled(s => s.IsSatisfiedBy(candidate));
         }
 	}
 }

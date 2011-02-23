@@ -28,7 +28,7 @@ using Rhino.Mocks;
 namespace DefaultImplementation.Shared
 {
 	[TestFixture()]
-	public class NotSpecificationTester : AbstractSpecificationTester<NotSpecification<object>, object>
+	public class NotSpecificationQA : AbstractSpecificationQA<NotSpecification<object>, object>
 	{
 		#region implemented abstract members of DefaultImplementation.AbstractSpecificationTester[NotSpecification[System.Object],System.Object]
 		protected override void CreateEqualsSpecification (out NotSpecification<object> spec1, out NotSpecification<object> spec2)

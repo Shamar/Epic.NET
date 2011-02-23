@@ -31,7 +31,7 @@ using System.Collections;
 namespace DefaultImplementation.Voyage
 {
 	[TestFixture()]
-	public class ScheduleTester
+	public class ScheduleQA
 	{
 		[Test]
 		public void Ctor_01()

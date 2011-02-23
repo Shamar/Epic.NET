@@ -59,28 +59,28 @@
     <Folder Include="Cargo\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Shared\AbstractSpecificationTester.cs" />
-    <Compile Include="Shared\AndSpecificationTester.cs" />
-    <Compile Include="Shared\OrSpecificationTester.cs" />
-    <Compile Include="Shared\NotSpecificationTester.cs" />
-    <Compile Include="Location\LocationTester.cs" />
-    <Compile Include="Voyage\CarrierMovementTester.cs" />
-    <Compile Include="Voyage\ScheduleTester.cs" />
-    <Compile Include="Voyage\VoyageTester.cs" />
-    <Compile Include="Voyage\StoppedVoyageTester.cs" />
-    <Compile Include="Voyage\MovingVoyageTester.cs" />
-    <Compile Include="Voyage\CompletedVoyageTester.cs" />
     <Compile Include="Voyage\IntegrationTests.cs" />
-    <Compile Include="Cargo\LegTester.cs" />
-    <Compile Include="Cargo\ItineraryTester.cs" />
-    <Compile Include="Cargo\RouteSpecificationTester.cs" />
-    <Compile Include="Cargo\NewCargoTester.cs" />
-    <Compile Include="Cargo\InPortCargoTester.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Cargo\ClaimedCargoTester.cs" />
-    <Compile Include="Cargo\OnboardCarrierCargoTester.cs" />
-    <Compile Include="Cargo\CargoTester.cs" />
-    <Compile Include="Cargo\CargoStateTester.cs" />
+    <Compile Include="Cargo\LegQA.cs" />
+    <Compile Include="Cargo\CargoStateQA.cs" />
+    <Compile Include="Cargo\CargoQA.cs" />
+    <Compile Include="Cargo\ClaimedCargoQA.cs" />
+    <Compile Include="Cargo\InPortCargoQA.cs" />
+    <Compile Include="Cargo\ItineraryQAcs" />
+    <Compile Include="Cargo\NewCargoQA.cs" />
+    <Compile Include="Cargo\OnboardCarrierCargoQA.cs" />
+    <Compile Include="Cargo\RouteSpecificationQA.cs" />
+    <Compile Include="Location\LocationQA.cs" />
+    <Compile Include="Shared\AbstractSpecificationQA.cs" />
+    <Compile Include="Shared\AndSpecificationQA.cs" />
+    <Compile Include="Shared\NotSpecificationQA.cs" />
+    <Compile Include="Shared\OrSpecificationQA.cs" />
+    <Compile Include="Voyage\CarrierMovementQA.cs" />
+    <Compile Include="Voyage\CompletedVoyageQA.cs" />
+    <Compile Include="Voyage\MovingVoyageQA.cs" />
+    <Compile Include="Voyage\ScheduleQA.cs" />
+    <Compile Include="Voyage\StoppedVoyageQA.cs" />
+    <Compile Include="Voyage\VoyageQA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

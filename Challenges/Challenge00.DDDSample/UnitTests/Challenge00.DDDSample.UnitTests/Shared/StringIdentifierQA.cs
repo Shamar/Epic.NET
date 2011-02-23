@@ -28,7 +28,7 @@ using Challenge00.DDDSample.Shared;
 
 namespace Contracts.Shared
 {
-	public abstract class StringIdentifierTester<TIdentifier>
+	public abstract class StringIdentifierQA<TIdentifier>
 		where TIdentifier : StringIdentifier<TIdentifier>
 	{
 		protected abstract TIdentifier CreateNewInstance(out string stringUsed);

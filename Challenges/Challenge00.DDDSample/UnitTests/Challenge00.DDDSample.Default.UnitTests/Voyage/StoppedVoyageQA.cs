@@ -29,7 +29,7 @@ using Challenge00.DDDSample.Location;
 namespace DefaultImplementation.Voyage
 {
 	[TestFixture()]
-	public class StoppedVoyageTester
+	public class StoppedVoyageQA
 	{
 		[TestCase(0)]
 		[TestCase(1)]

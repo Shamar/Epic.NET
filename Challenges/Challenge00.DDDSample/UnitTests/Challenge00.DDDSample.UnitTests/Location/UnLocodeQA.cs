@@ -29,7 +29,7 @@ using Contracts.Shared;
 namespace Contracts.Location
 {
 	[TestFixture()]
-	public class UnLocodeTester : StringIdentifierTester<UnLocode>
+	public class UnLocodeQA : StringIdentifierQA<UnLocode>
 	{
 		#region implemented abstract members of Contracts.StringIdentifierTester[UnLocode]
 		

@@ -32,7 +32,7 @@ using Challenge00.DDDSample.Location;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture]
-	public class OnboardCarrierCargoTester
+	public class OnboardCarrierCargoQA
 	{
 		[Test]
 		public void Ctor_01()

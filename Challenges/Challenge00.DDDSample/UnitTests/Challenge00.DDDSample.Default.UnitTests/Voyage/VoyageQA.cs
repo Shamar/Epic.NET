@@ -37,7 +37,7 @@ namespace DefaultImplementation.Voyage
 	}
 	
 	[TestFixture]
-	public class VoyageTester
+	public class VoyageQA
 	{
 		[Test]
 		public void Ctor_01 ()

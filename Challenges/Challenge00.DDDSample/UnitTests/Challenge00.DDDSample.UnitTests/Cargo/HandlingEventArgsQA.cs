@@ -28,7 +28,7 @@ using Rhino.Mocks;
 namespace Contracts.Cargo
 {
 	[TestFixture]
-	public class HandlingEventArgsTester
+	public class HandlingEventArgsQA
 	{
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]

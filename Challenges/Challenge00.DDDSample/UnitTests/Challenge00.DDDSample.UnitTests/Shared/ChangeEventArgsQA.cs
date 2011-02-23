@@ -27,7 +27,7 @@ using Challenge00.DDDSample.Shared;
 namespace Contracts.Shared
 {
 	[TestFixture]
-	public class ChangeEventArgsTester
+	public class ChangeEventArgsQA
 	{
 		[Test]
 		public void Ctor_01()

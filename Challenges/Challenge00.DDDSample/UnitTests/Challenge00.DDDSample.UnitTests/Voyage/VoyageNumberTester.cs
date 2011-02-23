@@ -29,7 +29,7 @@ using Contracts.Shared;
 namespace Contracts.Voyage
 {
 	[TestFixture]
-	public class VoyageNumberTester : StringIdentifierTester<VoyageNumber>
+	public class VoyageNumberTester : StringIdentifierQA<VoyageNumber>
 	{
 		#region implemented abstract members of Contracts.StringIdentifierTester[UnLocode]
 		

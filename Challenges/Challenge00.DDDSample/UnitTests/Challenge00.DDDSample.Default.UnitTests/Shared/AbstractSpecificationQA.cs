@@ -27,7 +27,7 @@ using Challenge00.DDDSample.Shared;
 using Rhino.Mocks;
 namespace DefaultImplementation.Shared
 {
-	public abstract class AbstractSpecificationTester<TSpecification, TCandidate>
+	public abstract class AbstractSpecificationQA<TSpecification, TCandidate>
 		where TSpecification : AbstractSpecification<TCandidate>
 	{
 		protected abstract void CreateEqualsSpecification(out TSpecification spec1, out TSpecification spec2);

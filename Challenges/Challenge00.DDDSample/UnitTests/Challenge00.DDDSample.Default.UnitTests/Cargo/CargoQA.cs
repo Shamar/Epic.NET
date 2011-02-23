@@ -43,7 +43,7 @@ namespace DefaultImplementation.Cargo
 	}
 	
 	[TestFixture]
-	public class CargoTester
+	public class CargoQA
 	{
 		#region Ctor
 		

@@ -110,7 +110,7 @@ namespace DefaultImplementation.Cargo
 	}
 	
 	[TestFixture]
-	public class CargoStateTester
+	public class CargoStateQA
 	{
 		[Test]
 		public void Ctor_01()

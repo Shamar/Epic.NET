@@ -30,7 +30,7 @@ using Challenge00.DDDSample.Voyage;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture]
-	public class NewCargoTester
+	public class NewCargoQA
 	{
 		[Test]
 		public void Ctor_01()

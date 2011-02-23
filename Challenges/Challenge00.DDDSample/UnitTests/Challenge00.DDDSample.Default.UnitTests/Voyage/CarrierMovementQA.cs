@@ -29,7 +29,7 @@ using Challenge00.DDDSample.Voyage;
 namespace DefaultImplementation.Voyage
 {
 	[TestFixture()]
-	public class CarrierMovementTester
+	public class CarrierMovementQA
 	{
 		[Test]
 		public void Ctor_01()

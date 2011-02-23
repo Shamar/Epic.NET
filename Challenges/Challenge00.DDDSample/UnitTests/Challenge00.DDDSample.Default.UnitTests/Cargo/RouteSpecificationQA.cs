@@ -29,7 +29,7 @@ using Challenge00.DDDSample.Cargo;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture()]
-	public class RouteSpecificationTester
+	public class RouteSpecificationQA
 	{
 		[Test]
 		public void Ctor_01()

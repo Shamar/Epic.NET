@@ -28,7 +28,7 @@ using Rhino.Mocks;
 namespace Contracts.Location
 {
 	[TestFixture()]
-	public class UnknownTester
+	public class UnknownQA
 	{
 		[Test]
 		public void Singleton_01()

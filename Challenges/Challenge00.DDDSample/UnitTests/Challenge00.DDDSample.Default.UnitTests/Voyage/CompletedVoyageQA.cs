@@ -29,7 +29,7 @@ using Challenge00.DDDSample.Location;
 namespace DefaultImplementation.Voyage
 {
 	[TestFixture()]
-	public class CompletedVoyageTester
+	public class CompletedVoyageQA
 	{
 		[Test]
 		public void Ctor_01()

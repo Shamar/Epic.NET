@@ -31,7 +31,7 @@ using Contracts.Shared;
 namespace Contracts.Cargo
 {
 	[TestFixture()]
-	public class TrackingIdTester : StringIdentifierTester<TrackingId>
+	public class QA : StringIdentifierQA<TrackingId>
 	{
 		#region implemented abstract members of Contracts.StringIdentifierTester[TrackingId]
 		

@@ -30,7 +30,7 @@ using Challenge00.DDDSample.Cargo;
 namespace DefaultImplementation.Cargo
 {
 	[TestFixture()]
-	public class LegTester
+	public class LegQA
 	{
 		[Test]
 		public void Ctor_01()
