@@ -63,17 +63,23 @@ namespace Contracts.Location
 		#endregion
 		
 		[Test]
-		public void Ctor_01()
+		public void Ctor_withNull_throwsArgumentNullException()
 		{
-			// act:
+			// assert:
 			Assert.Throws<ArgumentNullException>(delegate { new UnLocode(null); });
+		}
+		
+		[Test]
+		public void Ctor_withEmptyString_throwsArgumentNullException()
+		{
+			// assert:
 			Assert.Throws<ArgumentNullException>(delegate { new UnLocode(string.Empty); });
 		}
 		
 		[Test]
-		public void Ctor_02()
+		public void Ctor_withInvalidString_throwsArgumentException()
 		{
-			// act:
+			// assert:
 			Assert.Throws<ArgumentException>(delegate { new UnLocode("TEST OF INVALID LOCODE"); });
 		}
 	}

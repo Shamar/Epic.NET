@@ -31,18 +31,44 @@ namespace Contracts.Location
 	public class UnknownQA
 	{
 		[Test]
-		public void Singleton_01()
+		public void Singleton_isNotNull()
 		{
 			// act:
 			ILocation location = Unknown.Location;
 		
 			// assert:
 			Assert.IsNotNull(location);
-			Assert.AreEqual("Unknown", location.Name);
-			Assert.IsNull(location.UnLocode);
-			Assert.IsTrue(location is Unknown);
 		}
 		
+		[Test]
+		public void Singleton_hasUnknownAsName()
+		{
+			// act:
+			ILocation location = Unknown.Location;
+		
+			// assert:
+			Assert.AreEqual("Unknown", location.Name);
+		}
+
+		[Test]
+		public void Singleton_hasNullUnLocode()
+		{
+			// act:
+			ILocation location = Unknown.Location;
+		
+			// assert:
+			Assert.IsNull(location.UnLocode);
+		}
+
+		[Test]
+		public void Singleton_GetType_isUnknown()
+		{
+			// act:
+			ILocation location = Unknown.Location;
+		
+			// assert:
+			Assert.IsTrue(location is Unknown);
+		}
 	}
 }
 

@@ -30,7 +30,7 @@ namespace Contracts.Shared
 	public class ChangeEventArgsQA
 	{
 		[Test]
-		public void Ctor_01()
+		public void Ctor_withValidInstances_works()
 		{
 			// arrange:
 			object oldV = new object();
@@ -42,6 +42,34 @@ namespace Contracts.Shared
 			// assert:
 			Assert.AreSame(oldV, args.OldValue);
 			Assert.AreSame(newV, args.NewValue);
+		}
+		
+		[Test]
+		public void Ctor_withNullOldValue_works()
+		{
+			// arrange:
+			object newV = new object();
+		
+			// act:
+			ChangeEventArgs<object> args = new ChangeEventArgs<object>(null, newV);
+		
+			// assert:
+			Assert.IsNull(args.OldValue);
+			Assert.AreSame(newV, args.NewValue);
+		}
+		
+		[Test]
+		public void Ctor_withNullNewValue_works()
+		{
+			// arrange:
+			object oldV = new object();
+		
+			// act:
+			ChangeEventArgs<object> args = new ChangeEventArgs<object>(oldV, null);
+		
+			// assert:
+			Assert.AreSame(oldV, args.OldValue);
+			Assert.IsNull(args.NewValue);
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace Contracts.Shared
 		protected abstract TIdentifier CreateUnMatchingInstance(out Regex regEx);
 		
 		[Test()]
-		public void ToString_01 ()
+		public void ToString_matchTheIdentifier ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -49,7 +49,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Equals_01 ()
+		public void Equals_withNull_isFalse ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -58,7 +58,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Equals_02 ()
+		public void Equals_withItself_isTrue ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -67,7 +67,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Equals_03 ()
+		public void Equals_withEqualIdentifier_isTrue_02 ()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
@@ -77,7 +77,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Equals_04 ()
+		public void Equals_withEqualIdentifier_isTrue_02 ()
 		{
 			string idString = null;
 			string idString2 = null;
@@ -88,7 +88,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Equals_05 ()
+		public void Equals_withDifferentIdentifier_isFalse ()
 		{
 			string idString = null;
 			string idString2 = null;
