@@ -29,11 +29,11 @@ using Challenge00.DDDSample.Voyage;
 namespace Contracts.Voyage
 {
 	[TestFixture()]
-	public class VoyageEventArgsTester
+	public class VoyageEventArgsQA
 	{
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Ctor_01 ()
+		public void Ctor_withNullPreviousLocation_throwsArgumentNullException ()
 		{
 			// arrange:
 			UnLocode destination = new UnLocode("CDDES");
@@ -44,7 +44,7 @@ namespace Contracts.Voyage
 		
 		[Test()]
 		[ExpectedException(typeof(ArgumentNullException))]
-		public void Ctor_02 ()
+		public void Ctor_withNullDestination_throwsArgumentNullException ()
 		{
 			// arrange:
 			UnLocode previous = new UnLocode("CDPRV");
@@ -54,7 +54,7 @@ namespace Contracts.Voyage
 		}
 		
 		[Test]
-		public void Ctor_03()
+		public void Ctor_withValidLocations_works()
 		{
 			// arrange:
 			UnLocode previous = new UnLocode("CDPRV");

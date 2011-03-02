@@ -29,7 +29,7 @@ using Contracts.Shared;
 namespace Contracts.Voyage
 {
 	[TestFixture]
-	public class VoyageNumberTester : StringIdentifierQA<VoyageNumber>
+	public class VoyageNumberQA : StringIdentifierQA<VoyageNumber>
 	{
 		#region implemented abstract members of Contracts.StringIdentifierTester[UnLocode]
 		
@@ -63,13 +63,18 @@ namespace Contracts.Voyage
 		#endregion
 		
 		[Test]
-		public void Ctor_01()
+		public void Ctor_withNull_throwsArgumentNullException()
 		{
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate { new VoyageNumber(null); });
-			Assert.Throws<ArgumentNullException>(delegate { new VoyageNumber(string.Empty); });
 		}
 		
+		[Test]
+		public void Ctor_withEmptyString_throwsArgumentNullException()
+		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new VoyageNumber(string.Empty); });
+		}
 	}
 }
 

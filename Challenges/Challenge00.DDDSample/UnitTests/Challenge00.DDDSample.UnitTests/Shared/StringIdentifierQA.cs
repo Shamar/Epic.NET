@@ -67,7 +67,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Equals_withEqualIdentifier_isTrue_02 ()
+		public void Equals_withEqualIdentifier_isTrue_01 ()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
@@ -99,19 +99,29 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Operator_01()
+		public void operatorEqual_withEqualsIdentifiers_returnTrue()
 		{
 			string idString = null;
 			string idString2 = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
 			TIdentifier id2 = CreateNewInstance(out idString2);
 			
-			Assert.IsTrue(id1 == id2);
 			Assert.IsFalse(id1 != id2);
 		}
 		
 		[Test()]
-		public void Operator_02()
+		public void operatorNotEqual_withEqualsIdentifiers_returnFalse()
+		{
+			string idString = null;
+			string idString2 = null;
+			TIdentifier id1 = CreateNewInstance(out idString);
+			TIdentifier id2 = CreateNewInstance(out idString2);
+			
+			Assert.IsFalse(id1 != id2);
+		}
+		
+		[Test()]
+		public void operatorEqual_withDifferentIdentifiers_returnFalse()
 		{
 			string idString = null;
 			string idString2 = null;
@@ -119,44 +129,68 @@ namespace Contracts.Shared
 			TIdentifier id2 = CreateDifferentInstance(out idString2);
 			
 			Assert.IsFalse(id1 == id2);
+		}
+		
+		[Test()]
+		public void operatorNotEqual_withDifferentIdentifiers_returnTrue()
+		{
+			string idString = null;
+			string idString2 = null;
+			TIdentifier id1 = CreateNewInstance(out idString);
+			TIdentifier id2 = CreateDifferentInstance(out idString2);
+			
 			Assert.IsTrue(id1 != id2);
 		}
 		
 		[Test()]
-		public void Operator_03()
+		public void operatorEqual_withSameInstance_returnTrue()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
 #pragma warning disable 1718
 			Assert.IsTrue(id1 == id1);
-			Assert.IsFalse(id1 != id1);
 #pragma warning restore 1718
 		}
-		
+
 		[Test()]
-		public void Operator_04()
+		public void operatorNotEqual_withSameInstance_returnFalse()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
-			
-			Assert.IsTrue(id1 != null);
+#pragma warning disable 1718
+			Assert.IsFalse(id1 != id1);
+#pragma warning restore 1718
 		}
+
 		
 		[Test()]
-		public void Operator_05()
+		public void operatorEqual_withNull_returnFalse()
 		{
 			string idString = null;
 			TIdentifier id1 = CreateNewInstance(out idString);
 			
 			Assert.IsFalse(id1 == null);
 			Assert.IsFalse(null == id1);
+		}		
+		
+		[Test()]
+		public void operatorNotEqual_withNull_returnTrue()
+		{
+			string idString = null;
+			TIdentifier id1 = CreateNewInstance(out idString);
+			
 			Assert.IsTrue(id1 != null);
 			Assert.IsTrue(null != id1);
+		}
+
+		[Test()]
+		public void operatorNotEqual_betweenNulls_returnFalse()
+		{
 			Assert.IsFalse((new object() as TIdentifier) != (new object() as TIdentifier));
 		}
 
 		[Test()]
-		public void Contains_01 ()
+		public void Contains_withUncontainedString_returnFalse ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -165,7 +199,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Contains_02 ()
+		public void Contains_withContainedString_returnTrue ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -174,7 +208,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void StartsWith_01 ()
+		public void StartsWith_withNotInitialSubstring_returnFalse ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -183,7 +217,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void StartsWith_02 ()
+		public void StartsWith_withInitialSubstring_returnTrue ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -192,7 +226,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void EndsWith_01 ()
+		public void EndsWith_withNotEndingSubstring_returnFalse ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -201,7 +235,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void EndsWith_02 ()
+		public void EndsWith_withEndingSubstring_returnTrue ()
 		{
 			string idString = null;
 			TIdentifier id = CreateNewInstance(out idString);
@@ -210,7 +244,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Matches_01 ()
+		public void Matches_withMatchingRegEx_returnTrue ()
 		{
 			Regex expression = null;
 			
@@ -220,7 +254,7 @@ namespace Contracts.Shared
 		}
 		
 		[Test()]
-		public void Matches_02()
+		public void Matches_withUnMatchingRegEx_returnFalse()
 		{
 			Regex expression = null;
 			TIdentifier id = CreateUnMatchingInstance(out expression);
