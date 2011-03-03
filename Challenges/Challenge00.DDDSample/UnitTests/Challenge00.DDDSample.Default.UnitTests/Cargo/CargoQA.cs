@@ -48,7 +48,7 @@ namespace DefaultImplementation.Cargo
 		#region Ctor
 		
 		[Test]
-		public void Ctor_01()
+		public void Ctor_withValidArgs_works()
 		{
 			// arrange:
 			TrackingId identifier = new TrackingId("CARGO01");
@@ -61,17 +61,82 @@ namespace DefaultImplementation.Cargo
 			Assert.AreSame(identifier, tested.TrackingId);
 			Assert.AreSame(route, tested.RouteSpecification);
 			Assert.IsNotNull(tested.Delivery);
-			Assert.AreEqual(TransportStatus.NotReceived, tested.Delivery.TransportStatus);
-			Assert.AreEqual(RoutingStatus.NotRouted, tested.Delivery.RoutingStatus);
-			Assert.IsFalse(tested.Delivery.IsUnloadedAtDestination);
-			Assert.IsNull(tested.Delivery.CurrentVoyage);
-			Assert.IsNull(tested.Delivery.EstimatedTimeOfArrival);
-			Assert.IsNull(tested.Delivery.LastKnownLocation);
-			Assert.IsNull(tested.Itinerary);
 		}
 		
 		[Test]
-		public void Ctor_02 ()
+		public void Ctor_withValidArgs_isNotRecieved()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+		
+			// act:
+			TCargo tested = new TCargo(identifier, route);
+		
+			// assert:
+			Assert.AreEqual(TransportStatus.NotReceived, tested.Delivery.TransportStatus);
+		}
+		
+		[Test]
+		public void Ctor_withValidArgs_isNotRouted()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+		
+			// act:
+			TCargo tested = new TCargo(identifier, route);
+		
+			// assert:
+			Assert.AreEqual(RoutingStatus.NotRouted, tested.Delivery.RoutingStatus);
+		}
+
+		[Test]
+		public void Ctor_withValidArgs_isNotUnloadedAtDestination()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+		
+			// act:
+			TCargo tested = new TCargo(identifier, route);
+		
+			// assert:
+			Assert.IsFalse(tested.Delivery.IsUnloadedAtDestination);
+		}		
+		
+		[Test]
+		public void Ctor_withValidArgs_isNotDelivered()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+		
+			// act:
+			TCargo tested = new TCargo(identifier, route);
+		
+			// assert:
+			Assert.IsNull(tested.Delivery.CurrentVoyage);
+			Assert.IsNull(tested.Delivery.EstimatedTimeOfArrival);
+			Assert.IsNull(tested.Delivery.LastKnownLocation);
+		}	
+
+		[Test]
+		public void Ctor_withValidArgs_isWithoutItinerary()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+		
+			// act:
+			TCargo tested = new TCargo(identifier, route);
+		
+			// assert:
+			Assert.IsNull(tested.Itinerary);
+		}	
+		
+		[Test]
+		public void Ctor_withValidState_askTheStateForEverything()
 		{
 			// arrange:
 			TrackingId identifier = new TrackingId("CARGO01");
@@ -108,7 +173,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Ctor_03()
+		public void Ctor_withNullState_throwsArgumentNullException()
 		{
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate{ new FakeCargo(null); });
