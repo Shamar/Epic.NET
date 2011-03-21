@@ -189,7 +189,6 @@ namespace DefaultImplementation.Cargo
 			// arrange:
 			GList mocks = new GList();
 			TrackingId identifier = new TrackingId("CARGO01");
-			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			mocks.Add(route);
 		
@@ -1057,7 +1056,42 @@ namespace DefaultImplementation.Cargo
 		#region ClearCustoms
 		
 		[Test]
-		public void ClearCustoms_01()
+		public void ClearCustoms_atCurrentLocation_dontChangeDelivery()
+		{
+			// arrange:
+			GList mocks = new GList();
+			TrackingId identifier = new TrackingId("CARGO01");
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			DateTime recieveDate = DateTime.Now + TimeSpan.FromDays(1);
+			UnLocode recUnLocode = new UnLocode("RECLC");
+			ILocation recLocation = MockRepository.GenerateStrictMock<ILocation>();
+			recLocation.Expect(l => l.UnLocode).Return(recUnLocode).Repeat.AtLeastOnce();
+			mocks.Add(recLocation);
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			itinerary.Expect(i => i.InitialDepartureLocation).Return(recUnLocode).Repeat.Any();
+			mocks.Add(itinerary);
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			mocks.Add(route);
+		
+			// act:
+			TCargo underTest = new TCargo(identifier, route);
+			underTest.AssignToRoute(itinerary);
+			underTest.Recieve(recLocation, recieveDate);
+			underTest.ClearCustoms(recLocation, recieveDate + TimeSpan.FromHours(6));
+		
+			// assert:
+			Assert.AreEqual(RoutingStatus.Routed, underTest.Delivery.RoutingStatus);
+			Assert.AreEqual(TransportStatus.InPort, underTest.Delivery.TransportStatus);
+			Assert.AreSame(recUnLocode, underTest.Delivery.LastKnownLocation);
+			foreach(object mock in mocks)
+				mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void ClearCustoms_atCurrentLocation_fireCustomsCleared()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -1091,9 +1125,6 @@ namespace DefaultImplementation.Cargo
 			underTest.ClearCustoms(recLocation, recieveDate + TimeSpan.FromHours(6));
 		
 			// assert:
-			Assert.AreEqual(RoutingStatus.Routed, underTest.Delivery.RoutingStatus);
-			Assert.AreEqual(TransportStatus.InPort, underTest.Delivery.TransportStatus);
-			Assert.AreSame(recUnLocode, underTest.Delivery.LastKnownLocation);
 			Assert.IsNotNull(eventArguments);
 			Assert.AreSame(underTest.Delivery.LastKnownLocation, eventArguments.Delivery.LastKnownLocation);
 			Assert.AreSame(eventSender, underTest);
@@ -1102,7 +1133,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void ClearCustoms_02()
+		public void ClearCustoms_atCurrentLocation_dontCallUnsubscribedHandlersOf_CustomsCleared()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -1147,7 +1178,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void ClearCustoms_03()
+		public void ClearCustoms_atCurrentLocation_delegateLogicToCurrentState()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -1189,7 +1220,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void ClearCustoms_04()
+		public void ClearCustoms_atCurrentLocation_dontBlockExceptionsFromCurrentState()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -1660,6 +1691,53 @@ namespace DefaultImplementation.Cargo
 			underTest.LoadOn(voyage, recieveDate + TimeSpan.FromDays(1));
 			underTest.Unload(voyage, recieveDate + TimeSpan.FromDays(10));
 			Assert.Throws<ArgumentNullException>(delegate { underTest.Claim(null, recieveDate + TimeSpan.FromDays(11)); });
+
+		
+			// assert:
+			foreach(object mock in mocks)
+				mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Claim_atWrongLocation_throwsArgumentException()
+		{
+			// arrange:
+			GList mocks = new GList();
+			TrackingId identifier = new TrackingId("CARGO01");
+			VoyageNumber voyageNumber = new VoyageNumber("VYG001");
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			DateTime recieveDate = DateTime.Now + TimeSpan.FromDays(1);
+			UnLocode recUnLocode = new UnLocode("RECLC");
+			UnLocode endUnLocode = new UnLocode("FINAL");
+			IVoyage voyage = MockRepository.GenerateStrictMock<IVoyage>();
+			voyage.Expect(v => v.IsMoving).Return(false).Repeat.AtLeastOnce();
+			voyage.Expect(v => v.Number).Return(voyageNumber).Repeat.AtLeastOnce();
+			voyage.Expect(v => v.LastKnownLocation).Return(recUnLocode).Repeat.Twice();
+			voyage.Expect(v => v.LastKnownLocation).Return(endUnLocode).Repeat.Once();
+			mocks.Add(voyage);
+			ILocation recLocation = MockRepository.GenerateStrictMock<ILocation>();
+			recLocation.Expect(l => l.UnLocode).Return(recUnLocode).Repeat.AtLeastOnce();
+			mocks.Add(recLocation);
+			ILocation clmLocation = MockRepository.GenerateStrictMock<ILocation>();
+			clmLocation.Expect(l => l.UnLocode).Return(new UnLocode("OTHER")).Repeat.AtLeastOnce();
+			mocks.Add(clmLocation);
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalLocation).Return(endUnLocode).Repeat.Any();
+			itinerary.Expect(i => i.InitialDepartureLocation).Return(recUnLocode).Repeat.Any();
+			mocks.Add(itinerary);
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			mocks.Add(route);
+		
+			// act:
+			TCargo underTest = new TCargo(identifier, route);
+			underTest.AssignToRoute(itinerary);
+			underTest.Recieve(recLocation, recieveDate);
+			underTest.LoadOn(voyage, recieveDate + TimeSpan.FromDays(1));
+			underTest.Unload(voyage, recieveDate + TimeSpan.FromDays(10));
+			Assert.Throws<ArgumentException>(delegate{ underTest.Claim(clmLocation, recieveDate + TimeSpan.FromDays(11)); });
 
 		
 			// assert:
