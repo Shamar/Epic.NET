@@ -887,9 +887,74 @@ namespace DefaultImplementation.Cargo
 		#endregion SpecifyNewRoute
 		
 		#region Recieve
-
+		
 		[Test]
-		public void Recieve_01()
+		public void Recieve_atInitialLocation_setLastKnownLocation()
+		{
+			// arrange:
+			GList mocks = new GList();
+			TrackingId identifier = new TrackingId("CARGO01");
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			DateTime recieveDate = DateTime.Now + TimeSpan.FromDays(1);
+			UnLocode recUnLocode = new UnLocode("RECLC");
+			ILocation recLocation = MockRepository.GenerateStrictMock<ILocation>();
+			recLocation.Expect(l => l.UnLocode).Return(recUnLocode).Repeat.AtLeastOnce();
+			mocks.Add(recLocation);
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			itinerary.Expect(i => i.InitialDepartureLocation).Return(recUnLocode).Repeat.Any();
+			mocks.Add(itinerary);
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			mocks.Add(route);
+		
+			// act:
+			TCargo underTest = new TCargo(identifier, route);
+			underTest.AssignToRoute(itinerary);
+			underTest.Recieve(recLocation, recieveDate);
+		
+			// assert:
+			Assert.AreSame(recUnLocode, underTest.Delivery.LastKnownLocation);
+			foreach(object mock in mocks)
+				mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Recieve_atInitialLocation_setTransportStatusInPort()
+		{
+			// arrange:
+			GList mocks = new GList();
+			TrackingId identifier = new TrackingId("CARGO01");
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			DateTime recieveDate = DateTime.Now + TimeSpan.FromDays(1);
+			UnLocode recUnLocode = new UnLocode("RECLC");
+			ILocation recLocation = MockRepository.GenerateStrictMock<ILocation>();
+			recLocation.Expect(l => l.UnLocode).Return(recUnLocode).Repeat.AtLeastOnce();
+			mocks.Add(recLocation);
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			itinerary.Expect(i => i.InitialDepartureLocation).Return(recUnLocode).Repeat.Any();
+			mocks.Add(itinerary);
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
+			mocks.Add(route);
+		
+			// act:
+			TCargo underTest = new TCargo(identifier, route);
+			underTest.AssignToRoute(itinerary);
+			underTest.Recieve(recLocation, recieveDate);
+		
+			// assert:
+			Assert.AreEqual(RoutingStatus.Routed, underTest.Delivery.RoutingStatus);
+			Assert.AreEqual(TransportStatus.InPort, underTest.Delivery.TransportStatus);
+			foreach(object mock in mocks)
+				mock.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void Recieve_atInitialLocation_fireRecieved()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -921,9 +986,6 @@ namespace DefaultImplementation.Cargo
 			underTest.Recieve(recLocation, recieveDate);
 		
 			// assert:
-			Assert.AreEqual(RoutingStatus.Routed, underTest.Delivery.RoutingStatus);
-			Assert.AreEqual(TransportStatus.InPort, underTest.Delivery.TransportStatus);
-			Assert.AreSame(recUnLocode, underTest.Delivery.LastKnownLocation);
 			Assert.IsNotNull(eventArguments);
 			Assert.AreSame(underTest.Delivery.LastKnownLocation, eventArguments.Delivery.LastKnownLocation);
 			Assert.AreSame(eventSender, underTest);
@@ -932,7 +994,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Recieve_02()
+		public void Recieve_atInitialLocation_dontCallUnsubscribedHandlersOf_Recieved()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -976,7 +1038,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Recieve_03()
+		public void Recieve_atALocation_delegateLogicToCurrentState()
 		{
 			// arrange:
 			GList mocks = new GList();
@@ -1018,7 +1080,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Recieve_04()
+		public void Recieve_atALocation_dontBlockExceptionsFromCurrentState()
 		{
 			// arrange:
 			GList mocks = new GList();
