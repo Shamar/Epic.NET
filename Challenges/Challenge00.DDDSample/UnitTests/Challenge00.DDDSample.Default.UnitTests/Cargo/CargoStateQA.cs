@@ -107,6 +107,11 @@ namespace DefaultImplementation.Cargo
 			: base(previousState, route)
 		{
 		}
+		
+		public FakeState (TrackingId identifier, IRouteSpecification route)
+			: base(identifier, route)
+		{
+		}
 	}
 	
 	[TestFixture]
@@ -142,6 +147,23 @@ namespace DefaultImplementation.Cargo
 			
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate { new FakeState(mock, null as IRouteSpecification); });
+		}
+		
+		[Test]
+		public void Ctor_withValidArgs_works()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			
+			// act:
+			CargoState state = new FakeState(identifier, route);
+		
+			// assert:
+			Assert.AreSame(identifier, state.Identifier);
+			Assert.AreSame(route, state.RouteSpecification);
+			Assert.AreEqual(RoutingStatus.NotRouted, state.RoutingStatus);
+			Assert.IsFalse(state.EstimatedTimeOfArrival.HasValue);
 		}
 	}
 }
