@@ -66,7 +66,7 @@ namespace Contracts.Cargo
 		public void Ctor_withValidString_works ()
 		{
 			string idString = "test";
-			TrackingId id = new TrackingId(idString);
+			new TrackingId(idString);
 		}
 		
 		[Test]

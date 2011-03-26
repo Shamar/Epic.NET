@@ -319,14 +319,17 @@ namespace DefaultImplementation.Cargo
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
 			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
 			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			itinerary.Expect(i => i.Equals(itinerary)).Return(true).Repeat.Any();
 			mocks.Add(itinerary);
 			IItinerary itinerary2 = MockRepository.GenerateStrictMock<IItinerary>();
 			itinerary2.Expect(i => i.Equals((IItinerary)itinerary)).Return(false).Repeat.Any();
 			itinerary2.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			itinerary2.Expect(i => i.Equals(itinerary2)).Return(true).Repeat.Any();
 			mocks.Add(itinerary2);
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			route.Expect(r => r.IsSatisfiedBy(itinerary2)).Return(true).Repeat.AtLeastOnce();
+			route.Expect(s => s.Equals(route)).Return(true).Repeat.Any();
 			mocks.Add(route);
 		
 			// act:
@@ -359,6 +362,7 @@ namespace DefaultImplementation.Cargo
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			route.Expect(r => r.IsSatisfiedBy(itinerary2)).Return(true).Repeat.AtLeastOnce();
+			route.Expect(s => s.Equals(route)).Return(true).Repeat.Any();
 			mocks.Add(route);
 			ChangeEventArgs<IItinerary> eventArguments = null;
 			ICargo eventSender = null;
@@ -399,6 +403,7 @@ namespace DefaultImplementation.Cargo
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			route.Expect(r => r.IsSatisfiedBy(itinerary2)).Return(true).Repeat.AtLeastOnce();
+			route.Expect(s => s.Equals(route)).Return(true).Repeat.Any();
 			mocks.Add(route);
 		
 			// act:
@@ -421,7 +426,7 @@ namespace DefaultImplementation.Cargo
 			TrackingId identifier = new TrackingId("CARGO01");
 			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
 			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
-			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.Equals((IItinerary)null)).Return(false).Repeat.Any();
 			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
 			mocks.Add(itinerary);
 			IItinerary itinerary2 = MockRepository.GenerateStrictMock<IItinerary>();
@@ -431,6 +436,7 @@ namespace DefaultImplementation.Cargo
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			route.Expect(r => r.IsSatisfiedBy(itinerary2)).Return(true).Repeat.AtLeastOnce();
+			route.Expect(s => s.Equals(route)).Return(true).Repeat.Any();
 			mocks.Add(route);
 		
 			// act:

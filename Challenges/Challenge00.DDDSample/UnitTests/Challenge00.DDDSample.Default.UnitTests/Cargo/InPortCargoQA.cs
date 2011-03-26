@@ -983,6 +983,7 @@ namespace DefaultImplementation.Cargo
             mocks.Add(itinerary);
             IRouteSpecification specification = MockRepository.GenerateStrictMock<IRouteSpecification>();
             specification.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+			specification.Expect(s => s.Equals(specification)).Return(true).Repeat.Any();
             mocks.Add(specification);
 			CargoState previousState = MockRepository.GenerateStrictMock<CargoState>(id, specification);
             mocks.Add(previousState);

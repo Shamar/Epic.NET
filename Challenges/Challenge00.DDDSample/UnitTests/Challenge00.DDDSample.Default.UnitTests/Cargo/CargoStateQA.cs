@@ -25,10 +25,20 @@ using System;
 using NUnit.Framework;
 using Challenge00.DDDSample.Cargo;
 using Rhino.Mocks;
+using System.Threading;
 namespace DefaultImplementation.Cargo
 {
 	class FakeState : CargoState
 	{
+		public Challenge00.DDDSample.Location.UnLocode _lastKnownLocation;
+
+		public bool _isUnloadedAtDestination = true;
+		public override bool IsUnloadedAtDestination {
+			get {
+				return _isUnloadedAtDestination;
+			}
+		}
+		
 		#region implemented abstract members of Challenge00.DDDSample.Cargo.CargoState
 		public override CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
 		{
@@ -74,21 +84,21 @@ namespace DefaultImplementation.Cargo
 		
 		public override Challenge00.DDDSample.Voyage.VoyageNumber CurrentVoyage {
 			get {
-				throw new System.NotImplementedException();
+				return new Challenge00.DDDSample.Voyage.VoyageNumber("CURRENTVYG");
 			}
 		}
 		
 		
 		public override Challenge00.DDDSample.Location.UnLocode LastKnownLocation {
 			get {
-				throw new System.NotImplementedException();
+				return _lastKnownLocation;
 			}
 		}
 		
 		
 		public override TransportStatus TransportStatus {
 			get {
-				throw new System.NotImplementedException();
+				return TransportStatus.Unknown;
 			}
 		}
 		
@@ -164,6 +174,111 @@ namespace DefaultImplementation.Cargo
 			Assert.AreSame(route, state.RouteSpecification);
 			Assert.AreEqual(RoutingStatus.NotRouted, state.RoutingStatus);
 			Assert.IsFalse(state.EstimatedTimeOfArrival.HasValue);
+		}
+		
+		
+		[Test]
+		public void Ctor_withSameArgs_produceDifferentCalculationDate()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			
+			// act:
+			CargoState state1 = new FakeState(identifier, route);
+			Thread.Sleep(100);
+			CargoState state2 = new FakeState(identifier, route);
+		
+			// assert:
+			Assert.AreNotEqual(state1.CalculationDate, state2.CalculationDate);
+		}
+		
+		[Test]
+		public void ToString_containsStateName()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			CargoState state = new FakeState(identifier, route);
+		
+			// act:
+			string stateString = state.ToString();
+		
+			// assert:
+			Assert.IsTrue(stateString.Contains(state.GetType().Name));
+		}
+		
+		[Test]
+		public void Equals_withDifferentLastKnownLocation_ifFalse()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			FakeState state1 = new FakeState(identifier, route);
+			state1._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+			FakeState state2 = new FakeState(identifier, route);
+			state2._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTB");
+		
+			// act:
+		
+			// assert:
+			Assert.IsFalse(state1.Equals(state2));
+		}
+		
+		[Test]
+		public void Equals_withDifferentDestinations_ifFalse()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			FakeState state1 = new FakeState(identifier, route);
+			state1._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+			state1._isUnloadedAtDestination = false;
+			FakeState state2 = new FakeState(identifier, route);
+			state2._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+		
+			// act:
+		
+			// assert:
+			Assert.IsFalse(state1.Equals(state2));
+		}
+		
+		[Test]
+		public void Equals_withDifferentIdentifiers_ifFalse()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			FakeState state1 = new FakeState(identifier, route);
+			state1._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+			FakeState state2 = new FakeState(new TrackingId("CARGO02"), route);
+			state2._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+		
+			// act:
+		
+			// assert:
+			Assert.IsFalse(state1.Equals(state2));
+		}
+		
+		
+		[Test]
+		public void Equals_withDifferentRoute_ifFalse()
+		{
+			// arrange:
+			TrackingId identifier = new TrackingId("CARGO01");
+			IRouteSpecification route1 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			FakeState state1 = new FakeState(identifier, route1);
+			state1._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+			IRouteSpecification route2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			FakeState state2 = new FakeState(identifier, route2);
+			state2._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+			route2.Expect(s => s.Equals(route1)).Return(false).Repeat.Any();
+			route1.Expect(s => s.Equals(route2)).Return(false).Repeat.Any();
+			
+			// act:
+		
+			// assert:
+			Assert.IsFalse(state1.Equals(state2));
 		}
 	}
 }

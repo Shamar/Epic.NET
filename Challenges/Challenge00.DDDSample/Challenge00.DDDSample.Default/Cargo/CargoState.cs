@@ -165,9 +165,11 @@ namespace Challenge00.DDDSample.Cargo
 				return false;
 			if(object.ReferenceEquals(this, other))
 				return true;
-			if(object.ReferenceEquals(null, CurrentVoyage) || !CurrentVoyage.Equals(other.CurrentVoyage))
+			if(null != CurrentVoyage && !CurrentVoyage.Equals(other.CurrentVoyage))
 				return false;
-			if(null != LastKnownLocation || !LastKnownLocation.Equals(other.LastKnownLocation))
+			if(null == CurrentVoyage && null != other.CurrentVoyage)
+				return false;
+			if(null != LastKnownLocation && !LastKnownLocation.Equals(other.LastKnownLocation))
 				return false;
 			if(null == LastKnownLocation && null != other.LastKnownLocation)
 				return false;
@@ -176,12 +178,6 @@ namespace Challenge00.DDDSample.Cargo
 			if(_routingStatus != other.RoutingStatus)
 				return false;
 			if(IsUnloadedAtDestination != other.IsUnloadedAtDestination)
-				return false;
-			if(EstimatedTimeOfArrival.HasValue != other.EstimatedTimeOfArrival.HasValue)
-				return false;
-			if(EstimatedTimeOfArrival.HasValue && EstimatedTimeOfArrival.Value != other.EstimatedTimeOfArrival.Value)
-				return false;
-			if(!_calculationDate.Equals(other.CalculationDate))
 				return false;
 			return true;
 		}
