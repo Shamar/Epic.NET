@@ -123,6 +123,28 @@ namespace DefaultImplementation.Cargo
 		{
 		}
 	}
+	class FakeState2 : FakeState
+	{
+		public FakeState2(CargoState previousState)
+			: base(previousState)
+		{
+		}
+		
+		public FakeState2(CargoState previousState, IItinerary itinerary)
+			: base(previousState, itinerary)
+		{
+		}
+		
+		public FakeState2(CargoState previousState, IRouteSpecification route)
+			: base(previousState, route)
+		{
+		}
+		
+		public FakeState2 (TrackingId identifier, IRouteSpecification route)
+			: base(identifier, route)
+		{
+		}
+	}
 	
 	[TestFixture]
 	public class CargoStateQA
@@ -254,27 +276,6 @@ namespace DefaultImplementation.Cargo
 			FakeState state2 = new FakeState(new TrackingId("CARGO02"), route);
 			state2._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
 		
-			// act:
-		
-			// assert:
-			Assert.IsFalse(state1.Equals(state2));
-		}
-		
-		
-		[Test]
-		public void Equals_withDifferentRoute_ifFalse()
-		{
-			// arrange:
-			TrackingId identifier = new TrackingId("CARGO01");
-			IRouteSpecification route1 = MockRepository.GenerateStrictMock<IRouteSpecification>();
-			FakeState state1 = new FakeState(identifier, route1);
-			state1._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
-			IRouteSpecification route2 = MockRepository.GenerateStrictMock<IRouteSpecification>();
-			FakeState state2 = new FakeState(identifier, route2);
-			state2._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
-			route2.Expect(s => s.Equals(route1)).Return(false).Repeat.Any();
-			route1.Expect(s => s.Equals(route2)).Return(false).Repeat.Any();
-			
 			// act:
 		
 			// assert:

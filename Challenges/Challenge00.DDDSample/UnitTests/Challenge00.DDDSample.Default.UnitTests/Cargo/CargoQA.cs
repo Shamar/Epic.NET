@@ -326,6 +326,7 @@ namespace DefaultImplementation.Cargo
 			itinerary2.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
 			itinerary2.Expect(i => i.Equals(itinerary2)).Return(true).Repeat.Any();
 			mocks.Add(itinerary2);
+			itinerary.Expect(i => i.Equals((IItinerary)itinerary2)).Return(false).Repeat.Any();
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			route.Expect(r => r.IsSatisfiedBy(itinerary2)).Return(true).Repeat.AtLeastOnce();
@@ -359,6 +360,7 @@ namespace DefaultImplementation.Cargo
 			itinerary2.Expect(i => i.Equals((IItinerary)itinerary)).Return(false).Repeat.Any();
 			itinerary2.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
 			mocks.Add(itinerary2);
+			itinerary.Expect(i => i.Equals((IItinerary)itinerary2)).Return(false).Repeat.Any();
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			route.Expect(r => r.IsSatisfiedBy(itinerary2)).Return(true).Repeat.AtLeastOnce();
@@ -400,6 +402,7 @@ namespace DefaultImplementation.Cargo
 			itinerary2.Expect(i => i.Equals((IItinerary)itinerary)).Return(false).Repeat.Any();
 			itinerary2.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
 			mocks.Add(itinerary2);
+			itinerary.Expect(i => i.Equals((IItinerary)itinerary2)).Return(false).Repeat.Any();
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			route.Expect(r => r.IsSatisfiedBy(itinerary2)).Return(true).Repeat.AtLeastOnce();
@@ -433,6 +436,7 @@ namespace DefaultImplementation.Cargo
 			itinerary2.Expect(i => i.Equals((IItinerary)itinerary)).Return(false).Repeat.Any();
 			itinerary2.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
 			mocks.Add(itinerary2);
+			itinerary.Expect(i => i.Equals((IItinerary)itinerary2)).Return(false).Repeat.Any();
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			route.Expect(r => r.IsSatisfiedBy(itinerary)).Return(true).Repeat.AtLeastOnce();
 			route.Expect(r => r.IsSatisfiedBy(itinerary2)).Return(true).Repeat.AtLeastOnce();
