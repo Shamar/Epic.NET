@@ -185,6 +185,7 @@ namespace DefaultImplementation.Cargo
 		public void Ctor_withValidArgs_works()
 		{
 			// arrange:
+			DateTime runTime = DateTime.UtcNow;
 			TrackingId identifier = new TrackingId("CARGO01");
 			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
 			
@@ -192,6 +193,7 @@ namespace DefaultImplementation.Cargo
 			CargoState state = new FakeState(identifier, route);
 		
 			// assert:
+			Assert.LessOrEqual(runTime, state.CalculationDate);
 			Assert.AreSame(identifier, state.Identifier);
 			Assert.AreSame(route, state.RouteSpecification);
 			Assert.AreEqual(RoutingStatus.NotRouted, state.RoutingStatus);
@@ -231,7 +233,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Equals_withDifferentLastKnownLocation_ifFalse()
+		public void Equals_withDifferentLastKnownLocation_isFalse()
 		{
 			// arrange:
 			TrackingId identifier = new TrackingId("CARGO01");
@@ -248,7 +250,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Equals_withDifferentDestinations_ifFalse()
+		public void Equals_withDifferentDestinations_isFalse()
 		{
 			// arrange:
 			TrackingId identifier = new TrackingId("CARGO01");
@@ -266,7 +268,7 @@ namespace DefaultImplementation.Cargo
 		}
 		
 		[Test]
-		public void Equals_withDifferentIdentifiers_ifFalse()
+		public void Equals_withDifferentIdentifiers_isFalse()
 		{
 			// arrange:
 			TrackingId identifier = new TrackingId("CARGO01");
@@ -280,6 +282,98 @@ namespace DefaultImplementation.Cargo
 		
 			// assert:
 			Assert.IsFalse(state1.Equals(state2));
+		}
+		
+		[Test]
+		public void Equals_withDifferentItineraries_isFalse()
+		{
+			// arrange:
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			TrackingId identifier = new TrackingId("CARGO01");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(s => s.Equals(route)).Return(true).Repeat.Any();
+			route.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+			FakeState state1 = new FakeState(identifier, route);
+			state1 = new FakeState(state1, itinerary);
+			state1._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+			FakeState state2 = new FakeState2(identifier, route);
+			state2._lastKnownLocation = new Challenge00.DDDSample.Location.UnLocode("TESTA");
+		
+			// act:
+		
+			// assert:
+			Assert.IsFalse(state1.Equals(state2));
+		}
+		
+		[Test]
+		public void Equals_withDifferentItineraries_isFalse_02()
+		{
+			// arrange:
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			TrackingId identifier = new TrackingId("CARGO01");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(s => s.Equals(route)).Return(true).Repeat.Any();
+			route.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+			FakeState state1 = new FakeState(identifier, route);
+			state1 = new FakeState(state1, itinerary);
+			FakeState state2 = new FakeState2(identifier, route);
+		
+			// act:
+		
+			// assert:
+			Assert.IsFalse(state1.Equals(state2));
+		}
+		
+		[Test]
+		public void Equals_withDifferentTypes_isFalse()
+		{
+			// arrange:
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			TrackingId identifier = new TrackingId("CARGO01");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.Equals(itinerary)).Return(true).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(s => s.Equals(route)).Return(true).Repeat.Any();
+			route.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+			FakeState state1 = new FakeState(identifier, route);
+			FakeState state2 = new FakeState2(state1, itinerary);
+			state1 = new FakeState(state1, itinerary);
+		
+			// act:
+		
+			// assert:
+			Assert.IsFalse(state1.Equals(state2));
+		}
+		
+		[Test]
+		public void Equals_withEverythingRelevantEquals_isTrue()
+		{
+			// arrange:
+			DateTime arrivalDate = DateTime.Now + TimeSpan.FromDays(30);
+			TrackingId identifier = new TrackingId("CARGO01");
+			IItinerary itinerary = MockRepository.GenerateStrictMock<IItinerary>();
+			itinerary.Expect(i => i.Equals(null)).Return(false).Repeat.Any();
+			itinerary.Expect(i => i.Equals(itinerary)).Return(true).Repeat.Any();
+			itinerary.Expect(i => i.FinalArrivalDate).Return(arrivalDate).Repeat.Any();
+			IRouteSpecification route = MockRepository.GenerateStrictMock<IRouteSpecification>();
+			route.Expect(s => s.Equals(route)).Return(true).Repeat.Any();
+			route.Expect(s => s.IsSatisfiedBy(itinerary)).Return(true).Repeat.Any();
+			FakeState state1 = new FakeState(identifier, route);
+			FakeState state2 = new FakeState(state1, itinerary);
+			state1 = new FakeState(state1, itinerary);
+		
+			// act:
+		
+			// assert:
+			Assert.IsTrue(state1.Equals(state2));
 		}
 	}
 }
