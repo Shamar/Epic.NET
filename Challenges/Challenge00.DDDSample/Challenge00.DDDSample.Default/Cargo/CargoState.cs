@@ -188,7 +188,11 @@ namespace Challenge00.DDDSample.Cargo
 		
 		public virtual bool Equals (CargoState other)
 		{
-			if(! Equals(other as IDelivery))
+            if (null == other)
+                return false;
+            if (!this.GetType().Equals(other.GetType()))
+                return false;
+            if (!Equals(other as IDelivery))
 				return false;
 			if(object.ReferenceEquals(this, other))
 				return true;
@@ -198,8 +202,6 @@ namespace Challenge00.DDDSample.Cargo
 				return false;
 			if(!Itinerary.Equals(other.Itinerary))
 				return false;
-			if(!this.GetType().Equals(other.GetType()))
-			    return false;
 			return true;
 		}
 		

@@ -163,8 +163,6 @@ namespace Challenge00.DDDSample.Cargo
 			int i = 0;
 			foreach(ILeg l in other)
 			{
-				if(i == _legs.Length)
-					return false;
 				if(! _legs[i].Equals(l))
 					return false;
 				
