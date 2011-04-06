@@ -210,7 +210,6 @@ namespace DefaultImplementation.Cargo
 			legs.Add(leg2Copy);
 			ILeg leg = MockRepository.GenerateStrictMock<ILeg, IObject>();
 			leg.Expect(l => l.Equals(leg)).Return(true).Repeat.AtLeastOnce();
-			leg.Expect(l => l.Equals((object)leg)).Return(true).Repeat.AtLeastOnce();
 			leg.Expect(l => l.Equals(legCopy)).Return(true).Repeat.AtLeastOnce();
 			leg.Expect(l => l.LoadLocation).Return(loc1).Repeat.AtLeastOnce();
 			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.AtLeastOnce();
@@ -218,7 +217,6 @@ namespace DefaultImplementation.Cargo
 			leg.Expect(l => l.GetHashCode()).Return(543210).Repeat.AtLeastOnce();
 			ILeg leg2 = MockRepository.GenerateStrictMock<ILeg, IObject>();
 			leg2.Expect(l => l.Equals(leg2)).Return(true).Repeat.AtLeastOnce();
-			leg2.Expect(l => l.Equals((object)leg2)).Return(true).Repeat.AtLeastOnce();
 			leg2.Expect(l => l.Equals(leg2Copy)).Return(true).Repeat.AtLeastOnce();
 			leg2.Expect(l => l.LoadLocation).Return(loc2).Repeat.AtLeastOnce();
 			leg2.Expect(l => l.UnloadLocation).Return(loc3).Repeat.AtLeastOnce();
