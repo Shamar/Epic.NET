@@ -1,4 +1,4 @@
-Epic.NET - Copyright (C) 2010 Giacomo Tesio
+Epic.NET - Copyright (C) 2010-2011 Giacomo Tesio
 
 Still in very early stages. Check back in the next few days for news.
 
