@@ -56,13 +56,15 @@
     <Compile Include="Voyage\VoyageEventArgs.cs" />
     <Compile Include="Shared\ChangeEventArgs.cs" />
     <Compile Include="Cargo\HandlingEventArgs.cs" />
+    <Compile Include="Cargo\Handling\EventType.cs" />
+    <Compile Include="Cargo\Handling\IEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cargo\" />
     <Folder Include="Shared\" />
     <Folder Include="Location\" />
     <Folder Include="Voyage\" />
-    <Folder Include="Handling\" />
+    <Folder Include="Cargo\Handling\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
