@@ -61,6 +61,7 @@
     <Compile Include="Cargo\TrackingIdQA.cs" />
     <Compile Include="Voyage\VoyageNumberQA.cs" />
     <Compile Include="Voyage\VoyageEventArgsQA.cs" />
+    <Compile Include="UsernameQA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

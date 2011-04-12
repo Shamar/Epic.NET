@@ -22,11 +22,14 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Challenge00.DDDSample.Shared;
 namespace Challenge00.DDDSample
 {
-	public class Username
+	[Serializable]
+	public sealed class Username : StringIdentifier<Username>
 	{
-		public Username ()
+		public Username (string identifier)
+			: base(identifier)
 		{
 		}
 	}
