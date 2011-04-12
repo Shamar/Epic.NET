@@ -1,5 +1,5 @@
 //  
-//  CustomsEvent.cs
+//  Username.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,11 +22,11 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-namespace Challenge00.DDDSample.Cargo.Handling
+namespace Challenge00.DDDSample
 {
-	public class CustomsEvent
+	public class Username
 	{
-		public CustomsEvent ()
+		public Username ()
 		{
 		}
 	}

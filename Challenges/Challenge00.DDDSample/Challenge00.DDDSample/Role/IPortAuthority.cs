@@ -1,5 +1,5 @@
 //  
-//  ClaimEvent.cs
+//  IPortAuthority.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,14 +22,19 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-namespace Challenge00.DDDSample.Cargo.Handling
+using Challenge00.DDDSample.Voyage;
+using System.Linq;
+namespace Challenge00.DDDSample.Role
 {
-	[Serializable]
-	public class ClaimEvent
+	/// <summary>
+	/// A Port captain's office's employee. He tracks voyages.
+	/// </summary>
+	public interface IPortAuthority
 	{
-		public ClaimEvent (ICargo cargo)
-		{
-		}
+		/// <summary>
+		/// Voyages to be completed.
+		/// </summary>
+		IQueryable<IVoyage> Voyages { get; }
 	}
 }
 

@@ -28,16 +28,20 @@ namespace Challenge00.DDDSample.Cargo.Handling
 	public class Event : IEvent
 	{
 		private readonly EventType _type;
+		private readonly Username _user;
 		private readonly TrackingId _cargo;
 		private readonly DateTime _date;
 		private readonly Location.UnLocode _location;
 		private readonly Voyage.VoyageNumber _voyage;
 		
-		protected Event (ICargo cargo, EventType type, DateTime date)
+		protected Event (IUser user, ICargo cargo, EventType type, DateTime date)
 		{
+			if(null == user)
+				throw new ArgumentNullException("user");
 			if(null == cargo)
 				throw new ArgumentNullException("cargo");
 			
+			_user = user.Username;
 			_date = date;
 			_cargo = cargo.TrackingId;
 			_location = cargo.Delivery.LastKnownLocation;
@@ -47,12 +51,18 @@ namespace Challenge00.DDDSample.Cargo.Handling
 
 		#region IEvent implementation
 		
+		public Username User {
+			get {
+				return _user;
+			}
+		}
+		
 		public TrackingId Cargo {
 			get {
 				return _cargo;
 			}
 		}
-
+		
 		public DateTime Date {
 			get {
 				return _date;

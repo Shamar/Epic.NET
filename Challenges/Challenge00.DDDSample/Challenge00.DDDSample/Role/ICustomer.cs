@@ -1,5 +1,5 @@
 //  
-//  LoadEvent.cs
+//  ICustomer.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,15 +22,32 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Challenge00.DDDSample.Voyage;
-namespace Challenge00.DDDSample.Cargo.Handling
+using System.Linq;
+using Challenge00.DDDSample.Cargo.Handling;
+using Challenge00.DDDSample.Cargo;
+using System.Collections.Generic;
+namespace Challenge00.DDDSample.Role
 {
-	[Serializable]
-	public class LoadEvent
+	/// <summary>
+	/// A customer. He can keep tracks of his own cargos.
+	/// </summary>
+	public interface ICustomer
 	{
-		public LoadEvent (ICargo cargo, IVoyage args)
-		{
-		}
+		/// <summary>
+		/// Cargos shipped by the customer. He can't invoke cargo commands, just query them.
+		/// </summary>
+		IQueryable<ICargo> Cargos { get; }
+		
+		/// <summary>
+		/// Return the history of a cargo.
+		/// </summary>
+		/// <param name='cargo'>
+		/// The cargo of interest.
+		/// </param>
+		/// <returns>
+		/// History of a cargo as an enumeration of events.
+		/// </returns>
+		IEnumerable<IEvent> GetHistoryOf(ICargo cargo);
 	}
 }
 
