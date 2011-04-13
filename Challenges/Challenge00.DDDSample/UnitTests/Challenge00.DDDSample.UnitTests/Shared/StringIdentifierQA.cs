@@ -55,6 +55,7 @@ namespace Contracts.Shared
 			TIdentifier id = CreateNewInstance(out idString);
 			
 			Assert.IsFalse(id.Equals(null));
+			Assert.IsFalse(id.Equals((object)null));
 		}
 		
 		[Test()]
@@ -64,6 +65,7 @@ namespace Contracts.Shared
 			TIdentifier id = CreateNewInstance(out idString);
 			
 			Assert.IsTrue(id.Equals(id));
+			Assert.IsTrue(id.Equals((object)id));
 		}
 		
 		[Test()]
@@ -74,6 +76,7 @@ namespace Contracts.Shared
 			TIdentifier id2 = CreateNewInstance(out idString);
 			
 			Assert.IsTrue(id1.Equals(id2));
+			Assert.IsTrue(id1.Equals((object)id2));
 		}
 		
 		[Test()]
@@ -85,6 +88,7 @@ namespace Contracts.Shared
 			TIdentifier id2 = CreateNewInstance(out idString2);
 			
 			Assert.IsTrue(id1.Equals(id2));
+			Assert.IsTrue(id1.Equals((object)id2));
 		}
 		
 		[Test()]
@@ -96,6 +100,7 @@ namespace Contracts.Shared
 			TIdentifier id2 = CreateDifferentInstance(out idString2);
 			
 			Assert.IsFalse(id1.Equals(id2));
+			Assert.IsFalse(id1.Equals((object)id2));
 		}
 		
 		[Test()]
