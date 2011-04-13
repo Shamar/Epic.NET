@@ -57,6 +57,7 @@
     <Folder Include="Location\" />
     <Folder Include="Voyage\" />
     <Folder Include="Cargo\" />
+    <Folder Include="Cargo\Handling\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Voyage\IntegrationTests.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Voyage\StoppedVoyageQA.cs" />
     <Compile Include="Voyage\VoyageQA.cs" />
     <Compile Include="Cargo\ItineraryQA.cs" />
+    <Compile Include="Cargo\Handling\EventQA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -30,11 +30,11 @@ namespace Challenge00.DDDSample.Cargo.Handling
 		private readonly EventType _type;
 		private readonly Username _user;
 		private readonly TrackingId _cargo;
-		private readonly DateTime _date;
+		private readonly DateTime _completionDate;
 		private readonly Location.UnLocode _location;
 		private readonly Voyage.VoyageNumber _voyage;
 		
-		protected Event (IUser user, ICargo cargo, EventType type, DateTime date)
+		public Event (IUser user, ICargo cargo, EventType type, DateTime completionDate)
 		{
 			if(null == user)
 				throw new ArgumentNullException("user");
@@ -42,7 +42,7 @@ namespace Challenge00.DDDSample.Cargo.Handling
 				throw new ArgumentNullException("cargo");
 			
 			_user = user.Username;
-			_date = date;
+			_completionDate = completionDate;
 			_cargo = cargo.TrackingId;
 			_location = cargo.Delivery.LastKnownLocation;
 			_voyage = cargo.Delivery.CurrentVoyage;
@@ -65,7 +65,7 @@ namespace Challenge00.DDDSample.Cargo.Handling
 		
 		public DateTime Date {
 			get {
-				return _date;
+				return _completionDate;
 			}
 		}
 
