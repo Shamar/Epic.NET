@@ -29,7 +29,7 @@ namespace Challenge00.DDDSample.Role
 	/// <summary>
 	/// A Port captain's office's employee. He tracks voyages.
 	/// </summary>
-	public interface IPortAuthority
+	public interface IPortAuthority : IUser
 	{
 		/// <summary>
 		/// Voyages to be completed.

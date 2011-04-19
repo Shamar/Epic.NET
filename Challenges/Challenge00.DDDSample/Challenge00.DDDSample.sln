@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample", "Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.Default", "Challenge00.DDDSample.Default\Challenge00.DDDSample.Default.csproj", "{47C7912D-2CF9-4464-BCF6-641A6867577D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.ACME", "Challenge00.DDDSample.ACME\Challenge00.DDDSample.ACME.csproj", "{AE1E1387-36B9-4000-A2DC-1887B8E7F905}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{9DD9489F-20F7-43DD-B799-5E94C3DEA5F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DD9489F-20F7-43DD-B799-5E94C3DEA5F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DD9489F-20F7-43DD-B799-5E94C3DEA5F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Release|Any CPU.ActiveCfg = Release|Any CPU

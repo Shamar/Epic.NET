@@ -31,7 +31,7 @@ namespace Challenge00.DDDSample.Role
 	/// <summary>
 	/// A longshoreman. He can only load and unload cargo from voyages.
 	/// </summary>
-	public interface ILongshoreman
+	public interface ILongshoreman : IUser
 	{
 		/// <summary>
 		/// The cargos assigned to the longshoreman.
