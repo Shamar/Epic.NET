@@ -136,7 +136,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_withPreviousLocation_dontFireDeparted ()
+		public void DepartFrom_previousLocation_dontFireDeparted ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -191,7 +191,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_withALocation_dontBlockArgumentExceptionFromCurrentState ()
+		public void DepartFrom_aLocation_dontBlockArgumentExceptionFromCurrentState ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -219,7 +219,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_withALocation_dontBlockInvalidOperationExceptionFromCurrentState ()
+		public void DepartFrom_aLocation_dontBlockInvalidOperationExceptionFromCurrentState ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -247,7 +247,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_withALocation_dontCallUnsubscribedHandlersOf_Departed ()
+		public void DepartFrom_aLocation_dontCallUnsubscribedHandlersOf_Departed ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -323,7 +323,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void StopOverAt_02 ()
+		public void StopOverAt_aLocation_willNotFireStopped_whenTheStateDontChange ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -353,7 +353,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void StopOverAt_03 ()
+		public void StopOverAt_nullLocation_throwsArgumentNullException ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -378,7 +378,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void StopOverAt_04 ()
+		public void StopOverAt_aLocation_dontBlockArgumentExceptionFromCurrentState ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -406,7 +406,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void StopOverAt_05 ()
+		public void StopOverAt_aLocation_dontBlockInvalidOperationExceptionFromCurrentState ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -434,7 +434,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void StopOverAt_06 ()
+		public void StopOverAt_aLocation_dontCallUnsubscribedHandlersOf_Stopped  ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -470,9 +470,10 @@ namespace DefaultImplementation.Voyage
 			location.VerifyAllExpectations();
 			state2.VerifyAllExpectations();
 		}	
+		
 		[TestCase(true)]
 		[TestCase(false)]
-		public void WillStopOverAt_01 (bool returnedValue)
+		public void WillStopOverAt_aLocation_delegateLogicToCurrentStateThatReturn (bool returnedValue)
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -493,7 +494,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void WillStopOverAt_02 ()
+		public void WillStopOverAt_aLocation_dontBlockInvalidOperationExceptionFromCurrentState ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -513,7 +514,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void WillStopOverAt_03 ()
+		public void WillStopOverAt_nullLocation_throwsArgumentNullException ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
