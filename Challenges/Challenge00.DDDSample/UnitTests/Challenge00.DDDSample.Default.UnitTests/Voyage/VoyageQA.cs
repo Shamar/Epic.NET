@@ -40,7 +40,7 @@ namespace DefaultImplementation.Voyage
 	public class VoyageQA
 	{
 		[Test]
-		public void Ctor_01 ()
+		public void Ctor_withValidArguments_works ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -65,7 +65,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Ctor_02 ()
+		public void Ctor_withValidState_askTheStateForEverything()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -91,7 +91,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void Ctor_03()
+		public void Ctor_withNullState_throwsArgumentNullException()
 		{
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate{ new FakeVoyage(null); });
@@ -99,7 +99,7 @@ namespace DefaultImplementation.Voyage
 		
 		
 		[Test]
-		public void DepartFrom_01 ()
+		public void DepartFrom_currentLocation_fireDeparted ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -111,8 +111,8 @@ namespace DefaultImplementation.Voyage
 			VoyageState state2 = MockRepository.GeneratePartialMock<VoyageState>(number, schedule);
 			state.Expect(s => s.DepartFrom(location)).Return(state2).Repeat.Once();
 			state.Expect(s => s.Equals(state2)).Return(false).Repeat.Once();
-			state2.Expect(s => s.LastKnownLocation).Return(departure).Repeat.Once();
-			state2.Expect(s => s.NextExpectedLocation).Return(arrival).Repeat.Once();
+			state2.Expect(s => s.LastKnownLocation).Return(departure).Repeat.Any();
+			state2.Expect(s => s.NextExpectedLocation).Return(arrival).Repeat.Any();
 			VoyageEventArgs eventArguments = null;
 			IVoyage eventSender = null;
 			
@@ -136,7 +136,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_02 ()
+		public void DepartFrom_withPreviousLocation_dontFireDeparted ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -166,7 +166,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_03 ()
+		public void DepartFrom_nullLocation_throwsArgumentNullException ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -191,7 +191,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_04 ()
+		public void DepartFrom_withALocation_dontBlockArgumentExceptionFromCurrentState ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -219,7 +219,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_05 ()
+		public void DepartFrom_withALocation_dontBlockInvalidOperationExceptionFromCurrentState ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -247,7 +247,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void DepartFrom_06 ()
+		public void DepartFrom_withALocation_dontCallUnsubscribedHandlersOf_Departed ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");
@@ -286,7 +286,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		public void StopOverAt_01 ()
+		public void StopOverAt_nextLocation_fireStopped ()
 		{
 			// arrange:
 			VoyageNumber number = new VoyageNumber("VYG01");

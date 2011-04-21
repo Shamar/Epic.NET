@@ -31,40 +31,34 @@ namespace DefaultImplementation.Location
 	public class LocationQA
 	{
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void Ctor_01 ()
+		public void Ctor_withNullIdentifier_throwsArgumentNullException ()
 		{
-			// arrange:
-			
-		
-			// act:
-			new Challenge00.DDDSample.Location.Location(null, "Name");
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate{ new Challenge00.DDDSample.Location.Location(null, "Name"); });
 		}
 		
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void Ctor_02 ()
+		public void Ctor_withNullName_throwsArgumentNullException ()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("UNLOC");
 		
-			// act:
-			new Challenge00.DDDSample.Location.Location(code, null);
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate{ new Challenge00.DDDSample.Location.Location(code, null); });
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void Ctor_03 ()
+		public void Ctor_withEmptyName_throwsArgumentNullException ()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("UNLOC");
 		
 			// act:
-			new Challenge00.DDDSample.Location.Location(code, string.Empty);
+			Assert.Throws<ArgumentNullException>(delegate{ new Challenge00.DDDSample.Location.Location(code, string.Empty); });
 		}
 		
 		[Test]
-		public void Ctor_04()
+		public void Ctor_withValidArguments_works()
 		{
 			// arrange:
 			UnLocode code = new UnLocode("UNLOC");
