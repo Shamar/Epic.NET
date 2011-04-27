@@ -40,6 +40,10 @@
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IEnterprise.cs" />
     <Compile Include="IWorkingSession.cs" />
+    <Compile Include="Events\ChangeEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Events\" />
+  </ItemGroup>
 </Project>

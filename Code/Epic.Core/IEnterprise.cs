@@ -31,16 +31,54 @@ namespace Epic
 	/// <remarks>
 	/// <para>
 	/// The Epic target are application modelling enterprise processes.
+	/// Thus, this is the entry point for all the domain model boundaries.
 	/// </para>
 	/// </remarks>
 	public interface IEnterprise
 	{
+		/// <summary>
+		/// Name of the enterprise.
+		/// </summary>
+		/// <value>
+		/// The name.
+		/// </value>
 		string Name { get; }
 		
+		/// <summary>
+		/// Starts a new working session.
+		/// </summary>
+		/// <param name='owner'>
+		/// Owner of the new session.
+		/// </param>
+		/// <param name='workingSession'>
+		/// The new working session.
+		/// </param>
 		void StartWorkingSession(IIdentity owner, out IWorkingSession workingSession);
 		
+		/// <summary>
+		/// Acquires an existing working session. 
+		/// Used to adopt a working session between different applications/appdomain.
+		/// </summary>
+		/// <returns>
+		/// The working session.
+		/// </returns>
+		/// <param name='owner'>
+		/// The owner.
+		/// </param>
+		/// <param name='identifier'>
+		/// The working session identifier.
+		/// </param>
 		IWorkingSession AcquireWorkingSession(IIdentity owner, string identifier);
 		
+		/// <summary>
+		/// Ends the working session.
+		/// </summary>
+		/// <param name='owner'>
+		/// The owner.
+		/// </param>
+		/// <param name='workingSession'>
+		/// The working session to end.
+		/// </param>
 		void EndWorkingSession(IIdentity owner, IWorkingSession workingSession);
 	}
 }

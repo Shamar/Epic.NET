@@ -50,7 +50,7 @@ namespace Epic
 		/// <summary>
 		/// Reset the application entry point (for testing purpose). 
 		/// </summary>
-		internal void Reset()
+		internal static void Reset()
 		{
 			_application = new Uninitialized();
 		}
