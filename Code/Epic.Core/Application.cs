@@ -25,19 +25,39 @@ using System;
 using System.Configuration;
 namespace Epic
 {
+	/// <summary>
+	///	Application entry point. It MUST be initialized once.
+	/// </summary>
 	public static class Application
 	{
-		private static ApplicationBase _application;
+		private static ApplicationBase _application = new Uninitialized();
 		
+		/// <summary>
+		/// Initialize the application entry point.
+		/// </summary>
+		/// <param name="application">
+		/// A <see cref="ApplicationBase"/> to handle request.
+		/// </param>
 		public static void Initialize(ApplicationBase application)
 		{
 			if(null == application)
 				throw new ArgumentNullException("application");
-			if(null != _application)
+			if(!(_application is Uninitialized))
 				throw new InvalidOperationException("Already initialized.");
 			_application = application;
 		}
 		
+		/// <summary>
+		/// Reset the application entry point (for testing purpose). 
+		/// </summary>
+		internal void Reset()
+		{
+			_application = new Uninitialized();
+		}
+		
+		/// <summary>
+		/// The application name.
+		/// </summary>
 		public static string Name
 		{
 			get 
@@ -46,6 +66,9 @@ namespace Epic
 			}
 		}
 
+		/// <summary>
+		/// Application's <see cref="IEnvironment"/>.
+		/// </summary>
 		public static IEnvironment Environment
 		{
 			get 
@@ -55,12 +78,47 @@ namespace Epic
 		}
 
 
+		/// <summary>
+		/// Enterprise that use the domain model.
+		/// </summary>
 		public static IEnterprise Enterprise
 		{
 			get 
 			{
 				return _application.Enterprise;
 			}
+		}
+		
+		/// <summary>
+		/// Uninitialized application: throws InvalidOperationException.
+		/// </summary>
+		class Uninitialized : ApplicationBase
+		{
+			public Uninitialized()
+				: base("Uninitialized")
+			{
+			}
+			
+			#region implemented abstract members of Epic.ApplicationBase
+			
+			public override IEnvironment Environment 
+			{
+				get 
+				{
+					throw new InvalidOperationException("Initialization required.");
+				}
+			}
+			
+			
+			public override IEnterprise Enterprise 
+			{
+				get 
+				{
+					throw new InvalidOperationException("Initialization required.");
+				}
+			}
+			
+			#endregion
 		}
 	}
 }

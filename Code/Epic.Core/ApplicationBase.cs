@@ -24,9 +24,22 @@
 using System;
 namespace Epic
 {
+	/// <summary>
+	/// Application base class, to be injected in <see cref="Application"/> during initialization.
+	/// </summary>
+	/// <remarks>
+	/// It MUST be implemented by a class tailored to the application and enterprise that will use the domain.
+	/// </remarks>
 	public abstract class ApplicationBase
 	{
 		private string _name;
+		
+		/// <summary>
+		/// Constructor 
+		/// </summary>
+		/// <param name="name">
+		/// The application name.
+		/// </param>
 		protected ApplicationBase (string name)
 		{
 			if(string.IsNullOrEmpty(name))
@@ -34,13 +47,22 @@ namespace Epic
 			_name = name;
 		}
 		
+		/// <summary>
+		/// Application name.
+		/// </summary>
 		public string Name 
 		{ 
 			get { return _name; }
 		}
 		
+		/// <summary>
+		/// Application's <see cref="IEnvironment"/>.
+		/// </summary>
 		public abstract IEnvironment Environment { get; }
 		
+		/// <summary>
+		/// Enterprise that use the domain model.
+		/// </summary>
 		public abstract IEnterprise Enterprise { get; }
 	}
 }

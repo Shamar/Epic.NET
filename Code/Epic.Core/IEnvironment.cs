@@ -24,9 +24,37 @@
 using System;
 namespace Epic
 {
+	/// <summary>
+	/// Environment of the running application. 
+	/// It will provide informations useful for the application, but not belonging to the domain.
+	/// Obviously, no domain class should depend on either the environment or the tools 
+	/// it provide: the domain model have to be coded, not configured.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The environment that host an application provide a set of configured tools, options, thread values and so on.
+	/// </para>
+	/// <para>
+	/// For example it could provide appsettings values, the arguments used when starting the application, 
+	/// the current thread culture, the logging services and so on.
+	/// </para>
+	/// <para>
+	/// Such abstraction is particularly useful when we need to test a software component in isolation.
+	/// </para>
+	/// </remarks>
 	public interface IEnvironment
 	{
-		TValue GetProperty<TValue>(string name);
+		/// <summary>
+		/// Provide a tool or information from the application environment.
+		/// </summary>
+		/// <param name="name">
+		/// An identifier for the needed object.
+		/// </param>
+		/// <returns>
+		/// The required object.
+		/// </returns>
+		/// <exception cref="KeyNotFoundException">The provided <paramref name="name"/> do not match any property of the environment.</exception>
+		TObject Get<TObject>(string name);
 	}
 }
 

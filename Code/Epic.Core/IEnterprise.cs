@@ -25,6 +25,14 @@ using System;
 using System.Security.Principal;
 namespace Epic
 {
+	/// <summary>
+	/// Model of the enterprise. It is the domain model entry point.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// The Epic target are application modelling enterprise processes.
+	/// </para>
+	/// </remarks>
 	public interface IEnterprise
 	{
 		string Name { get; }
