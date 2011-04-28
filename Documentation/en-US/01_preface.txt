@@ -1,0 +1,102 @@
+[preface]
+Nothing but business
+====================
+In the foreword of Evans' book, Martin Fowler stated:
+[quote, Martin Fowler, Domain Driven Design by Eric Evans (2003)]
+There are many things that make software development complex.  
+But the heart of this complexity is the essential intricacy of the problem 
+domain itself. If you're trying to add automation to complicated human 
+enterprise, than your software cannot dodge this complexity -- all it can do is 
+control it.
+
+These words grasp the simple rationale for Epic.
+
+When we face a complex enterprise business, we should rapidly realize that everything
+we know about software architectures, development techniques, large scale 
+integration and so, is just a detail.
+
+Our customer will pay us to solve his own problems. 
+
+He don't want to know about agility, software integration, CAP theorems, 
+cloud computing, data security or computational complexity: these are 
+technicalities that he would avoid at all. These are our problems!
+
+Enterprise customers pay us to get a competitive advantage by solving well 
+known problems of their own. They don't want new, unknown, problems to pay us 
+for!
+
+Nevertheless, even as "hands on" modelers, we often undervalue their "human"
+problems.
+Whenever we adapt the models of our customer's problem domain to our existing 
+frameworks, we are mixing two order of complexities: business rules and 
+technological constraints.
+
+"I don't fight my framework!" you would say. Evans explicitly wrote that we 
+should not. Actually, most of the times it is the wisest choice.
+
+But what if you had a framework that hasn't to be fought? What if you could
+easily adapt any infrastructure to clean models that capture the 
+business processes only?
+
+What if we could simply code nothing but business?
+
+A dependency inversion
+~~~~~~~~~~~~~~~~~~~~~~
+In 2004 the European Union issued the Markets in Financial Instruments 
+Directive (also known as MiFID). The main objectives of the directive 
+were to increase competition and consumer protection in investment services. 
+Suddenly many big banks all over the europe begun to adapt their advisory 
+softwares. 
+Many software companies (and consulting firms) clashed with a complex
+legislation to rule existing business processes, in an heterogeneous set of 
+tecnological environments.
+
+Four years later the European Union amended the directive, already adopted
+by many states, variously changing the rules.
+
+We soon realized that it was a strategic point to keep the domain fully 
+indipendent from the infrastructural choises that each bank would had take. 
+Moreover the problem was too complex to take tecnologicals compromises.
+We had to protect the model as the most important asset in our stack.
+We had to found our entire stack on the domain model itself, adapting 
+everything else.
+
+But unfortunately, Epic did not exist.
+
+What is Epic?
+~~~~~~~~~~~~~
+After a long climb towards trials, failures and insights, we realized a set of
+modelling patterns and practices that works very well together against complex 
+domains. 
+
+We take so much confidence in such patterns, that when we see problems in their
+adoption, we often start a new whirpool to get a deeper insight of the
+context. Such process often shows a misunderstanding in the domain language.
+
+At the core, Epic is a coherent set of modelling patterns, best practices 
+and lessons learned (with a lots of anti-patterns to avoid: did you know that
+lazy loading and event brokers are among our new singletons?).
+
+More than theories
+~~~~~~~~~~~~~~~~~~
+As you will see, some of the patterns we propose are really challenging from
+a technological point of view.
+
+If not taken together as a whole, they could seem impossible to implement.
+Actually, they *are* impossible to implement (correctly) if mixed with those we 
+propose as anti-patterns. We learned this the hard way.
+
+So what?
+
+Well, Epic is more than a set of coherent patterns: we designed a framework and 
+a set of tools to inject the infrastructure into the domain model itself, 
+without any need to adapt it.
+
+The structure of this book
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+TODO : explain the first part about patterns, the second about the framework
+
+Who shoud read this book
+~~~~~~~~~~~~~~~~~~~~~~~~
+TODO : who have to implement complex enterprise application targetting business processes.
+who read DDD by Evans.
