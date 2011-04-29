@@ -108,7 +108,7 @@ Epic will never help you to cut modeling hours. On the contrary, you should
 invest a lot on them! Whenever you have any doubt about the business, stop 
 coding, kidnap the domain expert and start a new exploration whirpool.
 
-Moreover, it have huge technical requirements: it's not a framework for the 
+Moreover, it has huge technical requirements: it's not a framework for the 
 masses.
 
 The structure of this book
