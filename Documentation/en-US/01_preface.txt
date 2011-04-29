@@ -49,16 +49,16 @@ Suddenly many big banks all over the europe begun to adapt their advisory
 softwares. 
 Many software companies (and consulting firms) clashed with a complex
 legislation to rule existing business processes, in an heterogeneous set of 
-tecnological environments.
+technological environments.
 
 Four years later the European Union amended the directive, already adopted
 by many states, variously changing the rules.
 
 We soon realized that it was a strategic point to keep the domain fully 
-indipendent from the infrastructural choises that each bank would had take. 
-Moreover the problem was too complex to take tecnologicals compromises.
+indipendent from the infrastructural choises that each bank would had taken. 
+Moreover the problem was too complex to take technological compromises.
 We had to protect the model as the most important asset in our stack.
-We had to found our entire stack on the domain model itself, adapting 
+We had to base our entire stack on the domain model itself, adapting 
 everything else.
 
 But unfortunately, Epic did not exist.
@@ -69,8 +69,8 @@ After a long climb towards trials, failures and insights, we realized a set of
 modelling patterns and practices that works very well together against complex 
 domains. 
 
-We take so much confidence in such patterns, that when we see problems in their
-adoption, we often start a new whirpool to get a deeper insight of the
+We took so much confidence in such patterns, that when we now see problems in 
+their adoption, we often start a new whirpool to get a deeper insight of the
 context. Such process often shows a misunderstanding in the domain language.
 
 At the core, Epic is a coherent set of modelling patterns, best practices 

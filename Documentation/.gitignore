@@ -1,0 +1,6 @@
+#ignore temporary files
+*.txt~
+
+#ignore asciidoc outputs
+*.html
+*.pdf
