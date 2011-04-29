@@ -78,7 +78,7 @@ and lessons learned (with a lots of anti-patterns to avoid: did you know that
 lazy loading and event brokers are among our new singletons?).
 
 More than theories
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 As you will see, some of the patterns we propose are really challenging from
 a technological point of view.
 
@@ -91,6 +91,25 @@ So what?
 Well, Epic is more than a set of coherent patterns: we designed a framework and 
 a set of tools to inject the infrastructure into the domain model itself, 
 without any need to adapt it.
+
+Epic will help you to
+
+- reduce the effort to code and maintain the model implementation
+- enforce the aderence to patterns (if you want to)
+- adapt the infrastructure you need to the model itself (persistence, caching 
+  and so on will be orthogonal to the modeling code)
+- build complex, beautiful and highly interactive user-interfaces
+- follow a very simple, predictable and traceable development process, that 
+  becomes really fast, thanks to its parallelization's capabilities
+
+All that glitters ain't gold!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Epic will never help you to cut modeling hours. On the contrary, you should 
+invest a lot on them! Whenever you have any doubt about the business, stop 
+coding, kidnap the domain expert and start a new exploration whirpool.
+
+Moreover, it have huge technical requirements: it's not a framework for the 
+masses.
 
 The structure of this book
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
