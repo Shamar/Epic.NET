@@ -99,8 +99,9 @@ Epic will help you to
 - adapt the infrastructure you need to the model itself (persistence, caching 
   and so on will be orthogonal to the modeling code)
 - build complex, beautiful and highly interactive user-interfaces
-- follow a very simple, predictable and traceable development process, that 
-  becomes really fast, thanks to its parallelization's capabilities
+- follow a simple, predictable and traceable development process, that 
+  could become very fast, thanks to its parallelization's capabilities
+- minimize the effects of infrastructural changes on the application reliability
 
 All that glitters ain't gold!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -112,15 +113,19 @@ Moreover, it require high skills in object oriented design. Such skills are
 rather expensive to acquire and thus building a productive team using Epic will
 require budget. As a conseguence Epic will minimize the development efforts 
 and maximize the software quality (cutting maintenance's costs), but will not
-reduce budgets. Keep this in mind: Epic could overwhelm simple projects!
+reduce the budgets required. 
+
+Keep this in mind: Epic could overwhelm simple projects!
+
 Avoid Epic (and domain driven design) when you do not have complex business 
-rule and do not require high reliability while sticking to such rules. 
+rules and do not require high reliability while sticking to such rules. 
 
-The structure of this book
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-TODO : explain the first part about patterns, the second about the framework
+The structure of this manual
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The first part of the manual introduce patterns and practices to ease
+design, development and evolution of the domain model itself. 
+It is mostly written for "hands on" modelers.
 
-Who shoud read this book
-~~~~~~~~~~~~~~~~~~~~~~~~
-TODO : who have to implement complex enterprise application targetting business processes.
-who read DDD by Evans.
+The second part document the various components of the Epic framework.
+It's designed for the full development team (from DBA to GUI designers). 
+
