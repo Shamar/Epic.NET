@@ -66,14 +66,14 @@ But unfortunately, Epic did not exist.
 What is Epic?
 ~~~~~~~~~~~~~
 After a long climb towards trials, failures and insights, we realized a set of
-modelling patterns and practices that works very well together against complex 
+modeling patterns and practices that works very well together against complex 
 domains. 
 
 We took so much confidence in such patterns, that when we now see problems in 
 their adoption, we often start a new whirpool to get a deeper insight of the
 context. Such process often shows a misunderstanding in the domain language.
 
-At the core, Epic is a coherent set of modelling patterns, best practices 
+At the core, Epic is a coherent set of modeling patterns, best practices 
 and lessons learned (with a lots of anti-patterns to avoid: did you know that
 lazy loading and event brokers are among our new singletons?).
 
@@ -108,8 +108,13 @@ Epic will never help you to cut modeling hours. On the contrary, you should
 invest a lot on them! Whenever you have any doubt about the business, stop 
 coding, kidnap the domain expert and start a new exploration whirpool.
 
-Moreover, it has huge technical requirements: it's not a framework for the 
-masses.
+Moreover, it require high skills in object oriented design. Such skills are 
+rather expensive to acquire and thus building a productive team using Epic will
+require budget. As a conseguence Epic will minimize the development efforts 
+and maximize the software quality (cutting maintenance's costs), but will not
+reduce budgets. Keep this in mind: Epic could overwhelm simple projects!
+Avoid Epic (and domain driven design) when you do not have complex business 
+rule and do not require high reliability while sticking to such rules. 
 
 The structure of this book
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
