@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Epic.Core")]
 [assembly: AssemblyDescription("Epic framework's core")]
 [assembly: AssemblyCopyright("Copyright (c) 2010-2011 Giacomo Tesio")]
+[assembly: InternalsVisibleTo("Epic.Core.UnitTests")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
 // The form "{Major}.{Minor}.*" will automatically update the build and revision,

@@ -38,6 +38,8 @@ namespace Epic
 		/// <param name="application">
 		/// A <see cref="ApplicationBase"/> to handle request.
 		/// </param>
+		/// <exception cref="ArgumentNullException">When <paramref name="application"/> is <value>null</value>.</exception>
+		/// <exception cref="InvalidOperationException">When called more then once.</exception>
 		public static void Initialize(ApplicationBase application)
 		{
 			if(null == application)
