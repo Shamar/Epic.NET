@@ -1,5 +1,5 @@
 //  
-//  ApplicationBaseQA.cs
+//  EnvironmentSerializationHelper.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,26 +22,21 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using NUnit.Framework;
-using Epic.Fakes;
-namespace Epic
+using System.Runtime.Serialization;
+namespace Epic.Environment
 {
-	[TestFixture]
-	public class ApplicationBaseQA
+	/// <summary>
+	/// When deserialiing this object, return a reference to the <see cref="Application.Environment"/>.
+	/// </summary>
+	[Serializable]
+	internal sealed class EnvironmentSerializationHelper : IObjectReference
 	{
-		[Test]
-		public void Ctor_withNullName_throwsArgumentNullException()
-		{
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(null); });
-		}
-
-		[Test]
-		public void Ctor_withEmptyName_throwsArgumentNullException()
-		{
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(string.Empty); });
-		}
+	    public Object GetRealObject(StreamingContext context) 
+	    {
+	        // When deserialiing this object, return a reference to 
+	        // the Application.Environment.
+	        return Application.Environment;
+	    }
 	}
 }
 

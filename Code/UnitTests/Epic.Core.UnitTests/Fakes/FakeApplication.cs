@@ -1,5 +1,5 @@
 //  
-//  ApplicationBaseQA.cs
+//  FakeApplication.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,26 +22,28 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using NUnit.Framework;
-using Epic.Fakes;
-namespace Epic
+namespace Epic.Fakes
 {
-	[TestFixture]
-	public class ApplicationBaseQA
+	public class FakeApplication : ApplicationBase
 	{
-		[Test]
-		public void Ctor_withNullName_throwsArgumentNullException()
+		public FakeApplication(string name)
+			: base(name)
 		{
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(null); });
+		}
+		
+		public FakeApplication(IEnvironment environment, IEnterprise enterprise)
+			: base("Fake Application")
+		{
+			_environment = environment;
+			_enterprise = enterprise;
 		}
 
-		[Test]
-		public void Ctor_withEmptyName_throwsArgumentNullException()
-		{
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(string.Empty); });
-		}
+		
+		private readonly IEnvironment _environment;
+		public override IEnvironment Environment { get { return _environment; } }
+	
+		private readonly IEnterprise _enterprise;
+		public override IEnterprise Enterprise { get { return _enterprise; } }
 	}
 }
 

@@ -26,10 +26,56 @@ namespace Epic
 {
 	public static class TestUtilities
 	{
+		/// <summary>
+		/// Reset the application (to be used in TestFixtures' setups.
+		/// </summary>
 		public static void ResetApplication()
 		{
 			Application.Reset();
 		}
+		
+		/// <summary>
+		/// Serialize an object.
+		/// </summary>
+		/// <typeparamref name="TObject">
+		/// Type of the object to serialize.
+		/// </typeparamref>
+		/// <param name="target">
+		/// A <see cref="TObject"/> to serialize
+		/// </param>
+		/// <returns>
+		/// A <see cref="System.IO.Stream"/> containing a serialization of <paramref name="target"/>.
+		/// </returns>
+        public static System.IO.Stream Serialize<TObject>(TObject target)
+        {
+            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter serializer =
+            new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            System.IO.MemoryStream memStream = new System.IO.MemoryStream();
+            serializer.Serialize(memStream, target);
+            return memStream;
+        }
+		
+		/// <summary>
+		/// Derialize a <typeparamref name="TObject"> instance from <paramref name="memStream"/>.
+		/// </summary>
+		/// <typeparamref name="TObject">
+		/// Type of the object to deserialize.
+		/// </typeparamref>
+		/// <param name="memStream">
+		/// A <see cref="System.IO.Stream"/> containing a serialization of <paramref name="target"/>.
+		/// </param>
+		/// <returns>
+		/// A <see cref="TObject"/> instance.
+		/// </returns>
+        public static TObject Deserialize<TObject>(System.IO.Stream memStream)
+        {
+            memStream.Position = 0;
+            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter deserializer =
+            new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            object newobj = deserializer.Deserialize(memStream);
+            memStream.Close();
+            return (TObject)newobj;
+        }
 	}
 }
 

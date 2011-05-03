@@ -1,5 +1,5 @@
 //  
-//  ApplicationBaseQA.cs
+//  EnvironmentBase.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,26 +22,33 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using NUnit.Framework;
-using Epic.Fakes;
-namespace Epic
+using System.Runtime.Serialization;
+using System.Security.Permissions;
+namespace Epic.Environment
 {
-	[TestFixture]
-	public class ApplicationBaseQA
+	/// <summary>
+	/// Base class for applications environments. It handle serialization.
+	/// </summary>
+	[Serializable]
+	public abstract class EnvironmentBase : IEnvironment, ISerializable
 	{
-		[Test]
-		public void Ctor_withNullName_throwsArgumentNullException()
-		{
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(null); });
-		}
+		#region IEnvironment implementation
+		
+		public abstract TObject Get<TObject> (string name);
 
-		[Test]
-		public void Ctor_withEmptyName_throwsArgumentNullException()
+		#endregion
+		
+		#region ISerializable implementation
+		
+		[SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags=SecurityPermissionFlag.SerializationFormatter)]
+		void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
 		{
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(string.Empty); });
+			info.SetType(typeof(EnvironmentSerializationHelper));
 		}
+		
+		#endregion
+		
+		
 	}
 }
 

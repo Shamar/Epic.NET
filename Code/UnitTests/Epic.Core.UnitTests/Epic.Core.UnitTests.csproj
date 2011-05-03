@@ -46,6 +46,9 @@
     <Compile Include="TestUtilities.cs" />
     <Compile Include="ApplicationBaseQA.cs" />
     <Compile Include="Events\ChangeEventArgsQA.cs" />
+    <Compile Include="Environment\EnvironmentBaseQA.cs" />
+    <Compile Include="Fakes\FakeApplication.cs" />
+    <Compile Include="Fakes\FakeEnvironment.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">
@@ -55,5 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Events\" />
+    <Folder Include="Environment\" />
+    <Folder Include="Fakes\" />
   </ItemGroup>
 </Project>

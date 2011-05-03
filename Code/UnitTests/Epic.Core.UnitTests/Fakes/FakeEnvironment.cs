@@ -1,5 +1,5 @@
 //  
-//  ApplicationBaseQA.cs
+//  FakeEnvironment.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,26 +22,24 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using NUnit.Framework;
-using Epic.Fakes;
-namespace Epic
+using Epic.Environment;
+namespace Epic.Fakes
 {
-	[TestFixture]
-	public class ApplicationBaseQA
+	[Serializable]
+	public sealed class FakeEnvironment : EnvironmentBase
 	{
-		[Test]
-		public void Ctor_withNullName_throwsArgumentNullException()
+		public FakeEnvironment ()
 		{
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(null); });
 		}
-
-		[Test]
-		public void Ctor_withEmptyName_throwsArgumentNullException()
+		
+		#region implemented abstract members of Epic.Environment.EnvironmentBase
+		
+		public override TObject Get<TObject> (string name)
 		{
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(string.Empty); });
+			throw new System.NotImplementedException();
 		}
+		
+		#endregion
 	}
 }
 
