@@ -25,7 +25,7 @@ using System;
 namespace Epic
 {
 	/// <summary>
-	/// Environment of the running application. 
+	/// Environment of the running application.
 	/// It will provide informations useful for the application, but not belonging to the domain.
 	/// Obviously, no domain class should depend on either the environment or the tools 
 	/// it provide: the domain model have to be coded, not configured.
@@ -33,6 +33,7 @@ namespace Epic
 	/// <remarks>
 	/// <para>
 	/// The environment that host an application provide a set of configured tools, options, thread values and so on.
+	/// This mean that it must behave the same among all instances of any specific application deployed.
 	/// </para>
 	/// <para>
 	/// For example it could provide appsettings values, the arguments used when starting the application, 
