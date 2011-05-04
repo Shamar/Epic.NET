@@ -27,37 +27,24 @@ namespace Epic.Environment
 	/// <summary>
 	/// Base class of a single link in an <see cref="EnvironmentsChain"/>.
 	/// </summary>
-	public abstract class EnvironmentChainLinkBase : IEnvironment
+	public abstract class EnvironmentChainLinkBase
 	{
 		/// <summary>
-		/// Indicates whether the environment knows about a specific tool or information.
-		/// When this method returns <value>false</value>, the related call to
-		/// <see cref="EnvironmentChainLinkBase.Get{TObject}(string)"/> will throw <see cref="KeyNotFoundException"/>.
-		/// </summary>
-		/// <typeparam name="TObject">
-		/// Type of the tool or information required.
-		/// </typeparam>
-		/// <param name="name">
-		/// An identifier for the needed object.
-		/// </param>
-		/// <returns>
-		/// <value>true</value> if the environment knows how to get the required <typeparamref name="TObject"/>.
-		/// </returns>
-		public abstract bool Knows<TObject> (string name);
-		
-		#region IEnvironment implementation
-		/// <summary>
-		/// Provide a tool or information from the environment.
+		/// Try to gets the information associated with the specified name.
 		/// </summary>
 		/// <param name="name">
 		/// An identifier for the needed object.
 		/// </param>
+		/// <param name="information">
+		/// When this method returns, contains the information associated with the
+	    /// specified key, if the key is found; otherwise, the default value for the
+	    /// type of the value parameter. This parameter is passed uninitialized.
+		/// </param>
 		/// <returns>
-		/// The required object.
+		/// <value>true</value> if the chain link knows how to provide the required 
+		/// <paramref name="information"/>, <value>false</value> otherwise.
 		/// </returns>
-		/// <exception cref="KeyNotFoundException">The provided <paramref name="name"/> do not match any property of the environment.</exception>
-		public abstract TObject Get<TObject> (string name);
-		#endregion
+		public abstract bool TryGet<TObject> (string name, out TObject information);
 	}
 }
 

@@ -32,7 +32,7 @@ namespace Epic.Fakes
 		}
 		
 		public FakeApplication(IEnvironment environment, IEnterprise enterprise)
-			: base("Fake Application")
+			: this("Fake Application")
 		{
 			_environment = environment;
 			_enterprise = enterprise;

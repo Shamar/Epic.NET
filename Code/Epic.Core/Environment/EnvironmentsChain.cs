@@ -73,8 +73,9 @@ namespace Epic.Environment
 			for(int i = 0; i < lenght; ++i)
 			{
 				EnvironmentChainLinkBase environment = _environments[i];
-				if(environment.Knows<TObject>(name))
-					return environment.Get<TObject>(name);
+				TObject result;
+				if(environment.TryGet<TObject>(name, out result))
+					return result;
 			}
 			string message = string.Format("Can not find any {0} named {1} in the environment.", typeof(TObject).FullName, name);
 			throw new KeyNotFoundException(message);

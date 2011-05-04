@@ -34,12 +34,23 @@ namespace Epic.Environment
 		{
 			TestUtilities.ResetApplication();
 		}
+		
+		/// <summary>
+		/// Initialize a new environment to test its serialization. To be overridden by derived fixtures.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="IEnvironment"/>
+		/// </returns>
+		protected virtual IEnvironment CreateNewEnvironmentToTest()
+		{
+			return new Fakes.FakeEnvironment();
+		}
 
 		[Test]
 		public void Serialization_works()
 		{
 			// arrange:
-			IEnvironment environment = new Fakes.FakeEnvironment();
+			IEnvironment environment = CreateNewEnvironmentToTest();
 			ApplicationBase app = new Fakes.FakeApplication(environment, null);
 			Application.Initialize(app);
 			
@@ -54,7 +65,7 @@ namespace Epic.Environment
 		public void Deserialization_returnApplicationEnvironmentInstance()
 		{
 			// arrange:
-			IEnvironment environment = new Fakes.FakeEnvironment();
+			IEnvironment environment = CreateNewEnvironmentToTest();
 			ApplicationBase app = new Fakes.FakeApplication(environment, null);
 			Application.Initialize(app);
 			Stream stream = TestUtilities.Serialize<IEnvironment>(environment);
