@@ -41,7 +41,7 @@ namespace Epic.Environment
 		/// <returns>
 		/// A <see cref="IEnvironment"/>
 		/// </returns>
-		protected virtual IEnvironment CreateNewEnvironmentToTest()
+		protected virtual EnvironmentBase CreateNewEnvironmentToTest()
 		{
 			return new Fakes.FakeEnvironment();
 		}
@@ -50,7 +50,7 @@ namespace Epic.Environment
 		public void Serialization_works()
 		{
 			// arrange:
-			IEnvironment environment = CreateNewEnvironmentToTest();
+			EnvironmentBase environment = CreateNewEnvironmentToTest();
 			ApplicationBase app = new Fakes.FakeApplication(environment, null);
 			Application.Initialize(app);
 			
@@ -65,7 +65,7 @@ namespace Epic.Environment
 		public void Deserialization_returnApplicationEnvironmentInstance()
 		{
 			// arrange:
-			IEnvironment environment = CreateNewEnvironmentToTest();
+			EnvironmentBase environment = CreateNewEnvironmentToTest();
 			ApplicationBase app = new Fakes.FakeApplication(environment, null);
 			Application.Initialize(app);
 			Stream stream = TestUtilities.Serialize<IEnvironment>(environment);

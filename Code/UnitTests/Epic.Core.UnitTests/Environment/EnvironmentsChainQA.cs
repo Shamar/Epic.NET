@@ -30,7 +30,7 @@ namespace Epic.Environment
 	[TestFixture]
 	public class EnvironmentsChainQA : EnvironmentBaseQA
 	{
-		protected override IEnvironment CreateNewEnvironmentToTest ()
+		protected override EnvironmentBase CreateNewEnvironmentToTest ()
 		{
 			EnvironmentChainLinkBase firstMockLink;
 			EnvironmentChainLinkBase secondMockLink;

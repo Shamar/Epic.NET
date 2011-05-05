@@ -24,6 +24,7 @@
 using NUnit.Framework;
 using System;
 using Rhino.Mocks;
+using Epic.Environment;
 namespace Epic
 {
 	[TestFixture]
@@ -53,7 +54,7 @@ namespace Epic
 		{
 			// arrange:
 			string appName = "SampleApp";
-			IEnvironment environment = MockRepository.GenerateStrictMock<IEnvironment>();
+			EnvironmentBase environment = MockRepository.GenerateStrictMock<EnvironmentBase>();
 			IEnterprise enterprise = MockRepository.GenerateStrictMock<IEnterprise>();
 			ApplicationBase appSingleton = MockRepository.GeneratePartialMock<ApplicationBase>(appName);
 			appSingleton.Expect(a => a.Environment).Return(environment).Repeat.Once();
@@ -80,7 +81,7 @@ namespace Epic
 		{
 			// arrange:
 			string appName = "SampleApp";
-			IEnvironment environment = MockRepository.GenerateStrictMock<IEnvironment>();
+			EnvironmentBase environment = MockRepository.GeneratePartialMock<EnvironmentBase>();
 			IEnterprise enterprise = MockRepository.GenerateStrictMock<IEnterprise>();
 			ApplicationBase appSingleton = MockRepository.GeneratePartialMock<ApplicationBase>(appName);
 			appSingleton.Expect(a => a.Environment).Return(environment).Repeat.Once();

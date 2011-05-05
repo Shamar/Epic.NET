@@ -41,7 +41,7 @@ namespace Epic.Fakes
 
 		
 		private readonly EnvironmentBase _environment;
-		public override EnvironmentBase RetrieveEnvironmentInstance() { return _environment; }
+		protected override EnvironmentBase RetrieveEnvironmentInstance() { return _environment; }
 	
 		private readonly IEnterprise _enterprise;
 		public override IEnterprise Enterprise { get { return _enterprise; } }
