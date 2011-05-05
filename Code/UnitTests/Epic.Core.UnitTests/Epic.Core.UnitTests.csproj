@@ -50,6 +50,7 @@
     <Compile Include="Fakes\FakeApplication.cs" />
     <Compile Include="Fakes\FakeEnvironment.cs" />
     <Compile Include="Environment\EnvironmentsChainQA.cs" />
+    <Compile Include="InstanceNameQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">

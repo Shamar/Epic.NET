@@ -23,7 +23,15 @@
 //  
 using System;
 namespace Epic
-{/*
+{
+	/// <summary>
+	/// Name to identify any instance of a given type (when the type has no identity
+	/// by itself, like an int, a logger or a db connection).
+	/// It could be used as a key on a <see cref="System.Collections.Hashtable"/>.
+	/// </summary>
+	/// <typeparam name="TObject">
+	/// Type of the instance to identify.
+	/// </typeparam>
 	[Serializable]
 	public sealed class InstanceName<TObject> : IEquatable<InstanceName<TObject>>
 	{
@@ -31,6 +39,12 @@ namespace Epic
 		[NonSerialized]
 		private string _string;
 		
+		/// <summary>
+		/// Constuctor.
+		/// </summary>
+		/// <param name="name">
+		/// The name to use for identify the <typeparamref name="TObject"/>.
+		/// </param>
 		public InstanceName (string name)
 		{
 			if(string.IsNullOrEmpty(name))
@@ -38,14 +52,30 @@ namespace Epic
 			_name = name;
 		}
 		
+		/// <summary>
+		/// Provide a string containing the type and the name separated by a colon.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="System.String"/> containing the type and the name separated by a colon.
+		/// </returns>
 		public override string ToString ()
 		{
 			if(null == _string)
-				_string = string.Format ("{0} named \"{1}\".", typeof(TObject).FullName, _name);
+				_string = string.Format ("{0}:{1}", typeof(TObject).FullName, _name);
 			return _string;
 		}
 		
 		#region IEquatable[InstanceName[TObject]] implementation
+		/// <summary>
+		/// Indicates whether the <paramref name="other"/> is semantically equals to this.
+		/// </summary>
+		/// <param name="other">
+		/// A <see cref="InstanceName{TObject}"/>.
+		/// </param>
+		/// <returns>
+		/// <value>true</value> when <paramref name="other"/> is semantically equals 
+		/// to this, <value>false</value> otherwise.
+		/// </returns>
 		public bool Equals (InstanceName<TObject> other)
 		{
 			if(object.ReferenceEquals(null, other))
@@ -56,15 +86,32 @@ namespace Epic
 		}
 		#endregion
 		
+		/// <summary>
+		/// Indicates whether <paramref name="obj"/> is a <see cref="InstanceName{TObject}"/>
+		/// semantically equal to this.
+		/// </summary>
+		/// <param name="obj">
+		/// A <see cref="System.Object"/>.
+		/// </param>
+		/// <returns>
+		/// <value>true</value> when <paramref name="obj"/> is <see cref="InstanceName{TObject}"/> 
+		/// semantically equal to this, <value>false</value> otherwise.
+		/// </returns>
 		public override bool Equals (object obj)
 		{
 			return Equals (obj as InstanceName<TObject>);
 		}
 		
+		/// <summary>
+		/// A 32-bit signed integer hash code.
+		/// </summary>
+		/// <returns>
+		/// A hash code.
+		/// </returns>
 		public override int GetHashCode ()
 		{
 			return _name.GetHashCode();
 		}
-	}*/
+	}
 }
 
