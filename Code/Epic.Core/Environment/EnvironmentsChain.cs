@@ -67,7 +67,7 @@ namespace Epic.Environment
 		/// <returns>
 		/// The <typeparamref name="TObject"> returned from the first chain link that knows it.
 		/// </returns>
-		public override TObject Get<TObject> (string name)
+		public override TObject Get<TObject> (InstanceName<TObject> name)
 		{
 			int lenght = _environments.Length;
 			for(int i = 0; i < lenght; ++i)

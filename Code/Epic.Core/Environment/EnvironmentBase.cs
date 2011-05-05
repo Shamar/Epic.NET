@@ -34,7 +34,7 @@ namespace Epic.Environment
 	{
 		#region IEnvironment implementation
 		
-		public abstract TObject Get<TObject> (string name);
+		public abstract TObject Get<TObject> (InstanceName<TObject> name);
 
 		#endregion
 		

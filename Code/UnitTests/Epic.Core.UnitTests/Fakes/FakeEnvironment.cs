@@ -30,13 +30,15 @@ namespace Epic.Fakes
 	{
 		public FakeEnvironment ()
 		{
+			int i = Get<int>(new InstanceName<int>("CoverTheMethod"));
+			++i;
 		}
 		
 		#region implemented abstract members of Epic.Environment.EnvironmentBase
 		
-		public override TObject Get<TObject> (string name)
+		public override TObject Get<TObject> (InstanceName<TObject> name)
 		{
-			throw new System.NotImplementedException();
+			return default(TObject);
 		}
 		
 		#endregion

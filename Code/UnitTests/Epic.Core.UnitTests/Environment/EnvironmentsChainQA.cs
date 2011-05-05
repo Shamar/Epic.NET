@@ -54,10 +54,11 @@ namespace Epic.Environment
 		
 		[TestCase("test", (int)1)]
 		[TestCase("test", "dummyString")]
-		public void Get_unknownInformation_throwsKeyNotFoundException<TObject>(string name, TObject dummyObject)
+		public void Get_unknownInformation_throwsKeyNotFoundException<TObject>(string iName, TObject dummyObject)
 		{
 			// arrange:
 			List<object> mocks = new List<object>();
+			InstanceName<TObject> name = new InstanceName<TObject>(iName);
 			EnvironmentChainLinkBase firstMockLink;
 			EnvironmentChainLinkBase secondMockLink;
 			EnvironmentsChain underTest = CreateNewEnvironmentChainToTest(out firstMockLink, out secondMockLink);
@@ -75,10 +76,11 @@ namespace Epic.Environment
 		
 		[TestCase("test", (int)1)]
 		[TestCase("test", "dummyString")]
-		public void Get_anInformationKnownToFirstLink_dontCallOtherLinksAndReturnTheValue<TObject>(string name, TObject valueToReturn)
+		public void Get_anInformationKnownToFirstLink_dontCallOtherLinksAndReturnTheValue<TObject>(string iName, TObject valueToReturn)
 		{
 			// arrange:
 			List<object> mocks = new List<object>();
+			InstanceName<TObject> name = new InstanceName<TObject>(iName);
 			EnvironmentChainLinkBase firstMockLink;
 			EnvironmentChainLinkBase secondMockLink;
 			EnvironmentsChain underTest = CreateNewEnvironmentChainToTest(out firstMockLink, out secondMockLink);
@@ -99,10 +101,11 @@ namespace Epic.Environment
 		
 		[TestCase("test", (int)1)]
 		[TestCase("test", "dummyString")]
-		public void Get_anInformationKnownToSecondLink_returnTheValue<TObject>(string name, TObject valueToReturn)
+		public void Get_anInformationKnownToSecondLink_returnTheValue<TObject>(string iName, TObject valueToReturn)
 		{
 			// arrange:
 			List<object> mocks = new List<object>();
+			InstanceName<TObject> name = new InstanceName<TObject>(iName);
 			EnvironmentChainLinkBase firstMockLink;
 			EnvironmentChainLinkBase secondMockLink;
 			EnvironmentsChain underTest = CreateNewEnvironmentChainToTest(out firstMockLink, out secondMockLink);

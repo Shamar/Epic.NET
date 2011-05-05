@@ -44,7 +44,7 @@ namespace Epic.Environment
 		/// <value>true</value> if the chain link knows how to provide the required 
 		/// <paramref name="information"/>, <value>false</value> otherwise.
 		/// </returns>
-		public abstract bool TryGet<TObject> (string name, out TObject information);
+		public abstract bool TryGet<TObject> (InstanceName<TObject> name, out TObject information);
 	}
 }
 

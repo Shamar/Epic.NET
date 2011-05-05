@@ -55,7 +55,7 @@ namespace Epic
 		/// The required object.
 		/// </returns>
 		/// <exception cref="KeyNotFoundException">The provided <paramref name="name"/> do not match any property of the environment.</exception>
-		TObject Get<TObject>(string name);
+		TObject Get<TObject>(InstanceName<TObject> name);
 	}
 }
 
