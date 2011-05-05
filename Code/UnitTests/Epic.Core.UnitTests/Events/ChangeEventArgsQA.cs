@@ -24,6 +24,7 @@
 using System;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.IO;
 namespace Epic.Events
 {
 	[TestFixture]
@@ -43,27 +44,67 @@ namespace Epic.Events
 			Assert.IsTrue(EqualityComparer<T>.Default.Equals(newValue, args.NewValue));
 		}
 		
-		[TestCase("NewValue")]
-		public void Ctor_withNullOldValue_exposeTheValues<T>(T newValue) where T : class
+		public void Ctor_withNullOldValue_exposeTheValues()
 		{
+			// arrange:
+			string newValue = "NewValue";
+			
 			// act:
-			ChangeEventArgs<T> args = new ChangeEventArgs<T>(null, newValue);
+			ChangeEventArgs<string> args = new ChangeEventArgs<string>(null, newValue);
 			
 			// assert:
 			Assert.IsNull(args.OldValue);
-			Assert.IsTrue(EqualityComparer<T>.Default.Equals(newValue, args.NewValue));
+			Assert.AreEqual(newValue, args.NewValue);
 		}
 		
-		[TestCase("OldValue")]
-		public void Ctor_withNullNewValue_exposeTheValues<T>(T oldValue) where T : class
+		public void Ctor_withNullNewValue_exposeTheValues()
 		{
+			// arrange:
+			string oldValue = "OldValue";
+			
 			// act:
-			ChangeEventArgs<T> args = new ChangeEventArgs<T>(oldValue, null);
+			ChangeEventArgs<string> args = new ChangeEventArgs<string>(oldValue, null);
 			
 			// assert:
 			Assert.IsNull(args.NewValue);
-			Assert.IsTrue(EqualityComparer<T>.Default.Equals(oldValue, args.OldValue));
+			Assert.AreEqual(oldValue, args.OldValue);
 		}
+		
+		[TestCase("OldValue", "NewValue")]
+		[TestCase((int) 10, (int)3)]
+		[TestCase((double) -10.1, (double) 10.2)]
+		[TestCase(default(int), (int)10)]
+		public void Serialize_works<T>(T oldValue, T newValue)
+		{
+			// arrange:
+			ChangeEventArgs<T> args = new ChangeEventArgs<T>(oldValue, newValue);
+			
+			// act:
+			Stream stream = TestUtilities.Serialize(args);
+			
+			// assert:
+			Assert.IsNotNull(stream);
+		}
+
+		[TestCase("OldValue", "NewValue")]
+		[TestCase((int) 10, (int)3)]
+		[TestCase((double) -10.1, (double) 10.2)]
+		[TestCase(default(int), (int)10)]
+		public void Deserialize_works<T>(T oldValue, T newValue)
+		{
+			// arrange:
+			ChangeEventArgs<T> args = new ChangeEventArgs<T>(oldValue, newValue);
+			Stream stream = TestUtilities.Serialize(args);
+			
+			// act:
+			ChangeEventArgs<T> deserialized = TestUtilities.Deserialize<ChangeEventArgs<T>>(stream);
+			
+			// assert:
+			Assert.IsNotNull(deserialized);
+			Assert.AreEqual(oldValue, deserialized.OldValue);
+			Assert.AreEqual(newValue, deserialized.NewValue);
+		}
+
 	}
 }
 

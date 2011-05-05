@@ -23,6 +23,9 @@
 //  
 using System;
 using NUnit.Framework;
+using System.IO;
+using Epic;
+
 namespace Epic
 {
 	[TestFixture]
@@ -156,6 +159,39 @@ namespace Epic
 			// assert:
 			Assert.IsTrue(result.Contains(name));
 			Assert.IsTrue(result.Contains(typeof(T).FullName));
+		}
+		
+		[TestCase((int)1)]
+		[TestCase((double)1.0)]
+		[TestCase((string)"dummyValue")]
+		public void Serialization_works<T>(T dummyValue)
+		{
+			// arrange:
+			InstanceName<T> instanceName =  new InstanceName<T>("test");
+			
+			// act:
+			Stream stream = TestUtilities.Serialize(instanceName);
+			
+			// assert:
+			Assert.IsNotNull(stream);
+		}
+		
+		[TestCase((int)1)]
+		[TestCase((double)1.0)]
+		[TestCase((string)"dummyValue")]
+		public void Deserialization_works<T>(T dummyValue)
+		{
+			// arrange:
+			InstanceName<T> instanceName =  new InstanceName<T>("test");
+			Stream stream = TestUtilities.Serialize(instanceName);
+			
+			// act:
+			InstanceName<T> deserialized = TestUtilities.Deserialize<InstanceName<T>>(stream);
+			
+			// assert:
+			Assert.IsNotNull(deserialized);
+			Assert.IsTrue(instanceName.Equals(deserialized));
+			Assert.IsTrue(deserialized.Equals(instanceName));
 		}
 	}
 }
