@@ -44,7 +44,7 @@ namespace Epic
 		public void Ctor_withName_works<T>(string name, T dummyValue)
 		{
 			// act:
-			InstanceName<T> instanceName =  new InstanceName<T>(name);
+			new InstanceName<T>(name);
 		}
 		
 		[TestCase("testName", (int)1)]

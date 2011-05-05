@@ -1,6 +1,6 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Default" />
   <Config name="Default" binpathtype="Auto">
-    <assembly path="build\tests\Debug\Epic.Core.UnitTests.dll" />
+    <assembly path="build/tests/Debug/Epic.Core.UnitTests.dll" />
   </Config>
 </NUnitProject>
