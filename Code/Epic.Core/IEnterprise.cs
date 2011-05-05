@@ -53,7 +53,7 @@ namespace Epic
 		/// <param name='workingSession'>
 		/// The new working session.
 		/// </param>
-		void StartWorkingSession(IIdentity owner, out IWorkingSession workingSession);
+		void StartWorkingSession(IPrincipal owner, out IWorkingSession workingSession);
 		
 		/// <summary>
 		/// Acquires an existing working session. 
@@ -68,7 +68,7 @@ namespace Epic
 		/// <param name='identifier'>
 		/// The working session identifier.
 		/// </param>
-		IWorkingSession AcquireWorkingSession(IIdentity owner, string identifier);
+		IWorkingSession AcquireWorkingSession(IPrincipal owner, string identifier);
 		
 		/// <summary>
 		/// Ends the working session.
@@ -79,7 +79,7 @@ namespace Epic
 		/// <param name='workingSession'>
 		/// The working session to end.
 		/// </param>
-		void EndWorkingSession(IIdentity owner, IWorkingSession workingSession);
+		void EndWorkingSession(IPrincipal owner, IWorkingSession workingSession);
 	}
 }
 
