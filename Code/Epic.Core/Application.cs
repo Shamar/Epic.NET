@@ -94,7 +94,7 @@ namespace Epic
 		/// <summary>
 		/// Uninitialized application: throws InvalidOperationException.
 		/// </summary>
-		class Uninitialized : ApplicationBase
+		sealed class Uninitialized : ApplicationBase
 		{
 			public Uninitialized()
 				: base("Uninitialized")
@@ -103,14 +103,10 @@ namespace Epic
 			
 			#region implemented abstract members of Epic.ApplicationBase
 			
-			public override IEnvironment Environment 
+			protected override Epic.Environment.EnvironmentBase RetrieveEnvironmentInstance()
 			{
-				get 
-				{
-					throw new InvalidOperationException("Initialization required.");
-				}
+				throw new InvalidOperationException("Initialization required.");
 			}
-			
 			
 			public override IEnterprise Enterprise 
 			{

@@ -22,6 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Epic.Environment;
 namespace Epic.Fakes
 {
 	public class FakeApplication : ApplicationBase
@@ -31,7 +32,7 @@ namespace Epic.Fakes
 		{
 		}
 		
-		public FakeApplication(IEnvironment environment, IEnterprise enterprise)
+		public FakeApplication(EnvironmentBase environment, IEnterprise enterprise)
 			: this("Fake Application")
 		{
 			_environment = environment;
@@ -39,8 +40,8 @@ namespace Epic.Fakes
 		}
 
 		
-		private readonly IEnvironment _environment;
-		public override IEnvironment Environment { get { return _environment; } }
+		private readonly EnvironmentBase _environment;
+		public override EnvironmentBase RetrieveEnvironmentInstance() { return _environment; }
 	
 		private readonly IEnterprise _enterprise;
 		public override IEnterprise Enterprise { get { return _enterprise; } }

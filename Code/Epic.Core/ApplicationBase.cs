@@ -58,7 +58,16 @@ namespace Epic
 		/// <summary>
 		/// Application's <see cref="IEnvironment"/>.
 		/// </summary>
-		public abstract IEnvironment Environment { get; }
+		public IEnvironment Environment { get { return RetrieveEnvironmentInstance(); } }
+		
+		/// <summary>
+		/// Retrieves the environment instance to be returned from 
+		/// the <see cref="ApplicationBase.Environment"/> property.
+		/// </summary>
+		/// <returns>
+		/// The environment instance.
+		/// </returns>
+		protected abstract Epic.Environment.EnvironmentBase RetrieveEnvironmentInstance();
 		
 		/// <summary>
 		/// Enterprise that use the domain model.
