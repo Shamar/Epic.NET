@@ -46,10 +46,14 @@
     <Compile Include="Environment\EnvironmentsChain.cs" />
     <Compile Include="Environment\EnvironmentChainLinkBase.cs" />
     <Compile Include="InstanceName.cs" />
+    <Compile Include="Enterprise\EnterpriseBase.cs" />
+    <Compile Include="Enterprise\EnterpriseSerializationHelper.cs" />
+    <Compile Include="Enterprise\WorkingSessionBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Events\" />
     <Folder Include="Environment\" />
+    <Folder Include="Enterprise\" />
   </ItemGroup>
 </Project>
