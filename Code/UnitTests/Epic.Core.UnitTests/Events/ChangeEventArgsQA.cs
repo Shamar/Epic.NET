@@ -44,6 +44,7 @@ namespace Epic.Events
 			Assert.IsTrue(EqualityComparer<T>.Default.Equals(newValue, args.NewValue));
 		}
 		
+		[Test]
 		public void Ctor_withNullOldValue_exposeTheValues()
 		{
 			// arrange:
@@ -57,6 +58,7 @@ namespace Epic.Events
 			Assert.AreEqual(newValue, args.NewValue);
 		}
 		
+		[Test]
 		public void Ctor_withNullNewValue_exposeTheValues()
 		{
 			// arrange:
