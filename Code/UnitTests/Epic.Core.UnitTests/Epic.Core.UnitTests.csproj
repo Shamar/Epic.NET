@@ -51,6 +51,8 @@
     <Compile Include="Fakes\FakeEnvironment.cs" />
     <Compile Include="Environment\EnvironmentsChainQA.cs" />
     <Compile Include="InstanceNameQA.cs" />
+    <Compile Include="Enterprise\EnterpriseBaseQA.cs" />
+    <Compile Include="Fakes\FakeEnterprise.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">
@@ -62,5 +64,6 @@
     <Folder Include="Events\" />
     <Folder Include="Environment\" />
     <Folder Include="Fakes\" />
+    <Folder Include="Enterprise\" />
   </ItemGroup>
 </Project>

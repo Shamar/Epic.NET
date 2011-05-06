@@ -35,7 +35,7 @@ namespace Epic.Enterprise
 			throw new NotImplementedException ();
 		}
 		
-		protected void RaiseOwnerChanged(Events.ChangeEventArgs<string> args)
+		private void RaiseOwnerChanged(Events.ChangeEventArgs<string> args)
 		{
 			if(null == args)
 				throw new ArgumentNullException("args");

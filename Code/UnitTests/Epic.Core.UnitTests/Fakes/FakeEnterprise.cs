@@ -1,5 +1,5 @@
 //  
-//  EnterpriseSerializationHelper.cs
+//  FakeEnterprise.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,21 +22,39 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Runtime.Serialization;
-namespace Epic.Enterprise
+using Epic.Enterprise;
+
+namespace Epic.Fakes
 {
-	/// <summary>
-	/// When deserialiing this object, return a reference to the <see cref="Application.Enterprise"/>.
-	/// </summary>
 	[Serializable]
-	public sealed class EnterpriseSerializationHelper : IObjectReference
+	public class FakeEnterprise : EnterpriseBase
 	{
-	    public Object GetRealObject(StreamingContext context) 
-	    {
-	        // When deserialiing this object, return a reference to 
-	        // the Application.Enterprise.
-	        return Application.Enterprise;
-	    }
+		public FakeEnterprise ()
+			: this("Fake")
+		{
+		}
+
+		public FakeEnterprise (string name)
+			: base(name)
+		{
+		}
+		
+		#region implemented abstract members of Epic.Enterprise.EnterpriseBase
+		protected override void StartWorkingSession (System.Security.Principal.IPrincipal owner, out WorkingSessionBase workingSession)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override WorkingSessionBase AcquireWorkingSessionReal (System.Security.Principal.IPrincipal owner, string identifier)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void BeforeWorkingSessionEnd (System.Security.Principal.IPrincipal owner, WorkingSessionBase workingSession)
+		{
+			throw new NotImplementedException ();
+		}
+		#endregion
 	}
 }
 
