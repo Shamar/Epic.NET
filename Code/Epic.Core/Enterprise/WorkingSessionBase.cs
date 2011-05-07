@@ -25,6 +25,9 @@ using System;
 using System.Security.Principal;
 namespace Epic.Enterprise
 {
+	/// <summary>
+	/// Base class for working sessions.
+	/// </summary>
 	[Serializable]
 	public abstract class WorkingSessionBase : IWorkingSession, IDisposable
 	{
@@ -80,7 +83,7 @@ namespace Epic.Enterprise
 		#endregion
 		
 		#region IDisposable implementation
-		public void Dispose ()
+		public virtual void Dispose ()
 		{
 			throw new NotImplementedException ();
 		}

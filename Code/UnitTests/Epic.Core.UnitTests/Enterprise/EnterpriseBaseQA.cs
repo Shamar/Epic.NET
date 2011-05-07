@@ -24,6 +24,9 @@
 using System;
 using NUnit.Framework;
 using System.IO;
+using Epic;
+using System.Security.Principal;
+using Rhino.Mocks;
 
 namespace Epic.Enterprise
 {
@@ -98,6 +101,146 @@ namespace Epic.Enterprise
 			// assert:
 			Assert.IsNotNull(enterprise);
 			Assert.AreEqual(name, enterprise.Name);
+		}
+		
+		[Test]
+		public void StartWorkingSession_withoutOwner_throwsArgumentNullException()
+		{
+			// arrange:
+			IEnterprise enterprise = new Fakes.FakeEnterprise();
+			IWorkingSession session = null;
+			
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { enterprise.StartWorkingSession(null, out session); });
+			Assert.IsNull(session);
+		}
+		
+		[Test]
+		public void StartWorkingSession_withOwner_callTemplateMethod()
+		{
+			// arrange:
+			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
+			Fakes.FakeEnterprise enterprise = MockRepository.GeneratePartialMock<Fakes.FakeEnterprise>();
+			mocks.Add(enterprise);
+			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
+			mocks.Add(owner);
+			WorkingSessionBase outWorkingSessionBase = null;
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>();
+			mocks.Add(session);
+			enterprise.Expect(e => e.ExecStartWorkingSession(owner, out outWorkingSessionBase)).OutRef(session).Repeat.Once();
+			IWorkingSession outWorkingSession = null;
+			
+			// act:
+			enterprise.StartWorkingSession(owner, out outWorkingSession);
+			
+			// assert:
+			Assert.IsNotNull(outWorkingSession);
+			Assert.AreSame(session, outWorkingSession);
+			foreach(object m in mocks)
+				m.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void AcquireWorkingSession_withoutOwner_throwsArgumentNullException()
+		{
+			// arrange:
+			string sessionName = "test";
+			IEnterprise enterprise = new Fakes.FakeEnterprise();
+			
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { enterprise.AcquireWorkingSession(null, sessionName); });
+		}
+		
+		[Test]
+		public void AcquireWorkingSession_withoutIdentifier_throwsArgumentNullException()
+		{
+			// arrange:
+			IPrincipal owner = new GenericPrincipal(new GenericIdentity("test", "test"), new string[] {});
+			IEnterprise enterprise = new Fakes.FakeEnterprise();
+			
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { enterprise.AcquireWorkingSession(owner, null); });
+			Assert.Throws<ArgumentNullException>(delegate { enterprise.AcquireWorkingSession(owner, string.Empty); });
+		}
+		
+		[Test]
+		public void AcquireWorkingSession_withValidArguments_callTemplateMethod()
+		{
+			// arrange:
+			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
+			string identifier = "testWorkingSession";
+			Fakes.FakeEnterprise enterprise = MockRepository.GeneratePartialMock<Fakes.FakeEnterprise>();
+			mocks.Add(enterprise);
+			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
+			mocks.Add(owner);
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>();
+			mocks.Add(session);
+			enterprise.Expect(e => e.ExecAcquireWorkingSessionReal(owner, identifier)).Return(session).Repeat.Once();
+			
+			// act:
+			IWorkingSession returnedWorkingSession = enterprise.AcquireWorkingSession(owner, identifier);
+			
+			// assert:
+			Assert.IsNotNull(returnedWorkingSession);
+			Assert.AreSame(session, returnedWorkingSession);
+			foreach(object m in mocks)
+				m.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void EndWorkingSession_withoutOwner_throwsArgumentNullException()
+		{
+			// arrange:
+			IEnterprise enterprise = new Fakes.FakeEnterprise();
+			IWorkingSession session = MockRepository.GenerateStrictMock<IWorkingSession>();
+			
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { enterprise.EndWorkingSession(null, session); });
+		}
+		
+		[Test]
+		public void EndWorkingSession_withoutSession_throwsArgumentNullException()
+		{
+			// arrange:
+			IEnterprise enterprise = new Fakes.FakeEnterprise();
+			IPrincipal owner = new GenericPrincipal(new GenericIdentity("test", "test"), new string[] {});
+			
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { enterprise.EndWorkingSession(owner, null); });
+		}
+		
+		[Test]
+		public void EndWorkingSession_withWrongSessionType_throwsArgumentException()
+		{
+			// arrange:
+			IEnterprise enterprise = new Fakes.FakeEnterprise();
+			IPrincipal owner = new GenericPrincipal(new GenericIdentity("test", "test"), new string[] {});
+			IWorkingSession session = MockRepository.GenerateStrictMock<IWorkingSession>();
+			
+			// assert:
+			Assert.Throws<ArgumentException>(delegate { enterprise.EndWorkingSession(owner, session); });
+		}
+
+		[Test]
+		public void EndWorkingSession_withValidArguments_callTemplateMethod()
+		{
+			// arrange:
+			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
+			Fakes.FakeEnterprise enterprise = MockRepository.GeneratePartialMock<Fakes.FakeEnterprise>();
+			mocks.Add(enterprise);
+			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
+			mocks.Add(owner);
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>();
+			session.Expect(s => s.Dispose()).Repeat.Once();
+			mocks.Add(session);
+			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
+			
+			// act:
+			enterprise.EndWorkingSession(owner, session);
+			
+			// assert:
+			foreach(object m in mocks)
+				m.VerifyAllExpectations();
 		}
 	}
 }

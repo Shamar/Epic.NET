@@ -93,7 +93,9 @@ namespace Epic.Enterprise
 		{
 			if(null == owner)
 				throw new ArgumentNullException("owner");
-			StartWorkingSession(owner, out workingSession);
+			WorkingSessionBase newSession = null;
+			StartWorkingSession(owner, out newSession);
+			workingSession = newSession;
 		}
 		
 		/// <summary>

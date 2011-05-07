@@ -39,20 +39,38 @@ namespace Epic.Fakes
 		{
 		}
 		
+		#region templates for tests
+		
+		public virtual void ExecStartWorkingSession (System.Security.Principal.IPrincipal owner, out WorkingSessionBase workingSession)
+		{
+			workingSession = null;
+		}
+
+		public virtual WorkingSessionBase ExecAcquireWorkingSessionReal (System.Security.Principal.IPrincipal owner, string identifier)
+		{
+			return null;
+		}
+
+		public virtual void ExecBeforeWorkingSessionEnd (System.Security.Principal.IPrincipal owner, WorkingSessionBase workingSession)
+		{
+		}
+		
+		#endregion templates for tests
+		
 		#region implemented abstract members of Epic.Enterprise.EnterpriseBase
 		protected override void StartWorkingSession (System.Security.Principal.IPrincipal owner, out WorkingSessionBase workingSession)
 		{
-			throw new NotImplementedException ();
+			ExecStartWorkingSession(owner, out workingSession);
 		}
 
 		protected override WorkingSessionBase AcquireWorkingSessionReal (System.Security.Principal.IPrincipal owner, string identifier)
 		{
-			throw new NotImplementedException ();
+			return ExecAcquireWorkingSessionReal(owner, identifier);
 		}
 
 		protected override void BeforeWorkingSessionEnd (System.Security.Principal.IPrincipal owner, WorkingSessionBase workingSession)
 		{
-			throw new NotImplementedException ();
+			ExecBeforeWorkingSessionEnd(owner, workingSession);
 		}
 		#endregion
 	}
