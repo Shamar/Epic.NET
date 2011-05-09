@@ -23,6 +23,7 @@
 //  
 using System;
 using System.Security.Principal;
+using System.Collections.Generic;
 namespace Epic.Enterprise
 {
 	/// <summary>
@@ -32,6 +33,9 @@ namespace Epic.Enterprise
 	public abstract class WorkingSessionBase : IWorkingSession, IDisposable
 	{
 		private readonly string _identifier;
+		private readonly Dictionary<Type, object> _roles = new Dictionary<Type, object>();
+		private string _owner;
+
 		protected WorkingSessionBase(string identifier)
 		{
 			if(string.IsNullOrEmpty(identifier))
@@ -43,8 +47,32 @@ namespace Epic.Enterprise
 
 		public void AssignTo (IPrincipal owner)
 		{
-			throw new NotImplementedException ();
+			if(null == owner)
+				throw new ArgumentNullException("owner");
+			if(_roles.Count > 0)
+			{
+				string messageTpl = "Can not assign the working session {0} to {1}, since it belong to {2} who is still achieving {3} roles ({4}).";
+				List<string> roleList = new List<string>(); 
+				foreach(Type rT in _roles.Keys)
+				{
+					roleList.Add(rT.FullName);
+				}
+				string message = string.Format(messageTpl, _identifier, owner.Identity.Name, "", roleList.Count, string.Join(", ", roleList.ToArray()));
+				throw new InvalidOperationException(message);
+			}
+			
+			try
+			{
+				UpdateCurrentOwner(owner, out _owner);
+			}
+			catch(Exception e)
+			{
+				string message = string.Format("Can not assign the working session {0} to {1}.", _identifier, owner.Identity.Name);
+				throw new InvalidOperationException(message, e);
+			}
 		}
+		
+		protected abstract void UpdateCurrentOwner(IPrincipal newOwner, out string ownerIdentifier);
 		
 		private void RaiseOwnerChanged(Events.ChangeEventArgs<string> args)
 		{
@@ -84,7 +112,7 @@ namespace Epic.Enterprise
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return _owner;
 			}
 		}
 		
