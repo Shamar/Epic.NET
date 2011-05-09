@@ -125,7 +125,7 @@ namespace Epic.Enterprise
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
 			WorkingSessionBase outWorkingSessionBase = null;
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>();
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecStartWorkingSession(owner, out outWorkingSessionBase)).OutRef(session).Repeat.Once();
 			IWorkingSession outWorkingSession = null;
@@ -173,7 +173,7 @@ namespace Epic.Enterprise
 			mocks.Add(enterprise);
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>();
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecAcquireWorkingSessionReal(owner, identifier)).Return(session).Repeat.Once();
 			
@@ -210,7 +210,7 @@ namespace Epic.Enterprise
 		}
 		
 		[Test]
-		public void EndWorkingSession_withWrongSessionType_throwsArgumentException()
+		public void EndWorkingSession_withWrongSessionType_throwsInvalidOperationException()
 		{
 			// arrange:
 			IEnterprise enterprise = new Fakes.FakeEnterprise();
@@ -218,9 +218,9 @@ namespace Epic.Enterprise
 			IWorkingSession session = MockRepository.GenerateStrictMock<IWorkingSession>();
 			
 			// assert:
-			Assert.Throws<ArgumentException>(delegate { enterprise.EndWorkingSession(owner, session); });
+			Assert.Throws<InvalidOperationException>(delegate { enterprise.EndWorkingSession(owner, session); });
 		}
-
+		
 		[Test]
 		public void EndWorkingSession_withValidArguments_callTemplateMethod()
 		{
@@ -230,7 +230,7 @@ namespace Epic.Enterprise
 			mocks.Add(enterprise);
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>();
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
 			session.Expect(s => s.Dispose()).Repeat.Once();
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
@@ -242,6 +242,140 @@ namespace Epic.Enterprise
 			foreach(object m in mocks)
 				m.VerifyAllExpectations();
 		}
+
+		[Test]
+		public void EndWorkingSession_onSubclassException_throwsInvalidOperationException()
+		{
+			// arrange:
+			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
+			Exception dummyException = new Exception("dummyException");
+			Fakes.FakeEnterprise enterprise = MockRepository.GeneratePartialMock<Fakes.FakeEnterprise>();
+			mocks.Add(enterprise);
+			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
+			owner.Expect(p => p.Identity).Return(new GenericIdentity("testPrincipal"));
+			mocks.Add(owner);
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			mocks.Add(session);
+			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Throw(dummyException).Repeat.Once();
+			InvalidOperationException cought = null;
+			
+			// act:
+			try
+			{
+				enterprise.EndWorkingSession(owner, session);
+			}
+			catch (InvalidOperationException e)
+			{
+				cought = e;
+			}
+			
+			// assert:
+			Assert.IsNotNull(cought);
+			Assert.AreSame(dummyException, cought.InnerException);
+			foreach(object m in mocks)
+				m.VerifyAllExpectations();
+		}
+		
+
+		[Test]
+		public void EndWorkingSession_onSubclassException_dontWrapInvalidOperationException()
+		{
+			// arrange:
+			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
+			InvalidOperationException thrownException = new InvalidOperationException("thrownException");
+			Fakes.FakeEnterprise enterprise = MockRepository.GeneratePartialMock<Fakes.FakeEnterprise>();
+			mocks.Add(enterprise);
+			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
+			mocks.Add(owner);
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			mocks.Add(session);
+			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Throw(thrownException).Repeat.Once();
+			InvalidOperationException cought = null;
+			
+			// act:
+			try
+			{
+				enterprise.EndWorkingSession(owner, session);
+			}
+			catch (InvalidOperationException e)
+			{
+				cought = e;
+			}
+			
+			// assert:
+			Assert.IsNotNull(cought);
+			Assert.AreSame(thrownException, cought);
+			foreach(object m in mocks)
+				m.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void EndWorkingSession_onWorkingSessionException_dontWrapInvalidOperationException()
+		{
+			// arrange:
+			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
+			InvalidOperationException thrownException = new InvalidOperationException("thrownException");
+			Fakes.FakeEnterprise enterprise = MockRepository.GeneratePartialMock<Fakes.FakeEnterprise>();
+			mocks.Add(enterprise);
+			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
+			mocks.Add(owner);
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			session.Expect(s => s.Dispose()).Throw(thrownException).Repeat.Once();
+			mocks.Add(session);
+			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
+			InvalidOperationException cought = null;
+			
+			// act:
+			try
+			{
+				enterprise.EndWorkingSession(owner, session);
+			}
+			catch (InvalidOperationException e)
+			{
+				cought = e;
+			}
+			
+			// assert:
+			Assert.IsNotNull(cought);
+			Assert.AreSame(thrownException, cought);
+			foreach(object m in mocks)
+				m.VerifyAllExpectations();
+		}
+		
+		[Test]
+		public void EndWorkingSession_onWorkingSessionException_throwsInvalidOperationException()
+		{
+			// arrange:
+			System.Collections.Generic.List<object> mocks = new System.Collections.Generic.List<object>();
+			Exception dummyException = new Exception("dummyException");
+			Fakes.FakeEnterprise enterprise = MockRepository.GeneratePartialMock<Fakes.FakeEnterprise>();
+			mocks.Add(enterprise);
+			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
+			owner.Expect(p => p.Identity).Return(new GenericIdentity("testPrincipal"));
+			mocks.Add(owner);
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			session.Expect(s => s.Dispose()).Throw(dummyException).Repeat.Once();
+			mocks.Add(session);
+			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
+			InvalidOperationException cought = null;
+			
+			// act:
+			try
+			{
+				enterprise.EndWorkingSession(owner, session);
+			}
+			catch (InvalidOperationException e)
+			{
+				cought = e;
+			}
+			
+			// assert:
+			Assert.IsNotNull(cought);
+			Assert.AreSame(dummyException, cought.InnerException);
+			foreach(object m in mocks)
+				m.VerifyAllExpectations();
+		}
+
 	}
 }
 

@@ -176,17 +176,15 @@ namespace Epic.Enterprise
 				throw new ArgumentNullException("workingSession");
 			WorkingSessionBase session = workingSession as WorkingSessionBase;
 			if(null == session)
-				throw new ArgumentException("The working session provided do not extend WorkingSessionBase.", "workingSession");
-			
+			{
+				ArgumentException inner = new ArgumentException("The working session provided do not extend WorkingSessionBase.", "workingSession");
+				throw new InvalidOperationException("Unknown working session.", inner);
+			}
 			try
 			{
 				BeforeWorkingSessionEnd(owner, session);
 				
 				session.Dispose();
-			}
-			catch(ObjectDisposedException disposedExc)
-			{
-				throw new InvalidOperationException("Working session already ended.", disposedExc);
 			}
 			catch(Exception e)
 			{

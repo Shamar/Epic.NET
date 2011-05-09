@@ -31,6 +31,14 @@ namespace Epic.Enterprise
 	[Serializable]
 	public abstract class WorkingSessionBase : IWorkingSession, IDisposable
 	{
+		private readonly string _identifier;
+		protected WorkingSessionBase(string identifier)
+		{
+			if(string.IsNullOrEmpty(identifier))
+				throw new ArgumentNullException("identifier");
+			_identifier = identifier;
+		}
+		
 		#region IWorkingSession implementation
 
 		public void AssignTo (IPrincipal owner)
@@ -68,7 +76,7 @@ namespace Epic.Enterprise
 		{
 			get 
 			{
-				throw new NotImplementedException ();
+				return _identifier;
 			}
 		}
 
