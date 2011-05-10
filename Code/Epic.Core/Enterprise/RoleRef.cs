@@ -34,7 +34,7 @@ namespace Epic.Enterprise
 		{
 			if(null == role)
 				throw new ArgumentNullException("role");
-			_role = role;
+			Role = role;
 			_refs = 0;
 		}
 		

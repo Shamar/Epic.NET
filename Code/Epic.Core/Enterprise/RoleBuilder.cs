@@ -31,7 +31,14 @@ namespace Epic.Enterprise
 	{
 		public TRole Build(IPrincipal owner)
 		{
-			return (TRole)BuildRole(owner);
+			RoleBase baseRole = BuildRole(owner);
+			TRole newRole = baseRole as TRole;
+			if(null == newRole)
+			{
+				string message = string.Format("The {0} role do not implement {1}.", baseRole.GetType().FullName, typeof(TRole).FullName);
+				throw new InvalidCastException(message);
+			}
+			return newRole;
 		}
 		
 		protected abstract RoleBase BuildRole(IPrincipal owner);

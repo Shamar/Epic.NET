@@ -75,10 +75,10 @@ namespace Epic.Enterprise
 		
 		protected abstract RoleBuilder<TRole> GetRoleBuilder<TRole>() where TRole : class;
 		
-		private TRole Build<TRole>()
+		private TRole Build<TRole>() where TRole : class
 		{
 			RoleBuilder<TRole> builder = GetRoleBuilder<TRole>();
-			return builder.Build(this.Owner);
+			return builder.Build(_owner);
 		}
 
 		#region IWorkingSession implementation
