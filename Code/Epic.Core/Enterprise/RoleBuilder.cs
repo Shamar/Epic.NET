@@ -1,5 +1,5 @@
 //  
-//  RoleRef.cs
+//  RoleBuilder.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,42 +22,19 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Security.Principal;
 
 namespace Epic.Enterprise
 {
 	[Serializable]
-	internal class RoleRef : IDisposable
+	public abstract class RoleBuilder<TRole> where TRole : class
 	{
-		public readonly RoleBase Role;
-		private int _refs;
-		public RoleRef (RoleBase role)
+		public TRole Build(IPrincipal owner)
 		{
-			if(null == role)
-				throw new ArgumentNullException("role");
-			_role = role;
-			_refs = 0;
+			return (TRole)BuildRole(owner);
 		}
 		
-		public int Increase()
-		{
-			++_refs; // TODO: evaluate whether use CAS for thread safety
-			return _refs;
-		}
-		
-		public int Decrease()
-		{
-			--_refs; // TODO: evaluate whether use CAS for thread safety
-			return _refs;
-		}
-
-		#region IDisposable implementation
-		public void Dispose ()
-		{
-			Role.Dispose();
-		}
-		#endregion
+		protected abstract RoleBase BuildRole(IPrincipal owner);
 	}
-	
-	
 }
 

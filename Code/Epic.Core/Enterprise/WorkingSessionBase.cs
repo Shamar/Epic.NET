@@ -55,15 +55,31 @@ namespace Epic.Enterprise
 		
 		private void RaiseOwnerChanged(IPrincipal oldOwner)
 		{
-			Events.ChangeEventArgs<string> args = new Events.ChangeEventArgs<string>(oldOwner.Identity.Name, _owner.Identity.Name);
+			string oldName; 
+			string newName;
+			if(null == oldOwner)
+				oldName = string.Empty;
+			else
+				oldName = oldOwner.Identity.Name;
+			if(null == _owner)
+				newName = string.Empty;
+			else
+				newName = _owner.Identity.Name;
+			Events.ChangeEventArgs<string> args = new Events.ChangeEventArgs<string>(oldName, newName);
 			EventHandler<Events.ChangeEventArgs<string>> handler = OwnerChanged;
 			if(null != handler)
-				handler(this, args); // TODO: aggregate exceptions
+				handler(this, args); // TODO: evaluate whether aggregate exceptions
 		}
 		
 		protected abstract bool IsAllowed<TRole>() where TRole : class;
 		
-		protected abstract RoleBase Build<TRole>() where TRole : class;
+		protected abstract RoleBuilder<TRole> GetRoleBuilder<TRole>() where TRole : class;
+		
+		private TRole Build<TRole>()
+		{
+			RoleBuilder<TRole> builder = GetRoleBuilder<TRole>();
+			return builder.Build(this.Owner);
+		}
 
 		#region IWorkingSession implementation
 
@@ -121,7 +137,7 @@ namespace Epic.Enterprise
 					string message = string.Format("The owner of the working session ({0}) can not achieve the {1} role.", this.Owner, roleType.FullName);
 					throw new InvalidOperationException(message);
 				}
-				TRole newRole = (TRole)Build<TRole>(); // explicit cast: we have to throw early if the Build method is bugged.
+				TRole newRole = Build<TRole>();
 				roleRef = new RoleRef(newRole as RoleBase);
 				_roles[roleType] = roleRef;
 			}
