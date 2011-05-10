@@ -33,8 +33,8 @@ namespace Epic.Enterprise
 	public abstract class WorkingSessionBase : IWorkingSession, IDisposable
 	{
 		private readonly string _identifier;
-		private readonly Dictionary<Type, object> _roles = new Dictionary<Type, object>();
-		private string _owner;
+		private readonly Dictionary<Type, RoleRef> _roles = new Dictionary<Type, RoleRef>();
+		private IPrincipal _owner;
 
 		protected WorkingSessionBase(string identifier)
 		{
@@ -43,6 +43,28 @@ namespace Epic.Enterprise
 			_identifier = identifier;
 		}
 		
+		protected IPrincipal CurrentOwner
+		{
+			get
+			{
+				return _owner;
+			}
+		}
+		
+		protected abstract bool AllowNewOwner(IPrincipal newOwner, out IPrincipal ownerToAssign);
+		
+		private void RaiseOwnerChanged(IPrincipal oldOwner)
+		{
+			Events.ChangeEventArgs<string> args = new Events.ChangeEventArgs<string>(oldOwner.Identity.Name, _owner.Identity.Name);
+			EventHandler<Events.ChangeEventArgs<string>> handler = OwnerChanged;
+			if(null != handler)
+				handler(this, args); // TODO: aggregate exceptions
+		}
+		
+		protected abstract bool IsAllowed<TRole>() where TRole : class;
+		
+		protected abstract RoleBase Build<TRole>() where TRole : class;
+
 		#region IWorkingSession implementation
 
 		public void AssignTo (IPrincipal owner)
@@ -57,47 +79,78 @@ namespace Epic.Enterprise
 				{
 					roleList.Add(rT.FullName);
 				}
-				string message = string.Format(messageTpl, _identifier, owner.Identity.Name, "", roleList.Count, string.Join(", ", roleList.ToArray()));
+				string message = string.Format(messageTpl, _identifier, owner.Identity.Name, _owner.Identity.Name, roleList.Count, string.Join(", ", roleList.ToArray()));
 				throw new InvalidOperationException(message);
 			}
 			
+			IPrincipal oldOwner = _owner;
 			try
 			{
-				UpdateCurrentOwner(owner, out _owner);
+				if(this.AllowNewOwner(owner, out _owner))
+				{
+					RaiseOwnerChanged(oldOwner);
+				}
 			}
 			catch(Exception e)
 			{
+				if(e is InvalidOperationException)
+					throw e;
 				string message = string.Format("Can not assign the working session {0} to {1}.", _identifier, owner.Identity.Name);
 				throw new InvalidOperationException(message, e);
 			}
 		}
 		
-		protected abstract void UpdateCurrentOwner(IPrincipal newOwner, out string ownerIdentifier);
-		
-		private void RaiseOwnerChanged(Events.ChangeEventArgs<string> args)
-		{
-			if(null == args)
-				throw new ArgumentNullException("args");
-			EventHandler<Events.ChangeEventArgs<string>> handler = OwnerChanged;
-			if(null != handler)
-				handler(this, args);
-		}
-
 		public event EventHandler<Events.ChangeEventArgs<string>> OwnerChanged;
 		
 		public bool CouldAchieve<TRole> () where TRole : class
 		{
-			throw new NotImplementedException ();
+			Type roleType = typeof(TRole);
+			if(_roles.ContainsKey(roleType))
+				return true;
+			return IsAllowed<TRole>();
 		}
 
 		public void Achieve<TRole> (out TRole role) where TRole : class
 		{
-			throw new NotImplementedException ();
+			Type roleType = typeof(TRole);
+			RoleRef roleRef = null;
+			if(!_roles.TryGetValue(roleType, out roleRef))
+			{
+				if(!IsAllowed<TRole>())
+				{
+					string message = string.Format("The owner of the working session ({0}) can not achieve the {1} role.", this.Owner, roleType.FullName);
+					throw new InvalidOperationException(message);
+				}
+				TRole newRole = (TRole)Build<TRole>(); // explicit cast: we have to throw early if the Build method is bugged.
+				roleRef = new RoleRef(newRole as RoleBase);
+				_roles[roleType] = roleRef;
+			}
+			roleRef.Increase();
+			role = roleRef.Role as TRole;
 		}
 
 		public void Leave<TRole> (ref TRole role) where TRole : class
 		{
-			throw new NotImplementedException ();
+			if(null == role)
+				throw new ArgumentNullException("role");
+			Type roleType = typeof(TRole);
+			RoleRef roleRef = null;
+			if(!_roles.TryGetValue(roleType, out roleRef))
+			{
+				string message = string.Format("Unknown role type {0}.", roleType.FullName);
+				throw new ArgumentException(message, "role");
+			}
+			if(! object.ReferenceEquals(role, roleRef.Role))
+			{
+				string message = string.Format("Unknown role {0}.", roleType.FullName);
+				throw new ArgumentException(message, "role");
+			}
+			if(roleRef.Decrease() == 0)
+			{
+				_roles.Remove(roleType);
+				roleRef.Dispose();
+			}
+			role = null;
 		}
 
 		public string Identifier 
@@ -112,7 +165,9 @@ namespace Epic.Enterprise
 		{
 			get 
 			{
-				return _owner;
+				if(null == _owner)
+					return string.Empty;
+				return _owner.Identity.Name;
 			}
 		}
 		
@@ -121,7 +176,12 @@ namespace Epic.Enterprise
 		#region IDisposable implementation
 		public virtual void Dispose ()
 		{
-			throw new NotImplementedException ();
+			foreach(RoleRef roleRef in _roles.Values)
+			{
+				roleRef.Dispose();
+			}
+			_roles.Clear();
+			_owner = null;
 		}
 		#endregion
 	}

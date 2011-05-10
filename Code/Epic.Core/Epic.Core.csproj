@@ -49,6 +49,8 @@
     <Compile Include="Enterprise\EnterpriseBase.cs" />
     <Compile Include="Enterprise\EnterpriseSerializationHelper.cs" />
     <Compile Include="Enterprise\WorkingSessionBase.cs" />
+    <Compile Include="Enterprise\RoleBase.cs" />
+    <Compile Include="Enterprise\RoleRef.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

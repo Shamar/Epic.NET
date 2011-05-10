@@ -84,6 +84,8 @@ namespace Epic
 		/// <typeparam name='TRole'>
 		/// The type of the role to achieve.
 		/// </typeparam>
+		/// <exception cref="InvalidOperationException">The <see cref="IWorkingSession.Owner"/> can not achieve 
+		/// the required <typeparamref name="TRole"/>.</exception>
 		void Achieve<TRole>(out TRole role) where TRole : class;
 		
 		/// <summary>
@@ -98,6 +100,7 @@ namespace Epic
 		/// The type of the role to leave.
 		/// </typeparam>
 		/// <exception cref="ArgumentNullException">The <paramref name="role"/> is <value>null</value>.</exception>
+		/// <exception cref="ArgumentException">The <paramref name="role"/> is unknown to the session.</exception>
 		void Leave<TRole>(ref TRole role) where TRole : class;
 	}
 }
