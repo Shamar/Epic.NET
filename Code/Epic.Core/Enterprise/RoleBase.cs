@@ -25,8 +25,11 @@ using System;
 
 namespace Epic.Enterprise
 {
+	/// <summary>
+	/// Base class for users' roles.
+	/// </summary>
 	[Serializable]
-	public class RoleBase : IDisposable
+	public abstract class RoleBase : IDisposable
 	{
 		public RoleBase ()
 		{

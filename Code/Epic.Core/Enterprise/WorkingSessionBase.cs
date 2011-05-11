@@ -73,11 +73,11 @@ namespace Epic.Enterprise
 		
 		protected abstract bool IsAllowed<TRole>() where TRole : class;
 		
-		protected abstract RoleBuilder<TRole> GetRoleBuilder<TRole>() where TRole : class;
+		protected abstract RoleBuilderBase<TRole> GetRoleBuilder<TRole>() where TRole : class;
 		
 		private TRole Build<TRole>() where TRole : class
 		{
-			RoleBuilder<TRole> builder = GetRoleBuilder<TRole>();
+			RoleBuilderBase<TRole> builder = GetRoleBuilder<TRole>();
 			return builder.Build(_owner);
 		}
 
