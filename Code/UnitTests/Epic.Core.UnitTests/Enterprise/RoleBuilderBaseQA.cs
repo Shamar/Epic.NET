@@ -24,6 +24,8 @@
 using System;
 using NUnit.Framework;
 using Epic.Fakes;
+using Rhino.Mocks;
+using System.Security.Principal;
 
 namespace Epic.Enterprise
 {
@@ -56,6 +58,52 @@ namespace Epic.Enterprise
 		{
 			// assert:
 			new FakeRoleBuilder<IFakeRole>();
+		}
+		
+		[Test]
+		public void Build_withPrincipal_callTemplateMethod()
+		{
+			// arrange:
+			IPrincipal player = MockRepository.GenerateStrictMock<IPrincipal>();
+			RoleBase role = MockRepository.GeneratePartialMock<RoleBase, IFakeRole>();
+			FakeRoleBuilder<IFakeRole> builder = MockRepository.GeneratePartialMock<FakeRoleBuilder<IFakeRole>>();
+			builder.Expect(b => b.CallBuildRole(player)).Return(role).Repeat.Once();
+			
+			// act:
+			IFakeRole returnedRole = builder.Build(player);
+			
+			// assert:
+			Assert.AreSame(role, returnedRole);
+		}
+		
+		[Test]
+		public void Build_withoutPrincipal_callTemplateMethod()
+		{
+			// arrange:
+			IPrincipal player = null;
+			RoleBase role = MockRepository.GeneratePartialMock<RoleBase, IFakeRole>();
+			FakeRoleBuilder<IFakeRole> builder = MockRepository.GeneratePartialMock<FakeRoleBuilder<IFakeRole>>();
+			builder.Expect(b => b.CallBuildRole(player)).Return(role).Repeat.Once();
+			
+			// act:
+			IFakeRole returnedRole = builder.Build(player);
+			
+			// assert:
+			Assert.AreSame(role, returnedRole);
+		}
+		
+		
+		[Test]
+		public void Build_withWrongTemplateMethod_throw()
+		{
+			// arrange:
+			IPrincipal player = MockRepository.GenerateStrictMock<IPrincipal>();
+			RoleBase role = MockRepository.GeneratePartialMock<RoleBase>();
+			FakeRoleBuilder<IFakeRole> builder = MockRepository.GeneratePartialMock<FakeRoleBuilder<IFakeRole>>();
+			builder.Expect(b => b.CallBuildRole(player)).Return(role).Repeat.Once();
+			
+			// assert:
+			Assert.Throws<InvalidCastException>(delegate { builder.Build(player); });
 		}
 	}
 }

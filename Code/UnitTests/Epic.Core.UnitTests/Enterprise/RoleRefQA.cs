@@ -23,14 +23,92 @@
 //  
 using System;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace Epic.Enterprise
 {
 	[TestFixture]
 	public class RoleRefQA
 	{
-		public RoleRefQA ()
+		[Test]
+		public void Ctor_withoutRole_throwArgumentNullException()
 		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate {
+				new RoleRef(null);
+			});
+		}
+		
+		[Test]
+		public void Ctor_withRole_works()
+		{
+			// arrange:
+			RoleBase role = MockRepository.GenerateStrictMock<RoleBase>();
+			
+			// act:
+			RoleRef roleRef = new RoleRef(role);
+			
+			// assert:
+			Assert.AreSame(role, roleRef.Role);
+		}
+		
+		[Test]
+		public void Increase_increaseTheNumberOfReferences()
+		{
+			// arrange:
+			RoleBase role = MockRepository.GenerateStrictMock<RoleBase>();
+			RoleRef roleRef = new RoleRef(role);
+			
+			// assert:
+			for(int i = 0; i < 100; ++i)
+			{
+				Assert.AreEqual(i+1, roleRef.Increase());
+			}
+		}
+		
+		[Test]
+		public void Decrease_decreaseTheNumberOfReferences()
+		{
+			// arrange:
+			RoleBase role = MockRepository.GenerateStrictMock<RoleBase>();
+			RoleRef roleRef = new RoleRef(role);
+			
+			// assert:
+			for(int i = 0; i < 100; ++i)
+			{
+				roleRef.Increase();
+				Assert.AreEqual(0, roleRef.Decrease());
+			}
+			for(int i = 0; i < 100; ++i)
+				roleRef.Increase();
+			for(int i = 0; i < 100; ++i)
+			{
+				Assert.AreEqual(100 - (i+1), roleRef.Decrease());
+			}
+		}
+		
+		[Test]
+		public void Decrease_underZero_throwsInvalidOperationException()
+		{
+			// arrange:
+			RoleBase role = MockRepository.GenerateStrictMock<RoleBase>();
+			RoleRef roleRef = new RoleRef(role);
+			
+			// assert:
+			Assert.Throws<InvalidOperationException>(delegate{ roleRef.Decrease(); });
+		}
+		
+				
+		[Test]
+		public void Dispose_willDisposeTheRole()
+		{
+			// arrange:
+			RoleBase role = MockRepository.GenerateStrictMock<RoleBase>();
+			role.Expect(r => r.Dispose()).Repeat.Once();
+			RoleRef roleRef = new RoleRef(role);
+			
+			// assert:
+			roleRef.Dispose();
 		}
 	}
 }

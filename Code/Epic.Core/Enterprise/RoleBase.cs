@@ -36,10 +36,7 @@ namespace Epic.Enterprise
 		}
 
 		#region IDisposable implementation
-		public void Dispose ()
-		{
-			throw new NotImplementedException ();
-		}
+		public abstract void Dispose ();
 		#endregion
 	}
 }

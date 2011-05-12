@@ -32,9 +32,16 @@ namespace Epic.Fakes
 		#region implemented abstract members of Epic.Enterprise.RoleBuilderBase[TRole]
 		protected override RoleBase BuildRole (System.Security.Principal.IPrincipal player)
 		{
-			throw new NotImplementedException ();
+			return CallBuildRole(player);
 		}
 		#endregion
+		
+		#region templates for tests
+		public virtual RoleBase CallBuildRole (System.Security.Principal.IPrincipal player)
+		{
+			return null;
+		}
+		#endregion templates for tests
 	}
 }
 

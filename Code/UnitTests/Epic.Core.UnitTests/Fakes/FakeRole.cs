@@ -36,6 +36,12 @@ namespace Epic.Fakes
 		public FakeRole ()
 		{
 		}
+
+		#region implemented abstract members of Epic.Enterprise.RoleBase
+		public override void Dispose ()
+		{
+		}
+		#endregion
 	}
 }
 

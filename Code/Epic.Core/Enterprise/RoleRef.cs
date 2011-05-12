@@ -46,6 +46,11 @@ namespace Epic.Enterprise
 		
 		public int Decrease()
 		{
+			if(_refs == 0)
+			{
+				string message = string.Format("No reference to {0} should be out.", Role.GetType().FullName);
+				throw new InvalidOperationException(message);
+			}
 			--_refs; // TODO: evaluate whether use CAS for thread safety
 			return _refs;
 		}
