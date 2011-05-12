@@ -22,9 +22,11 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using NUnit.Framework;
 
 namespace Epic.Enterprise
 {
+	[TestFixture]
 	public class RoleRefQA
 	{
 		public RoleRefQA ()
