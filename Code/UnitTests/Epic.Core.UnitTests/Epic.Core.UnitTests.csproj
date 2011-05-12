@@ -53,6 +53,12 @@
     <Compile Include="InstanceNameQA.cs" />
     <Compile Include="Enterprise\EnterpriseBaseQA.cs" />
     <Compile Include="Fakes\FakeEnterprise.cs" />
+    <Compile Include="Enterprise\RoleBuilderBaseQA.cs" />
+    <Compile Include="Enterprise\RoleBaseQA.cs" />
+    <Compile Include="Enterprise\RoleRefQA.cs" />
+    <Compile Include="Enterprise\WorkingSessionBaseQA.cs" />
+    <Compile Include="Fakes\FakeRoleBuilder.cs" />
+    <Compile Include="Fakes\FakeRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">
