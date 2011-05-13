@@ -26,6 +26,8 @@ using NUnit.Framework;
 using Epic.Fakes;
 using Rhino.Mocks;
 using System.Security.Principal;
+using System.IO;
+using Epic;
 
 namespace Epic.Enterprise
 {
@@ -94,7 +96,7 @@ namespace Epic.Enterprise
 		
 		
 		[Test]
-		public void Build_withWrongTemplateMethod_throw()
+		public void Build_withWrongTemplateMethod_throwInvalidCastException()
 		{
 			// arrange:
 			IPrincipal player = MockRepository.GenerateStrictMock<IPrincipal>();
@@ -104,6 +106,33 @@ namespace Epic.Enterprise
 			
 			// assert:
 			Assert.Throws<InvalidCastException>(delegate { builder.Build(player); });
+		}
+		
+		[Test]
+		public void Serialize_works()
+		{
+			// arrange:
+			FakeRoleBuilder<IFakeRole> builder = new FakeRoleBuilder<IFakeRole>();
+			
+			// act:
+			Stream stream = TestUtilities.Serialize(builder);
+			
+			// assert:
+			Assert.IsNotNull(stream);
+		}
+		
+		[Test]
+		public void Deserialize_works()
+		{
+			// arrange:
+			FakeRoleBuilder<IFakeRole> builder = new FakeRoleBuilder<IFakeRole>();
+			Stream stream = TestUtilities.Serialize(builder);
+			
+			// act:
+			FakeRoleBuilder<IFakeRole> deserialized = TestUtilities.Deserialize<FakeRoleBuilder<IFakeRole>>(stream);
+			
+			// assert:
+			Assert.IsNotNull(deserialized);
 		}
 	}
 }

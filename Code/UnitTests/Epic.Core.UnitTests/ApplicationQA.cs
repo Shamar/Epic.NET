@@ -67,6 +67,7 @@ namespace Epic
 			Assert.AreEqual(appName,    Application.Name);
 			Assert.AreSame(environment, Application.Environment);
 			Assert.AreSame(enterprise,  Application.Enterprise);
+			appSingleton.VerifyAllExpectations();
 		}
 		
 		[Test]
@@ -93,6 +94,7 @@ namespace Epic
 			
 			// assert:
 			Assert.Throws<InvalidOperationException>(delegate { Application.Initialize(secondSingleton); });
+			appSingleton.VerifyAllExpectations();
 		}		
 	}
 }

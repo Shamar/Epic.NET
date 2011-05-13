@@ -42,6 +42,18 @@ namespace Epic
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate { new FakeApplication(string.Empty); });
 		}
+		
+		[TestCase("Test1")]
+		[TestCase("Test2")]
+		[TestCase("Test3")]
+		public void Ctor_withName_works(string name)
+		{
+			// act:
+			ApplicationBase application = new FakeApplication(name);
+			
+			// assert:
+			Assert.AreEqual(name, application.Name);
+		}
 	}
 }
 
