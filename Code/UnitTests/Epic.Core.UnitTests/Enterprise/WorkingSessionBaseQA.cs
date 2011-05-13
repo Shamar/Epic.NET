@@ -23,14 +23,32 @@
 //  
 using System;
 using NUnit.Framework;
+using Epic.Fakes;
 
 namespace Epic.Enterprise
 {
 	[TestFixture]
 	public class WorkingSessionBaseQA
 	{
-		public WorkingSessionBaseQA ()
+		[Test]
+		public void Ctor_withoutIdentifier_throwsArgumentNullException()
 		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new FakeWorkingSession(null); });
+			Assert.Throws<ArgumentNullException>(delegate { new FakeWorkingSession(string.Empty); });
+		}
+		
+		[Test]
+		public void Ctor_withIdentifier_works()
+		{
+			// arrange:
+			string identifier = "test";
+			
+			// act:
+			IWorkingSession session = new FakeWorkingSession(identifier);
+			
+			// assert:
+			Assert.AreSame(identifier, session.Identifier);
 		}
 	}
 }

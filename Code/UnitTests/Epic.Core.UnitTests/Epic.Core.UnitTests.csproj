@@ -59,6 +59,7 @@
     <Compile Include="Enterprise\WorkingSessionBaseQA.cs" />
     <Compile Include="Fakes\FakeRoleBuilder.cs" />
     <Compile Include="Fakes\FakeRole.cs" />
+    <Compile Include="Fakes\FakeWorkingSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">
