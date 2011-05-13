@@ -43,8 +43,8 @@ namespace Epic.Fakes
 		
 		public virtual bool CallAllowNewOwner (System.Security.Principal.IPrincipal newOwner, out System.Security.Principal.IPrincipal ownerToAssign)
 		{
-			ownerToAssign = null;
-			return false;
+			ownerToAssign = newOwner;
+			return true;
 		}
 
 		public virtual bool CallIsAllowed<TRole> () where TRole : class

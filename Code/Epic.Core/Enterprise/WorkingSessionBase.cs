@@ -106,6 +106,11 @@ namespace Epic.Enterprise
 				{
 					RaiseOwnerChanged(oldOwner);
 				}
+				else
+				{
+					string message = string.Format("Can not assign the working session {0} to {1}. Operation not allowed.", _identifier, owner.Identity.Name);
+					throw new InvalidOperationException(message);
+				}
 			}
 			catch(Exception e)
 			{

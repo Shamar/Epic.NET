@@ -82,11 +82,7 @@ namespace Epic
 		{
 			// arrange:
 			string appName = "SampleApp";
-			EnvironmentBase environment = MockRepository.GeneratePartialMock<EnvironmentBase>();
-			IEnterprise enterprise = MockRepository.GenerateStrictMock<IEnterprise>();
 			ApplicationBase appSingleton = MockRepository.GeneratePartialMock<ApplicationBase>(appName);
-			appSingleton.Expect(a => a.Environment).Return(environment).Repeat.Once();
-			appSingleton.Expect(a => a.Enterprise).Return(enterprise).Repeat.Once();
 			ApplicationBase secondSingleton = MockRepository.GeneratePartialMock<ApplicationBase>("test");
 			
 			// act:
