@@ -24,6 +24,8 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Epic.Fakes;
+using System.IO;
 
 namespace Epic.Enterprise
 {
@@ -109,6 +111,42 @@ namespace Epic.Enterprise
 			
 			// assert:
 			roleRef.Dispose();
+		}
+		
+		[Test]
+		public void Serialize_works()
+		{
+			// arrange:
+			RoleBase role = new FakeRole();
+			RoleRef roleRef = new RoleRef(role);
+			int numRef = 100;
+			for(int i = 0; i < numRef; ++i)
+				roleRef.Increase();
+			
+			// act:
+			Stream stream = TestUtilities.Serialize(roleRef);
+			
+			// assert:
+			Assert.IsNotNull(stream);
+		}
+		
+		[Test]
+		public void Deserialize_works()
+		{
+			// arrange:
+			RoleBase role = new FakeRole();
+			RoleRef roleRef = new RoleRef(role);
+			int numRef = 100;
+			for(int i = 0; i < numRef; ++i)
+				roleRef.Increase();
+			Stream stream = TestUtilities.Serialize(roleRef);
+			
+			// act:
+			RoleRef deserialized = TestUtilities.Deserialize<RoleRef>(stream);
+			int nextRef = deserialized.Increase();
+			
+			// assert:
+			Assert.AreEqual(numRef + 1, nextRef);
 		}
 	}
 }

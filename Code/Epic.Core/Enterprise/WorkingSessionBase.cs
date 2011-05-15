@@ -100,16 +100,13 @@ namespace Epic.Enterprise
 			}
 			
 			IPrincipal oldOwner = _owner;
+			bool allowed = false;
 			try
 			{
-				if(this.AllowNewOwner(owner, out _owner))
+				allowed = this.AllowNewOwner(owner, out _owner);
+				if(allowed)
 				{
 					RaiseOwnerChanged(oldOwner);
-				}
-				else
-				{
-					string message = string.Format("Can not assign the working session {0} to {1}. Operation not allowed.", _identifier, owner.Identity.Name);
-					throw new InvalidOperationException(message);
 				}
 			}
 			catch(Exception e)
@@ -118,6 +115,11 @@ namespace Epic.Enterprise
 					throw e;
 				string message = string.Format("Can not assign the working session {0} to {1}.", _identifier, owner.Identity.Name);
 				throw new InvalidOperationException(message, e);
+			}
+			if(! allowed)
+			{
+				string message = string.Format("Can not assign the working session {0} to {1}. Operation not allowed.", _identifier, owner.Identity.Name);
+				throw new InvalidOperationException(message);
 			}
 		}
 		
