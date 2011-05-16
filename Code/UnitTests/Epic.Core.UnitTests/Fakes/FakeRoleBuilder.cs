@@ -27,21 +27,23 @@ using Epic.Enterprise;
 namespace Epic.Fakes
 {
 	[Serializable]
-	public class FakeRoleBuilder<TRole> : RoleBuilderBase<TRole> where TRole : class
+	public class FakeRoleBuilder<TRole, TConcreteRole> : RoleBuilderBase<TRole, TConcreteRole> 
+		where TRole : class
+		where TConcreteRole : RoleBase, TRole, new()
 	{
-		#region implemented abstract members of Epic.Enterprise.RoleBuilderBase[TRole]
-		protected override RoleBase BuildRole (System.Security.Principal.IPrincipal player)
-		{
-			return CallBuildRole(player);
-		}
-		#endregion
-		
 		#region templates for tests
-		public virtual RoleBase CallBuildRole (System.Security.Principal.IPrincipal player)
+		public virtual TConcreteRole CallCreateRoleFor (System.Security.Principal.IPrincipal player)
 		{
 			return null;
 		}
 		#endregion templates for tests
+
+		#region implemented abstract members of Epic.Enterprise.RoleBuilderBase[TRole,TConcreteRole]
+		protected override TConcreteRole CreateRoleFor (System.Security.Principal.IPrincipal player)
+		{
+			return CallCreateRoleFor(player);
+		}
+		#endregion
 	}
 }
 

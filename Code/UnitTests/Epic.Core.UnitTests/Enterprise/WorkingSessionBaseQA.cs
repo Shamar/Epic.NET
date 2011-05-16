@@ -33,6 +33,8 @@ namespace Epic.Enterprise
 	[TestFixture]
 	public class WorkingSessionBaseQA
 	{
+		#region Constructor
+		
 		[Test]
 		public void Ctor_withoutIdentifier_throwsArgumentNullException()
 		{
@@ -53,6 +55,10 @@ namespace Epic.Enterprise
 			// assert:
 			Assert.AreSame(identifier, session.Identifier);
 		}
+		
+		#endregion Constructor
+		
+		#region Serialization
 		
 		[TestCase("Test1")]
 		[TestCase("Test2")]
@@ -123,6 +129,20 @@ namespace Epic.Enterprise
 			// assert:
 			Assert.IsNotNull(deserialized);
 			Assert.AreEqual(ownerId, deserialized.Owner);
+		}
+		
+		#endregion Serialization
+		
+		[Test]
+		public void AssignTo_nullPrincipal_throwsArgumentNullException()
+		{
+			// arrange:
+			IWorkingSession session = new FakeWorkingSession();
+		
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate {
+				session.AssignTo(null);
+			});
 		}
 	}
 }

@@ -43,7 +43,7 @@ namespace Epic.Enterprise
 			// act:
 			try
 			{
-				new FakeRoleBuilder<FakeRole> ();
+				new FakeRoleBuilder<FakeRole, FakeRole> ();
 			}
 			catch(TypeInitializationException ex)
 			{
@@ -59,7 +59,7 @@ namespace Epic.Enterprise
 		public void TypeCtor_withInterfaceRole_works ()
 		{
 			// assert:
-			new FakeRoleBuilder<IFakeRole>();
+			new FakeRoleBuilder<IFakeRole, FakeRole>();
 		}
 		
 		[Test]
@@ -67,9 +67,9 @@ namespace Epic.Enterprise
 		{
 			// arrange:
 			IPrincipal player = MockRepository.GenerateStrictMock<IPrincipal>();
-			RoleBase role = MockRepository.GeneratePartialMock<RoleBase, IFakeRole>();
-			FakeRoleBuilder<IFakeRole> builder = MockRepository.GeneratePartialMock<FakeRoleBuilder<IFakeRole>>();
-			builder.Expect(b => b.CallBuildRole(player)).Return(role).Repeat.Once();
+			FakeRole role = MockRepository.GeneratePartialMock<FakeRole>();
+			FakeRoleBuilder<IFakeRole, FakeRole> builder = MockRepository.GeneratePartialMock<FakeRoleBuilder<IFakeRole, FakeRole>>();
+			builder.Expect(b => b.CallCreateRoleFor(player)).Return(role).Repeat.Once();
 			
 			// act:
 			IFakeRole returnedRole = builder.Build(player);
@@ -83,9 +83,9 @@ namespace Epic.Enterprise
 		{
 			// arrange:
 			IPrincipal player = null;
-			RoleBase role = MockRepository.GeneratePartialMock<RoleBase, IFakeRole>();
-			FakeRoleBuilder<IFakeRole> builder = MockRepository.GeneratePartialMock<FakeRoleBuilder<IFakeRole>>();
-			builder.Expect(b => b.CallBuildRole(player)).Return(role).Repeat.Once();
+			FakeRole role = MockRepository.GeneratePartialMock<FakeRole>();
+			FakeRoleBuilder<IFakeRole, FakeRole> builder = MockRepository.GeneratePartialMock<FakeRoleBuilder<IFakeRole, FakeRole>>();
+			builder.Expect(b => b.CallCreateRoleFor(player)).Return(role).Repeat.Once();
 			
 			// act:
 			IFakeRole returnedRole = builder.Build(player);
@@ -94,25 +94,11 @@ namespace Epic.Enterprise
 			Assert.AreSame(role, returnedRole);
 		}
 		
-		
-		[Test]
-		public void Build_withWrongTemplateMethod_throwInvalidCastException()
-		{
-			// arrange:
-			IPrincipal player = MockRepository.GenerateStrictMock<IPrincipal>();
-			RoleBase role = MockRepository.GeneratePartialMock<RoleBase>();
-			FakeRoleBuilder<IFakeRole> builder = MockRepository.GeneratePartialMock<FakeRoleBuilder<IFakeRole>>();
-			builder.Expect(b => b.CallBuildRole(player)).Return(role).Repeat.Once();
-			
-			// assert:
-			Assert.Throws<InvalidCastException>(delegate { builder.Build(player); });
-		}
-		
 		[Test]
 		public void Serialize_works()
 		{
 			// arrange:
-			FakeRoleBuilder<IFakeRole> builder = new FakeRoleBuilder<IFakeRole>();
+			FakeRoleBuilder<IFakeRole, FakeRole> builder = new FakeRoleBuilder<IFakeRole, FakeRole>();
 			
 			// act:
 			Stream stream = TestUtilities.Serialize(builder);
@@ -125,11 +111,11 @@ namespace Epic.Enterprise
 		public void Deserialize_works()
 		{
 			// arrange:
-			FakeRoleBuilder<IFakeRole> builder = new FakeRoleBuilder<IFakeRole>();
+			FakeRoleBuilder<IFakeRole, FakeRole> builder = new FakeRoleBuilder<IFakeRole, FakeRole>();
 			Stream stream = TestUtilities.Serialize(builder);
 			
 			// act:
-			FakeRoleBuilder<IFakeRole> deserialized = TestUtilities.Deserialize<FakeRoleBuilder<IFakeRole>>(stream);
+			FakeRoleBuilder<IFakeRole, FakeRole> deserialized = TestUtilities.Deserialize<FakeRoleBuilder<IFakeRole, FakeRole>>(stream);
 			
 			// assert:
 			Assert.IsNotNull(deserialized);

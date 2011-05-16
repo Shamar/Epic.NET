@@ -52,7 +52,7 @@ namespace Epic.Fakes
 			return false;
 		}
 
-		public virtual RoleBuilderBase<TRole> CallGetRoleBuilder<TRole> () where TRole : class
+		public virtual RoleBuilder<TRole> CallGetRoleBuilder<TRole> () where TRole : class
 		{
 			return null;
 		}
@@ -70,7 +70,7 @@ namespace Epic.Fakes
 			return CallIsAllowed<TRole>();
 		}
 
-		protected override RoleBuilderBase<TRole> GetRoleBuilder<TRole> ()
+		protected override RoleBuilder<TRole> GetRoleBuilder<TRole> ()
 		{
 			return CallGetRoleBuilder<TRole>();
 		}

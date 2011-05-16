@@ -1,5 +1,5 @@
 //  
-//  RoleBuilder.cs
+//  RoleBuilderBase.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -26,69 +26,23 @@ using System.Security.Principal;
 
 namespace Epic.Enterprise
 {
-	/// <summary>
-	/// Role builder base class. Enforce <typeparamref name="TRole"/> to be an interface 
-	/// and the concrete roles to derive <see cref="RoleBase"/>.
-	/// </summary>
-	/// <typeparam name="TRole">Type (interface) of role that the builder can build.</typeparam>
-	/// <exception cref='InvalidOperationException'>
-	/// Is thrown on type initialization if <typeparamref name="TRole"/> is not an interface.
-	/// </exception>
-	/// <exception cref='InvalidCastException'>
-	/// Is thrown when the role created by <see cref="RoleBuilder{TRole}.BuildRole(IPrincipal)"/> 
-	/// do not extend <typeparamref name="TRole"/>.
-	/// </exception>
 	[Serializable]
-	public abstract class RoleBuilderBase<TRole> where TRole : class
+	public abstract class RoleBuilderBase<TRoleInterface, TRoleImplementation> : RoleBuilder<TRoleInterface>
+		where TRoleInterface : class
+		where TRoleImplementation : RoleBase, TRoleInterface
 	{
-		/// <summary>
-		/// Initializes a role builder class type.
-		/// </summary>
-		/// <exception cref='InvalidOperationException'>
-		/// <typeparamref name="TRole"/> is not an interface.
-		/// </exception>
-		static RoleBuilderBase()
+		public RoleBuilderBase()
 		{
-			if(!typeof(TRole).IsInterface)
-			{
-				string message = string.Format("Can not initialize a RoleBuilder<{0}> since {0} is not an interface.", typeof(TRole).FullName);
-				throw new InvalidOperationException(message);
-			}
 		}
-		
-		/// <summary>
-		/// Build the <typeparamref name="TRole"/> for <paramref name="player"/>. Template method.
-		/// </summary>
-		/// <param name='player'>
-		/// Role player.
-		/// </param>
-		/// <exception cref='InvalidCastException'>
-		/// Is thrown when the role created by <see cref="RoleBuilder{TRole}.BuildRole(IPrincipal)"/> 
-		/// do not extend <typeparamref name="TRole"/>.
-		/// </exception>
-		/// <seealso cref="RoleBuilder{TRole}.BuildRole(IPrincipal)"/>
-		public TRole Build(IPrincipal player)
+
+		#region implemented abstract members of Epic.Enterprise.RoleBuilder[TRoleInterface]
+		protected sealed override TRoleInterface BuildRole (IPrincipal player)
 		{
-			RoleBase baseRole = BuildRole(player);
-			TRole newRole = baseRole as TRole;
-			if(null == newRole)
-			{
-				string message = string.Format("The {0} role do not implement {1}.", baseRole.GetType().FullName, typeof(TRole).FullName);
-				throw new InvalidCastException(message);
-			}
-			return newRole;
+			return CreateRoleFor(player);
 		}
-		
-		/// <summary>
-		/// Build the <typeparamref name="TRole"/> for <paramref name="player"/>.
-		/// </summary>
-		/// <returns>
-		/// The role. Must implement <typeparamref name="TRole"/>.
-		/// </returns>
-		/// <param name='player'>
-		/// Role player.
-		/// </param>
-		protected abstract RoleBase BuildRole(IPrincipal player);
+		#endregion
+			
+		protected abstract TRoleImplementation CreateRoleFor (IPrincipal player);
 	}
 }
 
