@@ -26,23 +26,52 @@ using System.Security.Principal;
 
 namespace Epic.Enterprise
 {
+	/// <summary>
+	/// Role builders' base class.
+	/// </summary>
+	/// <typeparam name="TRole">Role builded.</typeparam>
+	/// <typeparam name="TImplementation">Concrete role class.</typeparam>
 	[Serializable]
-	public abstract class RoleBuilderBase<TRoleInterface, TRoleImplementation> : RoleBuilder<TRoleInterface>
-		where TRoleInterface : class
-		where TRoleImplementation : RoleBase, TRoleInterface
+	public abstract class RoleBuilderBase<TRole, TImplementation> : RoleBuilder<TRole>
+		where TRole : class
+		where TImplementation : RoleBase, TRole
 	{
-		public RoleBuilderBase()
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		protected RoleBuilderBase()
+			: base()
 		{
 		}
 
 		#region implemented abstract members of Epic.Enterprise.RoleBuilder[TRoleInterface]
-		protected sealed override TRoleInterface BuildRole (IPrincipal player)
+		/// <summary>
+		/// Builds the role. Overrides and seals the
+		/// <see cref="RoleBuilder{TRole}.BuildRole(IPrincipal)"/> template 
+		/// method. Calls <see cref="RoleBuilderBase{TRole, TImplementation}.CreateRoleFor(IPrincipal)"/>.
+		/// </summary>
+		/// <returns>
+		/// The role.
+		/// </returns>
+		/// <param name='player'>
+		/// Role player.
+		/// </param>
+		protected sealed override TRole BuildRole (IPrincipal player)
 		{
 			return CreateRoleFor(player);
 		}
 		#endregion
 			
-		protected abstract TRoleImplementation CreateRoleFor (IPrincipal player);
+		/// <summary>
+		/// Creates the <typeparamref name="TRole"/> instance for <paramref name="player"/>.
+		/// </summary>
+		/// <returns>
+		/// The the <typeparamref name="TRole"/> instance for <paramref name="player"/>.
+		/// </returns>
+		/// <param name='player'>
+		/// Role player.
+		/// </param>
+		protected abstract TImplementation CreateRoleFor (IPrincipal player);
 	}
 }
 

@@ -36,6 +36,16 @@ namespace Epic.Enterprise
 		private readonly Dictionary<Type, RoleRef> _roles = new Dictionary<Type, RoleRef>();
 		private IPrincipal _owner;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Epic.Enterprise.WorkingSessionBase"/> class.
+		/// </summary>
+		/// <param name='identifier'>
+		/// Session identifier (must be unique in the enterprise application).
+		/// </param>
+		/// <exception cref='ArgumentNullException'>
+		/// Is thrown when <paramref name="identifier"/> is <see langword="null" /> 
+		/// or <see cref="string.Empty"/>.
+		/// </exception>
 		protected WorkingSessionBase(string identifier)
 		{
 			if(string.IsNullOrEmpty(identifier))
@@ -43,7 +53,14 @@ namespace Epic.Enterprise
 			_identifier = identifier;
 		}
 		
-		protected IPrincipal CurrentOwner
+		/// <summary>
+		/// Gets the current owner. <see langword="null" /> when the session has never be assigned to a owner.
+		/// </summary>
+		/// <value>
+		/// The current owner.
+		/// </value>
+		/// <seealso cref="WorkingSessionBase.AssignTo(IPrincipal)"/>
+		protected IPrincipal Owner
 		{
 			get
 			{
@@ -51,8 +68,56 @@ namespace Epic.Enterprise
 			}
 		}
 		
+		#region abstract template method
+		
+		/// <summary>
+		/// Indicates whether the current working session can be assigned 
+		/// to <paramref name="newOwner"/>.
+		/// </summary>
+		/// <returns>
+		/// <value>true</value> if the assignment is allowed, <value>false</value> otherwise.
+		/// </returns>
+		/// <param name='newOwner'>
+		/// The new owner.
+		/// </param>
+		/// <param name='ownerToAssign'>
+		/// If the assigment is allowed, the owner to assign (usually <paramref name="newOwner"/>).
+		/// </param>
 		protected abstract bool AllowNewOwner(IPrincipal newOwner, out IPrincipal ownerToAssign);
 		
+		/// <summary>
+		/// Determines whether the owner of the working session is allowed to achieve 
+		/// <typeparam name="TRole"/>.
+		/// </summary>
+		/// <returns>
+		/// <c>true</c> if the owner of the working session is allowed to achieve the role; 
+		/// otherwise, <c>false</c>.
+		/// </returns>
+		/// <typeparam name='TRole'>
+		/// Role of interest.
+		/// </typeparam>
+		protected abstract bool IsAllowed<TRole>() where TRole : class;
+		
+		/// <summary>
+		/// Gets the role builder for <typeparamref name="TRole"/>.
+		/// </summary>
+		/// <returns>
+		/// The role builder.
+		/// </returns>
+		/// <typeparam name='TRole'>
+		/// Role of interest.
+		/// </typeparam>
+		protected abstract RoleBuilder<TRole> GetRoleBuilder<TRole>() where TRole : class;
+		
+		#endregion abstract template method
+		
+		/// <summary>
+		/// Raises the owner changed event.
+		/// </summary>
+		/// <param name='oldOwner'>
+		/// Old owner.
+		/// </param>
+		/// <seealso cref="WorkingSessionBase.AssignTo(IPrincipal)"/>
 		private void RaiseOwnerChanged(IPrincipal oldOwner)
 		{
 			string oldName; 
@@ -70,10 +135,6 @@ namespace Epic.Enterprise
 			if(null != handler)
 				handler(this, args); // TODO: evaluate whether aggregate exceptions
 		}
-		
-		protected abstract bool IsAllowed<TRole>() where TRole : class;
-		
-		protected abstract RoleBuilder<TRole> GetRoleBuilder<TRole>() where TRole : class;
 		
 		private TRole Build<TRole>() where TRole : class
 		{
@@ -141,7 +202,7 @@ namespace Epic.Enterprise
 			{
 				if(!IsAllowed<TRole>())
 				{
-					string message = string.Format("The owner of the working session ({0}) can not achieve the {1} role.", this.Owner, roleType.FullName);
+					string message = string.Format("The owner of the working session ({0}) can not achieve the {1} role.", ((IWorkingSession)this).Owner, roleType.FullName);
 					throw new InvalidOperationException(message);
 				}
 				TRole newRole = Build<TRole>();
@@ -184,7 +245,7 @@ namespace Epic.Enterprise
 			}
 		}
 
-		public string Owner 
+		string IWorkingSession.Owner 
 		{
 			get 
 			{

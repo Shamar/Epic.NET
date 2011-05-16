@@ -27,17 +27,13 @@ using System.Security.Principal;
 namespace Epic.Enterprise
 {
 	/// <summary>
-	/// Role builder base class. Enforce <typeparamref name="TRole"/> to be an interface 
-	/// and the concrete roles to derive <see cref="RoleBase"/>.
+	/// Role builder public contract. Enforce <typeparamref name="TRole"/> to be a pure interface.
 	/// </summary>
 	/// <typeparam name="TRole">Type (interface) of role that the builder can build.</typeparam>
 	/// <exception cref='InvalidOperationException'>
 	/// Is thrown on type initialization if <typeparamref name="TRole"/> is not an interface.
 	/// </exception>
-	/// <exception cref='InvalidCastException'>
-	/// Is thrown when the role created by <see cref="RoleBuilder{TRole}.BuildRole(IPrincipal)"/> 
-	/// do not extend <typeparamref name="TRole"/>.
-	/// </exception>
+	/// <seealso cref="RoleBuilderBase{TRole, TImplementation}"/>
 	[Serializable]
 	public abstract class RoleBuilder<TRole> where TRole : class
 	{
@@ -68,12 +64,8 @@ namespace Epic.Enterprise
 		/// Build the <typeparamref name="TRole"/> for <paramref name="player"/>. Template method.
 		/// </summary>
 		/// <param name='player'>
-		/// Role player.
+		/// Role player. 
 		/// </param>
-		/// <exception cref='InvalidCastException'>
-		/// Is thrown when the role created by <see cref="RoleBuilder{TRole}.BuildRole(IPrincipal)"/> 
-		/// do not extend <typeparamref name="TRole"/>.
-		/// </exception>
 		/// <seealso cref="RoleBuilder{TRole}.BuildRole(IPrincipal)"/>
 		public TRole Build(IPrincipal player)
 		{
