@@ -136,6 +136,12 @@ namespace Epic.Enterprise
 				handler(this, args); // TODO: evaluate whether aggregate exceptions
 		}
 		
+		/// <summary>
+		/// Build a <typeparamref name="TRole"/> instance.
+		/// </summary>
+		/// <typeparam name='TRole'>
+		/// Role of interest.
+		/// </typeparam>
 		private TRole Build<TRole>() where TRole : class
 		{
 			RoleBuilder<TRole> builder = GetRoleBuilder<TRole>();
