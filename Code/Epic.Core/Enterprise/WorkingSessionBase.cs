@@ -149,7 +149,19 @@ namespace Epic.Enterprise
 		}
 
 		#region IWorkingSession implementation
-
+		
+		/// <summary>
+		/// Assigns the working session to <paramref name="owner"/>.
+		/// </summary>
+		/// <param name='owner'>
+		/// New owner.
+		/// </param>
+		/// <exception cref='ArgumentNullException'>
+		/// Is thrown when <param name='owner'> is <see langword="null" />.
+		/// </exception>
+		/// <exception cref='InvalidOperationException'>
+		/// Is thrown when the assignment cannot be performed.
+		/// </exception>
 		public void AssignTo (IPrincipal owner)
 		{
 			if(null == owner)
@@ -190,8 +202,20 @@ namespace Epic.Enterprise
 			}
 		}
 		
+		/// <summary>
+		/// Occurs when the owner change.
+		/// </summary>
 		public event EventHandler<Events.ChangeEventArgs<string>> OwnerChanged;
 		
+		/// <summary>
+		/// Indicates whether the owner can achieve the specified role.
+		/// </summary>
+		/// <returns>
+		/// <value>true</value> if the session owner can achieve the role, <value>false</value> otherwise.
+		/// </returns>
+		/// <typeparam name='TRole'>
+		/// The type of the role to achieve.
+		/// </typeparam>
 		public bool CouldAchieve<TRole> () where TRole : class
 		{
 			Type roleType = typeof(TRole);
@@ -200,6 +224,17 @@ namespace Epic.Enterprise
 			return IsAllowed<TRole>();
 		}
 
+		/// <summary>
+		/// Achieve the specified role.
+		/// </summary>
+		/// <param name='role'>
+		/// User's role, entry point to a specific context boundary in the domain.
+		/// </param>
+		/// <typeparam name='TRole'>
+		/// The type of the role to achieve.
+		/// </typeparam>
+		/// <exception cref="InvalidOperationException">The <see cref="IWorkingSession.Owner"/> can not achieve 
+		/// the required <typeparamref name="TRole"/>.</exception>
 		public void Achieve<TRole> (out TRole role) where TRole : class
 		{
 			Type roleType = typeof(TRole);
@@ -219,6 +254,19 @@ namespace Epic.Enterprise
 			role = roleRef.Role as TRole;
 		}
 
+		/// <summary>
+		/// Leave the specified role. 
+		/// After calling this method, your role will be disposed 
+		/// and the reference to <paramref name="role"/> will be set to <value>null</value>.
+		/// </summary>
+		/// <param name='role'>
+		/// User's role to be disposed.
+		/// </param>
+		/// <typeparam name='TRole'>
+		/// The type of the role to leave.
+		/// </typeparam>
+		/// <exception cref="ArgumentNullException">The <paramref name="role"/> is <value>null</value>.</exception>
+		/// <exception cref="ArgumentException">The <paramref name="role"/> is unknown to the session.</exception>
 		public void Leave<TRole> (ref TRole role) where TRole : class
 		{
 			if(null == role)
@@ -243,6 +291,12 @@ namespace Epic.Enterprise
 			role = null;
 		}
 
+		/// <summary>
+		/// Unique identifier of the working session.
+		/// </summary>
+		/// <value>
+		/// A unpredictable identifier, unique in the whole enterprise.
+		/// </value>
 		public string Identifier 
 		{
 			get 
@@ -251,6 +305,12 @@ namespace Epic.Enterprise
 			}
 		}
 
+		/// <summary>
+		/// Owner of the working session. Will be <see cref="string.Empty"/> when anonymous.
+		/// </summary>
+		/// <value>
+		/// Owner of the working session. Will be <see cref="string.Empty"/> when anonymous.
+		/// </value>
 		string IWorkingSession.Owner 
 		{
 			get 
@@ -264,6 +324,17 @@ namespace Epic.Enterprise
 		#endregion
 		
 		#region IDisposable implementation
+		/// <summary>
+		/// Releases all resource used by the <see cref="Epic.Enterprise.WorkingSessionBase"/> object.
+		/// </summary>
+		/// <remarks>
+		/// Call <see cref="Dispose"/> when you are finished using the <see cref="Epic.Enterprise.WorkingSessionBase"/>. The
+		/// <see cref="Dispose"/> method leaves the <see cref="Epic.Enterprise.WorkingSessionBase"/> in an unusable state.
+		/// After calling <see cref="Dispose"/>, you must release all references to the
+		/// <see cref="Epic.Enterprise.WorkingSessionBase"/> so the garbage collector can reclaim the memory that the
+		/// <see cref="Epic.Enterprise.WorkingSessionBase"/> was occupying.
+		/// </remarks>
+		// TODO: introduce template method for dispose()
 		public virtual void Dispose ()
 		{
 			foreach(RoleRef roleRef in _roles.Values)
