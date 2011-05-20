@@ -31,7 +31,7 @@ using Rhino.Mocks;
 namespace Epic.Enterprise
 {
 	[TestFixture]
-	public class EnterpriseBaseQA
+	public class EnterpriseBaseQA : RhinoMocksFixtureBase
 	{
 		[SetUp]
 		public void ResetApplication()
@@ -125,7 +125,7 @@ namespace Epic.Enterprise
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
 			WorkingSessionBase outWorkingSessionBase = null;
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecStartWorkingSession(owner, out outWorkingSessionBase)).OutRef(session).Repeat.Once();
 			IWorkingSession outWorkingSession = null;
@@ -173,7 +173,7 @@ namespace Epic.Enterprise
 			mocks.Add(enterprise);
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecAcquireWorkingSessionReal(owner, identifier)).Return(session).Repeat.Once();
 			
@@ -230,7 +230,7 @@ namespace Epic.Enterprise
 			mocks.Add(enterprise);
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			session.Expect(s => s.Dispose()).Repeat.Once();
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
@@ -254,7 +254,7 @@ namespace Epic.Enterprise
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			owner.Expect(p => p.Identity).Return(new GenericIdentity("testPrincipal"));
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Throw(dummyException).Repeat.Once();
 			InvalidOperationException cought = null;
@@ -287,7 +287,7 @@ namespace Epic.Enterprise
 			mocks.Add(enterprise);
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Throw(thrownException).Repeat.Once();
 			InvalidOperationException cought = null;
@@ -319,7 +319,7 @@ namespace Epic.Enterprise
 			mocks.Add(enterprise);
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			session.Expect(s => s.Dispose()).Throw(thrownException).Repeat.Once();
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
@@ -353,7 +353,7 @@ namespace Epic.Enterprise
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			owner.Expect(p => p.Identity).Return(new GenericIdentity("testPrincipal"));
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession");
+			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			session.Expect(s => s.Dispose()).Throw(dummyException).Repeat.Once();
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();

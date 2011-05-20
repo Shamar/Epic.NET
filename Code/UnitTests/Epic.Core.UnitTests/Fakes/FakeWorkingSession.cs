@@ -30,31 +30,30 @@ namespace Epic.Fakes
 	[Serializable]
 	public class FakeWorkingSession : WorkingSessionBase
 	{
+		private static IPrincipal CreateFakePrincipal()
+		{
+			return new GenericPrincipal(new GenericIdentity("FakeUser"), new string[0]);
+		}
 		public FakeWorkingSession ()
-			: base("FakeWorkingSession")
+			: base("FakeWorkingSession", CreateFakePrincipal())
 		{
 		}
 
-		public FakeWorkingSession (string identifier)
-			: base(identifier)
+		public FakeWorkingSession (string identifier, IPrincipal owner)
+			: base(identifier, owner)
 		{
 		}
 		
 		#region templates for tests
 		
-		public IPrincipal CurrentOwner
+		public new IPrincipal Owner
 		{
 			get
 			{
-				return Owner;
+				return base.Owner;
 			}
 		}
-		
-		public virtual bool CallAllowNewOwner (System.Security.Principal.IPrincipal newOwner, out System.Security.Principal.IPrincipal ownerToAssign)
-		{
-			ownerToAssign = newOwner;
-			return true;
-		}
+
 
 		public virtual bool CallIsAllowed<TRole> () where TRole : class
 		{
@@ -69,10 +68,7 @@ namespace Epic.Fakes
 		#endregion templates for tests
 
 		#region implemented abstract members of Epic.Enterprise.WorkingSessionBase
-		protected override bool AllowNewOwner (System.Security.Principal.IPrincipal newOwner, out System.Security.Principal.IPrincipal ownerToAssign)
-		{
-			return CallAllowNewOwner(newOwner, out ownerToAssign);
-		}
+
 
 		protected override bool IsAllowed<TRole> ()
 		{

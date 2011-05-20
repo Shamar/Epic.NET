@@ -27,7 +27,7 @@ using Epic.Events;
 namespace Epic
 {
 	/// <summary>
-	/// A user working session. It can be created, acquired or disposed by <see cref="IEnterprise"/>
+	/// A user working session. It can be created or disposed by <see cref="IEnterprise"/>
 	/// </summary>
 	public interface IWorkingSession
 	{
@@ -46,23 +46,6 @@ namespace Epic
 		/// Owner of the working session. Will be <see cref="string.Empty"/> when anonymous.
 		/// </value>
 		string Owner { get; }
-		
-		/// <summary>
-		/// Assigns to a principal. Usually the current thread's principal.
-		/// </summary>
-		/// <param name='owner'>
-		/// Owner.
-		/// </param>
-		/// <remarks>
-		/// It will fire <see cref="IWorkingSession.OwnerChanged"/>.
-		/// </remarks>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="owner"/> is <value>null</value>.</exception>
-		void AssignTo(IPrincipal owner);
-		
-		/// <summary>
-		/// Occurs when the session's owner change.
-		/// </summary>
-		event EventHandler<ChangeEventArgs<string>> OwnerChanged;
 		
 		/// <summary>
 		/// Indicates whether the owner can achieve the specified role.

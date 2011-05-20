@@ -39,23 +39,39 @@ namespace Epic.Enterprise
 		[Test]
 		public void Ctor_withoutIdentifier_throwsArgumentNullException()
 		{
+			// arrange:
+			IPrincipal owner = new GenericPrincipal(new GenericIdentity("FakeUser"), new string[0]);
+			
 			// assert:
-			Assert.Throws<ArgumentNullException>(delegate { new FakeWorkingSession(null); });
-			Assert.Throws<ArgumentNullException>(delegate { new FakeWorkingSession(string.Empty); });
+			Assert.Throws<ArgumentNullException>(delegate { new FakeWorkingSession(null, owner); });
+			Assert.Throws<ArgumentNullException>(delegate { new FakeWorkingSession(string.Empty, owner); });
 		}
 		
 		[Test]
-		public void Ctor_withIdentifier_works()
+		public void Ctor_withoutOwner_throwsArgumentNullException()
 		{
 			// arrange:
 			string identifier = "test";
 			
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new FakeWorkingSession(identifier, null); });
+		}
+		
+		[Test]
+		public void Ctor_withValidArguments_works()
+		{
+			// arrange:
+			string identifier = "test";
+			string userID = "FakeUser";
+			IPrincipal owner = new GenericPrincipal(new GenericIdentity(userID), new string[0]);
+			
 			// act:
-			IWorkingSession session = new FakeWorkingSession(identifier);
+			IWorkingSession session = new FakeWorkingSession(identifier, owner);
 			
 			// assert:
 			Assert.AreSame(identifier, session.Identifier);
-			Assert.IsEmpty(session.Owner);
+			Assert.AreEqual(userID, session.Owner);
+			Assert.AreSame(owner, ((FakeWorkingSession)session).Owner);
 		}
 		
 		#endregion Constructor
@@ -68,7 +84,9 @@ namespace Epic.Enterprise
 		public void Serialize_works(string identifier)
 		{
 			// arrange:
-			IWorkingSession session = new FakeWorkingSession(identifier);
+			string userID = "FakeUser";
+			IPrincipal owner = new GenericPrincipal(new GenericIdentity(userID), new string[0]);
+			IWorkingSession session = new FakeWorkingSession(identifier, owner);
 			
 			// act:
 			Stream stream = TestUtilities.Serialize(session);
@@ -77,23 +95,6 @@ namespace Epic.Enterprise
 			Assert.IsNotNull(stream);
 		}
 		
-		[TestCase("Test1", "Owner1")]
-		[TestCase("Test2", "Owner2")]
-		[TestCase("Test3", "Owner3")]
-		public void Serialize_works_afterAssignTo(string identifier, string ownerId)
-		{
-			// arrange:
-			string[] roles = new string[] { "First", "Second" };
-			IWorkingSession session = new FakeWorkingSession(identifier);
-			IPrincipal owner = new GenericPrincipal(new GenericIdentity(ownerId), roles);
-			session.AssignTo(owner);
-			
-			// act:
-			Stream stream = TestUtilities.Serialize(session);
-			
-			// assert:
-			Assert.IsNotNull(stream);
-		}
 		
 		[TestCase("Test1")]
 		[TestCase("Test2")]
@@ -101,7 +102,9 @@ namespace Epic.Enterprise
 		public void Deserialize_works(string identifier)
 		{
 			// arrange:
-			IWorkingSession session = new FakeWorkingSession(identifier);
+			string userID = "FakeUser";
+			IPrincipal owner = new GenericPrincipal(new GenericIdentity(userID), new string[0]);
+			IWorkingSession session = new FakeWorkingSession(identifier, owner);
 			Stream stream = TestUtilities.Serialize(session);
 			
 			// act:
@@ -112,237 +115,8 @@ namespace Epic.Enterprise
 			Assert.AreEqual(identifier, deserialized.Identifier);
 		}
 		
-		
-		[TestCase("Test1", "Owner1")]
-		[TestCase("Test2", "Owner2")]
-		[TestCase("Test3", "Owner3")]
-		public void Deserialize_works_afterAssignTo(string identifier, string ownerId)
-		{
-			// arrange:
-			string[] roles = new string[] { "First", "Second" };
-			IPrincipal owner = new GenericPrincipal(new GenericIdentity(ownerId), roles);
-			IWorkingSession session = new FakeWorkingSession(identifier);
-			session.AssignTo(owner);
-			Stream stream = TestUtilities.Serialize(session);
-			
-			// act:
-			IWorkingSession deserialized = TestUtilities.Deserialize<IWorkingSession>(stream);
-			
-			// assert:
-			Assert.IsNotNull(deserialized);
-			Assert.AreEqual(ownerId, deserialized.Owner);
-		}
-		
 		#endregion Serialization
 		
-		#region AssignTo
-		
-		[Test]
-		public void AssignTo_nullPrincipal_throwsArgumentNullException()
-		{
-			// arrange:
-			IWorkingSession session = new FakeWorkingSession();
-		
-			// assert:
-			Assert.Throws<ArgumentNullException>(delegate {
-				session.AssignTo(null);
-			});
-		}
-		
-		[Test]
-		public void AssignTo_anAllowedPrincipal_works()
-		{
-			// arrange:
-			string ownerId = "TestPrincipal";
-			IPrincipal owner = new GenericPrincipal(new GenericIdentity(ownerId), new string[0]);
-			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal outRef = null;
-			session.Expect(s => s.CallAllowNewOwner(owner, out outRef)).OutRef(owner).Return(true).Repeat.Once();
-			
-			// act:
-			session.AssignTo(owner);
-
-			// assert:
-			Assert.AreEqual(ownerId, ((IWorkingSession)session).Owner);
-			Assert.AreSame(owner, session.CurrentOwner);
-		}
-		
-		[Test]
-		public void AssignTo_anAllowedPrincipal_raiseOwnerChanged()
-		{
-			// arrange:
-			string ownerId = "TestPrincipal";
-			IPrincipal owner = new GenericPrincipal(new GenericIdentity(ownerId), new string[0]);
-			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal outRef = null;
-			session.Expect(s => s.CallAllowNewOwner(owner, out outRef)).OutRef(owner).Return(true).Repeat.Once();
-			object eventSender = null;
-			ChangeEventArgs<string> changeEventArgs = null;
-			session.OwnerChanged += (sender, e) => { eventSender = sender; changeEventArgs = e; };
-			
-			// act:
-			session.AssignTo(owner);
-
-			// assert:
-			Assert.AreSame(session, eventSender);
-			Assert.IsNotNull(changeEventArgs);
-			Assert.IsNullOrEmpty(changeEventArgs.OldValue);
-			Assert.AreEqual(ownerId, changeEventArgs.NewValue);
-		}
-		
-		[Test]
-		public void AssignTo_aDifferentAllowedPrincipal_raiseOwnerChanged()
-		{
-			// arrange:
-			string ownerId1 = "TestPrincipal1";
-			IPrincipal owner1 = new GenericPrincipal(new GenericIdentity(ownerId1), new string[0]);
-			string ownerId2 = "TestPrincipal2";
-			IPrincipal owner2 = new GenericPrincipal(new GenericIdentity(ownerId2), new string[0]);
-			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal outRef = null;
-			session.Expect(s => s.CallAllowNewOwner(owner1, out outRef)).OutRef(owner1).Return(true).Repeat.Once();
-			session.AssignTo(owner1);
-			object eventSender = null;
-			ChangeEventArgs<string> changeEventArgs = null;
-			session.OwnerChanged += (sender, e) => { eventSender = sender; changeEventArgs = e; };
-			
-			// act:
-			session.AssignTo(owner2);
-
-			// assert:
-			Assert.AreSame(session, eventSender);
-			Assert.IsNotNull(changeEventArgs);
-			Assert.AreEqual(ownerId1, changeEventArgs.OldValue);
-			Assert.AreEqual(ownerId2, changeEventArgs.NewValue);
-		}
-		
-		[Test]
-		public void AssignTo_aPrincipal_dontCallUnsubscribedHandlersOf_OwnerChanged()
-		{
-			// arrange:
-			string ownerId1 = "TestPrincipal1";
-			IPrincipal owner1 = new GenericPrincipal(new GenericIdentity(ownerId1), new string[0]);
-			string ownerId2 = "TestPrincipal2";
-			IPrincipal owner2 = new GenericPrincipal(new GenericIdentity(ownerId2), new string[0]);
-			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal outRef = null;
-			session.Expect(s => s.CallAllowNewOwner(owner1, out outRef)).OutRef(owner1).Return(true).Repeat.Once();
-			session.AssignTo(owner1);
-			object eventSender = null;
-			ChangeEventArgs<string> changeEventArgs = null;
-			EventHandler<ChangeEventArgs<string>> handler = (sender, e) => { eventSender = sender; changeEventArgs = e; };
-			
-			// act:
-			session.OwnerChanged += handler;
-			session.OwnerChanged -= handler;
-			session.AssignTo(owner2);
-
-			// assert:
-			Assert.IsNull(eventSender);
-			Assert.IsNull(changeEventArgs);
-		}
-		
-		[Test]
-		public void AssignTo_aPrincipal_wrapExceptionsFromDerivedClasses()
-		{
-			// arrange:
-			Exception exception = new Exception();
-			string ownerId = "TestPrincipal";
-			IPrincipal owner = new GenericPrincipal(new GenericIdentity(ownerId), new string[0]);
-			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal outRef = null;
-			session.Expect(s => s.CallAllowNewOwner(owner, out outRef)).Throw(exception).Repeat.Once();
-			InvalidOperationException cought = null;
-			
-			// act:
-			try
-			{
-				session.AssignTo(owner);
-			}
-			catch(InvalidOperationException e)
-			{
-				cought = e;
-			}
-
-			// assert:
-			Assert.IsEmpty(((IWorkingSession)session).Owner);
-			Assert.IsNull(session.CurrentOwner);
-			Assert.IsNotNull(cought);
-			Assert.AreSame(exception, cought.InnerException);
-		}
-		
-		[Test]
-		public void AssignTo_aPrincipal_dontWrapInvalidOperationExceptionsFromDerivedClasses()
-		{
-			// arrange:
-			Exception exception = new InvalidOperationException();
-			string ownerId = "TestPrincipal";
-			IPrincipal owner = new GenericPrincipal(new GenericIdentity(ownerId), new string[0]);
-			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal outRef = null;
-			session.Expect(s => s.CallAllowNewOwner(owner, out outRef)).Throw(exception).Repeat.Once();
-			InvalidOperationException cought = null;
-			
-			// act:
-			try
-			{
-				session.AssignTo(owner);
-			}
-			catch(InvalidOperationException e)
-			{
-				cought = e;
-			}
-
-			// assert:
-			Assert.IsEmpty(((IWorkingSession)session).Owner);
-			Assert.IsNull(session.CurrentOwner);
-			Assert.AreSame(exception, cought);
-		}
-
-		[Test]
-		public void AssignTo_aPrincipalNotAllowed_throwsInvalidOperationException()
-		{
-			// arrange:
-			string ownerId = "TestPrincipal";
-			IPrincipal owner = new GenericPrincipal(new GenericIdentity(ownerId), new string[0]);
-			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal outRef = null;
-			session.Expect(s => s.CallAllowNewOwner(owner, out outRef)).Return(false).Repeat.Once();
-
-			// assert:
-			Assert.Throws<InvalidOperationException>(delegate { session.AssignTo(owner); });
-			Assert.IsEmpty(((IWorkingSession)session).Owner);
-			Assert.IsNull(session.CurrentOwner);
-		}
-
-		[Test]
-		public void AssignTo_aDifferentAllowedPrincipal_whileAchievingAnyRole_throwsInvalidOperationException()
-		{
-			// arrange:
-			string ownerId1 = "TestPrincipal";
-			IPrincipal owner1 = new GenericPrincipal(new GenericIdentity(ownerId1), new string[0]);
-			string ownerId2 = "TestPrincipal2";
-			FakeRole role = new FakeRole();
-			IPrincipal owner2 = new GenericPrincipal(new GenericIdentity(ownerId2), new string[0]);
-			FakeRoleBuilder<IFakeRole, FakeRole> roleBuilder = GeneratePartialMock<FakeRoleBuilder<IFakeRole, FakeRole>>();
-			roleBuilder.Expect(b => b.CallCreateRoleFor(owner1)).Return(role).Repeat.Once();
-			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal outRef = null;
-			session.Expect(s => s.CallAllowNewOwner(owner1, out outRef)).OutRef(owner1).Return(true).Repeat.Once();
-			session.Expect(s => s.CallAllowNewOwner(owner2, out outRef)).OutRef(owner2).Return(true).Repeat.Any();
-			session.Expect(s => s.CallIsAllowed<IFakeRole>()).Return(true).Repeat.Once();
-			session.Expect(s => s.CallGetRoleBuilder<IFakeRole>()).Return(roleBuilder).Repeat.Once();
-			session.AssignTo(owner1);
-			IFakeRole outRoleRef = null;
-			session.Achieve<IFakeRole>(out outRoleRef);
-
-			// assert:
-			Assert.Throws<InvalidOperationException>(delegate { session.AssignTo(owner2); });
-			Assert.AreEqual(ownerId1, ((IWorkingSession)session).Owner);
-			Assert.AreSame(owner1, session.CurrentOwner);
-		}
-		
-		#endregion AssignTo
 	}
 }
 
