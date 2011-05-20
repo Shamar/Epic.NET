@@ -60,6 +60,7 @@
     <Compile Include="Fakes\FakeRoleBuilder.cs" />
     <Compile Include="Fakes\FakeRole.cs" />
     <Compile Include="Fakes\FakeWorkingSession.cs" />
+    <Compile Include="RhinoMocksFixtureBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">

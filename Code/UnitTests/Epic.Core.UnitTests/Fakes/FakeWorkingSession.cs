@@ -23,6 +23,7 @@
 //  
 using System;
 using Epic.Enterprise;
+using System.Security.Principal;
 
 namespace Epic.Fakes
 {
@@ -40,6 +41,14 @@ namespace Epic.Fakes
 		}
 		
 		#region templates for tests
+		
+		public IPrincipal CurrentOwner
+		{
+			get
+			{
+				return Owner;
+			}
+		}
 		
 		public virtual bool CallAllowNewOwner (System.Security.Principal.IPrincipal newOwner, out System.Security.Principal.IPrincipal ownerToAssign)
 		{
