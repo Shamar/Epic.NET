@@ -116,6 +116,7 @@ namespace Epic.Enterprise
 		}
 		
 		#endregion Serialization
+	
 		
 	}
 }

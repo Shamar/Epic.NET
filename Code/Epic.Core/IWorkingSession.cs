@@ -56,7 +56,7 @@ namespace Epic
 		/// <typeparam name='TRole'>
 		/// The type of the role to achieve.
 		/// </typeparam>
-		bool CouldAchieve<TRole>() where TRole : class;
+		bool CanAchieve<TRole>() where TRole : class;
 		
 		/// <summary>
 		/// Achieve the specified role.

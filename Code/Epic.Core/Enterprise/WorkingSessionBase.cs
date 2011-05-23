@@ -127,7 +127,7 @@ namespace Epic.Enterprise
 		/// <typeparam name='TRole'>
 		/// The type of the role to achieve.
 		/// </typeparam>
-		public bool CouldAchieve<TRole> () where TRole : class
+		public bool CanAchieve<TRole> () where TRole : class
 		{
 			Type roleType = typeof(TRole);
 			if(_roles.ContainsKey(roleType))
