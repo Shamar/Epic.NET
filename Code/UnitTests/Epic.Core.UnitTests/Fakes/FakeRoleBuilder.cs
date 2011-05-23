@@ -34,7 +34,7 @@ namespace Epic.Fakes
 		#region templates for tests
 		public virtual TConcreteRole CallCreateRoleFor (System.Security.Principal.IPrincipal player)
 		{
-			return null;
+			return new TConcreteRole();
 		}
 		#endregion templates for tests
 

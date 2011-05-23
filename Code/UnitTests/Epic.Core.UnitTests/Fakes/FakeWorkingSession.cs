@@ -24,6 +24,8 @@
 using System;
 using Epic.Enterprise;
 using System.Security.Principal;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Epic.Fakes
 {
@@ -78,6 +80,53 @@ namespace Epic.Fakes
 		protected override RoleBuilder<TRole> GetRoleBuilder<TRole> ()
 		{
 			return CallGetRoleBuilder<TRole>();
+		}
+		#endregion
+	}
+	
+	[Serializable]
+	public class FakeSerializableWorkingSession : WorkingSessionBase
+	{
+		private static IPrincipal CreateFakePrincipal()
+		{
+			return new GenericPrincipal(new GenericIdentity("FakeUser"), new string[0]);
+		}
+		public FakeSerializableWorkingSession ()
+			: base("FakeWorkingSession", CreateFakePrincipal())
+		{
+		}
+		
+		private readonly List<string> _calledMethods = new List<string>();
+		public IEnumerable<string> CalledMethods
+		{
+			get
+			{
+				return _calledMethods;
+			}
+		}
+		
+		#region implemented abstract members of Epic.Enterprise.WorkingSessionBase
+		protected override bool IsAllowed<TRole> ()
+		{
+			_calledMethods.Add(MethodBase.GetCurrentMethod().Name);
+			switch(typeof(TRole).Name)
+			{
+				case "IFakeRole":
+					return true;
+				default:
+					return false;
+			}
+		}
+		protected override RoleBuilder<TRole> GetRoleBuilder<TRole> ()
+		{
+			_calledMethods.Add(MethodBase.GetCurrentMethod().Name);
+			switch(typeof(TRole).Name)
+			{
+				case "IFakeRole":
+					return new FakeRoleBuilder<IFakeRole, FakeRole>() as RoleBuilder<TRole>;
+				default:
+					return null;
+			}
 		}
 		#endregion
 	}
