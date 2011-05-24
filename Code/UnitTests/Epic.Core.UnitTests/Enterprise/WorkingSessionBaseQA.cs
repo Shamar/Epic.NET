@@ -220,7 +220,6 @@ namespace Epic.Enterprise
 		{
 			// arrange:
 			FakeWorkingSession session = GeneratePartialMock<FakeWorkingSession>();
-			IPrincipal owner = session.Owner;
 			session.Expect(s => s.CallIsAllowed<IFakeRole>()).Return(false).Repeat.Once();
 			IFakeRole achievedRole = null;
 

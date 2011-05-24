@@ -47,6 +47,8 @@ namespace Epic
 			Assert.AreEqual("Uninitialized", Application.Name);
 			Assert.Throws<InvalidOperationException>(delegate { environment = Application.Environment; });
 			Assert.Throws<InvalidOperationException>(delegate { enterprise = Application.Enterprise; });
+			Assert.IsNull(environment);
+			Assert.IsNull(enterprise);
 		}
 		
 		[Test]
