@@ -27,6 +27,7 @@ using System.IO;
 using Epic;
 using System.Security.Principal;
 using Rhino.Mocks;
+using Epic.Fakes;
 
 namespace Epic.Enterprise
 {
@@ -230,8 +231,8 @@ namespace Epic.Enterprise
 			mocks.Add(enterprise);
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
-			session.Expect(s => s.Dispose()).Repeat.Once();
+			FakeWorkingSession session = MockRepository.GeneratePartialMock<FakeWorkingSession>("MockWorkingSession", owner);
+			session.Expect(s => s.CallBeforeDispose()).Repeat.Once();
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
 			
@@ -319,8 +320,8 @@ namespace Epic.Enterprise
 			mocks.Add(enterprise);
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
-			session.Expect(s => s.Dispose()).Throw(thrownException).Repeat.Once();
+			FakeWorkingSession session = MockRepository.GeneratePartialMock<FakeWorkingSession>("MockWorkingSession", owner);
+			session.Expect(s => s.CallBeforeDispose()).Throw(thrownException).Repeat.Once();
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
 			InvalidOperationException cought = null;
@@ -353,8 +354,8 @@ namespace Epic.Enterprise
 			IPrincipal owner = MockRepository.GenerateStrictMock<IPrincipal>();
 			owner.Expect(p => p.Identity).Return(new GenericIdentity("testPrincipal"));
 			mocks.Add(owner);
-			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
-			session.Expect(s => s.Dispose()).Throw(dummyException).Repeat.Once();
+			FakeWorkingSession session = MockRepository.GeneratePartialMock<FakeWorkingSession>("MockWorkingSession", owner);
+			session.Expect(s => s.CallBeforeDispose()).Throw(dummyException).Repeat.Once();
 			mocks.Add(session);
 			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
 			InvalidOperationException cought = null;

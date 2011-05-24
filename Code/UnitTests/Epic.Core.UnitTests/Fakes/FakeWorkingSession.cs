@@ -56,7 +56,10 @@ namespace Epic.Fakes
 			}
 		}
 
-
+		public virtual void CallBeforeDispose ()
+		{
+		}
+		
 		public virtual bool CallIsAllowed<TRole> () where TRole : class
 		{
 			return false;
@@ -80,6 +83,11 @@ namespace Epic.Fakes
 		protected override RoleBuilder<TRole> GetRoleBuilder<TRole> ()
 		{
 			return CallGetRoleBuilder<TRole>();
+		}
+
+		protected override void BeforeDispose ()
+		{
+			CallBeforeDispose();
 		}
 		#endregion
 	}
@@ -127,6 +135,10 @@ namespace Epic.Fakes
 				default:
 					return null;
 			}
+		}
+
+		protected override void BeforeDispose ()
+		{
 		}
 		#endregion
 	}

@@ -35,6 +35,7 @@ namespace Epic.Enterprise
 		private readonly string _identifier;
 		private readonly Dictionary<Type, RoleRef> _roles = new Dictionary<Type, RoleRef>();
 		private readonly IPrincipal _owner;
+		private bool _disposed = false;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Epic.Enterprise.WorkingSessionBase"/> class.
@@ -76,7 +77,18 @@ namespace Epic.Enterprise
 			}
 		}
 		
+		protected void throwAfterDisposition()
+		{
+			if(_disposed)
+				throw new ObjectDisposedException(_identifier);
+		}
+
 		#region abstract template method
+		
+		/// <summary>
+		/// Template method for disposition. Called just before the disposition follow on the achieved roles.
+		/// </summary>
+		protected abstract void BeforeDispose();
 		
 		/// <summary>
 		/// Determines whether the owner of the working session is allowed to achieve 
@@ -129,6 +141,7 @@ namespace Epic.Enterprise
 		/// </typeparam>
 		public bool CanAchieve<TRole> () where TRole : class
 		{
+			throwAfterDisposition();
 			Type roleType = typeof(TRole);
 			if(_roles.ContainsKey(roleType))
 				return true;
@@ -148,6 +161,7 @@ namespace Epic.Enterprise
 		/// the required <typeparamref name="TRole"/>.</exception>
 		public void Achieve<TRole> (out TRole role) where TRole : class
 		{
+			throwAfterDisposition();
 			Type roleType = typeof(TRole);
 			RoleRef roleRef = null;
 			if(!_roles.TryGetValue(roleType, out roleRef))
@@ -180,6 +194,7 @@ namespace Epic.Enterprise
 		/// <exception cref="ArgumentException">The <paramref name="role"/> is unknown to the session.</exception>
 		public void Leave<TRole> (ref TRole role) where TRole : class
 		{
+			throwAfterDisposition();
 			if(null == role)
 				throw new ArgumentNullException("role");
 			Type roleType = typeof(TRole);
@@ -244,13 +259,18 @@ namespace Epic.Enterprise
 		/// <see cref="Epic.Enterprise.WorkingSessionBase"/> was occupying.
 		/// </remarks>
 		// TODO: introduce template method for dispose()
-		public virtual void Dispose ()
+		public void Dispose ()
 		{
-			foreach(RoleRef roleRef in _roles.Values)
+			if(!_disposed)
 			{
-				roleRef.Dispose();
+				_disposed = true;
+				BeforeDispose();
+				foreach(RoleRef roleRef in _roles.Values)
+				{
+					roleRef.Dispose();
+				}
+				_roles.Clear();
 			}
-			_roles.Clear();
 		}
 		#endregion
 	}

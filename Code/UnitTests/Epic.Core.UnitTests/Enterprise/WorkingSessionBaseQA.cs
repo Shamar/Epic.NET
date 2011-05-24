@@ -369,6 +369,54 @@ namespace Epic.Enterprise
 	
 		#region Dispose
 		
+		[Test]
+		public void Dispose_callsBeforeDisposeTemplateMethod()
+		{
+			// arrange:
+			FakeWorkingSession fakeSession = GeneratePartialMock<FakeWorkingSession>();
+			fakeSession.Expect(s => s.CallBeforeDispose()).Repeat.Once();
+			IWorkingSession session = fakeSession;
+			IFakeRole roleRef = null;
+			
+			// act:
+			fakeSession.Dispose();
+
+			// assert:
+			Assert.Throws<ObjectDisposedException>(delegate { session.CanAchieve<IFakeRole>(); });
+			Assert.Throws<ObjectDisposedException>(delegate { session.Achieve<IFakeRole>(out roleRef); });
+			Assert.IsNull(roleRef);
+			Assert.Throws<ObjectDisposedException>(delegate { session.Leave<IFakeRole>(ref roleRef); });
+		}
+		
+		[Test]
+		public void Dispose_causeAchievedRolesDisposition()
+		{
+			// arrange:
+			FakeRole roleToReturn = GeneratePartialMock<FakeRole>();
+			roleToReturn.Expect(r => r.Dispose()).Repeat.Once();
+			FakeWorkingSession fakeSession = GeneratePartialMock<FakeWorkingSession>();
+			IPrincipal owner = fakeSession.Owner;
+			fakeSession.Expect(s => s.CallIsAllowed<IFakeRole>()).Return(true).Repeat.Once();
+			FakeRoleBuilder<IFakeRole, FakeRole> roleBuilder = GeneratePartialMock<FakeRoleBuilder<IFakeRole, FakeRole>>();
+			roleBuilder.Expect(b => b.CallCreateRoleFor(owner)).Return(roleToReturn).Repeat.Once();
+			fakeSession.Expect(s => s.CallGetRoleBuilder<IFakeRole>()).Return(roleBuilder).Repeat.Once();
+			IFakeRole achievedRole = null;
+			fakeSession.Achieve<IFakeRole>(out achievedRole);
+			fakeSession.Expect(s => s.CallBeforeDispose()).Repeat.Once();
+			IWorkingSession session = fakeSession;
+			IFakeRole roleRef = null;
+			
+			// act:
+			fakeSession.Dispose();
+
+			// assert:
+			Assert.Throws<ObjectDisposedException>(delegate { session.CanAchieve<IFakeRole>(); });
+			Assert.Throws<ObjectDisposedException>(delegate { session.Achieve<IFakeRole>(out roleRef); });
+			Assert.IsNull(roleRef);
+			Assert.Throws<ObjectDisposedException>(delegate { session.Leave<IFakeRole>(ref roleRef); });
+		}
+
+		
 		#endregion Dispose
 	}
 }
