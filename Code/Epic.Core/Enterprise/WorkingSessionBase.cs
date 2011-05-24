@@ -258,7 +258,6 @@ namespace Epic.Enterprise
 		/// <see cref="Epic.Enterprise.WorkingSessionBase"/> so the garbage collector can reclaim the memory that the
 		/// <see cref="Epic.Enterprise.WorkingSessionBase"/> was occupying.
 		/// </remarks>
-		// TODO: introduce template method for dispose()
 		public void Dispose ()
 		{
 			if(!_disposed)
