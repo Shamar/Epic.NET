@@ -128,7 +128,7 @@ namespace Epic.Enterprise
 			WorkingSessionBase outWorkingSessionBase = null;
 			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			mocks.Add(session);
-			enterprise.Expect(e => e.ExecStartWorkingSession(owner, out outWorkingSessionBase)).OutRef(session).Repeat.Once();
+			enterprise.Expect(e => e.CallStartWorkingSession(owner, out outWorkingSessionBase)).OutRef(session).Repeat.Once();
 			IWorkingSession outWorkingSession = null;
 			
 			// act:
@@ -176,7 +176,7 @@ namespace Epic.Enterprise
 			mocks.Add(owner);
 			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			mocks.Add(session);
-			enterprise.Expect(e => e.ExecAcquireWorkingSessionReal(owner, identifier)).Return(session).Repeat.Once();
+			enterprise.Expect(e => e.CallAcquireWorkingSessionReal(owner, identifier)).Return(session).Repeat.Once();
 			
 			// act:
 			IWorkingSession returnedWorkingSession = enterprise.AcquireWorkingSession(owner, identifier);
@@ -234,7 +234,7 @@ namespace Epic.Enterprise
 			FakeWorkingSession session = MockRepository.GeneratePartialMock<FakeWorkingSession>("MockWorkingSession", owner);
 			session.Expect(s => s.CallBeforeDispose()).Repeat.Once();
 			mocks.Add(session);
-			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
+			enterprise.Expect(e => e.CallBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
 			
 			// act:
 			enterprise.EndWorkingSession(owner, session);
@@ -257,7 +257,7 @@ namespace Epic.Enterprise
 			mocks.Add(owner);
 			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			mocks.Add(session);
-			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Throw(dummyException).Repeat.Once();
+			enterprise.Expect(e => e.CallBeforeWorkingSessionEnd(owner, session)).Throw(dummyException).Repeat.Once();
 			InvalidOperationException cought = null;
 			
 			// act:
@@ -290,7 +290,7 @@ namespace Epic.Enterprise
 			mocks.Add(owner);
 			WorkingSessionBase session = MockRepository.GeneratePartialMock<WorkingSessionBase>("MockWorkingSession", owner);
 			mocks.Add(session);
-			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Throw(thrownException).Repeat.Once();
+			enterprise.Expect(e => e.CallBeforeWorkingSessionEnd(owner, session)).Throw(thrownException).Repeat.Once();
 			InvalidOperationException cought = null;
 			
 			// act:
@@ -323,7 +323,7 @@ namespace Epic.Enterprise
 			FakeWorkingSession session = MockRepository.GeneratePartialMock<FakeWorkingSession>("MockWorkingSession", owner);
 			session.Expect(s => s.CallBeforeDispose()).Throw(thrownException).Repeat.Once();
 			mocks.Add(session);
-			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
+			enterprise.Expect(e => e.CallBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
 			InvalidOperationException cought = null;
 			
 			// act:
@@ -357,7 +357,7 @@ namespace Epic.Enterprise
 			FakeWorkingSession session = MockRepository.GeneratePartialMock<FakeWorkingSession>("MockWorkingSession", owner);
 			session.Expect(s => s.CallBeforeDispose()).Throw(dummyException).Repeat.Once();
 			mocks.Add(session);
-			enterprise.Expect(e => e.ExecBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
+			enterprise.Expect(e => e.CallBeforeWorkingSessionEnd(owner, session)).Repeat.Once();
 			InvalidOperationException cought = null;
 			
 			// act:

@@ -28,10 +28,11 @@ namespace Epic.Enterprise
 	/// <summary>
 	/// Base class for users' roles.
 	/// </summary>
+	// TODO: Verify if really needed, or it's better to replace it with IDisposable.
 	[Serializable]
 	public abstract class RoleBase : IDisposable
 	{
-		public RoleBase ()
+		protected RoleBase ()
 		{
 		}
 

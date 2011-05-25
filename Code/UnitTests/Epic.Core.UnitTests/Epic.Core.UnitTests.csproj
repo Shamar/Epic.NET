@@ -54,7 +54,6 @@
     <Compile Include="Enterprise\EnterpriseBaseQA.cs" />
     <Compile Include="Fakes\FakeEnterprise.cs" />
     <Compile Include="Enterprise\RoleBuilderBaseQA.cs" />
-    <Compile Include="Enterprise\RoleBaseQA.cs" />
     <Compile Include="Enterprise\RoleRefQA.cs" />
     <Compile Include="Enterprise\WorkingSessionBaseQA.cs" />
     <Compile Include="Fakes\FakeRoleBuilder.cs" />

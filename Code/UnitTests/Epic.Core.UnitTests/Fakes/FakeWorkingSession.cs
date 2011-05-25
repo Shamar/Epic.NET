@@ -44,6 +44,9 @@ namespace Epic.Fakes
 		public FakeWorkingSession (string identifier, IPrincipal owner)
 			: base(identifier, owner)
 		{
+			CallBeforeDispose ();
+			CallIsAllowed<object> ();
+			CallGetRoleBuilder<object> ();
 		}
 		
 		#region templates for tests
@@ -102,6 +105,9 @@ namespace Epic.Fakes
 		public FakeSerializableWorkingSession ()
 			: base("FakeWorkingSession", CreateFakePrincipal())
 		{
+			IsAllowed<object> ();
+			GetRoleBuilder<object> ();
+			BeforeDispose ();
 		}
 		
 		private readonly List<string> _calledMethods = new List<string>();

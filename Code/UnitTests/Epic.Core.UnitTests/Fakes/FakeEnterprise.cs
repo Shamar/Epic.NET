@@ -37,21 +37,25 @@ namespace Epic.Fakes
 		public FakeEnterprise (string name)
 			: base(name)
 		{
+			WorkingSessionBase workingSession = null;
+			CallStartWorkingSession(null, out workingSession);
+			CallAcquireWorkingSessionReal(null, null);
+			CallBeforeWorkingSessionEnd(null, null);
 		}
 		
 		#region templates for tests
 		
-		public virtual void ExecStartWorkingSession (System.Security.Principal.IPrincipal owner, out WorkingSessionBase workingSession)
+		public virtual void CallStartWorkingSession (System.Security.Principal.IPrincipal owner, out WorkingSessionBase workingSession)
 		{
 			workingSession = null;
 		}
 
-		public virtual WorkingSessionBase ExecAcquireWorkingSessionReal (System.Security.Principal.IPrincipal owner, string identifier)
+		public virtual WorkingSessionBase CallAcquireWorkingSessionReal (System.Security.Principal.IPrincipal owner, string identifier)
 		{
 			return null;
 		}
 
-		public virtual void ExecBeforeWorkingSessionEnd (System.Security.Principal.IPrincipal owner, WorkingSessionBase workingSession)
+		public virtual void CallBeforeWorkingSessionEnd (System.Security.Principal.IPrincipal owner, WorkingSessionBase workingSession)
 		{
 		}
 		
@@ -60,17 +64,17 @@ namespace Epic.Fakes
 		#region implemented abstract members of Epic.Enterprise.EnterpriseBase
 		protected override void StartWorkingSession (System.Security.Principal.IPrincipal owner, out WorkingSessionBase workingSession)
 		{
-			ExecStartWorkingSession(owner, out workingSession);
+			CallStartWorkingSession(owner, out workingSession);
 		}
 
 		protected override WorkingSessionBase AcquireWorkingSessionReal (System.Security.Principal.IPrincipal owner, string identifier)
 		{
-			return ExecAcquireWorkingSessionReal(owner, identifier);
+			return CallAcquireWorkingSessionReal(owner, identifier);
 		}
 
 		protected override void BeforeWorkingSessionEnd (System.Security.Principal.IPrincipal owner, WorkingSessionBase workingSession)
 		{
-			ExecBeforeWorkingSessionEnd(owner, workingSession);
+			CallBeforeWorkingSessionEnd(owner, workingSession);
 		}
 		#endregion
 	}

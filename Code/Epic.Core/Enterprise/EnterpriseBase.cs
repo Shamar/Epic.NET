@@ -59,7 +59,53 @@ namespace Epic.Enterprise
 				throw new ArgumentNullException("name");
 			_name = name;
 		}
+		
+		#region Templates methods
+		
+		/// <summary>
+		/// Starts a new working session.
+		/// </summary>
+		/// <param name='owner'>
+		/// Owner of the new session. Will never be <value>null</value>.
+		/// </param>
+		/// <param name='workingSession'>
+		/// The new working session.
+		/// </param>
+		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not create a 
+		/// new <see cref="IWorkingSession"/>.</exception>
+		protected abstract void StartWorkingSession(IPrincipal owner, out WorkingSessionBase workingSession);
+		
+		/// <summary>
+		/// Acquires the working session.
+		/// </summary>
+		/// <returns>
+		/// The working session.
+		/// </returns>
+		/// <param name='owner'>
+		/// The owner. Will never be <value>null</value>.
+		/// </param>
+		/// <param name='identifier'>
+		/// The working session identifier. Will never be <value>null</value> or empty.
+		/// </param>
+		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not acquire 
+		/// the <see cref="IWorkingSession"/> identified by <paramref name="identifier"/>.</exception>
+		protected abstract WorkingSessionBase AcquireWorkingSessionReal (IPrincipal owner, string identifier);
 
+		/// <summary>
+		/// Called before that <paramref name="workingSession"/> has been disposed.
+		/// </summary>
+		/// <param name='owner'>
+		/// The owner.
+		/// </param>
+		/// <param name='workingSession'>
+		/// The working session to end.
+		/// </param>
+		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not end 
+		/// <paramref name="workingSession"/>.</exception>
+		protected abstract void BeforeWorkingSessionEnd (IPrincipal owner, WorkingSessionBase workingSession);
+				
+		#endregion Templates methods
+		
 		#region IEnterprise implementation
 		
 		/// <summary>
@@ -99,19 +145,6 @@ namespace Epic.Enterprise
 		}
 		
 		/// <summary>
-		/// Starts a new working session.
-		/// </summary>
-		/// <param name='owner'>
-		/// Owner of the new session. Will never be <value>null</value>.
-		/// </param>
-		/// <param name='workingSession'>
-		/// The new working session.
-		/// </param>
-		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not create a 
-		/// new <see cref="IWorkingSession"/>.</exception>
-		protected abstract void StartWorkingSession(IPrincipal owner, out WorkingSessionBase workingSession);
-		
-		/// <summary>
 		/// Acquires an existing working session. Template method.
 		/// </summary>
 		/// <returns>
@@ -139,22 +172,6 @@ namespace Epic.Enterprise
 			return AcquireWorkingSessionReal (owner, identifier);
 		}
 		
-		/// <summary>
-		/// Acquires the working session.
-		/// </summary>
-		/// <returns>
-		/// The working session.
-		/// </returns>
-		/// <param name='owner'>
-		/// The owner. Will never be <value>null</value>.
-		/// </param>
-		/// <param name='identifier'>
-		/// The working session identifier. Will never be <value>null</value> or empty.
-		/// </param>
-		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not acquire 
-		/// the <see cref="IWorkingSession"/> identified by <paramref name="identifier"/>.</exception>
-		protected abstract WorkingSessionBase AcquireWorkingSessionReal (IPrincipal owner, string identifier);
-
 		/// <summary>
 		/// Ends the working session. Template method.
 		/// </summary>
@@ -194,20 +211,7 @@ namespace Epic.Enterprise
 				throw new InvalidOperationException(message, e);
 			}
 		}
-		
-		/// <summary>
-		/// Called before that <paramref name="workingSession"/> has been disposed.
-		/// </summary>
-		/// <param name='owner'>
-		/// The owner.
-		/// </param>
-		/// <param name='workingSession'>
-		/// The working session to end.
-		/// </param>
-		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not end 
-		/// <paramref name="workingSession"/>.</exception>
-		protected abstract void BeforeWorkingSessionEnd (IPrincipal owner, WorkingSessionBase workingSession);
-		
+
 		#endregion
 
 		#region ISerializable implementation

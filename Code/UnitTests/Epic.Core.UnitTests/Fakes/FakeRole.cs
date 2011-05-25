@@ -35,6 +35,7 @@ namespace Epic.Fakes
 	{
 		public FakeRole ()
 		{
+			Dispose(); // coverage oriented :-)
 		}
 
 		#region implemented abstract members of Epic.Enterprise.RoleBase
