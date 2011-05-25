@@ -53,6 +53,7 @@
     <Compile Include="Enterprise\RoleRef.cs" />
     <Compile Include="Enterprise\RoleBuilder.cs" />
     <Compile Include="Enterprise\RoleBuilderBase.cs" />
+    <Compile Include="IRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
