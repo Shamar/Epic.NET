@@ -120,12 +120,40 @@ Keep this in mind: Epic could overwhelm simple projects!
 Avoid Epic (and domain driven design) when you do not have complex business 
 rules and do not require high reliability while sticking to such rules. 
 
+Target audience
+~~~~~~~~~~~~~~~
+This manual is targeted to people involved in the entire lifecycle of 
+enterprise applications with custom development. 
+An obvious prerequisite is a good experience in software development and 
+object oriented design. Furthermore a good understanding of the Evans book is 
+mandatory.
+
+Here software architects and software developers could learn when to 
+adopt the Epic framework, and how to adapt it to their architecture and 
+development processes.
+
+Project managers could use the manual to grasp the development process emerging 
+from a domain driven team using Epic.
+In particular, they will appreciate the concreteness that Epic 
+imposes to the development process, always looking for a better understanding 
+of the customers' processes.
+
+Modelers and developers will gain a set of powerful tools, that will
+increase their ability to cut complexity into indipendent axes, allowing an 
+easy parallelization of development efforts.
+
 The structure of this manual
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The first part of the manual introduce patterns and practices to ease
-design, development and evolution of the domain model itself. 
-It is mostly written for "hands on" modelers.
+The first part of the manual introduce patterns and practices that come from 
+real-life challenges encountered by a team of developers building corporate 
+applications. 
+Such patterns will constrain (and thus will ease) the design, the development
+and the evolution of the domain model itself. 
+As such it is mostly written for "hands on" modelers and architects.
 
 The second part document the various components of the Epic framework.
 It's designed for the full development team (from DBA to GUI designers). 
 
+Finally, the third part will target architects, team leaders and project 
+managers, describing the process' changes that could be required by the 
+adoption of Epic.

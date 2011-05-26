@@ -6,4 +6,6 @@ v0.2.0, April 2011: Initial draft
 
 include::01_preface.txt[]
 
+include::02_part-i.txt[]
+
 
