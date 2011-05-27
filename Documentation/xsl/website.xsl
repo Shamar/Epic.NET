@@ -10,23 +10,25 @@
 <xsl:template name="user.head.content">
   <meta charset='utf-8'/>
 
-  <title>Epic - dominant domains</title>
   <link rel="icon" href="favicon.ico" />
   <link rel="alternate" type="application/atom+xml" title="Development log"  href="atom.xml" />
   <xsl:comment>[if !IE 7]>
-	<style type="text/css">
+    <xsl:element name="style">
+        <xsl:attribute name="type" value="text/css"/> 
 		#wrap {display:table;height:100%}
-	</style>
+	</xsl:element>
   &lt;![endif]</xsl:comment>
   <xsl:comment>[if lt IE 8]>
-	<style type="text/css">
-		#header {padding-top: 9px}
-	</style>
+    <xsl:element name="style">
+        <xsl:attribute name="type" value="text/css"/> 
+        #header {padding-top: 9px}
+    </xsl:element>
   &lt;![endif]</xsl:comment>
   <xsl:comment>[if IE 8]>
-	<style type="text/css">
+    <xsl:element name="style">
+        <xsl:attribute name="type" value="text/css"/> 
 		#wrap {width:100%}
-	</style>
+	</xsl:element>
   &lt;![endif]</xsl:comment>
 </xsl:template>
 
