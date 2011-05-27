@@ -1,0 +1,61 @@
+.toc ul {
+	letter-spacing:3px;
+	float:right;
+	padding-bottom: 30px;
+	background-color: #ffffff;
+	/*display : absolute;
+	position:fixed;
+	top:30%;
+	right:3%;*/
+	z-index:0;
+	width : 20%;
+	list-style: none;
+	display:block;
+}
+.toc ul li {
+	display: inline;
+	padding: 0;
+}
+.toc ul a {
+        color:blue;
+	display : block;
+	border-left: 1px solid white;
+	border-bottom: 1px solid white;
+	text-decoration: none;
+	padding:5px;
+	padding-left:20px;
+}
+.toc ul a:hover {
+	display : block;
+	border-left: 1px solid gray;
+	border-bottom: 1px solid gray;
+	text-decoration: none;
+	padding:5px;
+	padding-left:20px;
+}
+.toc ul ul {
+    width: auto;
+    padding-bottom:0px;
+    float: none;
+}
+.toc ul span.section {
+    display: block; 
+    clear: both;
+}
+
+.toc a.toc-title {color:#800000}
+
+
+p.toc-title {display:none}
+div.blockquote { width:70% }
+
+
+
+.book p.toc-title {display:block;padding-left:20px}
+.book .toc ul {width: auto; float:none;padding-left:0px}
+.book .toc ul ul {width: auto; float:none;padding-left:30px}
+.navfooter {padding-top:30px;letter-spacing:3px;}
+.navfooter hr {display:none}
+.book a.toc-title {color:black;border:0px}
+.book a.toc-title:hover {color:black;border:0px}
+.book a.toc-title:visited {color:black;border:0px}

@@ -1,0 +1,39 @@
+* {margin:0;padding:0;} 
+
+h1              { padding: .67em 0 0 0 }
+h2              { padding: .75em 0 0 0 }
+h3              { padding: .83em 0 0 0 }
+h4, p,
+blockquote, ul,
+fieldset, form,
+ol, dl, dir,
+menu            { padding: 1em 0 0 0 }
+h5              { padding: 1.5em 0 0 0 }
+h6              { padding: 1.67em 0 0 0 }
+blockquote      { padding-left: 40px; padding-right: 40px }
+ol, ul, dir,
+menu, dd        { padding-left: 40px }
+ol ul, ul ol,
+ul ul, ol ol    { padding-top: 0; padding-bottom: 0 }
+
+html, body {height: 100%;}
+
+#wrap {min-height: 100%;}
+
+#main {overflow:auto; padding-right:3%;
+	padding-bottom: 40px;}  /* must be same height as the footer */
+
+#footer {position: relative;
+	margin-top: -40px; /* negative value of footer height */
+	height: 40px;
+	padding: 0px 30% 0px 30%;
+	clear:both;} 
+
+body:before {
+content:"";
+height:100%;
+float:left;
+width:0;
+margin-top:-32767px;
+}
+

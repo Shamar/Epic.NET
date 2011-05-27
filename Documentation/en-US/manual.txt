@@ -1,7 +1,6 @@
 Dominant Domains
 ================
 Giacomo Tesio
-v0.2.0, April 2011: Initial draft
 :doctype: book
 
 include::01_preface.txt[]
