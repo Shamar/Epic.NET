@@ -1,0 +1,28 @@
+Toward a shared modeling grammar
+================================
+
+I can clearly remember when I first faced with a corporate software project.
+
+Unlike my previous development experiences, the business was so complex that 
+I wasn't able to grasp it. I carefully read the project's documentation, but 
+still I wasn't able to truly understand the application.
+Most of the documentation was about financial assets, cash flow management, 
+fund switches, bank's commissions. 
+Nothing about databases or tiers, just a few informations about 
+an old order routing system.
+
+I felt lost. I was missing the overall vision.
+
+A *simple* overall vision is the foundation of any architecture.
+
+include::c01_bounded_roles.txt[]
+
+include::c02_shared_identifiers.txt[]
+
+include::c03_command_query_separation.txt[]
+
+include::c04_observable_entities.txt[]
+
+include::c05_single_mutable_state.txt[]
+
+include::c06_solid_principles.txt[]

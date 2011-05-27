@@ -1,0 +1,29 @@
+Solid Principles
+----------------
+
+TODO. 
+
+Single Responsibility
+~~~~~~~~~~~~~~~~~~~~~
+
+TODO. 
+
+Open Closed
+~~~~~~~~~~~
+
+TODO. 
+
+Liskov Substitution
+~~~~~~~~~~~~~~~~~~~
+
+TODO. 
+
+Dependency Inversion
+~~~~~~~~~~~~~~~~~~~~
+
+TODO. 
+
+Interface Segregation
+~~~~~~~~~~~~~~~~~~~~~
+
+TODO. 
