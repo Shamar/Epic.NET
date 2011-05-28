@@ -12,24 +12,21 @@
 
   <link rel="icon" href="favicon.ico" />
   <link rel="alternate" type="application/atom+xml" title="Development log"  href="atom.xml" />
-  <xsl:comment>[if !IE 7]>
-    <xsl:element name="style">
-        <xsl:attribute name="type" value="text/css"/> 
+  <xsl:comment><![CDATA[[if !IE 7]>
+    <style type="text/css">
 		#wrap {display:table;height:100%}
-	</xsl:element>
-  &lt;![endif]</xsl:comment>
-  <xsl:comment>[if lt IE 8]>
-    <xsl:element name="style">
-        <xsl:attribute name="type" value="text/css"/> 
+	</style>
+  <![endif]]]></xsl:comment>
+  <xsl:comment><![CDATA[[if lt IE 8]>
+    <style type="text/css">
         #header {padding-top: 9px}
     </xsl:element>
-  &lt;![endif]</xsl:comment>
-  <xsl:comment>[if IE 8]>
-    <xsl:element name="style">
-        <xsl:attribute name="type" value="text/css"/> 
+  <![endif]]]></xsl:comment>
+  <xsl:comment><![CDATA[[if IE 8]>
+    <style type="text/css">
 		#wrap {width:100%}
-	</xsl:element>
-  &lt;![endif]</xsl:comment>
+	</style>
+  <![endif]]]></xsl:comment>
 </xsl:template>
 
 <xsl:template name="make.toc">

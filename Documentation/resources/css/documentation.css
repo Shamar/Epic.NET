@@ -51,11 +51,11 @@ div.blockquote { width:70% }
 
 
 
-.book p.toc-title {display:block;padding-left:20px}
-.book .toc ul {width: auto; float:none;padding-left:0px}
-.book .toc ul ul {width: auto; float:none;padding-left:30px}
+.book p.toc-title, .part p.toc-title{display:block;padding-left:20px}
+.book .toc ul, .part .toc ul {width: auto; float:none;padding-left:0px}
+.book .toc ul ul, .part .toc ul ul {width: auto; float:none;padding-left:30px}
 .navfooter {padding-top:30px;letter-spacing:3px;}
 .navfooter hr {display:none}
-.book a.toc-title {color:black;border:0px}
-.book a.toc-title:hover {color:black;border:0px}
-.book a.toc-title:visited {color:black;border:0px}
+.book a.toc-title, .part a.toc-title {color:black;border:0px}
+.book a.toc-title:hover, .part a.toc-title:hover {color:black;border:0px}
+.book a.toc-title:visited, .part a.toc-title:visited {color:black;border:0px}

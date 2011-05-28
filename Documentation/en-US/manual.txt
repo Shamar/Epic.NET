@@ -2,6 +2,10 @@ Dominant Domains
 ================
 Giacomo Tesio
 :doctype: book
+:toc:
+:icons:
+:numbered:
+:website: http://www.methods.co.nz/asciidoc/
 
 include::01_preface.txt[]
 
