@@ -152,6 +152,12 @@
   <xsl:value-of select="$chunk.append"/> 
 </xsl:template> 
 
+<xsl:template name="gentext.nav.home">
+  <xsl:call-template name="gentext">
+    <xsl:with-param name="key">TableofContents</xsl:with-param>
+  </xsl:call-template>
+</xsl:template>
+
 <xsl:include href="http://docbook.sourceforge.net/release/xsl/current/xhtml/chunk-code.xsl"/>
 
 </xsl:stylesheet>
