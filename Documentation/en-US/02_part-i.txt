@@ -15,6 +15,16 @@ an old order routing system.
 I felt lost. I was missing the overall vision.
 
 A *simple* overall vision is the foundation of any architecture.
+
+When we got the first frustrations due to misunderstandings between the customer
+and the team, I realized that we didn't speak the same language. 
+Indeed, we had high level functional specification, 
+written by financial experts that gave a lot for granted while leaving aside
+edge cases.
+
+Understanding the problem, led to the solution: we revised the concept of 
+"ubiquitous language" and we switched to a domain driven approach.
+
 --
 
 include::c01_bounded_roles.txt[]
