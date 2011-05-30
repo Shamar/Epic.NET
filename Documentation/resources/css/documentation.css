@@ -50,7 +50,7 @@ p.toc-title {display:none}
 div.blockquote { width:70% }
 
 
-
+div.book {padding-top:80px}
 .book p.toc-title, .part p.toc-title{display:block;padding-left:20px}
 .book .toc ul, .part .toc ul {width: auto; float:none;padding-left:0px}
 .book .toc ul ul, .part .toc ul ul {width: auto; float:none;padding-left:30px}

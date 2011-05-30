@@ -1,29 +1,29 @@
 Solid Principles
 ----------------
 
-TODO. 
+Coming soon.
 
 Single Responsibility
 ~~~~~~~~~~~~~~~~~~~~~
 
-TODO. 
+Coming soon.
 
 Open Closed
 ~~~~~~~~~~~
 
-TODO. 
+Coming soon. 
 
 Liskov Substitution
 ~~~~~~~~~~~~~~~~~~~
 
-TODO. 
+Coming soon.
 
 Dependency Inversion
 ~~~~~~~~~~~~~~~~~~~~
 
-TODO. 
+Coming soon.
 
 Interface Segregation
 ~~~~~~~~~~~~~~~~~~~~~
 
-TODO. 
+Coming soon.

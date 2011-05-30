@@ -31,10 +31,15 @@ teams of five people worked hard on the different modules of the application
 different changes of specifications over time, becouse the consultants had many second 
 thoughts about the customer's business processes.
 
+image::images/daisy.png["The Epic's vision",align="left",float="left"]
 Nevertheless, despite the initial panic, the project was a success.
 
 Such a good result derived from these high-skilled teams, a bunch of smart 
 people who daily shared (and discussed) their own experiences. 
+
+We had our vision: the domain model was the *heart* of our 
+application, the asset to protect and to depend upon.
+
 Going beyond the initial knowledge base, we developed a 
 set of patterns that help us to design and implement the ubiquitous language in 
 a predictable amount of time. The patterns worked like a shared modeling 
@@ -43,28 +48,28 @@ grammar so that all modelers were able to catch the intents of the others.
 This led us to a sort of "domain-driven software factory", with a fast and 
 predicible production line.
 
+The harder lesson to learn has been the underlying rationale of this methods:
+make everything explicit, avoid abstractions that domain experts ignore. 
+
+A modeler should never abstract concepts on his own, his code should 
+solely express the expert's vision. This was difficult to achieve for us since 
+programmers are trained for abstract thinking, but all the abstractions 
+introduced without the explicit support of the domain expert led us to very 
+subtle and expensive bugs. 
+
+On the opposite, keeping the models down-to-earth and sticking to the target 
+business gave us good code that has been reused in different banks.
 --
 
 include::c01_bounded_roles.txt[]
 
-
 include::c02_shared_identifiers.txt[]
-
-
 
 include::c03_command_query_separation.txt[]
 
-
-
 include::c04_observable_entities.txt[]
-
-
 
 include::c05_single_mutable_state.txt[]
 
-
-
 include::c06_solid_principles.txt[]
-
-
 

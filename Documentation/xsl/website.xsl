@@ -71,7 +71,7 @@
             <div class="toc">
               <xsl:element name="{$toc.list.type}">
                 <xsl:element name="{$toc.listitem.type}">
-                  <a href="/doc/" class="toc-title">
+                  <a href="/doc/manual.html" class="toc-title">
                   <xsl:call-template name="gentext">
                     <xsl:with-param name="key">TableofContents</xsl:with-param>
                   </xsl:call-template>
@@ -93,6 +93,7 @@
 <xsl:template name="chunk-element-content"> 
   <xsl:param name="prev"/> 
   <xsl:param name="next"/> 
+  <xsl:param name="filename"/> 
   <xsl:param name="nav.context"/> 
   <xsl:param name="content"> 
     <xsl:apply-imports/> 
@@ -117,6 +118,17 @@
     </div>
     <div id="main">
       <div id="content">
+      <xsl:if test="$filename = 'manual.html'">
+        <ul class="menu">
+          <li><a href="/index.html">Overview</a></li>
+          <li><a href="/roadmap.html">Roadmap</a></li>
+          <li><a href="/blog.html">Development</a></li>
+          <li><a href="/doc/manual.html">Documentation</a></li>
+          <li><a href="http://github.com/Shamar/Epic.NET/archives/master">Download</a></li>
+          <li><a href="/license.html">License</a></li>
+          <li><a href="https://groups.google.com/group/epic-net/">Support</a></li>
+        </ul>
+      </xsl:if>
       <xsl:call-template name="user.header.navigation"/> 
  
       <xsl:call-template name="header.navigation"> 
@@ -155,6 +167,52 @@
 <xsl:template name="gentext.nav.home">
   <xsl:call-template name="gentext">
     <xsl:with-param name="key">TableofContents</xsl:with-param>
+  </xsl:call-template>
+</xsl:template>
+
+<xsl:template name="process-chunk">
+  <xsl:param name="prev" select="."/>
+  <xsl:param name="next" select="."/>
+  <xsl:param name="content">
+    <xsl:apply-imports/>
+  </xsl:param>
+
+  <xsl:variable name="ischunk">
+    <xsl:call-template name="chunk"/>
+  </xsl:variable>
+
+  <xsl:variable name="chunkfn">
+    <xsl:if test="$ischunk='1'">
+      <xsl:apply-templates mode="chunk-filename" select="."/>
+    </xsl:if>
+  </xsl:variable>
+
+  <xsl:if test="$ischunk='0'">
+    <xsl:message>
+      <xsl:text>Error </xsl:text>
+      <xsl:value-of select="name(.)"/>
+      <xsl:text> is not a chunk!</xsl:text>
+    </xsl:message>
+  </xsl:if>
+
+  <xsl:variable name="filename">
+    <xsl:call-template name="make-relative-filename">
+      <xsl:with-param name="base.dir" select="$base.dir"/>
+      <xsl:with-param name="base.name" select="$chunkfn"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:call-template name="write.chunk">
+    <xsl:with-param name="filename" select="$filename"/>
+    <xsl:with-param name="content">
+      <xsl:call-template name="chunk-element-content">
+        <xsl:with-param name="prev" select="$prev"/>
+        <xsl:with-param name="next" select="$next"/>
+        <xsl:with-param name="filename" select="$chunkfn"/>
+        <xsl:with-param name="content" select="$content"/>
+      </xsl:call-template>
+    </xsl:with-param>
+    <xsl:with-param name="quiet" select="$chunk.quietly"/>
   </xsl:call-template>
 </xsl:template>
 

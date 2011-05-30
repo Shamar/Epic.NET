@@ -1,4 +1,9 @@
 Command - Query separation
 --------------------------
 
-TODO. 
+Coming soon.
+
+Idempotence
+~~~~~~~~~~~
+
+Coming soon.
