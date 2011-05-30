@@ -16,14 +16,32 @@ I felt lost. I was missing the overall vision.
 
 A *simple* overall vision is the foundation of any architecture.
 
-When we got the first frustrations due to misunderstandings between the customer
-and the team, I realized that we didn't speak the same language. 
-Indeed, we had high level functional specification, 
-written by financial experts that gave a lot for granted while leaving aside
-edge cases.
+When we got the first frustrations due to misunderstandings between the 
+customer and the team, I realized that we didn't speak the same language. 
+Indeed, we had high level functional specifications, 
+written by lawyers and financial experts that gave a lot for granted 
+while leaving aside many edge cases.
 
 Understanding the problem, led to the solution: we revised the concept of 
-"ubiquitous language" and we switched to a domain driven approach.
+"ubiquitous language" and we switched to a truly domain driven approach.
+
+We are talking about a project that took four years to complete. Three 
+teams of five people worked hard on the different modules of the application
+(CRM, portfolio management, advisory and so). As you can guess, we had 
+different changes of specifications over time, becouse the consultants had many second 
+thoughts about the customer's business processes.
+
+Nevertheless, despite the initial panic, the project was a success.
+
+Such a good result derived from these high-skilled teams, a bunch of smart 
+people who daily shared (and discussed) their own experiences. 
+Going beyond the initial knowledge base, we developed a 
+set of patterns that help us to design and implement the ubiquitous language in 
+a predictable amount of time. The patterns worked like a shared modeling 
+grammar so that all modelers were able to catch the intents of the others.
+
+This led us to a sort of "domain-driven software factory", with a fast and 
+predicible production line.
 
 --
 
