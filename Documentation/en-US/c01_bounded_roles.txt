@@ -4,7 +4,7 @@ Whenever you have to deal with a large project, you'll have to
 define a set of bounded contexts, each describing a different point of view
 upon the same concepts.
 
-The same concept can be a entity in a context and a value object in another.
+What is an entity in a context will be a value object in another.
 
 When related to enterprise processes, such contexts will be connected to the
 organization chart: different users can access to different contexts, often
@@ -14,14 +14,14 @@ Moreover, while you can sell the same domain model to different organizations,
 you can't neither predict nor generalize the organizational structure.
 You can make your software configurable, but whenever the access control 
 rules are complex enough you fall in a customization hell that will erode 
-the return on investment heavily.
+the return on investment.
 
 As an alternative, we decided to model the typical roles of the customer's 
 organization, each providing the entry-point to a bounded context.
 
 This was hard to explain to our stakeholders, since for each new customer 
 we get, there are a set of modeling tasks to do. 
-Howevere, as these activities can be easily planned, they managed to value them 
+However, as these activities can be easily planned, they managed to value them 
 as a really cool feature: we can customize the applications we sell to fit the 
 corporate structure of the customer!
 
@@ -34,9 +34,10 @@ He can browse statistical reports and portfolios, he fills profiles of his own
 customers, he advises them, he plans gifts for them, he sends their orders to 
 financial markets and so on.
 But he can also access reports about his colleagues, aggregate statistics about
-their performances. Some time he can send to them alerts.
+their performances. Some time he can send to them alerts. He can even build a 
+report forecasting the enterprise's revenues for the board of directors.
 
-What he can do depend on the position he plays in the organization. 
+What he can do depend on the position he plays in the organization.
 And you know how complex could be an human organization. 
 At first it seem a simple hierarchy, a tree of roles, but soon you learn 
 that assistants must be able to operate for their boss, that private bankers 
@@ -54,4 +55,28 @@ Binding roles to contexts
 The solution we found was to model the roles of customer's organization after 
 the domain contexts.
 
+Each role provides access to a set of repositories, domain services, 
+responsibility and tools just like any real role in any real enterprise.
+We found that roles follow almost exactly the context boundaries of our best 
+domains, sometimes customized with addictional requirements.
+
+We were not afraid to write specific code for each customer, confident that a 
+satisfied customer would have paid more.
+
+A junction point
+~~~~~~~~~~~~~~~~
+Roles have proved to be an efficent junction point between the pure domain 
+model (implemented as plain old C# objects) and the hosting infrastructure.
+
+Logging, persistence, resource allocations, user locking and so on:
+all passes through the users' roles that act as a natural injector for the 
+infrastructural code.
+
+For example the repositories can bind the user's access to specified entities, 
+according to the fanciest rules that your customer can imagine, the domain 
+services can be customized to log calls or to cache results and everything you 
+hate will become easy.
+
+You just have to deal with angry stakeholders that will tell you: "but we 
+already did it three months ago!"
 
