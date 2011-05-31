@@ -1,4 +1,57 @@
 Bounded Roles
 -------------
+Whenever you have to deal with a large project, you'll have to
+define a set of bounded contexts, each describing a different point of view
+upon the same concepts.
 
-Coming soon.
+The same concept can be a entity in a context and a value object in another.
+
+When related to enterprise processes, such contexts will be connected to the
+organization chart: different users can access to different contexts, often
+with slightly different capabilities.
+
+Moreover, while you can sell the same domain model to different organizations, 
+you can't neither predict nor generalize the organizational structure.
+You can make your software configurable, but whenever the access control 
+rules are complex enough you fall in a customization hell that will erode 
+the return on investment heavily.
+
+As an alternative, we decided to model the typical roles of the customer's 
+organization, each providing the entry-point to a bounded context.
+
+This was hard to explain to our stakeholders, since for each new customer 
+we get, there are a set of modeling tasks to do. 
+Howevere, as these activities can be easily planned, they managed to value them 
+as a really cool feature: we can customize the applications we sell to fit the 
+corporate structure of the customer!
+
+Know your users
+~~~~~~~~~~~~~~~
+All applications have users. This is so evident that it's often forgot.
+
+Each day a user log into our application and access a set of functionalities.
+He can browse statistical reports and portfolios, he fills profiles of his own 
+customers, he advises them, he plans gifts for them, he sends their orders to 
+financial markets and so on.
+But he can also access reports about his colleagues, aggregate statistics about
+their performances. Some time he can send to them alerts.
+
+What he can do depend on the position he plays in the organization. 
+And you know how complex could be an human organization. 
+At first it seem a simple hierarchy, a tree of roles, but soon you learn 
+that assistants must be able to operate for their boss, that private bankers 
+are not born equals and that exceptions exists... just to make you crazy.
+
+If you ever thought to model each kind of user, you know what I mean.
+
+Nevertheless you need to know what each user can do, when and how.
+Delegating such logic to the infrastructure is just an illusion: you are
+moving the problem elsewhere (often where it's harder to solve non-trivial 
+cases).
+
+Binding roles to contexts
+~~~~~~~~~~~~~~~~~~~~~~~~~
+The solution we found was to model the roles of customer's organization after 
+the domain contexts.
+
+

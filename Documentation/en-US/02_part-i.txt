@@ -28,8 +28,8 @@ Understanding the problem, led to the solution: we revised the concept of
 We are talking about a project that took four years to complete. Three 
 teams of five people worked hard on the different modules of the application
 (CRM, portfolio management, advisory and so). As you can guess, we had 
-different changes of specifications over time, becouse the consultants had many second 
-thoughts about the customer's business processes.
+different changes of specifications over time, becouse the consultants had lots 
+of second thoughts about the customer's business processes.
 
 image::images/daisy.png["The Epic's vision",align="left",float="left"]
 Nevertheless, despite the initial panic, the project was a success.
