@@ -1,3 +1,4 @@
+[[a_shared_modeling_grammar]]
 Toward a shared modeling grammar
 ================================
 [partintro] 
@@ -48,7 +49,7 @@ grammar so that all modelers were able to catch the intents of the others.
 This led us to a sort of "domain-driven software factory", with a fast and 
 predicible production line.
 
-The harder lesson to learn has been the underlying rationale of this methods:
+The harder lesson to learn has been the underlying rationale of these methods:
 make everything explicit, avoid abstractions that domain experts ignore. 
 
 A modeler should never abstract concepts on his own, his code should 
