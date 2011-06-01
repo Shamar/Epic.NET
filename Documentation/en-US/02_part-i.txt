@@ -62,15 +62,17 @@ On the opposite, keeping the models down-to-earth and sticking to the target
 business gave us good code that has been reused in different banks.
 --
 
-include::c01_bounded_roles.txt[]
+include::c01_poco.txt[]
 
-include::c02_shared_identifiers.txt[]
+include::c02_bounded_roles.txt[]
 
-include::c03_command_query_separation.txt[]
+include::c03_shared_identifiers.txt[]
 
-include::c04_observable_entities.txt[]
+include::c04_command_query_separation.txt[]
 
-include::c05_single_mutable_state.txt[]
+include::c05_observable_entities.txt[]
 
-include::c06_solid_principles.txt[]
+include::c06_single_mutable_state.txt[]
+
+include::c07_solid_principles.txt[]
 
