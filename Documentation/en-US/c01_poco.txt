@@ -36,15 +36,15 @@ Fix the gap
 One of the bigger advantages of Java was the strong object-oriented community 
 it has. This is important when you know you'll have to hire.
 
-Nevertheless we already experienced how well written documentation, good 
+Nevertheless we already experienced how well-written documentation, good 
 teachers and pair programming can become powerful training tools, 
 and we decided to sistematically use them.
 
 Nothing but business (again)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The first thing we decided to teach to newcomers has been the POJO silver 
-bullet footnote:[Since this fancy name was born in Java, and we do not forget
-it].
+bullet. footnote:[This is not a typo: the POJO term was coined for Java. 
+When it was ported to .NET it was a oxymoron.]
 
 We have a complex infrastructure that evolved over the years and often require
 customization for each customer.
@@ -56,11 +56,11 @@ in any way on the domain model's behaviour.
 The only way to  achieve this is to express the company's business in  C# 
 classes that have no connection with infrastructure choices.
 
-No attribute, no base class or interface is allowed:
-- you have to seal all classes that represent concrete concepts
-- you have name them after their business meaning
-- you have to fill them with relevant behaviours only
-- you have to keep them as simple as possible
+Neither attributes nor base classes are allowed:
+- you have to seal all classes that represent concrete concepts;
+- you have name them after their business meaning;
+- you have to fill them with relevant behaviours only;
+- you have to keep them as simple as possible.
 
 This way you'll be able to replace the infrastructural code without wondering 
 if you are introducing bugs in the business.

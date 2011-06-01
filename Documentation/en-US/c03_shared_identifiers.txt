@@ -1,6 +1,55 @@
 [[shared_identifiers]]
 Shared Identifiers
 ------------------
+I am Giacomo Tesio. "Giacomo Tesio" represents a convention for calling me.
 
+It's just a string, an expression that human beings can tell, write or type.
+
+There are a lot of identifiers pointing to me: tax code, vat code and even 
+babblings like "papo" footnote:[Something like "daddee", in italian.] as 
+my lovely doughter used to call me when she was six month old.
+
+As you know, identifiers are key concepts in domain driven design.
+
+Most of newcomers thinks that identifiers are just used to identify.
+
+They are not. They are first class citizen in the ubiquitous language.
+
+All people that develop, use or maintain a domain model *must share* the 
+identifiers or the language loose its ubiquitousness.
+
+No matter how fast are integer indices over a database, to identify a security 
+you *must* use its ISIN. footnote:[International Securities Identification Number]
+To identify a book you *must* use its ISBN. footnote:[International Standard Book Number]
+To identify a web resource you *must* use its http URI. footnote:[Universal Resource Identifier]
+
+WARNING: This is the general rule. But do not forget to adapt the rule to the 
+context! To identify my home computers, my doughter say "the big one", 
+"the old one", "the one I could break" and in such context these identifiers 
+are far better than their own network addresses!
+
+You can share what you have
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To share something you need to own it.
+
+Owning an identifier means to be able to express it in the domain model.
+Thus you should always model identifiers with dedicated classes.
+
+Identifiers are contracts by definition, so they do not need to be interfaces.
+
+Moreover they are immutable since mutability would damage their use.
+
+This makes strings and integers a sweet temptation to avoid. The reason is 
+simple you can't sum two identifiers and most of times you can't get an 
+identifier from another.
+
+So you have to design entities' identifiers as custom value objects.
+When they follow business rules (like ISBN-13) you should put them in their 
+code. Moreover you should make them sealed to avoid dirty temptations that
+could lead you to a bloodbath.
+
+Cheap placeholders
+~~~~~~~~~~~~~~~~~~
 Coming soon.
+
 
