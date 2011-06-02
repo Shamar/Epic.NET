@@ -19,14 +19,19 @@ All people that develop, use or maintain a domain model *must share* the
 identifiers or the language loose its ubiquitousness.
 
 No matter how fast are integer indices over a database, to identify a security 
-you *must* use its ISIN. footnote:[International Securities Identification Number]
-To identify a book you *must* use its ISBN. footnote:[International Standard Book Number]
-To identify a web resource you *must* use its http URI. footnote:[Universal Resource Identifier]
+on a international software you *must* use its ISIN. 
+footnote:[ISINs are slowly being introduced worldwide. At present, 
+many countries have adopted ISINs as a secondary measure of identifying 
+securities, but as yet only some of those countries have moved to using ISINs 
+as their primary means of identifying securities.]
+To identify a web resource you *must* use its http URI.
 
 WARNING: This is the general rule. But do not forget to adapt the rule to the 
 context! To identify my home computers, my doughter say "the big one", 
 "the old one", "the one I could break" and in such context these identifiers 
 are far better than their own network addresses!
+
+An interesting identifier is 
 
 You can share what you have
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,6 +52,26 @@ So you have to design entities' identifiers as custom value objects.
 When they follow business rules (like ISBN-13) you should put them in their 
 code. Moreover you should make them sealed to avoid dirty temptations that
 could lead you to a bloodbath.
+
+[TIP]
+=====================================================================
+ISBN is an interesting identifier: for a bookshop, ISBNs are the main candidates 
+to identify books, but what about a library?
+Library's employees distinguish between different copies of the same book, so 
+that an ISBN is not enough for them. Nevertheless, public catalogs use 
+ISBN to allow library's users to find what they need.
+
+So what?
+
+This is a simple case of identifiers shared in different context boundaries:
+both users and employees understand ISBNs when looking for a copy of a book, 
+but when an employee lends you a book, he logs the individual copy's location
+through its registration code.
+
+In this situation we would have two classes for identify books: ISBN for the 
+LibraryUser role and RegistrationCode for the LibraryEmployee one.
+=====================================================================
+
 
 Cheap placeholders
 ~~~~~~~~~~~~~~~~~~

@@ -56,7 +56,7 @@ div.book {padding-top:80px}
 .book a.toc-title:hover, .part a.toc-title:hover {color:black;border:0px}
 .book a.toc-title:visited, .part a.toc-title:visited {color:black;border:0px}
 
-div.warning {padding-top: 10px; padding-bottom:10px;}
-div.warning table {border-left: 3px solid #DDD;}
-div.warning td {padding-right:10px;}
-div.warning img {padding:5px;}
+div.warning, div.tip {padding-top: 10px; padding-bottom:10px;}
+div.warning table, div.tip table {border-left: 3px solid #DDD;}
+div.warning td, div.tip td {padding-right:10px;}
+div.warning img, div.tip img {padding:5px;vertical-align:middle}
