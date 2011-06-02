@@ -1,3 +1,4 @@
+[[single_mutable_state]]
 Single Mutable State
 --------------------
 

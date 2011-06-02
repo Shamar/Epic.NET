@@ -1,0 +1,87 @@
+[[poco]]
+Plain old CLR objects
+---------------------
+Let's be honest, object-oriented programming is not old in the .NET ecosystem.
+
+When compared to the Java or C++ world, the penetration of design patterns
+is quite recent, and the early adoption of service-oriented architectures 
+showing a brute separation between data and behaviours is symptomatic of the 
+tension between the complexities of object-orientated programming and the 
+widespread adoption that Microsoft achieves trying to lower the learning curve 
+required for their tools.
+
+Moreover, the CLR was designed to support different programming languages and 
+paradigms, from Visual Basic to F#, to allow programmers getting the job done 
+fast whatever are their skills (or at least, make them believe to be fast).
+
+Fortunatly, over the years, a number of very smart people have moved from 
+different platforms to .NET, borrowing previous experiences while creating 
+new idiomatic techniques.
+
+When we choosed C# for the development of our new flagship product, we choosed
+it among a set of languages and platforms that we knew quite well.
+Its competitors were Java, C++, Python, Ruby and even more exotic ones.
+
+In our analysis, C#/.NET was the best in very few sectors, but it won well to 
+the weighted sum of scores. 
+
+Indeed C# is a surprising (random?) mix of object-oriented and 
+functional features that fit very well our need when we develop complex 
+enterprise applications.
+
+Linq and events are among our favourite features.
+
+Fix the gap
+~~~~~~~~~~~
+One of the bigger advantages of Java was the strong object-oriented community 
+it has. This is important when you know you'll have to hire.
+
+Nevertheless we already experienced how well-written documentation, good 
+teachers and pair programming can become powerful training tools, 
+and we decided to sistematically use them.
+
+Nothing but business (again)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The first thing we decided to teach to newcomers has been the POJO silver 
+bullet. footnote:[This is not a typo: the POJO term was coined for Java. 
+When it was ported to .NET it was a oxymoron.]
+
+We have a complex infrastructure that evolved over the years and often require
+customization for each customer.
+Instead, most business rules are the same all over the world (expecially in 
+financial markets). 
+We need to be able to replace the persistence framework without affecting
+in any way on the domain model's behaviour.
+
+The only way to  achieve this is to express the company's business in  C# 
+classes that have no connection with infrastructure choices.
+
+Neither attributes nor base classes are allowed:
+- you have to seal all classes that represent concrete concepts;
+- you have name them after their business meaning;
+- you have to fill them with relevant behaviours only;
+- you have to keep them as simple as possible.
+
+This way you'll be able to replace the infrastructural code without wondering 
+if you are introducing bugs in the business.
+
+Contracts matter
+~~~~~~~~~~~~~~~~
+As you guessed, there is a trick. A simple one.
+
+You have to define contracts for all entities and all domain services.
+
+This could seem quite expensive at first, but since Epic makes everything 
+"domain dependent", such contracts provide many advantages during development:
+- parallel development: when the model's contracts are defined, everything that 
+  depends on them can begin its development cycle;
+- quality assurance: everything that depends on contracts can be tested in 
+  isolation;
+- decoupling: fixing bugs in the domain model will never require clients' 
+  recompilation (thus easing deploy too);
+- easy injection and proxing (the Epic's trick to conquer the world).
+
+The development parallelization is so strong that it paid the investment alone.
+
+However the flip side shows an increment in the efforts required for project 
+management (from 5 to 20 percent, following granularity of contexts).

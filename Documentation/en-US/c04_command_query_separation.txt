@@ -1,3 +1,4 @@
+[[command_query_separation]]
 Command - Query separation
 --------------------------
 

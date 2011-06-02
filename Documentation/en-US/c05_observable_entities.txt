@@ -1,3 +1,4 @@
+[[observable_entities]]
 Observable Entities
 -------------------
 
