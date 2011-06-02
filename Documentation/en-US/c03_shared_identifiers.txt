@@ -31,8 +31,6 @@ context! To identify my home computers, my doughter say "the big one",
 "the old one", "the one I could break" and in such context these identifiers 
 are far better than their own network addresses!
 
-An interesting identifier is 
-
 You can share what you have
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 To share something you need to own it.
@@ -55,8 +53,8 @@ could lead you to a bloodbath.
 
 [TIP]
 =====================================================================
-ISBN is an interesting identifier: for a bookshop, ISBNs are the main candidates 
-to identify books, but what about a library?
+ISBN is an interesting identifier: for a bookshop, ISBNs are the main 
+candidates to identify books, but what about a library?
 Library's employees distinguish between different copies of the same book, so 
 that an ISBN is not enough for them. Nevertheless, public catalogs use 
 ISBN to allow library's users to find what they need.
