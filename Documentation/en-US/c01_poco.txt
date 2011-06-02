@@ -57,6 +57,7 @@ The only way to  achieve this is to express the company's business in  C#
 classes that have no connection with infrastructure choices.
 
 Neither attributes nor base classes are allowed:
+
 - you have to seal all classes that represent concrete concepts;
 - you have name them after their business meaning;
 - you have to fill them with relevant behaviours only;
@@ -73,6 +74,7 @@ You have to define contracts for all entities and all domain services.
 
 This could seem quite expensive at first, but since Epic makes everything 
 "domain dependent", such contracts provide many advantages during development:
+
 - parallel development: when the model's contracts are defined, everything that 
   depends on them can begin its development cycle;
 - quality assurance: everything that depends on contracts can be tested in 

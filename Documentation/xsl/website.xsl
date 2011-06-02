@@ -10,7 +10,7 @@
 <xsl:template name="user.head.content">
   <meta charset='utf-8'/>
 
-  <link rel="icon" href="favicon.ico" />
+  <link rel="icon" href="/favicon.ico" />
   <link rel="alternate" type="application/atom+xml" title="Development log"  href="atom.xml" />
   <xsl:comment><![CDATA[[if !IE 7]>
     <style type="text/css">

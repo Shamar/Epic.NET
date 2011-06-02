@@ -67,7 +67,7 @@ satisfied customer would have paid more.
 A junction point
 ~~~~~~~~~~~~~~~~
 Roles have proved to be an efficent junction point between the pure domain 
-model (implemented as plain old C# objects) and the hosting infrastructure.
+model (implemented as plain old CLR objects) and the hosting infrastructure.
 
 Logging, persistence, resource allocations, user locking and so on:
 all passes through the users' roles that act as a natural injector for the 
