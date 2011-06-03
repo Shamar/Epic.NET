@@ -1,10 +1,51 @@
 [[command_query_separation]]
 Command - Query separation
 --------------------------
+CQS is a well known principle in object oriented programming after Bertrand 
+Meyer. It state that we should divide an object's methods into two sharply 
+separated categories:
 
-Coming soon.
+- *queries* that return a result and do not change the observable state of the 
+  system (are free of side effects).
+- *commands* that change the state of a system but do not return a value.
+
+TIP: As you might know by experience, side effects are expensive. 
+For example, for each new mutable flag in a class, the number of possible
+states will double. When you model a domain, you should remember that 
+minimizing the side effects means minimizing complexity (thus *maximizing 
+the revenues*).
+
+As for value objects, all their methods must be queries. They must be immutable 
+and no method of theirs should modify either the arguments or the system.
+
+Domain services could be designed to change the system (by sending an email or 
+writing a report) and in such case you should make such change explicit.
+
+Mutable entities could have both query methods and commands. You should cleanly
+diffirenciate them, so that all model's users will grasp the rationale of each 
+method.
+
+A simple convention
+~~~~~~~~~~~~~~~~~~~
+We adopted an idiomatic convention with the following rules:
+
+- queries return a value;
+- commands must be void;
+- should a command returns a value, it will go through an +out+ parameter that 
+  will have a meaningful name;
+- properties are readonly (thus they are always query);
+- entity's queries should never throw exceptions;
+- commands must be well documented and thrown exceptions should be
+  listed and explained already in the interfaces.
+ 
+WARNING: This is probably the major concern in the choice of C# for modeling 
+tasks. Checked exceptions would be valuable for us! We want that client breaks
+as early as possible when we change the domain. 
+
+We apply these rules without exception. Epic will provide a set of Gendarme's
+rules to check the adherence to such rules, but it will not force them by
+default.
 
 Idempotence
 ~~~~~~~~~~~
-
 Coming soon.
