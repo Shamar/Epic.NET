@@ -31,7 +31,7 @@ namespace Challenge00.DDDSample.Location
     /// http://www.unece.org/cefact/locode/ http://www.unece.org/cefact/locode/DocColumnDescription.htm#LOCODE
 	/// </summary>
 	[Serializable]
-	public class UnLocode : StringIdentifier<UnLocode>
+	public sealed class UnLocode : StringIdentifier<UnLocode>
 	{
         private static readonly Regex _pattern = new Regex("^[a-zA-Z]{2}[a-zA-Z2-9]{3}$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 		private static string validIdentifier(string identifier)

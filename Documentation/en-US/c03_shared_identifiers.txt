@@ -1,7 +1,7 @@
 [[shared_identifiers]]
 Shared Identifiers
 ------------------
-I am Giacomo Tesio. "Giacomo Tesio" represents a convention for calling me.
+I am Giacomo Tesio. "Giacomo Tesio" represents a convention to call me.
 
 It's just a string, an expression that human beings can tell, write or type.
 
@@ -11,25 +11,21 @@ my lovely doughter used to call me when she was six month old.
 
 As you know, identifiers are key concepts in domain driven design.
 
-Most of newcomers thinks that identifiers are just used to identify.
+Most of newcomers thinks that identifiers are just used to identify. 
 
-They are not. They are first class citizen in the ubiquitous language.
+They are not. They are first class citizen in the ubiquitous language. 
+They serve to comunicate.
 
 All people that develop, use or maintain a domain model *must share* the 
-identifiers or the language loose its ubiquitousness.
+identifiers, or the language will loose its ubiquitousness.
 
-No matter how fast are integer indices over a database, to identify a security 
-on a international software you *must* use its ISIN. 
-footnote:[ISINs are slowly being introduced worldwide. At present, 
-many countries have adopted ISINs as a secondary measure of identifying 
-securities, but as yet only some of those countries have moved to using ISINs 
-as their primary means of identifying securities.]
-To identify a web resource you *must* use its http URI.
+No matter how fast are integer indices in a database, to identify an entity
+you *must* use an identifier that the users know.
 
-WARNING: This is the general rule. But do not forget to adapt the rule to the 
-context! To identify my home computers, my doughter say "the big one", 
-"the old one", "the one I could break" and in such context these identifiers 
-are far better than their own network addresses!
+In the sample domain model of cargo shipping, we used +TrakingId+ to identify a 
+cargos, +UnLocode+ to identify locations and +VoyageNumber+ to identify a voyage.
++UnLocode+ was the only one requiring strong business rules that we embedded in
+its constructor.
 
 You can share what you have
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,7 +49,7 @@ could lead you to a bloodbath.
 
 [TIP]
 =====================================================================
-ISBN is an interesting identifier: for a bookshop ISBNs are the main 
++ISBN+ is an interesting identifier: for a bookshop ISBNs are the main 
 candidates to identify books, but what about a library?
 Library's employees distinguish between different copies of the same book, so 
 that an ISBN is not enough. Nevertheless, public catalogs use 
@@ -66,9 +62,35 @@ both users and employees understand ISBNs when looking for a copy of a book,
 but when an employee lends you a book, he logs the individual copy's location
 through its registration code.
 
-In this situation we would have two classes for identify books: ISBN for the 
-LibraryUser role and RegistrationCode for the LibraryEmployee one.
+In this situation we would have two classes for identify books: +ISBN+ for the 
++LibraryUser+ role and +RegistrationCode+ for the +LibraryEmployee+ one.
 =====================================================================
+
+Avoid naming conventions
+~~~~~~~~~~~~~~~~~~~~~~~~
+Each type of entity has it's own identifier.
+
+If the entity is not "syntetic" (like a web resource, for example) such 
+identifiers is a property of the entity itself.
+
+Name such property after its meaning, avoiding naming conventions.
+
+For example, if you are modeling a network device, you could use its own +IP+.
+Please do not use a property named +Identifier+!
+
+You might wonder why. There are at least two reasons:
+
+- client code will lose maintainability since each line of code will require
+  more context to be understood,
+- different customers could require to identify differently the same entities.
+  Think about the different security idenfiers in capital markets: ISIN, CUSIP,
+  SEDOL, RIC but also the various national security identifiers.
+
+Sometimes you can safely choose a property as being the true entity identifier, 
+but often you can not, so we suggest to avoid the spoilt for choice.
+
+TIP: Epic does not provide any interface or attribute for entities and 
+their identifiers. Client code will choose how to identify each entity. 
 
 Cheap placeholders
 ~~~~~~~~~~~~~~~~~~
@@ -86,21 +108,92 @@ URIs are just specialized identifiers, but the same is true
 to any other kind of identifier: whenever you have access to a repository, you 
 can always get entities in return for identifiers.
 
-This mean that you can replace an entity with its identifier.
+This means that often you can replace an entity with its identifier.
 
-If you model the user of a library, for example, such LibraryUser do not need 
-to keep a reference to all the lent books: their ReferenceCode are enough.
+NOTE: Such replacement works very well in contexts where an entity can be 
+identified by just one property. 
+Otherwise you could choose one identifying property of convenience: for example
+you could choose RIC to point to financial instruments. An alternative 
+would be a complex use of generics, delegates and abstractions in dependant code. 
+This proved to be feasible, but rather expensive.
 
-It might seem a bit "relational", but it's not: LibraryUser's methods 
-like Lend() or Return() should not accept identifiers, just books. 
-Only the ReadingBooks property should be an enumerable of ReferenceCodes.
+WARNING: If you find yourself identifying an entity by two different properties,
+chances are that you need a new exploration whirpool: may be you need to define 
+two different entities.
+
+If you model the user of a library, for example, such +LibraryUser+ do not need 
+to keep a reference to all the lent books: their +ReferenceCode+ are enough.
+
+It might seem a bit "relational", but it's not: +LibraryUser+'s methods 
+like +Lend()+ or +Return()+ should not accept identifiers, just books. 
+Only the +ReadingBooks+ property should be an enumerable of +ReferenceCodes+.
 
 Decoupling entities
 ~~~~~~~~~~~~~~~~~~~
-Coming soon.
+Given such cheap placeholders, you can avoid to keep an entity in the state of
+another one (whenever they do not share the same livecycle).
+
+This way you will have decoupled classes and smaller and fewer aggregate roots.
+
+In the classic Northwind Linq sample, the customer class provide you the 
+orders. Direct references seem cool at first, but with complex domains they 
+could become a pain when you get deeper insights.
+
+We noted that reference by identifiers works as well but it allow the various 
+entities to keep immutable state only.
 
 Decoupling contexts
 ~~~~~~~~~~~~~~~~~~~
-Coming soon.
+Identifiers are typical components of shared kernels.
 
+We found convenient to keep their classes along with base interfaces for 
+entities. For example the MIC class could be in a financial kernel along 
+with a simple (almost empty) IMarket interface like this:
+
+[source,c#]
+-------------------------------------------
+namespace Sample.Financial.Kernel
+{
+    /// <summary>
+    /// Shared interface for exchanges, trading platforms and regulated or
+    /// non-regulated markets as sources of prices and related information.
+    /// </summary>
+    public interface IMarket
+    {
+        /// <summary>
+        /// Market Identifier Code as defined by ISO 10383
+        /// </summary>
+        /// <seealso cref="http://www.iso15022.org/MIC/ISO10383_MIC_v1_83b.pdf"/>
+        MIC Identifier { get; }
+    }
+}
+-------------------------------------------
+
+Different "bounded roles" will access different views of the market concept, 
+each specialized for the target context. 
+But it will be really easy to move from a context to another: you have a 
+simple and effective anti-corruption layer for free!
+
+Coding conventions
+~~~~~~~~~~~~~~~~~~
+A few coding conventions and best practice derive from the role that 
+identifiers play in the ubiquitous language:
+
+- identifiers are public, concrete contracts (they do not need to have
+  interfaces and should have public constructors);
+- identifiers must override +ToString()+;
+- identifiers of the same type must be IEquatable among themselves;
+- identifiers must be usable as keys (thus you must override both 
+  +Equals(object)+ and +GetHashCode()+);
+- it should be possible to get an identifier from a string (a public 
+  constructor able to parse a string would be enough);
+- it would be kind for clients to define the +==+ and the +!=+ operators for 
+  them;
+- formally defined identifiers (like ISBN or ISIN) should be sealed.
+
+Such rules have proved to work very well, and they are rather easy to be 
+followed. Currently, Epic does not provide a base class for identifiers since
+we do not want you domain model to depend on Epic itself. However writing such 
+a base class should be quite easy, as you can see in the 
++StringIdentifier<TIdentifier>+ class provided with the cargo sample.
 
