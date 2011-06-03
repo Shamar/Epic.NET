@@ -83,8 +83,8 @@ You might wonder why. There are at least two reasons:
 - client code will lose maintainability since each line of code will require
   more context to be understood,
 - different customers could require to identify differently the same entities.
-  Think about the different security idenfiers in capital markets: ISIN, CUSIP,
-  SEDOL, RIC but also the various national security identifiers.
+  Think about the different security identifiers in capital markets: ISIN, 
+  CUSIP, SEDOL, RIC but also the various national security identifiers.
 
 Sometimes you can safely choose a property as being the true entity identifier, 
 but often you can not, so we suggest to avoid the spoilt for choice.
@@ -135,8 +135,8 @@ another one (whenever they do not share the same livecycle).
 
 This way you will have decoupled classes and smaller and fewer aggregate roots.
 
-In the classic Northwind Linq sample, the customer class provide you the 
-orders. Direct references seem cool at first, but with complex domains they 
+In the classic Northwind Linq sample, the customer class gives you the set of 
+his orders. Direct references seem cool at first, but with complex domains they 
 could become a pain when you get deeper insights.
 
 We noted that reference by identifiers works as well but it allow the various 
@@ -148,7 +148,7 @@ Identifiers are typical components of shared kernels.
 
 We found convenient to keep their classes along with base interfaces for 
 entities. For example the MIC class could be in a financial kernel along 
-with a simple (almost empty) IMarket interface like this:
+with a simple (almost empty) +IMarket+ interface like this:
 
 [source,c#]
 -------------------------------------------
@@ -176,7 +176,7 @@ simple and effective anti-corruption layer for free!
 
 Coding conventions
 ~~~~~~~~~~~~~~~~~~
-A few coding conventions and best practice derive from the role that 
+A few coding conventions and best practices derive from the role that 
 identifiers play in the ubiquitous language:
 
 - identifiers are public, concrete contracts (they do not need to have
@@ -189,11 +189,11 @@ identifiers play in the ubiquitous language:
   constructor able to parse a string would be enough);
 - it would be kind for clients to define the +==+ and the +!=+ operators for 
   them;
-- formally defined identifiers (like ISBN or ISIN) should be sealed.
+- formally defined identifiers (like MIC, ISBN or ISIN) should be sealed.
 
 Such rules have proved to work very well, and they are rather easy to be 
 followed. Currently, Epic does not provide a base class for identifiers since
-we do not want you domain model to depend on Epic itself. However writing such 
-a base class should be quite easy, as you can see in the 
+we do not want that your domain model depends on Epic itself. 
+However writing such a base class should be quite easy, as you can see in the 
 +StringIdentifier<TIdentifier>+ class provided with the cargo sample.
 
