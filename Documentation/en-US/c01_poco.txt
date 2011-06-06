@@ -87,3 +87,40 @@ The development parallelization is so strong that it paid the investment alone.
 
 However the flip side shows an increment in the efforts required for project 
 management (from 5 to 20 percent, following granularity of contexts).
+
+Typed explicitness
+~~~~~~~~~~~~~~~~~~
+*Make everything explicit*, avoid abstractions that domain experts ignore.
+
+This has been the harder lesson we learnt. 
+
+We choose a strongly typed language to minimize the risk for implicitness.
+Each useful concept should have its own type in the domain. 
+Bytes are cheaper than bugs.
+
+A modeler should never abstract concepts on his own, his code should 
+solely express the expert's vision. This is difficult to achieve for us, since 
+programmers are trained for abstract thinking, but all the abstractions 
+introduced without the explicit support of the domain expert led us to very 
+subtle and expensive bugs. 
+
+On the opposite, keeping the models down-to-earth and sticking to the target 
+business gave us good code that has been reused in different banks.
+
+This could seem counterintuitive, but you should avoid patterns designed to 
+make your code maintainable or fast. Of course they are valuable per se, 
+but whenever you leave the ubiquitous language to introduce them, you 
+are always introducing long-term bugs.
+
+Implicitness leads to a dangerous self-confidence: you think that everything 
+works as expected just becouse you are not looking at the full picture. 
+When new challenges arise, a fully explicit domain will evolve easily and
+in a predictable amount of time.
+
+While someone finds such approach a bit naive, it is a carefully analyzed 
+simplification that moves us back to the origin of object-orientated 
+programming. Indeed, while working on big corporate softwares, an easy and 
+fast comunication is more valuable that a reuse-oriented design. 
+Reuse will come after the use, when your code will have paid the bill for a 
+while.
+
