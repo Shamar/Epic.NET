@@ -48,18 +48,6 @@ grammar so that all modelers were able to catch the intents of the others.
 
 This led us to a sort of "domain-driven software factory", with a fast and 
 predicible production line.
-
-The harder lesson to learn has been the underlying rationale of these methods:
-make everything explicit, avoid abstractions that domain experts ignore. 
-
-A modeler should never abstract concepts on his own, his code should 
-solely express the expert's vision. This was difficult to achieve for us since 
-programmers are trained for abstract thinking, but all the abstractions 
-introduced without the explicit support of the domain expert led us to very 
-subtle and expensive bugs. 
-
-On the opposite, keeping the models down-to-earth and sticking to the target 
-business gave us good code that has been reused in different banks.
 --
 
 include::c01_poco.txt[]
