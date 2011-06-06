@@ -11,6 +11,9 @@
   <meta charset='utf-8'/>
 
   <link rel="icon" href="/favicon.ico" />
+  <script src='script/shCore.js' type='text/javascript'></script> 
+  <script src='script/shBrushCSharp.js' type='text/javascript'></script> 
+
   <link rel="alternate" type="application/atom+xml" title="Development log"  href="atom.xml" />
   <xsl:comment><![CDATA[[if !IE 7]>
     <style type="text/css">
@@ -27,6 +30,73 @@
 		#wrap {width:100%}
 	</style>
   <![endif]]]></xsl:comment>
+  
+</xsl:template>
+
+<xsl:template match="programlisting|screen|synopsis">
+  <xsl:param name="suppress-numbers" select="'0'"/>
+  <xsl:variable name="id">
+    <xsl:call-template name="object.id"/>
+  </xsl:variable>
+
+  <xsl:call-template name="anchor"/>
+
+  <xsl:if test="$shade.verbatim != 0">
+    <xsl:message>
+      <xsl:text>The shade.verbatim parameter is deprecated. </xsl:text>
+      <xsl:text>Use CSS instead,</xsl:text>
+    </xsl:message>
+    <xsl:message>
+      <xsl:text>for example: pre.</xsl:text>
+      <xsl:value-of select="local-name(.)"/>
+      <xsl:text> { background-color: #E0E0E0; }</xsl:text>
+    </xsl:message>
+  </xsl:if>
+
+  <xsl:choose>
+    <xsl:when test="$suppress-numbers = '0'
+                    and @linenumbering = 'numbered'
+                    and $use.extensions != '0'
+                    and $linenumbering.extension != '0'">
+      <xsl:variable name="rtf">
+        <xsl:choose>
+          <xsl:when test="$highlight.source != 0">
+            <xsl:call-template name="apply-highlighting"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <script type="syntaxhighlighter" class="brush: csharp">
+        <xsl:if test="@width != ''">
+          <xsl:attribute name="width">
+            <xsl:value-of select="@width"/>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:call-template name="number.rtf.lines">
+          <xsl:with-param name="rtf" select="$rtf"/>
+        </xsl:call-template>
+      </script>
+    </xsl:when>
+    <xsl:otherwise>
+      <script type="syntaxhighlighter" class="brush: csharp">
+        <xsl:if test="@width != ''">
+          <xsl:attribute name="width">
+            <xsl:value-of select="@width"/>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:choose>
+          <xsl:when test="$highlight.source != 0">
+            <xsl:call-template name="apply-highlighting"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </script>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template name="make.toc">
@@ -158,7 +228,7 @@
     <div class="copyright">Copyright &#169; 2010-2011 Giacomo Tesio</div>
   </div>
      <xsl:call-template name="user.footer.navigation"/> 
-
+  <script type='text/javascript'>SyntaxHighlighter.all()</script> 
     </body> 
   </html> 
   <xsl:value-of select="$chunk.append"/> 
