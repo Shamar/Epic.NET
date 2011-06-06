@@ -39,7 +39,7 @@ We adopted an idiomatic convention with the following rules:
   listed and explained already in the interfaces.
  
 WARNING: This is probably the major concern in the choice of C# for modeling 
-tasks. Checked exceptions would be valuable for us! We want that client breaks
+tasks. Checked exceptions would be valuable for us! We want that clients breaks
 as early as possible when we change the domain. 
 
 We apply these rules without exception. Epic will provide a set of Gendarme's
@@ -48,4 +48,35 @@ default.
 
 Idempotence
 ~~~~~~~~~~~
-Coming soon.
+Idempotence is another well known principle in math and functional programming.
+It is the property of operations that can be applied multiple 
+times without changing the result.
+
+C# does not handle referential transparency and since we design mutable 
+entities, idempotence can not be adopted as when we programm, say, in Haskell.
+Nevertheless it profitable to prefer idempotent APIs.
+
+Methods of both value objects and domain services should be designed to be
+idempotent.
+However, when they get an entity as an argument the result could change among 
+subsequent calls, as the entity recieves a command.
+
+TIP: Each instance of an entity holds a mutable state that affects the 
+result of depending queries.
+
+Entities' queries are a bit trickier: you should always get the same result 
+when calling with the same arguments, until either the method's owner or the 
+arguments recieve a command.
+
+Commands of entities are even more complex: you should design them to be 
+idempotent as far as possible. For example, you could prefer methods like 
++SetSomething()+ instead of +AddSomething()+ and +RemoveSomething()+, thus 
+allowing idempotence (and reducing the interface size) without 
+affecting comprehensibility.
+
+NOTE: Often it's quite easy to get idempotent APIs. See for example the 
++IVoyage+ interface in the DDDSample from the Epic source code: commands like 
++StopOver(ILocation)+ and +DepartFrom(ILocation)+ are both idempotent and 
+expressive. + 
+If a voyage either departs from a location or stop over a location twice, 
+it will always be in the same state.

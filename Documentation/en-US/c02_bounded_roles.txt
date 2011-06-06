@@ -2,7 +2,7 @@
 Bounded Roles
 -------------
 Whenever you have to deal with a large project, you'll have to
-define a set of bounded contexts, each describing a different point of view
+define a set of bounded contexts, each describing a different *point of view*
 upon the same concepts.
 
 What is an entity in a context will be a value object in another.
@@ -13,6 +13,14 @@ with slightly different capabilities.
 
 Moreover, while you can sell the same domain model to different organizations, 
 you can't neither predict nor generalize the organizational structure.
+
+WARNING: In the second chapter of Analysis Pattern, Martin Fowler describe a
+set of patterns for accountability management. While such patterns are both 
+elegant and powerfull we found them affected by a major flaw: they are not 
+part of the ubiquitous language. +
+We prefer to learn the language from domain experts instead of teaching them 
+our own.
+
 You can make your software configurable, but whenever the access control 
 rules are complex enough you fall in a customization hell that will erode 
 the return on investment.
@@ -53,7 +61,7 @@ cases).
 
 Binding roles to contexts
 ~~~~~~~~~~~~~~~~~~~~~~~~~
-The solution we found was to model the roles of customer's organization after 
+The solution we found is to model the roles of customer's organization after 
 the domain contexts.
 
 Each role provides access to a set of repositories, domain services, 
