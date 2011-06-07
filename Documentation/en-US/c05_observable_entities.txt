@@ -1,5 +1,35 @@
 [[observable_entities]]
 Observable Entities
 -------------------
+One of the best feature that C# offers to modelers is the event pattern. +
+In general, this pattern is expressed as formal naming conventions for 
+delegates, events, and related methods involved in the event notification 
+process. Thanks to this slight variation on the classical observer pattern
+.NET developers can easily decouple the subject and the observer.
 
-Coming soon.
+This is not the medication for all ills, however: everybody knows the memory 
+leaks that forgotten delegates can cause.
+
+Epic provides a set of tool to take full advantage of the smart pattern 
+proposed from Microsoft without the connected risks.
+
+Who, where, when, what and why
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+First of all, we noted that only the entities can be subject to observation, 
+as they own an identity.
+
+The underlying rationale is that whenever an entity recieves a command, it 
+should inform the world about what happened.
+This should not be a technicality, based on a naming convention connected to 
+the invoked command or related to the changed data.
+
+The name of the event should be a verb in past tense that expresses *what* 
+happened. The event arguments should describe *how* that happens, providing 
+informations useful to domain experts.
+
+This simple set or rules produce a really powerfull tool, solving a number of
+apparently unrelated problems such as GUI sincronization, persistence, logging,
+high availability and so on.
+
+With Epic there's no other model before the domain model.
+
