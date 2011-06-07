@@ -13,14 +13,12 @@ with slightly different capabilities.
 
 Moreover, while you can sell the same domain model to different organizations, 
 you can't neither predict nor generalize the organizational structure.
-
-NOTE: In the second chapter of Analysis Pattern, Martin Fowler describe a
+footnote:[In the second chapter of Analysis Pattern, Martin Fowler describe a
 set of patterns for accountability management. While such patterns are both 
 elegant and powerfull we found them affected by a major flaw: they are not 
 part of the ubiquitous language. +
 We prefer to learn the language from domain experts instead of teaching them 
-our own.
-
+our own.]
 You can make your software configurable, but whenever the access control 
 rules are complex enough you fall in a customization hell that will erode 
 the return on investment.
@@ -71,6 +69,32 @@ domains, sometimes customized with addictional requirements.
 
 We were not afraid to write specific code for each customer, confident that a 
 satisfied customer would have paid more.
+
+Complexity partition
+~~~~~~~~~~~~~~~~~~~~
+Bounded contexts are among the most undervalued tools in software development.
+They are useful beyond the niche of domain-driven development.
+
+As you know, when an application grows, its own complexity increases. +
+Too often the evolution led to spaghetti code, but to reduce risks you can 
+try to anticipate the problems by applying a set of smart design patterns.  
+However, the "overdesign" hell is just around the corner. 
+What if your software evolves on unexpected axes?
+
+As a safer alternative you could produces well-defined, documented boundaries,
+shared ones that customers and users can understand. 
+And there's nothing easier to understand for a customer than a role.
+
+Different roles will have the same entities but with different responsibilities:
+the +IPatient+ that a +IPlasticSurgeon+ operates have the same 
++InsuranceCode+ of the one monitored by the +ICardiologist+, but they are 
+different for everything else.
+
+Splitting the applications into bounded contexts, each linked to a user role, 
+allow to model a simpler reality. You will have two classes named +IPatient+ in 
+different namespaces (probably with a shared kernel) but each class will be 
+designed after a specific point of view, to satisfy a smaller set 
+of requirements. 
 
 A junction point
 ~~~~~~~~~~~~~~~~
