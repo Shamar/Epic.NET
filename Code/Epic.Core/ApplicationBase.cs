@@ -32,7 +32,7 @@ namespace Epic
 	/// </remarks>
 	public abstract class ApplicationBase
 	{
-		private string _name;
+		private readonly string _name;
 		
 		/// <summary>
 		/// Constructor 

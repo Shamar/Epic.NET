@@ -28,7 +28,7 @@ namespace Epic.Enterprise
 	[Serializable]
 	internal class RoleRef : IDisposable
 	{
-		public readonly RoleBase Role;
+		internal readonly RoleBase Role;
 		private int _refs;
 		public RoleRef (RoleBase role)
 		{
@@ -38,13 +38,13 @@ namespace Epic.Enterprise
 			_refs = 0;
 		}
 		
-		public int Increase()
+		internal int Increase()
 		{
 			++_refs; // TODO: evaluate whether use CAS for thread safety
 			return _refs;
 		}
 		
-		public int Decrease()
+		internal int Decrease()
 		{
 			if(_refs == 0)
 			{

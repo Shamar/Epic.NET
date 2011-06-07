@@ -77,7 +77,7 @@ namespace Epic.Enterprise
 			}
 		}
 		
-		protected void throwAfterDisposition()
+		protected void ThrowAfterDisposition()
 		{
 			if(_disposed)
 				throw new ObjectDisposedException(_identifier);
@@ -141,7 +141,7 @@ namespace Epic.Enterprise
 		/// </typeparam>
 		public bool CanAchieve<TRole> () where TRole : class
 		{
-			throwAfterDisposition();
+			ThrowAfterDisposition();
 			Type roleType = typeof(TRole);
 			if(_roles.ContainsKey(roleType))
 				return true;
@@ -154,6 +154,21 @@ namespace Epic.Enterprise
 		/// <param name='role'>
 		/// User's role, entry point to a specific context boundary in the domain.
 		/// </param>
+		/// <remarks>
+		/// <para>
+		/// This method call a the <see cref="WorkingSessionBase.IsAllowed{TRole}"/> protected method.
+		/// It will throw <see cref="InvalidOperationException"/> as far as the method returns <value>false</value>.
+		/// </para>
+		/// <para>
+		/// If <typeparamref name="TRole"/> is allowed to the working session's owner, <see cref="WorkingSessionBase.GetRoleBuilder{TRole}()"/>
+		/// will provide the <see cref="RoleBuilder{TRole}"/> that will build the role for the owner.
+		/// </para>
+		/// <para>
+		/// Once a role is achieved, all subsequent calls to this method will return the previous instance 
+		/// without any futher call to either <see cref="WorkingSessionBase.IsAllowed{TRole}"/> or
+		/// <see cref="WorkingSessionBase.GetRoleBuilder{TRole}()"/>.
+		/// </para>
+		/// </remarks>
 		/// <typeparam name='TRole'>
 		/// The type of the role to achieve.
 		/// </typeparam>
@@ -161,7 +176,7 @@ namespace Epic.Enterprise
 		/// the required <typeparamref name="TRole"/>.</exception>
 		public void Achieve<TRole> (out TRole role) where TRole : class
 		{
-			throwAfterDisposition();
+			ThrowAfterDisposition();
 			Type roleType = typeof(TRole);
 			RoleRef roleRef = null;
 			if(!_roles.TryGetValue(roleType, out roleRef))
@@ -184,6 +199,15 @@ namespace Epic.Enterprise
 		/// After calling this method, your role will be disposed 
 		/// and the reference to <paramref name="role"/> will be set to <value>null</value>.
 		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// The role will be disposed when the number of call to <see cref="Achieve{TRole}(TRole)"/>
+		/// will be balanced with the calls to this method.
+		/// </para>
+		/// <para>
+		/// In other world you must leave the achieved roles exactly the same number of times you achieved each one.
+		/// </para>
+		/// </remarks>
 		/// <param name='role'>
 		/// User's role to be disposed.
 		/// </param>
@@ -194,7 +218,7 @@ namespace Epic.Enterprise
 		/// <exception cref="ArgumentException">The <paramref name="role"/> is unknown to the session.</exception>
 		public void Leave<TRole> (ref TRole role) where TRole : class
 		{
-			throwAfterDisposition();
+			ThrowAfterDisposition();
 			if(null == role)
 				throw new ArgumentNullException("role");
 			Type roleType = typeof(TRole);

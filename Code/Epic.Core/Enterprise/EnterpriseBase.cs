@@ -175,6 +175,16 @@ namespace Epic.Enterprise
 		/// <summary>
 		/// Ends the working session. Template method.
 		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// Before disposing the working session will call the 
+		/// <see cref="EnterpriseBase.BeforeWorkingSessionEnd(IPrincipal, IWorkingSession)"/> so that
+		/// derived class will be able to log the operation.
+		/// </para>
+		/// <para>
+		/// This could be usefult if you have to lock accesses to the application to specific users.
+		/// </para>
+		/// </remarks>
 		/// <param name='owner'>
 		/// The owner.
 		/// </param>
