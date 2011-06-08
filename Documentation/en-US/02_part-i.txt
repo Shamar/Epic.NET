@@ -61,7 +61,7 @@ include::c04_command_query_separation.txt[]
 
 include::c05_observable_entities.txt[]
 
-include::c06_single_mutable_state.txt[]
+include::c06_solid_principles.txt[]
 
-include::c07_solid_principles.txt[]
+include::c07_single_mutable_state.txt[]
 
