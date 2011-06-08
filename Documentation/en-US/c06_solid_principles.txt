@@ -18,34 +18,31 @@ of view.
 
 Single Responsibility
 ~~~~~~~~~~~~~~~~~~~~~
-[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
-and Practices (2002)"]
+["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
 A class should have only one reason to change.
 
-Open Closed
+Open-Closed
 ~~~~~~~~~~~
-[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
-and Practices (2002)"]
+["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
 Software entities (classes, modules, functions, etc.) should be open for 
 extension, but closed for modification.
 
 Liskov Substitution
 ~~~~~~~~~~~~~~~~~~~
-[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
-and Practices (2002)"]
+["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
 Subtypes must be substitutable for their base types.
 
 Dependency Inversion
 ~~~~~~~~~~~~~~~~~~~~
-[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
-and Practices (2002)"]
+["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
+_______________________________________________________________
 a. High-level modules should not depend on low-level modules. 
    Both should depend on abstractions.
 b. Abstractions should not depend on details. 
    Details should depend on abstractions.
+_______________________________________________________________
 
 Interface Segregation
 ~~~~~~~~~~~~~~~~~~~~~
-[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
-and Practices (2002)"]
+["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
 Clients should not be forced to depend on methods that they do not use.

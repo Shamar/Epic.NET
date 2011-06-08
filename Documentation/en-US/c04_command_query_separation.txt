@@ -38,7 +38,7 @@ We adopted an idiomatic convention with the following rules:
 - commands must be well documented and thrown exceptions should be
   listed and explained already in the interfaces.
  
-WARNING: This is probably the major concern in the choice of C# for modeling 
+CAUTION: This is probably the major concern in the choice of C# for modeling 
 tasks. Checked exceptions would be valuable for us! We want that clients breaks
 as early as possible when we change the domain. 
 

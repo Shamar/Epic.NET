@@ -110,14 +110,13 @@ can always get entities in return for identifiers.
 
 This means that often you can replace an entity with its identifier.
 
-NOTE: Such replacement works very well in contexts where an entity can be 
+CAUTION: Such replacement works very well in contexts where an entity can be 
 identified by just one property. 
 Otherwise you could choose one identifying property of convenience: for example
 you could choose RIC to point to financial instruments. An alternative 
 would be a complex use of generics, delegates and abstractions in dependant code. 
-This proved to be feasible, but rather expensive.
-
-WARNING: If you find yourself identifying an entity by two different properties,
+This proved to be feasible, but rather expensive.       +
+If you find yourself identifying an entity by two different properties,
 chances are that you need a new exploration whirpool: may be you need to define 
 two different entities.
 

@@ -7,6 +7,11 @@
 
 <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/chunk-common.xsl"/>
 
+<xsl:template match="processing-instruction('asciidoc-br')">
+  <br/>
+</xsl:template>
+
+
 <xsl:template name="user.head.content">
   <meta charset='utf-8'/>
 
