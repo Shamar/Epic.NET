@@ -74,7 +74,7 @@ idempotent as far as possible. For example, you could prefer methods like
 allowing idempotence (and reducing the interface size) without 
 affecting comprehensibility.
 
-NOTE: Often it's quite easy to get idempotent APIs. See for example the 
+Indeed, it's often quite easy to adopt idempotent APIs. See for example the 
 +IVoyage+ interface in the DDDSample from the Epic source code: commands like 
 +StopOver(ILocation)+ and +DepartFrom(ILocation)+ are both idempotent and 
 expressive. + 

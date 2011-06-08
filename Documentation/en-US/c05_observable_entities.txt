@@ -4,7 +4,7 @@ Observable Entities
 One of the best feature that C# offers to modelers is the event pattern. +
 In general, this pattern is expressed as formal naming conventions for 
 delegates, events, and related methods involved in the event notification 
-process. Thanks to this slight variation on the classical observer pattern
+process. Thanks to this slight variation on the classical observer pattern,
 .NET developers can easily decouple the subject and the observer.
 
 This is not the medication for all ills, however: everybody knows the memory 
@@ -13,8 +13,8 @@ leaks that forgotten delegates can cause.
 Epic provides a set of tool to take full advantage of the smart pattern 
 proposed from Microsoft without the connected risks.
 
-Who, where, when, what and why
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Who, where, when, what...
+~~~~~~~~~~~~~~~~~~~~~~~~~
 First of all, we noted that only the entities can be subject to observation, 
 as they own an identity.
 
@@ -24,12 +24,20 @@ This should not be a technicality, based on a naming convention connected to
 the invoked command or related to the changed data.
 
 The name of the event should be a verb in past tense that expresses *what* 
-happened. The event arguments should describe *how* that happens, providing 
-informations useful to domain experts.
+happened. The event +sender+ will tell to the observer about who is the 
+protagonist of the news. 
+The custom EventArgs should describe the news itself, providing informations 
+useful to domain experts.
 
-This simple set or rules produce a really powerfull tool, solving a number of
+...and why
+~~~~~~~~~~
+This simple set or rules produces a really powerfull tool, solving a number of
 apparently unrelated problems such as GUI sincronization, persistence, logging,
 high availability and so on.
+
+For example, a presenter built with Epic.Poem can take advantage of the model's
+events to update the view, a repository can observe the entities to update the 
+db or to log something.
 
 With Epic there's no other model before the domain model.
 
