@@ -200,7 +200,7 @@
   <div id="wrap">
     <div id="header">
       <a href="http://github.com/Shamar/Epic.NET/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png" alt="Fork me on GitHub" /></a>
-      <div class="title">Epic</div>
+      <a class="title" href="/">Epic</a>
       <span>dominant domains</span>
     </div>
     <div id="main">

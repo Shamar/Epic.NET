@@ -1,3 +1,4 @@
+div.toc {clear:both}
 .toc ul {
 	letter-spacing:3px;
 	float:right;
@@ -62,3 +63,4 @@ div.warning td, div.tip td {padding-right:10px;}
 div.warning img, div.tip img {padding:5px;vertical-align:middle}
 
 code.literal {background-color: #EEE;}
+em.citetitle {display:block;color:navy}
