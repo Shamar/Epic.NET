@@ -37,7 +37,7 @@ high availability and so on.
 
 For example, a presenter built with Epic.Poem can take advantage of the model's
 events to update the view, a repository can observe the entities to update the 
-db or to log something.
-
-With Epic there's no other model before the domain model.
+db or to log something. 
+No more need for presentation models, data models and so on, with Epic 
+there's no other model before the domain model.
 
