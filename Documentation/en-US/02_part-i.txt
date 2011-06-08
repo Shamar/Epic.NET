@@ -33,7 +33,8 @@ different changes of specifications over time, becouse the consultants had lots
 of second thoughts about the customer's business processes.
 
 image::images/daisy.png["The Epic's vision",align="left",float="left"]
-Nevertheless, despite the initial panic, the project was a success.
+Despite the initial panic and errors done, we built a powerful application that 
+seamless handles many different contexts each with complex business rules.
 
 Such a good result derived from these high-skilled teams, a bunch of smart 
 people who daily shared (and discussed) their own experiences. 
@@ -46,7 +47,7 @@ set of patterns that help us to design and implement the ubiquitous language in
 a predictable amount of time. The patterns worked like a shared modeling 
 grammar so that all modelers were able to catch the intents of the others.
 
-This led us to a sort of "domain-driven software factory", with a fast and 
+This led us to a sort of *domain-driven software factory*, with a fast and 
 predicible production line.
 --
 
