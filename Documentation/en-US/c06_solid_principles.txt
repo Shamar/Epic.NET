@@ -1,30 +1,51 @@
 [[solid_principles]]
-Solid Principles
+SOLID Principles
 ----------------
+We all know the principles introduced by Robert C. Martin in the early 2000s.
+They are milestones in the evolution of OOP and they are still valid ten years 
+later.
 
-Coming soon.
+However, when applied to a domain model, they need some small adjustments 
+based upon the unfortunate experiences of a few experienced developers facing 
+to their first domain model.
+
+CAUTION: We do not pretend to talk out each principle, as Martin's books are a 
+must read for developers using Epic. 
+
+We heartily recommend the principles described, as they will increase the 
+stability of your models, improving their quality even from a design point 
+of view.
 
 Single Responsibility
 ~~~~~~~~~~~~~~~~~~~~~
-
-Coming soon.
+[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
+and Practices (2002)"]
+A class should have only one reason to change.
 
 Open Closed
 ~~~~~~~~~~~
-
-Coming soon. 
+[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
+and Practices (2002)"]
+Software entities (classes, modules, functions, etc.) should be open for 
+extension, but closed for modification.
 
 Liskov Substitution
 ~~~~~~~~~~~~~~~~~~~
-
-Coming soon.
+[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
+and Practices (2002)"]
+Subtypes must be substitutable for their base types.
 
 Dependency Inversion
 ~~~~~~~~~~~~~~~~~~~~
-
-Coming soon.
+[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
+and Practices (2002)"]
+a. High-level modules should not depend on low-level modules. 
+   Both should depend on abstractions.
+b. Abstractions should not depend on details. 
+   Details should depend on abstractions.
 
 Interface Segregation
 ~~~~~~~~~~~~~~~~~~~~~
-
-Coming soon.
+[quote, Robert C. Martin, "Agile Software Development, Principles, Patterns, 
+and Practices (2002)"]
+Clients should not be forced to depend on methods that they do not use.
