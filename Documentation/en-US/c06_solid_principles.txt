@@ -19,7 +19,19 @@ of view.
 Single Responsibility
 ~~~~~~~~~~~~~~~~~~~~~
 ["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
-A class should have only one reason to change.
+A class should have only *one* reason to change.
+
+In the context of the SRP, Martin define a responsibility to be "a reason for 
+change". He states that if you can think of more than one motive for changing a
+class, than that class has more than one responsibility.
+However, whenever no change actually occur, separating responsibility could 
+smell of needless complexity.
+
+In a domain model rightly partitioned in context, there are tree legitimate 
+reasons for change:
+
+- bug fixes
+- 
 
 Open-Closed
 ~~~~~~~~~~~
