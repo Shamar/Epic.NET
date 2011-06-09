@@ -49,6 +49,18 @@ grammar so that all modelers were able to catch the intents of the others.
 
 This led us to a sort of *domain-driven software factory*, with a fast and 
 predicible production line.
+
+Of course, the real challenge is to actually find an incisive model,
+one that captures subtle concerns of the domain experts and can be expressed 
+in the code. Ultimately, we hope to develop a model that captures a
+deep understanding of the domain. This should make the software
+more in tune with the way the domain experts think and more responsive to 
+the user’s needs.
+
+This part of the manual describe a set of rules, patterns and best practices 
+that we have found useful to get such result. Some conventions are designed to
+ease the comunications toward the model's code, other to easily embrace the 
+change or to increase team's productivity.
 --
 
 include::c01_poco.txt[]

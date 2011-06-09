@@ -27,11 +27,50 @@ class, than that class has more than one responsibility.
 However, whenever no change actually occur, separating responsibility could 
 smell of needless complexity.
 
-In a domain model rightly partitioned in context, there are tree legitimate 
-reasons for change:
+In a domain model rightly partitioned in contexts, there are only tree 
+legitimate reasons for change:
 
-- bug fixes
-- 
+- business evolution,
+- deeper insight,
+- bug fixes.
+
+Since all profitable enterprises evolve, the models that capture their 
+processes will need to be updated. This kind of changes can not be anticipated 
+and they affect almost everything in an application built with Epic.  +
+The good news is that the customer acknowledges about the change he is 
+asking for and he is willing to pay. footnote:[How will be explained into 
+the third part of the book, in such a case you should consider whether to 
+write a new bounded context or modify the current one. 
+The number of production environments running the current code could be a 
+persuasive argument in one sense or another.]
+
+Whenever you get a deeper insight into a domain, you are in a economical 
+dilemma: should we change the code or not? And why? Just to clarify the 
+model’s expression through the code?  +
+Finding the right answer to these questions is hard and should be done 
+carefully. You should consider factors like the complexity of the new model and
+of the previous one, the time available, the long term cost of postponing the 
+refactoring (a cost always undervalued, that slowly increases each day), 
+the cost of all workarounds that you'll have to implement without the new
+model and so on.  +
+My own, personal, opinion is that most of times the refactoring should be 
+planned with the customer. If it's not a trivial task, you should never hide to 
+the customer the problems emerged with the previous model.
+
+Finally, as there's no software without bug, all fixes will force you to modify
+the model. This could seem quite obvious, but it has a nasty side effect: you 
+could introduce new subtle untracked bugs. 
+Unit tests' code coverage could reduce the risks but can not eliminate them.
+footnote:[I think that the domain model implementation should take pride in a
+full code coverage (100%). This seems expensive at first, when you are at 97%
+and you can't find a way to test those dirty three lines. 
+However, a full code coverage will force you to read your code over and over 
+again, drastically improving the quality of the implementation itself.
+The ROI of such kind of revision is often bigger than that of the tests 
+themselves as safety net.] 
+Fortunatly, since no bug should relate to contracts (or it will lead you to a 
+far more expensive refactoring toward a deeper insight), all the code depending
+on the broken component don't even need to be recompiled.
 
 Open-Closed
 ~~~~~~~~~~~
