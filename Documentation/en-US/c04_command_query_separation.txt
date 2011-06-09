@@ -34,7 +34,7 @@ We adopted an idiomatic convention with the following rules:
 - should a command returns a value, it will go through an +out+ parameter that 
   will have a meaningful name;
 - properties are readonly (thus they are always query);
-- entity's queries should never throw exceptions;
+- entity's queries should never throw exceptions (argument validation apart);
 - commands must be well documented and thrown exceptions should be
   listed and explained already in the interfaces.
  
@@ -45,6 +45,16 @@ as early as possible when we change the domain.
 We apply these rules without exception. Epic will provide a set of Gendarme's
 rules to check the adherence to such rules, but it will not force them by
 default.
+
+What about factory methods?   
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Factory methods are worth a dedicated section since it could be difficult to
+ponder whether they are queries or commands. 
+
+We all know the creational pattern that encapsulates the creation of objects in
+a method owned by another class (either static or not).
+
+
 
 Idempotence
 ~~~~~~~~~~~
