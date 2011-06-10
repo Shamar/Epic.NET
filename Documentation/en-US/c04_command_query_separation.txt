@@ -54,7 +54,23 @@ ponder whether they are queries or commands.
 We all know the creational pattern that encapsulates the creation of objects in
 a method owned by another class (either static or not).
 
+In the context of Epic, you should separate two kind of factory methods:
 
+- those that build value objects (such as specifications, itineraries or 
+  moneys);
+- those that build entities.
+
+Providing a new instance of a value object do not change the system: you can 
+create all the copies of a +EquityQuantity+ you like, but until you do not
++Buy()+ that quantity, your securities account don't change!  +
+Since such operation do not change the observable state of the sistem, it is a
+query and should return a value.
+
+Creating a new securities account, instead, deeply changes the system: first 
+the bank smiles, but what matter is that the identifier assigned to your 
+account is taken forever. No other account can take that identifier. +
+This is definitively a command: it should be a void method and the new account 
+(or its identifier at least) should be returned in an +out+ parameter.
 
 Idempotence
 ~~~~~~~~~~~

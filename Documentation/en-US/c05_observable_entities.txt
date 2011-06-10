@@ -59,7 +59,14 @@ saw a major issue in Dahan's method: *implicitness*.
 
 Only the code knows which events that an command can fire. You should read the 
 code of each entity to see which events you could subscribe.
-You could add new events without changing the clients. footnote:[] 
+You could add relevant events without changing the clients. 
+footnote:[If you maintained a complex corporate software for more than one 
+year and you aren't paid by the hour, you know how such implicitness can 
+become a nightmare during deployments.  +
+There’s no denying that there is a profitable software business in 
+extraordinary repairs (even if due to bugs left behind). 
+However Epic is designed for high-quality software: if you need such kind of 
+long term revenues, you should avoid the complexity of its approach.] 
 
 Would we have the time to change the existing code base, I would disliked the 
 choose. Indeed with Epic and the Observable Entities pattern you could get all 
@@ -74,8 +81,8 @@ Although very uncommon, such circumstance exists.
 
 The "Domain Events" pattern would handle the headless events as all others.
 
-In the context of Epic, you should model them as events connected to the one 
-that percieve them: the user (playing a role). Indeed, each user has an 
+In the context of Epic, instead, you have to model them as events connected to 
+the one that percieve them: the user (playing a role). Indeed, each user has an 
 identity, and when he play a bounded role, he can percieve interesting events
 from the outside world. We just transferred such simple observation into the
 code (explicitly, in the contracts).
