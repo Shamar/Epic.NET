@@ -21,7 +21,7 @@ Single Responsibility
 ["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
 A class should have only *one* reason to change.
 
-In the context of the SRP, Martin define a responsibility to be "a reason for 
+In the context of the SRP, Martin defines a responsibility to be "a reason for 
 change". He states that if you can think of more than one motive for changing a
 class, than that class has more than one responsibility.
 However, whenever no change actually occur, separating responsibility could 
@@ -70,7 +70,11 @@ The ROI of such kind of revision is often bigger than that of the tests
 themselves as safety net.] 
 Fortunatly, since no bug should relate to contracts (or it will lead you to a 
 far more expensive refactoring toward a deeper insight), all the code depending
-on the broken component don't even need to be recompiled.
+on the broken component don't even need to be recompiled. Indeed, one of the
+reason that led us to introduce a thin layer of pure interfaces around the 
+domain model implementation was the evaluation of the deploy's costs of bug 
+fixes. With such interfaces, we can minimize the number of layers affected by a
+bug in the domain, reducing the system stops and the loss for our customer.
 
 Open-Closed
 ~~~~~~~~~~~

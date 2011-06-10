@@ -41,3 +41,42 @@ db or to log something.
 No more need for presentation models, data models and so on, with Epic 
 there's no other model before the domain model.
 
+Domain events
+~~~~~~~~~~~~~
+Back in the 2008, Udi Dahan introduced the concept of "Domain Events" that 
+rapidly became popular in the domain-driven comunity as Evans talked about them
+in 2010.
+
+Almost concurrently, we were developing our brand-new application, 
+based on the (at time evolving) patterns described here. 
+I remember quite well the discussions we had about the Dahan's proposals.
+I would like to say that we kept the previous approach due to design 
+considerations, but guess what? The decision was already taken due to the 
+advanced status of the project.
+
+That being said, I prefer our previous approach. With my architect hat on, I 
+saw a major issue in Dahan's method: *implicitness*. 
+
+Only the code knows which events that an command can fire. You should read the 
+code of each entity to see which events you could subscribe.
+You could add new events without changing the clients. footnote:[] 
+
+Would we have the time to change the existing code base, I would disliked the 
+choose. Indeed with Epic and the Observable Entities pattern you could get all 
+the advantages of the dispatching tecnique described, in a much more explicit
+and natural way (as the .NET events could be exposed in the contracts). 
+
+Did you feel that earthquake?!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+What if a relevant event do not belong to any known entity?
+
+Although very uncommon, such circumstance exists.
+
+The "Domain Events" pattern would handle the headless events as all others.
+
+In the context of Epic, you should model them as events connected to the one 
+that percieve them: the user (playing a role). Indeed, each user has an 
+identity, and when he play a bounded role, he can percieve interesting events
+from the outside world. We just transferred such simple observation into the
+code (explicitly, in the contracts).
+
