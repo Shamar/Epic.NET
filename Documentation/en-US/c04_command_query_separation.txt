@@ -69,7 +69,7 @@ query and should return a value.
 Creating a new securities account, instead, deeply changes the system: first 
 the bank smiles, but what matter is that the identifier assigned to your 
 account is taken forever. No other account can take that identifier. +
-This is definitively a command: it should be a void method and the new account 
+This is definitely a command: it should be a void method and the new account 
 (or its identifier at least) should be returned in an +out+ parameter.
 
 Idempotence

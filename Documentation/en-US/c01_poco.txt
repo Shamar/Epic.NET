@@ -3,9 +3,9 @@ Plain old CLR objects
 ---------------------
 Let's be honest, object-oriented programming is not old in the .NET ecosystem.
 
-When compared to the Java or C++ world, the penetration of design patterns
+When compared to the Java or C++ worlds, the penetration of design patterns
 is quite recent, and the early adoption of service-oriented architectures 
-showing a brute separation between data and behaviours is symptomatic of the 
+(showing a brute separation between data and behaviours) is symptomatic of the 
 tension between the complexities of object-orientated programming and the 
 widespread adoption that Microsoft achieves trying to lower the learning curve 
 required for their tools.
@@ -90,7 +90,7 @@ management (from 5 to 20 percent, following granularity of contexts).
 
 Typed explicitness
 ~~~~~~~~~~~~~~~~~~
-*Make everything explicit*, avoid abstractions that domain experts ignore.
+Make *everything explicit*, avoid abstractions that domain experts ignore.
 
 This has been the harder lesson we learnt. 
 
