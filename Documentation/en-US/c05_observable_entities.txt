@@ -68,10 +68,11 @@ extraordinary repairs (even if due to bugs left behind).
 However Epic is designed for high-quality software: if you need such kind of 
 long term revenues, you should avoid the complexity of its approach.] 
 
-Would we have the time to change the existing code base, I would disliked the 
-choose. Indeed with Epic and the Observable Entities pattern you could get all 
-the advantages of the dispatching tecnique described, in a much more explicit
-and natural way (as the .NET events could be exposed in the contracts). 
+Even if we had had time to change the existing code base, I would had dislike 
+the choice. Indeed with Epic and the Observable Entities pattern you could get 
+all the advantages of the dispatching tecnique described, in a much more 
+explicit and natural way (since the .NET events can be exposed in the 
+contracts). 
 
 Did you feel that earthquake?!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
