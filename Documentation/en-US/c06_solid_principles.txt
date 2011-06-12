@@ -82,6 +82,34 @@ Open-Closed
 Software entities (classes, modules, functions, etc.) should be open for 
 extension, but closed for modification.
 
+The golden unachievable ideal of OCP would allow to change a system behaviour
+by adding new code, not by changing old code that already works.  +
+This would lead to an easy versioning, as each new version would be backward 
+compatible.
+
+Well defined contexts are the first tool for approaching that ideal. Indeed
+as far as you define small contexts, you reduce the probability of changes in
+any single one. Moreover, if the business rules are the only force that drives 
+your design, the code will be exactly as stable as that rules that it captures.
+
+For example, if your software handles vineyards and your customer buys a new 
+wheat field, you can sell him a new context instead of adding new classes to 
+the previous one. 
+
+TIP: Feel free to violate the OCP of modules when the business evolves and 
+you can't simply add a new context.
+
+The interface layer that surrounds the model allows a limited flexibility to 
+the code but whenever either the business changes or you get a deeper insight 
+of the context you will have to break the OCP, with a new version of the code.
+
+Template methods are useful when the modelers already know that a domain entity 
+will have some specializations that do not violate the LSP. However you should 
+never leave a class unsealed just to keep an open door behind.
+
+The good news is that technological changes will not affect the model itself:
+you can even replace Epic without changing the model. 
+
 Liskov Substitution
 ~~~~~~~~~~~~~~~~~~~
 ["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
