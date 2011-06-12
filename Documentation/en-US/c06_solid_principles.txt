@@ -98,8 +98,8 @@ the previous one.
 
 To further keep the model closed to modification you could take cheap design 
 decisions that do not smell of needless complexity. For example, since our 
-models run in different technological environments (from ASP.NET pages to 
-data loaders and WinForm applications) we choosed to mark all the classes 
+models run in different technological environments (ASP.NET pages, data loaders, 
+web services and WinForm applications) we choosed to mark all the classes 
 belonging to the domain model with the +SerializableAttribute+. Moreover,
 when we got the first customer that required realtime synchronization 
 between different applications running the same domain, we designed the 
@@ -123,6 +123,17 @@ Liskov Substitution
 ~~~~~~~~~~~~~~~~~~~
 ["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
 Subtypes must be substitutable for their base types.
+
+We've said that no modeler should introduce in the model abstractions ignored by
+the domain experts, as this always lead to rigidity smells and long term bugs.
+
+We value the LSP a lot, since we had some very expensive experiences with its 
+violations. The principle heavily reduces the applicability of inheritance.
+
+To apply this principle to the domain-driven design, we need that no entity 
+is abstracted beyond its own identifier: all the entities in a hierarchy
+must share the same kind of identifiers. For example, all type of securities 
+can be identified by their ISIN (or their RIC, or so). 
 
 Dependency Inversion
 ~~~~~~~~~~~~~~~~~~~~
