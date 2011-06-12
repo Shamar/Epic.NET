@@ -99,9 +99,9 @@ the previous one.
 To further keep the model closed to modification you could take cheap design 
 decisions that do not smell of needless complexity. For example, since our 
 models run in different technological environments (from ASP.NET pages to 
-data loaders and WinForm applications) we choosed to mark all all classes 
+data loaders and WinForm applications) we choosed to mark all the classes 
 belonging to the domain model with the +SerializableAttribute+. Moreover,
-when we got the first customer that required for realtime synchronization 
+when we got the first customer that required realtime synchronization 
 between different applications running the same domain, we designed the 
 Single Mutable State pattern (that we adopted massively from then on).
 
