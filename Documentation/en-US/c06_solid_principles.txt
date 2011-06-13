@@ -169,25 +169,25 @@ containing at least +VoyageNumber+, +UnLocode+ and an +IVoyage like this:
 -------------------------------------------
 namespace Sample.Cargo.Kernel
 {
-	/// <summary>
-	/// A Voyage.  
-	/// </summary>
-	public interface IVoyage
+    /// <summary>
+    /// A Voyage.  
+    /// </summary>
+    public interface IVoyage
     {
-		/// <summary>
-		/// Voyage identification number. 
-		/// </summary>
-		VoyageNumber Number { get; }
-		
-		/// <summary>
-		/// True if the voyage is moving toward the next arrival. 
-		/// </summary>
-		bool IsMoving { get; }
+        /// <summary>
+        /// Voyage identification number. 
+        /// </summary>
+        VoyageNumber Number { get; }
+        
+        /// <summary>
+        /// True if the voyage is moving toward the next arrival. 
+        /// </summary>
+        bool IsMoving { get; }
 
-		/// <summary>
-		/// Last known location. 
-		/// </summary>
-		UnLocode LastKnownLocation { get; }
+        /// <summary>
+        /// Last known location. 
+        /// </summary>
+        UnLocode LastKnownLocation { get; }
     }
 }
 -------------------------------------------
