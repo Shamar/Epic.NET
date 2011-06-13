@@ -145,6 +145,68 @@ Value objects abstractions follow the same rule, but do not have any constraint
 related to identifiers, of course. For example, we never needed to introduce a 
 quantity abstraction.
 
+Interface Segregation
+~~~~~~~~~~~~~~~~~~~~~
+["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
+Clients should not be forced to depend on methods that they do not use.
+
+The simple definition that Martin provides for ISP give us a big advise: the
+definition of the context's boundary is a fundamental step in the domain-driven
+development process. Indeed, small contexts contain well defined contracts
+that lead to small classes.
+
+Shared kernels are another marvelous tool to enforce interface segregation:
+for example they contain base contracts shared between different contexts.
+
+For example, in the idiomatic DDDSample provided with the Epic source code, you
+can see how the +IVoyage+ violate the ISP: it has query methods used from user 
+impersonating an +ILongshoreman+ when loading cargos into each voyage and 
+commands for user impersonating an +IPortAuthority+. +
+To enforce the interface segregation, we should write a shared kernel 
+containing at least +VoyageNumber+, +UnLocode+ and an +IVoyage like this:
+
+[source,c#]
+-------------------------------------------
+namespace Sample.Cargo.Kernel
+{
+	/// <summary>
+	/// A Voyage.  
+	/// </summary>
+	public interface IVoyage
+    {
+		/// <summary>
+		/// Voyage identification number. 
+		/// </summary>
+		VoyageNumber Number { get; }
+		
+		/// <summary>
+		/// True if the voyage is moving toward the next arrival. 
+		/// </summary>
+		bool IsMoving { get; }
+
+		/// <summary>
+		/// Last known location. 
+		/// </summary>
+		UnLocode LastKnownLocation { get; }
+    }
+}
+-------------------------------------------
+
+With such kernel, the +ICargo+ interface would have taken this interface 
+instead of the bigger +Challenge00.DDDSample.Voyage.IVoyage+.
+
+However in this case, we had two good reason to violate the ISP:
+
+- +IVoyage+ and +ICargo+ are in the same assembly and share the same fate
+- The hypothetical customer (A.C.M.E.) do not seem interessed into a software 
+  to manage ships, planes or freight train (that would lead to a different 
+  +IVoyage+ in a new context)
+- We need two roles with different permissions over the same class to show the
+  Epic.Security system.
+  
+However in our financial domains we have a substantial shared kernel full of 
+such kind of interfaces and shared identifiers.
+
 Dependency Inversion
 ~~~~~~~~~~~~~~~~~~~~
 ["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
@@ -155,11 +217,4 @@ b. Abstractions should not depend on details.
    Details should depend on abstractions.
 _______________________________________________________________
 
-Interface Segregation
-~~~~~~~~~~~~~~~~~~~~~
-["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
-Clients should not be forced to depend on methods that they do not use.
 
-The simple definition that Martin provides for ISP gave us a big advise: the
-definition of the context's boundary is a fundamental step in the domain-driven
-development process. Indeed, small contexts contains small classes.
