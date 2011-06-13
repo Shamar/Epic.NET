@@ -158,11 +158,11 @@ that lead to small classes.
 Shared kernels are another marvelous tool to enforce interface segregation:
 for example they contain base contracts shared between different contexts.
 
-For example, in the idiomatic DDDSample provided with the Epic source code, you
-can see how the +IVoyage+ violate the ISP: it has query methods used from user 
-impersonating an +ILongshoreman+ when loading cargos into each voyage and 
+In the idiomatic DDDSample provided with the Epic source code, you
+can see how the +IVoyage+ violate the ISP: it has query methods used from a
++ILongshoreman+ when loading cargos into each voyage, and 
 commands for user impersonating an +IPortAuthority+. +
-To enforce the interface segregation, we should write a shared kernel 
+To enforce the interface segregation, we could write a shared kernel 
 containing at least +VoyageNumber+, +UnLocode+ and an +IVoyage like this:
 
 [source,c#]
@@ -192,15 +192,15 @@ namespace Sample.Cargo.Kernel
 }
 -------------------------------------------
 
-With such kernel, the +ICargo+ interface would have taken this interface 
+With such a kernel, the +ICargo+ interface would have taken this interface 
 instead of the bigger +Challenge00.DDDSample.Voyage.IVoyage+.
 
 However in this case, we had two good reason to violate the ISP:
 
-- +IVoyage+ and +ICargo+ are in the same assembly and share the same fate
+- +IVoyage+ and +ICargo+ are in the same assembly and share the same fate;
 - The hypothetical customer (A.C.M.E.) do not seem interessed into a software 
   to manage ships, planes or freight train (that would lead to a different 
-  +IVoyage+ in a new context)
+  +IVoyage+ in a new context);
 - We need two roles with different permissions over the same class to show the
   Epic.Security system.
   
@@ -217,4 +217,26 @@ b. Abstractions should not depend on details.
    Details should depend on abstractions.
 _______________________________________________________________
 
+The dependency inversion is probably the most valuable feature that Epic 
+provides in a domain-driven application. Indeed it is designed to allow a new,
+extreme, unexplored dependency inversion between the application and the 
+domain model. +
+Instead of a domain model that depends on a framework, we build a framework
+designed to depend on the domain itself, adapting the architecture to
+the business of the customer.
+
+In Epic, the highest level module is the domain model. It does not depend on 
+anything else that interfaces belonging to the model itself. _(a)_
+
+Low-level modules as user interface, databases, logging, web services, 
+statistical reports, service bus and so on, always depend on the 
+*domain model's interfaces*. _(b)_
+
+Epic itself is a low-level module, when compared with the domain.
+It works like an adapter and a manager serving the other modules, but you could
+replace it with the next wonderful tecnology without affecting any existing 
+models.
+
+In the introduction to the second part of this manual, the DIP will be further
+analyzed in the context of the Epic's architecture.
 
