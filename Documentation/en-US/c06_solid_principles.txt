@@ -124,16 +124,26 @@ Liskov Substitution
 ["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
 Subtypes must be substitutable for their base types.
 
-We've said that no modeler should introduce in the model abstractions ignored by
-the domain experts, as this always lead to rigidity smells and long term bugs.
+We've already said that no modeler should introduce in the model's abstractions 
+ignored by the domain experts, since they lead to smell of rigidity and long 
+term bugs.
 
 We value the LSP a lot, since we had some very expensive experiences with its 
-violations. The principle heavily reduces the applicability of inheritance.
+violations. While the principle heavily reduces the applicability of 
+object-oriented inheritance, it avoids the infamous yo-yo problem: bug fixes
+are cheaper, if you can rapidly understand the model's code.
 
-To apply this principle to the domain-driven design, we need that no entity 
-is abstracted beyond its own identifier: all the entities in a hierarchy
-must share the same kind of identifiers. For example, all type of securities 
-can be identified by their ISIN (or their RIC, or so). 
+We learnt that apply this principle to the domain-driven design, we need that 
+no entity is abstracted beyond its own identifier: all the entities in a 
+hierarchy must share the same kind of identifiers. For example, all type 
+of securities can be identified by their ISIN (or their RIC, or so). +
+Though we see an evident abstraction between two types, we avoid it's 
+introduction until the domain expert give us the green light. Moreover he has 
+to explain us *how* the abstraction is useful in the context.
+
+Value objects abstractions follow the same rule, but do not have any constraint 
+related to identifiers, of course. For example, we never needed to introduce a 
+quantity abstraction.
 
 Dependency Inversion
 ~~~~~~~~~~~~~~~~~~~~
@@ -149,3 +159,7 @@ Interface Segregation
 ~~~~~~~~~~~~~~~~~~~~~
 ["quote", "Robert C. Martin", "Agile Software Development, Principles, Patterns, and Practices (2002)"]
 Clients should not be forced to depend on methods that they do not use.
+
+The simple definition that Martin provides for ISP gave us a big advise: the
+definition of the context's boundary is a fundamental step in the domain-driven
+development process. Indeed, small contexts contains small classes.
