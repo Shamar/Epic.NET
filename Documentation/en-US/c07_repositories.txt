@@ -1,0 +1,6 @@
+Repositories
+------------
+A repository is a well-known global interface that encapsulates retrieval and 
+search behavior emulating a collection of objects.
+
+

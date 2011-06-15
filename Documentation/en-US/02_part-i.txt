@@ -75,5 +75,7 @@ include::c05_observable_entities.txt[]
 
 include::c06_solid_principles.txt[]
 
-include::c07_single_mutable_state.txt[]
+include::c07_repositories.txt[]
+
+include::c08_single_mutable_state.txt[]
 
