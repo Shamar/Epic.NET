@@ -99,7 +99,7 @@ Think about a web URI.
 You can type it, you can write it down, you can put it in your wallet and so on.
 Carrying an URI is far easier than carrying the resource!
 
-Otherwise, getting the resource is cheap as far as you have access to the web 
+Otherwise, getting the resource is cheap as long as you have access to the web 
 (and you are allowed to get it).
 
 The web works like a cheap repository. 

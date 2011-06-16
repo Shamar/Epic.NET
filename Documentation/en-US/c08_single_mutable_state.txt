@@ -1,5 +1,77 @@
 [[single_mutable_state]]
 Single Mutable State
 --------------------
+The Single Mutable State is the only real design pattern that was designed
+(almost) from scratch for the implementation of the domain model's entities.
+It's optional, since the Epic infrastructure does not have any requirement in 
+the domain model implementation: you can use sealed classes without any 
+abstract base and without any attribute. 
+footnote:[Ok, I lied: pure interfaces for entities are required. 
+But they have so many advantages beyond Epic, that they should already exist 
+even just to enable unit tests of the client code.] +
+However we suggest it beyond the context it was designed for.
 
-Coming soon.
+Indeed the Epic.Server system is based on the thread safety that this 
+pattern provide, to allow a easy to use, transparent and cheap CQRS system.
+So, if you think that your entities will eventually need the features provided
+from the pattern (or its useful side effects), you should consider to adopt it
+massively on all entities that you implement.
+
+TIP: The Single Mutable State is a behavioral pattern, directly derived from
+the GoF State Pattern. A set of plugin for your favorite IDE will be provided
+soon to get rid of its verbosity and to enhance your productivity.
+
+Intent
+~~~~~~
+Decouples state transitions from command invocation to enable concurrency and
+simplify synchronized access to an *entity* that *can* reside in its
+own thread of control. footnote:[We want entities that can reside in their own 
+thread of control but that work equally well in a single threaded environment.]
+
+Motivation (Forces)
+~~~~~~~~~~~~~~~~~~~
+A private banker and a customer share the full access to both a cash account 
+and a securities account by distinct applications. Both users has the right to
+buy, sell or switch any fund as long as a set of rules and the constraints are 
+respected in the resulting portfolio. Moreover, the customer can add or remove 
+money without any out-of-bounds comunication with the private banker.
+
+To enforce the business rules the different applications need a shared access
+to the entities that model the two accounts, but the different instances need
+a realtime sincronization. Moreover the bank's lawyers prefer consistency to 
+availability.
+
+(To be continued)
+
+Applicability
+~~~~~~~~~~~~~
+(Coming soon)
+
+Structure
+~~~~~~~~~
+(Coming soon)
+
+Participants
+~~~~~~~~~~~~
+(Coming soon)
+
+Collaboration
+~~~~~~~~~~~~~
+(Coming soon)
+
+Consequences
+~~~~~~~~~~~~
+(Coming soon)
+
+Implementation
+~~~~~~~~~~~~~~
+(Coming soon)
+
+Collaboration
+~~~~~~~~~~~~~
+(Coming soon)
+
+Related Patterns
+~~~~~~~~~~~~~~~~
+(Coming soon)
+

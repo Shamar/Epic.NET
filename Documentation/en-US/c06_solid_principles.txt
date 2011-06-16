@@ -88,7 +88,7 @@ This would lead to an easy versioning, as each new version would be backward
 compatible.
 
 Well defined *contexts* are the first tool for approaching that ideal. Indeed
-as far as you define small contexts, you reduce the probability of changes in
+when you define small contexts, you reduce the probability of changes in
 any single one. Moreover, if the business rules are the only force that drives 
 your design, the code will be as stable as that rules.
 
