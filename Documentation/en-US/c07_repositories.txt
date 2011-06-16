@@ -84,7 +84,8 @@ namespace Epic
 
 As you can see in the sample code, Epic does not require that repositories 
 implement such interface (+IQueryable<TEntity>+ could be enough for the client),
-but +IRepository<TEntity, TIdentity>+ express the vision we have on the subject:
+but +IRepository<TEntity, TIdentity>+ expresses  the vision we have on the 
+subject:
 
 - only entities can be aggregate root;
 - no base interface is required to connect the entity and its own identifier;
@@ -93,7 +94,7 @@ but +IRepository<TEntity, TIdentity>+ express the vision we have on the subject:
 
 Commands as implementation details
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Most of repositories you will encounter out of there, provide methods like 
+Most of repositories you will encounter out of there, provide methods as 
 +Add(Entity)+ or +Delete(Entity)+. 
 
 In Epic based applications, instead, no 
