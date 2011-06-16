@@ -87,10 +87,10 @@ implement such interface (+IQueryable<TEntity>+ could be enough for the client),
 but +IRepository<TEntity, TIdentity>+ expresses  the vision we have on the 
 subject:
 
-- only entities can be aggregate root;
+- only entities can be aggregate roots;
 - no base interface is required to connect the entity and its own identifier;
 - no command method should be exposed by the repository;
-- all repository should be queryable.
+- all repositories should be queryable.
 
 Commands as implementation details
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
