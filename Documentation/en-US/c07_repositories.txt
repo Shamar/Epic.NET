@@ -1,6 +1,47 @@
 Repositories
 ------------
 A repository is a well-known global interface that encapsulates retrieval and 
-search behavior emulating a collection of objects.
+search behavior emulating a collection of objects. We want to decouple the 
+client code from the persistence layer: the respository works like a 
+façade to the persistance infrastructure and the client itself. 
 
+There are two mainstream strategies for repository's implementation, each with 
+pros and cons: generic repositories and custom ones.
 
+[float]
+Generic repositories
+~~~~~~~~~~~~~~~~~~~~
+Generic repositories follow the path tracked from O/RM tools like Hibernate, 
+Entity Framework and so on. They often expose commands like +Save<T>(T)+, 
++Remove<T>(T)+ and queries like +Select<T>(AbstractQueryObject)+ and 
++GetFromIdentity<T>(long)+, providing a consistent API for both storage and 
+retrieving. Such APIs are often easy to implement with any well known O/RM out
+of there (once you stoop to compromises with the tool itself).
+However, away back in 2009, Greg Young noted that the approach does not add 
+much value for the application itself, while it causes further issues.
+
+To my money, the approach suffer of both *implicitness* and over-abstraction:
+out-of-bounds comunication are needed for business rule such as "a customer can
+not be deleted" or "you can search bonds by rating". Clients are coupled with
+implementation details behind the scenes, so that they can be changed 
+indipendently without recompilation but they break at runtime.
+
+[float]
+Custom repositories
+~~~~~~~~~~~~~~~~~~~
+Custom repositories provide specialized interfaces for each aggregate root with
+methods like +GetCustomer(VatCode)+ and +GetBonds(Rating)+ : they are *explicit*
+contracts and that the clients will have to know. They can expose commands 
+tailored to the aggregate root, minimizing the need for out-of-bounds 
+comunications.
+
+If Epic was written in Java, this would have been the preferred approach.
+
+Enter Linq
+~~~~~~~~~~
+Language Integrated Query (or Monads, as you like) has been one of the reason 
+that made us to choose C# for modeling: it provides a generic, strongly typed 
+and language integrated method that gives us the best of both methods: we can
+derive +IQueryable<T>+ adding specific queries that can not be expressed in 
+term of object properties, but we can still query in a generic way without
+coupling the client and the implementation.
