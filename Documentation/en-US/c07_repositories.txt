@@ -1,3 +1,4 @@
+[[repositories]]
 Repositories
 ------------
 A repository is a well-known global interface that encapsulates retrieval and 
@@ -8,7 +9,6 @@ façade to the persistance infrastructure and the client itself.
 There are two mainstream strategies for repository's implementation, each with 
 pros and cons: generic repositories and custom ones.
 
-[float]
 Generic repositories
 ~~~~~~~~~~~~~~~~~~~~
 Generic repositories follow the path tracked from O/RM tools like Hibernate, 
@@ -26,7 +26,6 @@ not be deleted" or "you can search bonds by rating". Clients are coupled with
 implementation details behind the scenes, so that they can be changed 
 indipendently without recompilation but they break at runtime.
 
-[float]
 Custom repositories
 ~~~~~~~~~~~~~~~~~~~
 Custom repositories provide specialized interfaces for each aggregate root with
@@ -35,13 +34,89 @@ contracts and that the clients will have to know. They can expose commands
 tailored to the aggregate root, minimizing the need for out-of-bounds 
 comunications.
 
-If Epic was written in Java, this would have been the preferred approach.
+If Epic was written in Java, this would be the preferred approach.
 
 Enter Linq
 ~~~~~~~~~~
 Language Integrated Query (or Monads, as you like) has been one of the reason 
-that made us to choose C# for modeling: it provides a generic, strongly typed 
-and language integrated method that gives us the best of both methods: we can
-derive +IQueryable<T>+ adding specific queries that can not be expressed in 
-term of object properties, but we can still query in a generic way without
-coupling the client and the implementation.
+that made us to choose C# for modeling. It provides a generic, strongly typed 
+and language integrated method that gives us the best of both approaches: we 
+can derive +IQueryable<T>+ adding specific queries that can not be expressed in 
+term of object properties, but we can still search in a generic way without
+coupling client the implementation.
+
+Indeed, the base interface for Epic repositories is apparently simple:
+
+[source,c#]
+-------------------------------------------
+using System;
+using System.Linq;
+
+namespace Epic
+{
+	/// <summary>
+	/// Repository base interface.
+	/// </summary>
+	/// <remarks>
+	/// <para>
+	/// This is the base interface for repositories, in Epic.
+	/// </para>
+	/// <para>
+	/// It express the only feature that all repository should expose: queryability.
+	/// </para>
+	/// </remarks>
+	/// <typeparam name="TEntity">Accessible entity.</typeparam>
+	/// <typeparam name="TIdentity"><typeparamref name="TEntity"/>'s identifier.</typeparam>
+	public interface IRepository<TEntity, TIdentity> : IQueryable<TEntity>
+		where TEntity : class
+		where TIdentity : IEquatable<TIdentity>
+	{
+		/// <summary>
+		/// Gets the <typeparamref name="TEntity"/> identified by <paramref name="identity"/>.
+		/// </summary>
+		/// <param name='identity'>
+		/// <typeparamref name="TEntity"/>'s identifier.
+		/// </param>
+		TEntity this[TIdentity identity] { get; }
+	}
+}
+-------------------------------------------
+
+As you can see in the sample code, Epic does not require that repositories 
+implement such interface (+IQueryable<TEntity>+ could be enough for the client),
+but +IRepository<TEntity, TIdentity>+ express the vision we have on the subject:
+
+- only entities can be aggregate root;
+- no base interface is required to connect the entity and its own identifier;
+- no command method should be exposed by the repository;
+- all repository should be queryable.
+
+Commands as implementation details
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Most of repositories you will encounter out of there, provide methods like 
++Add(Entity)+ or +Delete(Entity)+. 
+
+In Epic based applications, instead, no 
+repository should provide such methods, as they are always owned by a bounded
+role. Indeed there is always a user responsible for the creation or the 
+elimination of an entity.
+
+The persistence of a modified entity, however, should not correspond to any 
+command at all: entities should be updated on the database (or wherever they 
+are) automatically, thanks to the repository that observes exposed events.
+
+In Epic.Linq you will find the repository's base class, that will provide
+methods to add and remove new entities from the identity map and tools to 
+observe the changes. However, such methods will be designed for the 
+implementation of the bounded roles, only.
+
+Explicit, explicit, explicit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+If you choose to use the +IRepository<TEntity, TIdentity>+ interface, do not 
+forget to derive your own: even if you do not add any query method to the 
+contract, it is always better to define a specialized interface to maximize 
+the forward compatibility of the code.
+
+This will make the client code more explicitly coupled with the repository 
+itself and you will be able to add query methods to the repository without 
+issues related to assembly's versioning.
