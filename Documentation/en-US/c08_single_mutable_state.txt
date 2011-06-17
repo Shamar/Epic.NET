@@ -31,7 +31,7 @@ thread of control but that work equally well in a single threaded environment.]
 Motivation (Forces)
 ~~~~~~~~~~~~~~~~~~~
 A private banker and a customer share the full access to both a cash account 
-and a securities account by distinct applications. Both users has the right to
+and a securities account by distinct applications. Both users have the right to
 buy, sell or switch any fund as long as a set of rules and the constraints are 
 respected in the resulting portfolio. Moreover, the customer can add or remove 
 money without any out-of-bounds comunication with the private banker.
@@ -41,7 +41,18 @@ to the entities that model the two accounts, but the different instances need
 a realtime sincronization. Moreover the bank's lawyers prefer consistency to 
 availability.
 
-(To be continued)
+The key idea in this pattern is to implement the entity's contract with a
+class containing a single mutable field, the entity state. Such states 
+are immutable implementations of a common base class and rappresent the 
+different operational states; they provide explicit state transitions for the 
+commands in the contract. For example the abstract +SecurityAccountState+ class 
+replicates the contract of the related entity, but replaces commands like
++void Acquire(FundQuote)+ with queries like 
++SecurityAccountState Acquire(FundQuote)+ returning the new state that the 
++ISecurityAccount+ will have. The +SecurityAccount+ will delegate to the 
+current state all the recieved commands, it will get the new state and will 
+replace with an atomic operation the previous one (a Compare And Swap 
+instruction).
 
 Applicability
 ~~~~~~~~~~~~~
