@@ -18,7 +18,7 @@ from the pattern (or its useful side effects), you should consider to adopt it
 massively on all entities that you implement.
 
 TIP: The Single Mutable State is a behavioral pattern, directly derived from
-the GoF State Pattern. A set of plugin for your favorite IDE will be provided
+the GoF State Pattern. A plugin for your favorite IDE will be provided
 soon to get rid of its verbosity and to enhance your productivity.
 
 Intent
@@ -30,59 +30,167 @@ thread of control but that work equally well in a single threaded environment.]
 
 Motivation (Forces)
 ~~~~~~~~~~~~~~~~~~~
-A private banker and a customer share the full access to both a cash account 
-and a securities account by distinct applications. Both users have the right to
-buy, sell or switch any fund as long as a set of rules and the constraints are 
-respected in the resulting portfolio. Moreover, the customer can add or remove 
-money without any out-of-bounds comunication with the private banker.
+A private banker and a customer share the access to an investment proposal by 
+distinct applications. The private banker modifies the proposal while he's 
+talking to the customer via phone. 
+The customer can see the proposal's evolution on his own terminal 
+(suppose an IPhone app) and he can accept the proposal by clicking a button. 
+Once the proposal has been accepted the advisor can not modify it further and
+the his application moves to a new screen where he can send the orders to the
+routing system of the bank.
 
-To enforce the business rules the different applications need a shared access
-to the entities that model the two accounts, but the different instances need
-a realtime sincronization. Moreover the bank's lawyers prefer consistency to 
-availability.
+To enforce the business rules, the different applications need a shared access 
+to the proposal (a well known entity in the context), but the different 
+instances need a realtime synchronization. 
+Moreover, the bank's lawyers prefer consistency to availability.
 
 The key idea in this pattern is to implement the entity's contract with a
-class containing a single mutable field, the entity state. Such states 
+class containing a single mutable field, the entity state. The entity delegates
+*all* requests (both queries and commands) to this state object. Such states 
 are immutable implementations of a common base class and rappresent the 
 different operational states; they provide explicit state transitions for the 
-commands in the contract. For example the abstract +SecurityAccountState+ class 
-replicates the contract of the related entity, but replaces commands like
-+void Acquire(FundQuote)+ with queries like 
-+SecurityAccountState Acquire(FundQuote)+ returning the new state that the 
-+ISecurityAccount+ will have. The +SecurityAccount+ will delegate to the 
-current state all the recieved commands, it will get the new state and will 
-replace with an atomic operation the previous one (a Compare And Swap 
-instruction).
+commands in the contract. 
+
+For example the abstract +InvestmentProposalState+ 
+replicates the contract of the related +InvestmentProposal+, but replaces 
+commands like +void Acquire(FundQuote)+ with queries like 
++InvestmentProposalState Acquire(FundQuote)+ returning the new state that the 
++InvestmentProposal+ will have. The +InvestmentProposal+ will works like a
+proxy: it delegates to the current state all the recieved commands, it replaces
+the previous mutable state with an atomic operation (a Compare And Swap 
+instruction) and it fires the relevant events.
+
+This might seem complex (and it was, on the real world financial example 
+described before), however a simple use case is shown in the 
++Cargo+ / +CargoState+ sample provided with Epic.
 
 Applicability
 ~~~~~~~~~~~~~
-(Coming soon)
+Use the Single Mutable State pattern when you need a realtime synchronization
+between different applications running the same bounded context.
+
+The thread safe access provided will be easy to implement and it will leave your
+entities simple, clean and indipendent from the infrastructure (as they only 
+depend on the CLR).
 
 Structure
 ~~~~~~~~~
-(Coming soon)
+
+image::images/sms_pattern.png["Single Mutable State structure",align="center"]
 
 Participants
 ~~~~~~~~~~~~
-(Coming soon)
 
+Entity::
+    - implements the interface known to the clients
+    - maintains an instance of a ImmutableState subclass that defines the 
+      current state
+    - delegates all queries recieved to the current state
+    - delegates commands driven state transitions to the current state 
+    - updates atomically the current state 
+Entity State::
+    - defines an interface for encapsulating the state transitions accociated 
+      with a particular sate of the Entity
+    - contains *readonly* fields only
+ImmutableState subclasses::
+    - each subclass implements the transitions allowed from the state it 
+      represents
+    - contains *readonly* fields only
+    - does not reference any mutable object      
+      
 Collaboration
 ~~~~~~~~~~~~~
-(Coming soon)
+
+- The Entity delegates all request to the ImmutableState object.
+- The Entity updates its own state atomically using a Compare & Swap algoritm
+- The Entity raises the relevant events when appropriate.
+- Clients only know the Entity, and they don't have to deal with its state 
+  directly.
+- The concrete ImmutableStates decide which state succeeds another and under
+  what circumstances.
 
 Consequences
 ~~~~~~~~~~~~
-(Coming soon)
+Like the classic State pattern, the Single Mutable State has the following 
+consequences:
+
+1. It localizes state specific behaviour and partitions behaviour for different 
+   states.
+2. It make state transitions explicit and protect the Entity from inconsistent
+   internal states, as they happend by rebining _one_ variable, not several.
+3. Entity and EntityStates are easier to test.
+
+However, unlike the classical State pattern, the EntityState objects provide
+to the Entity its full state, thus it will have many instance field (at least
+the identifier). As a conseguence two different entities can not share their 
+states.
+
+Finally, in a multithread environment (like Epic.Server) serving requests from 
+different applications, both consistency and parallelism will be guaranteed from 
+the fine-grained locking provided from the Compare & Swap instruction.
+Many Entities will be able to handle commands in parallel, without any loss in
+the readability of the code.
 
 Implementation
 ~~~~~~~~~~~~~~
-(Coming soon)
+The Single Mutable State pattern is easy to implement but it's quite verbose.
+The main issue is to keep the Entity's state field correctly updated and to
+use the right state to handle each request.
 
-Collaboration
-~~~~~~~~~~~~~
-(Coming soon)
+Here you can see the algoritm used on a heavily simplified real world entity.
+
+[source,c#]
+-------------------------------------------
+public class InvestmentProposal : IInvestmentProposal
+{
+    protected InvestmentProposalState CurrentState;
+
+    public ProposalDate ProposalDate 
+    {
+        get 
+        {
+            return CurrentState.ProposalDate;
+        }
+    }
+    
+    // more events, queries and commands here...
+    
+    public void Acquire (FundQuote quote)
+    {
+        // Thread safe, lock free sincronization
+        InvestmentProposalState stateBeforeTransition;
+        InvestmentProposalState previousState = CurrentState;
+        do
+        {
+            stateBeforeTransition = previousState;
+            InvestmentProposalState newValue = stateBeforeTransition.Acquire(quote);
+            previousState = Interlocked.CompareExchange<InvestmentProposalState>(ref this.CurrentState, newValue, stateBeforeTransition);
+        }
+        while (previousState != stateBeforeTransition);
+        
+        if(!previousState.Equals(this.CurrentState))
+        {
+            EventHandler<EventArgs> handler = AssetAcquired;
+            if(null != handler)
+                handler(this, args);
+        }
+	}
+	
+	public event EventHandler<EventArgs> AssetAcquired;
+}
+-------------------------------------------
+
+Sample Code
+~~~~~~~~~~~
+In the motivation section a real world example from previous financial 
+experience has been described. However the effort required to explain that 
+domain model can overwhelm the manual.
+
+The Epic source code is provided with the classical Evans' example implemented
+using the pattern described here. Look at the Cargo entity for a full example.
+
 
 Related Patterns
 ~~~~~~~~~~~~~~~~
-(Coming soon)
-
+The classical State pattern from the Gang of Four is the noble father of 
+the solution proposed here.
