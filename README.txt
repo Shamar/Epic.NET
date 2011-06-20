@@ -5,6 +5,8 @@ This release contains the following:
 /Code           Epic source code, solution, projects
     /UnitTests      Unit test for each project
 
+/Documentation  Epic's documention written with Asciidoc
+
 /3rdParties     3rd parties library needed to build the code base
 
 /Tools          projects and tools used during the development
