@@ -10,8 +10,6 @@ This release contains the following:
     /resources      Images, scripts and stylesheets
     /xsl            Custom XSLs for the docbook toolchain.
 
-/Documentation  Epic's documention written with Asciidoc
-
 /3rdParties     3rd parties library needed to build the code base
 
 /Tools          projects and tools used during the development
