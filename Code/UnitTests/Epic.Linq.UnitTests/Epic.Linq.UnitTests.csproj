@@ -5,17 +5,17 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}</ProjectGuid>
+    <ProjectGuid>{02C38623-6934-439B-ABA9-FFDEFB4D9842}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Epic</RootNamespace>
-    <AssemblyName>Epic.Core.UnitTests</AssemblyName>
+    <RootNamespace>Epic.Linq.UnitTests</RootNamespace>
+    <AssemblyName>Epic.Linq.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\tests\Debug</OutputPath>
+    <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\tests\Release</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -33,7 +33,7 @@
     <Reference Include="System" />
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\3rdParties\NUnit\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\3rdParties\NUnit\framework\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f">
       <SpecificVersion>False</SpecificVersion>
@@ -42,36 +42,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="ApplicationQA.cs" />
-    <Compile Include="TestUtilities.cs" />
-    <Compile Include="ApplicationBaseQA.cs" />
-    <Compile Include="Events\ChangeEventArgsQA.cs" />
-    <Compile Include="Environment\EnvironmentBaseQA.cs" />
-    <Compile Include="Fakes\FakeApplication.cs" />
-    <Compile Include="Fakes\FakeEnvironment.cs" />
-    <Compile Include="Environment\EnvironmentsChainQA.cs" />
-    <Compile Include="InstanceNameQA.cs" />
-    <Compile Include="Enterprise\EnterpriseBaseQA.cs" />
-    <Compile Include="Fakes\FakeEnterprise.cs" />
-    <Compile Include="Enterprise\RoleBuilderBaseQA.cs" />
-    <Compile Include="Enterprise\RoleRefQA.cs" />
-    <Compile Include="Enterprise\WorkingSessionBaseQA.cs" />
-    <Compile Include="Fakes\FakeRoleBuilder.cs" />
-    <Compile Include="Fakes\FakeRole.cs" />
-    <Compile Include="Fakes\FakeWorkingSession.cs" />
-    <Compile Include="RhinoMocksFixtureBase.cs" />
-    <Compile Include="EpicExceptionQA.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">
-      <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
-      <Name>Epic.Core</Name>
+    <ProjectReference Include="..\Epic.Core.UnitTests\Epic.Core.UnitTests.csproj">
+      <Project>{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}</Project>
+      <Name>Epic.Core.UnitTests</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-    <Folder Include="Environment\" />
-    <Folder Include="Fakes\" />
-    <Folder Include="Enterprise\" />
   </ItemGroup>
 </Project>
