@@ -64,3 +64,6 @@ div.warning img, div.tip img {padding:5px;vertical-align:middle}
 
 code.literal {background-color: #EEE;}
 em.citetitle {display:block;color:navy}
+
+div.variablelist span.term {color:navy}
+div.variablelist div.itemizedlist {padding-bottom:1.1em}
