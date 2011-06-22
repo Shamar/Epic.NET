@@ -2,12 +2,12 @@
 Single Mutable State
 --------------------
 The Single Mutable State is the only real design pattern that was designed
-(almost) from scratch for the implementation of the domain model's entities.
+for the implementation of the domain model's entities.
 It's optional, since the Epic infrastructure does not have any requirement in 
 the domain model implementation: you can use sealed classes without any 
 abstract base and without any attribute. 
 footnote:[Ok, I lied: pure interfaces for entities are required. 
-But they have so many advantages beyond Epic, that they should already exist 
+But they have so many advantages beyond Epic, that they should already exist, 
 even just to enable unit tests of the client code.] +
 However we suggest it beyond the context it was designed for.
 
@@ -28,8 +28,8 @@ simplify synchronized access to an *entity* that *can* reside in its
 own thread of control. footnote:[We want entities that can reside in their own 
 thread of control but that work equally well in a single threaded environment.]
 
-Motivation (Forces)
-~~~~~~~~~~~~~~~~~~~
+Motivation
+~~~~~~~~~~
 A private banker and a customer share the access to an investment proposal by 
 distinct applications. The private banker modifies the proposal while he's 
 talking to the customer via phone. 
@@ -42,7 +42,7 @@ routing system of the bank.
 To enforce the business rules, the different applications need a shared access 
 to the proposal (a well known entity in the context), but the different 
 instances need a realtime synchronization. 
-Moreover, the bank's lawyers prefer consistency to availability.
+Moreover, the bank's *lawyers prefer consistency* to availability.
 
 The key idea in this pattern is to implement the entity's contract with a
 class containing a single mutable field, the entity state. The entity delegates
@@ -174,9 +174,9 @@ public class InvestmentProposal : IInvestmentProposal
             if(null != handler)
                 handler(this, args);
         }
-	}
-	
-	public event EventHandler<EventArgs> AssetAcquired;
+    }
+
+    public event EventHandler<EventArgs> AssetAcquired;
 }
 -------------------------------------------
 
@@ -184,7 +184,7 @@ Sample Code
 ~~~~~~~~~~~
 In the motivation section a real world example from previous financial 
 experience has been described. However the effort required to explain that 
-domain model can overwhelm the manual.
+domain model would overwhelm the manual.
 
 The Epic source code is provided with the classical Evans' example implemented
 using the pattern described here. Look at the Cargo entity for a full example.
