@@ -1,0 +1,92 @@
+[[the_bellis_perennis]]
+The bellis perennis
+===================
+[partintro] 
+-- 
+[quote, Leonardo da Vinci, The Notebooks of Leonardo da Vinci]
+Though human ingenuity may make various inventions which, by the help of 
+various machines answering the same end, it will never devise any inventions 
+more beautiful, nor more simple, nor more to the purpose than Nature does; 
+because in her inventions nothing is wanting, and nothing is superfluous, and 
+she needs no counterpoise when she makes limbs proper for motion in the bodies 
+of animals.
+--
+The Epic architecture is *fractal*. footnote:[The Epic's source code (and the 
+manual you are reading) can be considered as a fractal function that generates 
+domain driven applications.] 
+
+All the applications that you develop with Epic show the same structure and 
+obey to the same rules.
+A developer used to Epic can switch with almost no impedence between different 
+applications finding in a moment what he need.
+A project manager can iterate the same process over and over again for both new
+projects and change requests.
+All the tiers and layers look similar.
+
+Even the Epic's source code shows the same structure: for example the main 
+entry point to the domain model, the 
+https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/IEnterprise.cs[IEnterprise],
+is a model in a bounded context, an entity identified by its name 
+(the corporate that uses the application). 
+Other models in that context are the 
+https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/IWorkingSession.cs[working session],
+the https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/IEnvironment.cs[environment]
+and the http://msdn.microsoft.com/en-us/library/system.security.principal.iprincipal.aspx[users] 
+(courtesy of Microsoft).
+
+Fractals are all over the world, and it is obvious that a system designed to 
+model a reality has the same structure of that reality itself.
+
+Now, the typical _architard_ in his ivory tower would have stated "Uhh? 
+Fractals? What a fancy stuff! This guy has never seen a line of code! Where 
+are the tiers? Where are the services?".
+
+Lets give them what they need.
+
+[float]
+Three-tier architecture
+~~~~~~~~~~~~~~~~~~~~~~~
+Most of the enterprise's applications sold out of there follow the typical 
+three-tier architecture/configuration with a presentation tier handling the 
+user interface, an application tier that controls the business logic and a data
+tier that consists of database servers.
+
+image::images/3tiers.png["Three-tier architecture's overview (from Wikipedia)",align="center"]
+
+Such architectural vision is simple enough and works so well that it became
+a "industry standard" for a while: it fit extremelly well the needs ajax web 
+sites, blogs and ecommerces, but it is also very popular in intranet 
+applications used in many banks, insurance groups and so on. 
+
+There is nothing wrong with it. Even many Epic-based applications can be 
+seen as examples of this architecture, but such vision would not add value
+to any player.
+
+However, when the software's complexity grows, the three-tiers abstraction 
+looses its prescriptive value, becouse nothing is said about what happen into 
+a single tier.
+
+Domain Oriented NLayered .NET 4.0 Architecture
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+An interesting evolution of the three-tier architecture applied to corporate
+applications has been recently delivered from Microsoft Spain.
+
+[quote,'http://msdn.microsoft.com/es-es/architecture/en[MSDN Architecture Center]']
+Microsoft Spain has noticed, in multiple customers and partners, the need to 
+have a “.NET Base Architecture Guide” that can serve as an outline for designing 
+and implementing complex and *mission critical enterprise* .NET applications 
+with long term life and long evolution. This frame of common work defines a 
+clear path to the design and implementation of business applications of great 
+importance with a considerable volume of business logic. +
+Following these guidelines offers important benefits regarding *quality, 
+stability, and especially, an improvement of future maintenance* of the 
+application, due to the loose-coupling between components, homogeneity, and 
+similarities of the different developments that will be done based on these 
+guidelines.
+
+By reading the guide they provide you notice a few similarities between the 
+Epic's proposal and the Microsoft one. Indeed they both target corporate 
+applications and they both promise to improve the quality, stability an 
+improvement of future maintenance.
+
+The guide is big and surely worth a read.
