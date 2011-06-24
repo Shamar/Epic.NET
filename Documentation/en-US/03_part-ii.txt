@@ -54,7 +54,7 @@ tier that consists of database servers.
 image::images/3tiers.png["Three-tier architecture's overview (from Wikipedia)",align="center"]
 
 Such architectural vision is simple enough and works so well that it became
-a "industry standard" for a while: it fit extremelly well the needs ajax web 
+a "industry standard" for a while: it fits extremelly well the needs of ajax web 
 sites, blogs and ecommerces, but it is also very popular in intranet 
 applications used in many banks, insurance groups and so on. 
 
@@ -63,7 +63,7 @@ seen as examples of this architecture, but such vision would not add value
 to any player.
 
 However, when the software's complexity grows, the three-tiers abstraction 
-looses its prescriptive value, becouse nothing is said about what happen into 
+looses its prescriptive value, becouse nothing is said about what happens into 
 a single tier.
 
 Domain Oriented NLayered .NET 4.0 Architecture
