@@ -76,7 +76,7 @@ have a “.NET Base Architecture Guide” that can serve as an outline for desig
 and implementing complex and *mission critical enterprise* .NET applications 
 with long term life and long evolution. This frame of common work defines a 
 clear path to the design and implementation of business applications of great 
-importance with a considerable volume of business logic. +
+importance with a considerable volume of business logic.
 Following these guidelines offers important benefits regarding *quality, 
 stability, and especially, an improvement of future maintenance* of the 
 application, due to the loose-coupling between components, homogeneity, and 
@@ -168,10 +168,22 @@ domains available to the users, from the persistence layer to the
 user interface and the web services. You can replace any of this components 
 without affecting the domain (and often the other components too).
 
-TIP: Epic itself is just a petal.
+TIP: Epic itself is just a petal and you will be able to replace it with the 
+next industry standard. Still, it provides a simplified domain model by 
+itself, modeling the enterprises using your application.
 
 We all call "Domain Model" the flowers on the center and we call 
 "Infrastructure" any thing else.
+
+In this part of the manual complements the Epis source code and the API 
+documentation. Here the different components of the Epic infrastructure
+will be explained in depth.
+
+CAUTION: Even if strongly based on previous "production-ready" prototypes, Epic
+is still work in progress. While the documentation here should be more stable
+than the APIs distributed up to the 1.0 release, still some changes could be
+done in the future.
+
 --
 
 [[epic-core]]
