@@ -4,16 +4,14 @@ The bellis perennis
 [partintro] 
 -- 
 [quote, Leonardo da Vinci, The Notebooks of Leonardo da Vinci]
-Though human ingenuity may make various inventions which, by the help of 
+Though human *ingenuity* may make various inventions which, by the help of 
 various machines answering the same end, it will never devise any inventions 
 more beautiful, nor more simple, nor more to the purpose than Nature does; 
 because in her inventions nothing is wanting, and nothing is superfluous, and 
 she needs no counterpoise when she makes limbs proper for motion in the bodies 
 of animals.
---
-The Epic architecture is *fractal*. footnote:[The Epic's source code (and the 
-manual you are reading) can be considered as a fractal function that generates 
-domain driven applications.] 
+
+The Epic architecture is *fractal*. 
 
 All the applications that you develop with Epic show the same structure and 
 obey to the same rules.
@@ -66,6 +64,7 @@ However, when the software's complexity grows, the three-tiers abstraction
 looses its prescriptive value, becouse nothing is said about what happen into 
 a single tier.
 
+[float]
 Domain Oriented NLayered .NET 4.0 Architecture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 An interesting evolution of the three-tier architecture applied to corporate
@@ -86,7 +85,96 @@ guidelines.
 
 By reading the guide they provide you notice a few similarities between the 
 Epic's proposal and the Microsoft one. Indeed they both target corporate 
-applications and they both promise to improve the quality, stability an 
-improvement of future maintenance.
+applications and they both promise to improve the quality, stability and 
+to embrace the change.
 
-The guide is big and surely worth a read.
+For sure the guide is valuable and worth a read, since it gives a good 
+introduction to many architectural concepts, design patterns and development 
+tools. 
+
+However, to my money, the overall vision repeatedly proposed lacks *simplicity*.
+
+image::images/ddd-nlayered.jpg["Domain Oriented NLayered .NET 4.0 Architecture",align="center"]
+
+I admit, many architects do not need simplicity, they need "industry standards" 
+to support a process involving themselves to maintain the corporate standards. 
+
+However, I've found that a simple overall vision shared between developers, 
+project managers and architects is even more valuable for a project than the 
+skills of the team itself (that is, in turn, the more valuable asset for a 
+software company).
+
+The architectural vision proposed by Microsoft is good for architects and 
+developers, but their stakeholders can't grasp it. 
+
+[float]
+The Onion Architecture
+~~~~~~~~~~~~~~~~~~~~~~
+In July 2008, Jeffrey Palermo started a serie of post about what he called
+http://jeffreypalermo.com/blog/the-onion-architecture-part-1/[Onion Architecture].
+The key concept was to keep the domain model at the core of the application and
+everything else outside.
+
+image::http://temebele.files.wordpress.com/2010/08/mvcdnstack2.png["The Onion Architecture",align="center"]
+
+It was a good metaphor to describe our emerging infrastructure. 
+We used it for a while to teach newcomers and it worked quite well.
+
+Still, the Palermo's pattern did not matched exactly with our systems.
+After some time I realized some of the differences:
+
+- we have not one big domain, but *many* small bounded contexts,
+- *every* piece of our applications can be replaced without much effect on 
+  everything else, *even* the domain model,
+- our process makes easy to track dependencies and versioning,
+- our infrastructure allows fine grained deploys.
+
+[float]
+The Daisy Architecture
+~~~~~~~~~~~~~~~~~~~~~~
+What is simpler than a daisy? What nicer? And what is more common than a daisy?
+
+_Bellis perennis_ is a common European species of Daisy, often considered the 
+*archetypal* species of that name. Although many people think that the flower 
+had a yellow centre with white petals this is not the case. + 
+Each individual "petal" is itself an individual flower. 
+In the centre there are many tiny yellow flowers also.
+
+Think about the domain model: in a single corporate application you might have
+a lot of different contexts to handle. Each context has its own content but
+the structure is always done of entities, value objects, domain services 
+and so on.
+
+Now think about this: are you sure that the same persistence tecnology would fit
+the usage patterns of all these small domains? Are you sure that the same team
+will build all the GUIs required? +
+No, you are not.
+
+You are welcome to the best application of ingenuity that I've ever seen: the 
+daisy architecture.
+
+image::images/daisy_architecture.png["Daisy Architecture",align="center"]
+
+We are back to the fractal footnote:[The Epic's source code (and the 
+manual you are reading) can be considered as a fractal function that generates 
+complex domain driven applications.] again.
+
+The yellow flowers at the center model the different bounded contexts that your
+customer requires. When requirements change, you can add, replace or remove 
+anyone of this small domain models with little (if any) effect over the rest.
+
+The white flowers (the petals) are the different components that make the 
+domains available to the users, from the persistence layer to the 
+user interface and the web services. You can replace any of this components 
+without affecting the domain (and often the other components too).
+
+TIP: Epic itself is just a petal.
+
+We all call "Domain Model" the flowers on the center and we call 
+"Infrastructure" any thing else.
+--
+
+[[epic-core]]
+Epic.Core
+---------
+(Coming soon)
