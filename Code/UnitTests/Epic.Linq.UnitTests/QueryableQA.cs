@@ -23,17 +23,20 @@
 //  
 using System;
 using NUnit.Framework;
+using Rhino.Mocks;
 using System.Linq;
 using System.Linq.Expressions;
 using Epic.Linq;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace Epic.Linq.UnitTests
 {
 	[TestFixture]
 	public class QueryableQA : RhinoMocksFixtureBase
 	{
-		[Test()]
-		public void Ctor_withArguments_throwsArgumentNullException ()
+		[Test]
+		public void Ctor_withoutArguments_throwsArgumentNullException ()
 		{
 			// arrange:
 			IQueryProvider provider = GenerateStrictMock<IQueryProvider>();
@@ -47,6 +50,61 @@ namespace Epic.Linq.UnitTests
 				new Queryable<string>(provider, null);
 			});
 		}
+		
+		[Test]
+		public void Ctor_withArguments_works()
+		{
+			// arrange:
+			IQueryProvider provider = GenerateStrictMock<IQueryProvider>();
+			Expression expression = Expression.Constant(1);
+
+			// act:
+			IQueryable<string> queryable = new Queryable<string>(provider, expression);
+
+			// assert:
+			Assert.IsNotNull(queryable);
+			Assert.AreSame(expression, queryable.Expression);
+			Assert.AreSame(provider, queryable.Provider);
+			Assert.AreEqual(typeof(string), queryable.ElementType);
+		}
+		
+		[Test]
+		public void GetEnumerator_fromGenericEnumerable_callProviderExecute()
+		{
+			// arrange:
+			string[] strings = new string[] { "A", "B", "C" };
+			Expression expression = Expression.Constant(1);
+			IQueryProvider provider = GenerateStrictMock<IQueryProvider>();
+			provider.Expect(p => p.Execute<IEnumerable<string>>(expression)).Return(strings).Repeat.Once();
+			IQueryable<string> queryable = new Queryable<string>(provider, expression);
+
+			// assert:
+			int i = 0;
+			foreach(string s in queryable)
+			{
+				Assert.AreSame(s, strings[i++]);
+			}
+		}
+		
+		[Test]
+		public void GetEnumerator_fromEnumerable_callProviderExecute()
+		{
+			// arrange:
+			string[] strings = new string[] { "A", "B", "C" };
+			Expression expression = Expression.Constant(1);
+			IQueryProvider provider = GenerateStrictMock<IQueryProvider>();
+			provider.Expect(p => p.Execute<IEnumerable<string>>(expression)).Return(strings).Repeat.Once();
+			IQueryable<string> queryable = new Queryable<string>(provider, expression);
+			IEnumerable source = queryable;
+
+			// assert:
+			int i = 0;
+			foreach(object s in source)
+			{
+				Assert.AreSame(s, strings[i++]);
+			}
+		}
+
 	}
 }
 
