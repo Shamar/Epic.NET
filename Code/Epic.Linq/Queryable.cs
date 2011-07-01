@@ -34,6 +34,7 @@ namespace Epic.Linq
 	/// <exception cref='ArgumentNullException'>
 	/// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
 	/// </exception>
+	/// <typeparam name="T">The type of the data in the source.</typeparam>
 	internal sealed class Queryable<T> : IQueryable<T>, IQueryable, IEnumerable<T>, IEnumerable, IOrderedQueryable<T>, IOrderedQueryable
 	{
 		private readonly IQueryProvider _provider;
@@ -62,18 +63,36 @@ namespace Epic.Linq
 		}
 
 		#region IQueryable implementation
+		/// <summary>
+		/// Gets the expression tree that is associated with the instance of IQueryable.
+		/// </summary>
+		/// <value>
+		/// The expression.
+		/// </value>
 		public System.Linq.Expressions.Expression Expression {
 			get {
 				return _expression;
 			}
 		}
-
+		
+		/// <summary>
+		/// Gets the type of the element(s) that are returned when the expression tree associated with this instance of IQueryable is executed.
+		/// </summary>
+		/// <value>
+		/// The type of the element.
+		/// </value>
 		public Type ElementType {
 			get {
 				return typeof(T);
 			}
 		}
-
+		
+		/// <summary>
+		/// Gets the query provider that is associated with this data source.
+		/// </summary>
+		/// <value>
+		/// The provider.
+		/// </value>
 		public IQueryProvider Provider {
 			get {
 				return _provider;
@@ -82,6 +101,12 @@ namespace Epic.Linq
 		#endregion
 
 		#region IEnumerable[T] implementation
+		/// <summary>
+		/// Returns an enumerator that iterates through a collection of <typeparamref name="T"/>.
+		/// </summary>
+		/// <returns>
+		/// The enumerator.
+		/// </returns>
 		public IEnumerator<T> GetEnumerator ()
 		{
 			return _provider.Execute<IEnumerable<T>>(_expression).GetEnumerator();
@@ -89,6 +114,12 @@ namespace Epic.Linq
 		#endregion
 
 		#region IEnumerable implementation
+		/// <summary>
+		/// Returns an enumerator that iterates through a collection.
+		/// </summary>
+		/// <returns>
+		/// The enumerator.
+		/// </returns>
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator();
