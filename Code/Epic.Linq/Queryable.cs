@@ -24,14 +24,34 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Epic.Linq
 {
-	public sealed class Queryable<T> : IQueryable<T>, IQueryable, IEnumerable<T>, IEnumerable, IOrderedQueryable<T>, IOrderedQueryable
+	/// <summary>
+	/// Queryable class.
+	/// </summary>
+	/// <exception cref='ArgumentNullException'>
+	/// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+	/// </exception>
+	internal sealed class Queryable<T> : IQueryable<T>, IQueryable, IEnumerable<T>, IEnumerable, IOrderedQueryable<T>, IOrderedQueryable
 	{
 		private readonly IQueryProvider _provider;
-		private readonly Expression _expression;
-		public Queryable (IQueryProvider provider, Expression expression)
+		private readonly System.Linq.Expressions.Expression _expression;
+		
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Epic.Linq.Queryable`1"/> class.
+		/// </summary>
+		/// <param name='provider'>
+		/// Provider.
+		/// </param>
+		/// <param name='expression'>
+		/// Expression.
+		/// </param>
+		/// <exception cref='ArgumentNullException'>
+		/// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+		/// </exception>
+		public Queryable (IQueryProvider provider, System.Linq.Expressions.Expression expression)
 		{
 			if(null == provider)
 				throw new ArgumentNullException("provider");
