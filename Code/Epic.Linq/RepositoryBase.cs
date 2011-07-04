@@ -118,7 +118,7 @@ namespace Epic.Linq
 		/// </returns>
 		public IEnumerator<TEntity> GetEnumerator ()
 		{
-			return _provider.Execute<IEnumerable<TEntity>>(Expression).GetEnumerator();
+			return Provider.Execute<IEnumerable<TEntity>>(Expression).GetEnumerator();
 		}
 		#endregion
 

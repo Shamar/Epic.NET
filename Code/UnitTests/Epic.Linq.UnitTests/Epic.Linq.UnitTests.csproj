@@ -54,5 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="QueryableQA.cs" />
+    <Compile Include="ReflectionQA.cs" />
   </ItemGroup>
 </Project>

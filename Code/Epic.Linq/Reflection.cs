@@ -83,9 +83,11 @@ namespace Epic.Linq
 						return true;
 					}
 				}
+                
+                // if reached this line, it is an IEnumerable.
+                itemType = typeof(object);
 			}
-			// it is an IEnumerable.
-			itemType = typeof(object);
+
 			return true;
 		}
 		
