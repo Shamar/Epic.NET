@@ -41,6 +41,14 @@
     <Compile Include="QueryProvider.cs" />
     <Compile Include="Reflection.cs" />
     <Compile Include="RepositoryBase.cs" />
+    <Compile Include="Expressions\QueryExpression.cs" />
+    <Compile Include="Expressions\IVisitor.cs" />
+    <Compile Include="Expressions\SourceExpression.cs" />
+    <Compile Include="Expressions\FilterExpression.cs" />
+    <Compile Include="Expressions\SortExpression.cs" />
+    <Compile Include="Translators\ExpressionTranslator.cs" />
+    <Compile Include="Translators\IQuery.cs" />
+    <Compile Include="Expressions\ChunkExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -48,5 +56,9 @@
       <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
       <Name>Epic.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\" />
+    <Folder Include="Translators\" />
   </ItemGroup>
 </Project>
