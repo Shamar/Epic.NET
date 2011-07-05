@@ -32,6 +32,7 @@ namespace Epic.Linq.Translators
     {
         bool TryTranslationOf(Expression expression, out QueryExpression builtExpression);
     }
+    
     public abstract class ExpressionTranslator<TQueryExpression> : IExpressionTranslator
         where TQueryExpression : QueryExpression
     {
