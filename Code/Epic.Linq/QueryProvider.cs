@@ -38,7 +38,8 @@ namespace Epic.Linq
 	internal sealed class QueryProvider : IQueryProvider
 	{
 		private readonly string _name;
-		
+        
+
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Epic.Linq.QueryProvider"/> class.
 		/// </summary>
@@ -55,7 +56,21 @@ namespace Epic.Linq
 			_name = name;
 		}
 
-		#region IQueryProvider implementation
+        /// <summary>
+        /// Return the name of the provider.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+        }
+     
+        #region IQueryProvider implementation
 		/// <summary>
 		/// Constructs an IQueryable object that can evaluate the query represented by a specified expression tree.
 		/// </summary>

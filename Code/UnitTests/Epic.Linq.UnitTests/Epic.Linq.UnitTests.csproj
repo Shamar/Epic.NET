@@ -39,7 +39,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -51,9 +52,16 @@
       <Project>{7B1F063C-C646-4C14-962A-28325218420F}</Project>
       <Name>Epic.Linq</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">
+      <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
+      <Name>Epic.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="QueryableQA.cs" />
     <Compile Include="ReflectionQA.cs" />
+    <Compile Include="QueryProviderQA.cs" />
+    <Compile Include="RepositoryBaseQA.cs" />
+    <Compile Include="FakeRepository.cs" />
   </ItemGroup>
 </Project>
