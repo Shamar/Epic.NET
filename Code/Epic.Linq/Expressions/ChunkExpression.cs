@@ -25,9 +25,10 @@ using System;
 
 namespace Epic.Linq.Expressions
 {
-    public class ChunkExpression
+    public class ChunkExpression : QueryExpression
     {
-        public ChunkExpression ()
+        public ChunkExpression(Type[] types)
+            : base(types)
         {
         }
     }
