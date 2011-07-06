@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 
-namespace Epic.Linq.UnitTests
+namespace Epic.Linq
 {
     public interface ITestEnumerable<T> : IOrderedEnumerable<T>
     {

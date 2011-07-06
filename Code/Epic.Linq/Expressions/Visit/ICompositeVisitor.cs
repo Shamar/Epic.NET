@@ -1,5 +1,5 @@
 //  
-//  FilterExpression.cs
+//  IVisitor.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,15 +22,19 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Linq.Expressions;
 
-namespace Epic.Linq.Expressions
+namespace Epic.Linq.Expressions.Visit
 {
-    public class FilterExpression : QueryExpression
+    public interface ICompositeVisitor
     {
-        public FilterExpression (Type[] types)
-            : base(types)
-        {
-        }
+        ICompositeVisitor<TExpression> GetVisitor<TExpression>() where TExpression : Expression;
+    }
+    
+    public interface ICompositeVisitor<TExpression> : ICompositeVisitor
+        where TExpression : Expression
+    {
+        Expression Visit(TExpression target);
     }
 }
 

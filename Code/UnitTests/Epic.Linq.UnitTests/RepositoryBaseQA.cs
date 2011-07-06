@@ -25,12 +25,11 @@ using NUnit.Framework;
 using System;
 using System.Linq.Expressions;
 using Epic.Environment;
-using Epic;
 using Rhino.Mocks;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Epic.Linq.UnitTests
+namespace Epic.Linq
 {
     [TestFixture()]
     public class RepositoryBaseQA : RhinoMocksFixtureBase

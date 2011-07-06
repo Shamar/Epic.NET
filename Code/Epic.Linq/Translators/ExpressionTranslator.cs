@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using Epic.Linq.Expressions;
 
 namespace Epic.Linq.Translators
-{
+{/*
     public interface IExpressionTranslator
     {
         bool TryTranslationOf(Expression expression, out QueryExpression builtExpression);
@@ -59,6 +59,6 @@ namespace Epic.Linq.Translators
         protected abstract IEnumerable<Expression> GetMatchingExpressions(IQuery query);
         
         protected abstract TQueryExpression Translate(IQuery query);
-    }
+    }*/
 }
 

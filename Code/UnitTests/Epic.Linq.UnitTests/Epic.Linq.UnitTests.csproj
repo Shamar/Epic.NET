@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{02C38623-6934-439B-ABA9-FFDEFB4D9842}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Epic.Linq.UnitTests</RootNamespace>
+    <RootNamespace>Epic.Linq</RootNamespace>
     <AssemblyName>Epic.Linq.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -63,5 +63,10 @@
     <Compile Include="QueryProviderQA.cs" />
     <Compile Include="RepositoryBaseQA.cs" />
     <Compile Include="FakeRepository.cs" />
+    <Compile Include="Expressions\Visit\CompositeVisitorChainQA.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\" />
+    <Folder Include="Expressions\Visit\" />
   </ItemGroup>
 </Project>

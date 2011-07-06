@@ -41,14 +41,15 @@
     <Compile Include="QueryProvider.cs" />
     <Compile Include="Reflection.cs" />
     <Compile Include="RepositoryBase.cs" />
-    <Compile Include="Expressions\QueryExpression.cs" />
-    <Compile Include="Expressions\IVisitor.cs" />
-    <Compile Include="Expressions\SourceExpression.cs" />
-    <Compile Include="Expressions\FilterExpression.cs" />
-    <Compile Include="Expressions\SortExpression.cs" />
     <Compile Include="Translators\ExpressionTranslator.cs" />
     <Compile Include="Translators\IQuery.cs" />
-    <Compile Include="Expressions\ChunkExpression.cs" />
+    <Compile Include="Expressions\Visit\ICompositeVisitor.cs" />
+    <Compile Include="Expressions\VisitableExpression.cs" />
+    <Compile Include="Expressions\Visit\CompositeVisitorBase.cs" />
+    <Compile Include="Expressions\Visit\ThrowingCompositeVisitor.cs" />
+    <Compile Include="Expressions\Visit\NullCompositeVisitor.cs" />
+    <Compile Include="Expressions\UnvisitableExpressionAdapter.cs" />
+    <Compile Include="Expressions\Visit\CompositeVisitorChain.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -60,5 +61,6 @@
   <ItemGroup>
     <Folder Include="Expressions\" />
     <Folder Include="Translators\" />
+    <Folder Include="Expressions\Visit\" />
   </ItemGroup>
 </Project>

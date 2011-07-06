@@ -1,5 +1,5 @@
 //  
-//  SortExpression.cs
+//  ThrowingCompositeVisitor.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -23,14 +23,17 @@
 //  
 using System;
 
-namespace Epic.Linq.Expressions
+namespace Epic.Linq.Expressions.Visit
 {
-    public class SortExpression : QueryExpression
+    public sealed class ThrowingCompositeVisitor : ICompositeVisitor
     {
-        public SortExpression (Type[] types)
-            : base(types)
+        #region ICompositeVisitor implementation
+        public ICompositeVisitor<TExpression> GetVisitor<TExpression> () where TExpression : System.Linq.Expressions.Expression
         {
+            string message = string.Format("Unknown expression type: {0}.", typeof(TExpression).FullName);
+            throw new InvalidOperationException (message);
         }
+        #endregion
     }
 }
 

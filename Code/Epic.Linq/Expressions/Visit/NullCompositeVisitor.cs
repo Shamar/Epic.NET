@@ -1,5 +1,5 @@
 //  
-//  IVisitor.cs
+//  NullCompositeVisitor.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,19 +22,17 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Linq.Expressions;
 
-namespace Epic.Linq.Expressions
+namespace Epic.Linq.Expressions.Visit
 {
-    public interface IVisitor
+    public sealed class NullCompositeVisitor : ICompositeVisitor
     {
-        IVisitor<TExpression> AsVisitor<TExpression>() where TExpression : Expression;
-    }
-    
-    public interface IVisitor<TExpression> : IVisitor
-        where TExpression : Expression
-    {
-        Expression Visit(TExpression target);
+        #region ICompositeVisitor implementation
+        public ICompositeVisitor<TExpression> GetVisitor<TExpression> () where TExpression : System.Linq.Expressions.Expression
+        {
+            return null;
+        }
+        #endregion
     }
 }
 

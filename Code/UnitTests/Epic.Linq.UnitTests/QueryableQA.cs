@@ -30,7 +30,7 @@ using Epic.Linq;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace Epic.Linq.UnitTests
+namespace Epic.Linq
 {
 	[TestFixture]
 	public class QueryableQA : RhinoMocksFixtureBase
