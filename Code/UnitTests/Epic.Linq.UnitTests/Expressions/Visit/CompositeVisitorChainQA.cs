@@ -120,19 +120,22 @@ namespace Epic.Linq.Expressions.Visit
         public void GetVisitor_withKnownExpression_toTheChainItsel_dontReachEnd()
         {
             // arrange:
-            MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
+            MethodCallExpression callExpression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
+            Expression<Func<int, string>> lambdaExpression = x => x.ToString();
             ICompositeVisitor<MethodCallExpression> endVisitor = GenerateStrictMock<ICompositeVisitor<MethodCallExpression>>();
             CompositeVisitorChain chain = new CompositeVisitorChain(endVisitor);
             GenericDumbVisitor<MethodCallExpression> dumb1 = new GenericDumbVisitor<MethodCallExpression> (chain);
             chain.Append(dumb1);
-            GenericDumbVisitor<MemberInitExpression> dumb2 = new GenericDumbVisitor<MemberInitExpression>(chain);
+            GenericDumbVisitor<Expression<Func<int, string>>> dumb2 = new GenericDumbVisitor<Expression<Func<int, string>>>(chain);
             chain.Append(dumb2);
 
             // act:
-            ICompositeVisitor<MethodCallExpression> recievedVisitor = chain.GetVisitor<MethodCallExpression>(expression);
+            ICompositeVisitor<MethodCallExpression> recievedMethodCallVisitor = chain.GetVisitor<MethodCallExpression>(callExpression);
+            ICompositeVisitor<Expression<Func<int, string>>> recievedLambdaVisitor = chain.GetVisitor<Expression<Func<int, string>>>(lambdaExpression);
 
             // assert:
-            Assert.AreSame(dumb1, recievedVisitor);
+            Assert.AreSame(dumb1, recievedMethodCallVisitor);
+            Assert.AreSame(dumb2, recievedLambdaVisitor);
         }
         
     }
