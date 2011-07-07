@@ -26,6 +26,7 @@ using NUnit.Framework;
 using Epic.Linq.Expressions.Visit;
 using System.Linq.Expressions;
 using Rhino.Mocks;
+using System.Reflection;
 
 namespace Epic.Linq.Expressions.Visit
 {
@@ -60,6 +61,7 @@ namespace Epic.Linq.Expressions.Visit
         public void GetVisitor_withKnownExpression_dontReachEnd()
         {
             // arrange:
+            MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             ICompositeVisitor<MethodCallExpression> endVisitor = GenerateStrictMock<ICompositeVisitor<MethodCallExpression>>();
             CompositeVisitorChain chain = new CompositeVisitorChain(endVisitor);
             GenericDumbVisitor<MethodCallExpression> dumb1 = new GenericDumbVisitor<MethodCallExpression> (chain);
@@ -68,7 +70,7 @@ namespace Epic.Linq.Expressions.Visit
             chain.Append(dumb2);
 
             // act:
-            ICompositeVisitor<MethodCallExpression> recievedVisitor = dumb2.GetVisitor<MethodCallExpression>();
+            ICompositeVisitor<MethodCallExpression> recievedVisitor = dumb2.GetVisitor<MethodCallExpression>(expression);
 
             // assert:
             Assert.AreSame(dumb1, recievedVisitor);
@@ -78,8 +80,9 @@ namespace Epic.Linq.Expressions.Visit
         public void GetVisitor_withUnknownExpression_reachEnd()
         {
             // arrange:
+            MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             ICompositeVisitor<MethodCallExpression> endVisitor = GenerateStrictMock<ICompositeVisitor<MethodCallExpression>>();
-            endVisitor.Expect(v => v.GetVisitor<MethodCallExpression>()).Return(endVisitor).Repeat.Once();
+            endVisitor.Expect(v => v.GetVisitor<MethodCallExpression>(expression)).Return(endVisitor).Repeat.Once();
             CompositeVisitorChain chain = new CompositeVisitorChain(endVisitor);
             DumbVisitor dumb1 = new DumbVisitor(chain);
             chain.Append(dumb1);
@@ -87,11 +90,51 @@ namespace Epic.Linq.Expressions.Visit
             chain.Append(dumb2);
 
             // act:
-            ICompositeVisitor<MethodCallExpression> recievedVisitor = dumb2.GetVisitor<MethodCallExpression>();
+            ICompositeVisitor<MethodCallExpression> recievedVisitor = dumb2.GetVisitor<MethodCallExpression>(expression);
 
             // assert:
             Assert.AreSame(endVisitor, recievedVisitor);
         }
+        
+        [Test]
+        public void GetVisitor_withUnknownExpressio_toTheChainItself_reachEnd()
+        {
+            // arrange:
+            MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
+            ICompositeVisitor<MethodCallExpression> endVisitor = GenerateStrictMock<ICompositeVisitor<MethodCallExpression>>();
+            endVisitor.Expect(v => v.GetVisitor<MethodCallExpression>(expression)).Return(endVisitor).Repeat.Once();
+            CompositeVisitorChain chain = new CompositeVisitorChain(endVisitor);
+            DumbVisitor dumb1 = new DumbVisitor(chain);
+            chain.Append(dumb1);
+            DumbVisitor dumb2 = new DumbVisitor(chain);
+            chain.Append(dumb2);
+
+            // act:
+            ICompositeVisitor<MethodCallExpression> recievedVisitor = chain.GetVisitor<MethodCallExpression>(expression);
+
+            // assert:
+            Assert.AreSame(endVisitor, recievedVisitor);
+        }
+        
+        [Test]
+        public void GetVisitor_withKnownExpression_toTheChainItsel_dontReachEnd()
+        {
+            // arrange:
+            MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
+            ICompositeVisitor<MethodCallExpression> endVisitor = GenerateStrictMock<ICompositeVisitor<MethodCallExpression>>();
+            CompositeVisitorChain chain = new CompositeVisitorChain(endVisitor);
+            GenericDumbVisitor<MethodCallExpression> dumb1 = new GenericDumbVisitor<MethodCallExpression> (chain);
+            chain.Append(dumb1);
+            GenericDumbVisitor<MemberInitExpression> dumb2 = new GenericDumbVisitor<MemberInitExpression>(chain);
+            chain.Append(dumb2);
+
+            // act:
+            ICompositeVisitor<MethodCallExpression> recievedVisitor = chain.GetVisitor<MethodCallExpression>(expression);
+
+            // assert:
+            Assert.AreSame(dumb1, recievedVisitor);
+        }
+        
     }
 }
 

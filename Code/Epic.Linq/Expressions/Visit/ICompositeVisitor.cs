@@ -28,7 +28,7 @@ namespace Epic.Linq.Expressions.Visit
 {
     public interface ICompositeVisitor
     {
-        ICompositeVisitor<TExpression> GetVisitor<TExpression>() where TExpression : Expression;
+        ICompositeVisitor<TExpression> GetVisitor<TExpression>(TExpression target) where TExpression : Expression;
     }
     
     public interface ICompositeVisitor<TExpression> : ICompositeVisitor

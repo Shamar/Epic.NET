@@ -174,8 +174,6 @@ namespace Epic.Linq.Expressions
         
             private T VisitAndConvert<T> (T expression, string methodName) where T : Expression
             {
-                // ArgumentUtility.CheckNotNull ("methodName", methodName);
-        
                 if (expression == null)
                     return null;
         
@@ -196,18 +194,12 @@ namespace Epic.Linq.Expressions
 
             private ReadOnlyCollection<T> VisitAndConvert<T> (ReadOnlyCollection<T> expressions, string callerName) where T : Expression
             {
-                // ArgumentUtility.CheckNotNull ("expressions", expressions);
-                // ArgumentUtility.CheckNotNullOrEmpty ("callerName", callerName);
-        
                 return VisitList (expressions, expression => VisitAndConvert (expression, callerName));
             }
 
             public ReadOnlyCollection<T> VisitList<T> (ReadOnlyCollection<T> list, Func<T, T> visitMethod)
                 where T : class
             {
-                // ArgumentUtility.CheckNotNull ("list", list);
-                // ArgumentUtility.CheckNotNull ("visitMethod", visitMethod);
-        
                 List<T> newList = null;
         
                 for (int i = 0; i < list.Count; i++) {
@@ -232,17 +224,13 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitUnknownNonVisitableExpression (Expression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-        
                 var message = string.Format ("Expression type '{0}' is not supported by this {1}.", expression.GetType ().Name, GetType ().Name);
                 throw new NotSupportedException (message);
             }
         
             private Expression VisitUnaryExpression (UnaryExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                
-                ICompositeVisitor<UnaryExpression> visitor = GetNextVisitor<UnaryExpression> ();
+                ICompositeVisitor<UnaryExpression> visitor = GetNextVisitor<UnaryExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 Expression newOperand = VisitExpression (expression.Operand);
@@ -257,8 +245,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitBinaryExpression (BinaryExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<BinaryExpression> visitor = GetNextVisitor<BinaryExpression> ();
+                ICompositeVisitor<BinaryExpression> visitor = GetNextVisitor<BinaryExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 Expression newLeft = VisitExpression (expression.Left);
@@ -271,8 +258,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitTypeBinaryExpression (TypeBinaryExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<TypeBinaryExpression> visitor = GetNextVisitor<TypeBinaryExpression> ();
+                ICompositeVisitor<TypeBinaryExpression> visitor = GetNextVisitor<TypeBinaryExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 Expression newExpression = VisitExpression (expression.Expression);
@@ -283,8 +269,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitConstantExpression (ConstantExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<ConstantExpression> visitor = GetNextVisitor<ConstantExpression> ();
+                ICompositeVisitor<ConstantExpression> visitor = GetNextVisitor<ConstantExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 return expression;
@@ -292,8 +277,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitConditionalExpression (ConditionalExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<ConditionalExpression> visitor = GetNextVisitor<ConditionalExpression> ();
+                ICompositeVisitor<ConditionalExpression> visitor = GetNextVisitor<ConditionalExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 Expression newTest = VisitExpression (expression.Test);
@@ -306,8 +290,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitParameterExpression (ParameterExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<ParameterExpression> visitor = GetNextVisitor<ParameterExpression> ();
+                ICompositeVisitor<ParameterExpression> visitor = GetNextVisitor<ParameterExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 return expression;
@@ -315,8 +298,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitLambdaExpression (LambdaExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<LambdaExpression> visitor = GetNextVisitor<LambdaExpression> ();
+                ICompositeVisitor<LambdaExpression> visitor = GetNextVisitor<LambdaExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "VisitLambdaExpression");
@@ -328,8 +310,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitMethodCallExpression (MethodCallExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<MethodCallExpression> visitor = GetNextVisitor<MethodCallExpression> ();
+                ICompositeVisitor<MethodCallExpression> visitor = GetNextVisitor<MethodCallExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 Expression newObject = VisitExpression (expression.Object);
@@ -341,8 +322,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitInvocationExpression (InvocationExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<InvocationExpression> visitor = GetNextVisitor<InvocationExpression> ();
+                ICompositeVisitor<InvocationExpression> visitor = GetNextVisitor<InvocationExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 Expression newExpression = VisitExpression (expression.Expression);
@@ -354,8 +334,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitMemberExpression (MemberExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<MemberExpression> visitor = GetNextVisitor<MemberExpression> ();
+                ICompositeVisitor<MemberExpression> visitor = GetNextVisitor<MemberExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 Expression newExpression = VisitExpression (expression.Expression);
@@ -366,8 +345,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitNewExpression (NewExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<NewExpression> visitor = GetNextVisitor<NewExpression> ();
+                ICompositeVisitor<NewExpression> visitor = GetNextVisitor<NewExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "VisitNewExpression");
@@ -382,8 +360,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitNewArrayExpression (NewArrayExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<NewArrayExpression> visitor = GetNextVisitor<NewArrayExpression> ();
+                ICompositeVisitor<NewArrayExpression> visitor = GetNextVisitor<NewArrayExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "VisitNewArrayExpression");
@@ -399,8 +376,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitMemberInitExpression (MemberInitExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<MemberInitExpression> visitor = GetNextVisitor<MemberInitExpression> ();
+                ICompositeVisitor<MemberInitExpression> visitor = GetNextVisitor<MemberInitExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 var newNewExpression = VisitExpression (expression.NewExpression) as NewExpression;
@@ -417,8 +393,7 @@ namespace Epic.Linq.Expressions
         
             private Expression VisitListInitExpression (ListInitExpression expression)
             {
-                // ArgumentUtility.CheckNotNull ("expression", expression);
-                ICompositeVisitor<ListInitExpression> visitor = GetNextVisitor<ListInitExpression> ();
+                ICompositeVisitor<ListInitExpression> visitor = GetNextVisitor<ListInitExpression> (expression);
                 if (null != visitor)
                     return visitor.Visit (expression);
                 var newNewExpression = VisitExpression (expression.NewExpression) as NewExpression;
@@ -432,7 +407,6 @@ namespace Epic.Linq.Expressions
         
             private ElementInit VisitElementInit (ElementInit elementInit)
             {
-                // ArgumentUtility.CheckNotNull ("elementInit", elementInit);
                 ReadOnlyCollection<Expression> newArguments = VisitAndConvert (elementInit.Arguments, "VisitElementInit");
                 if (newArguments != elementInit.Arguments)
                     return Expression.ElementInit (elementInit.AddMethod, newArguments);
@@ -441,7 +415,6 @@ namespace Epic.Linq.Expressions
         
             private MemberBinding VisitMemberBinding (MemberBinding memberBinding)
             {
-                // ArgumentUtility.CheckNotNull ("memberBinding", memberBinding);
                 switch (memberBinding.BindingType) {
                 case MemberBindingType.Assignment:
                     return VisitMemberAssignment ((MemberAssignment)memberBinding);
@@ -456,8 +429,6 @@ namespace Epic.Linq.Expressions
         
             private MemberBinding VisitMemberAssignment (MemberAssignment memberAssigment)
             {
-                // ArgumentUtility.CheckNotNull ("memberAssigment", memberAssigment);
-        
                 Expression expression = VisitExpression (memberAssigment.Expression);
                 if (expression != memberAssigment.Expression)
                     return Expression.Bind (memberAssigment.Member, expression);
@@ -466,8 +437,6 @@ namespace Epic.Linq.Expressions
         
             private MemberBinding VisitMemberMemberBinding (MemberMemberBinding binding)
             {
-                // ArgumentUtility.CheckNotNull ("binding", binding);
-        
                 ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (binding.Bindings);
                 if (newBindings != binding.Bindings)
                     return Expression.MemberBind (binding.Member, newBindings);
@@ -476,7 +445,6 @@ namespace Epic.Linq.Expressions
         
             private MemberBinding VisitMemberListBinding (MemberListBinding listBinding)
             {
-                // ArgumentUtility.CheckNotNull ("listBinding", listBinding);
                 ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (listBinding.Initializers);
         
                 if (newInitializers != listBinding.Initializers)

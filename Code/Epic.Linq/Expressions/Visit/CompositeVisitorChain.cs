@@ -50,15 +50,15 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TExpression> GetVisitor<TExpression> () where TExpression : System.Linq.Expressions.Expression
+        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression expression) where TExpression : System.Linq.Expressions.Expression
         {
             ++_index;
             if(_index == _visitors.Count)
             {
                 // last visitor called;
-                return _end.GetVisitor<TExpression>();
+                return _end.GetVisitor<TExpression>(expression);
             }
-            ICompositeVisitor<TExpression> visitor = _visitors[_index].GetVisitor<TExpression> ();
+            ICompositeVisitor<TExpression> visitor = _visitors[_index].GetVisitor<TExpression> (expression);
             --_index;
             return visitor;
         }

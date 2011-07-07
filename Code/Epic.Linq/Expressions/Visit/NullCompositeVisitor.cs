@@ -28,7 +28,7 @@ namespace Epic.Linq.Expressions.Visit
     public sealed class NullCompositeVisitor : ICompositeVisitor
     {
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TExpression> GetVisitor<TExpression> () where TExpression : System.Linq.Expressions.Expression
+        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
         {
             return null;
         }
