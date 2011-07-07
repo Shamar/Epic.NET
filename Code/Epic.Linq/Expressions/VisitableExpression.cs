@@ -29,14 +29,14 @@ namespace Epic.Linq.Expressions
 {
     public abstract class VisitableExpression : Expression
     {
-        public const ExpressionType VisitableExpressionNodeType = (ExpressionType) 150000;
+        public const ExpressionType VisitableNodeType = (ExpressionType) 150000;
         
         protected VisitableExpression(Type type)
-            : base(VisitableExpressionNodeType, type)
+            : base(VisitableNodeType, type)
         {
         }
         
-        public abstract void Accept(ICompositeVisitor visitor);
+        public abstract Expression Accept(ICompositeVisitor visitor);
     }
 }
 

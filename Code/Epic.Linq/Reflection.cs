@@ -23,6 +23,7 @@
 //  
 using System;
 using System.Collections;
+using System.Reflection;
 
 namespace Epic.Linq
 {
@@ -104,6 +105,24 @@ namespace Epic.Linq
 	    {
 			return enumerableType.IsGenericType && enumerableType.GetGenericTypeDefinition().Equals(typeof (System.Collections.Generic.IEnumerable<>));
 	    }
+        
+        public static Type GetMemberReturnType (MemberInfo member)
+        {
+            if(null == member)
+                throw new ArgumentNullException("member");
+            
+            switch (member.MemberType)
+            {
+                case MemberTypes.Property:
+                    return ((PropertyInfo) member).PropertyType;
+                case MemberTypes.Field:
+                    return ((FieldInfo) member).FieldType;
+                case MemberTypes.Method:
+                    return ((MethodInfo) member).ReturnType;
+                default:
+                    throw new ArgumentException ("The member must be FieldInfo, PropertyInfo, or MethodInfo.", "member");
+            }
+        }
 	}
 }
 
