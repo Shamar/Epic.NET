@@ -53,12 +53,24 @@ namespace Epic.Linq.Expressions.Visit
         public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression expression) where TExpression : System.Linq.Expressions.Expression
         {
             ++_index;
-            if(_index == _visitors.Count)
+            ICompositeVisitor<TExpression> visitor;
+            try
             {
-                // last visitor called;
-                return _end.GetVisitor<TExpression>(expression);
+                if(_index == _visitors.Count)
+                {
+                    // last visitor called;
+                    visitor = _end.GetVisitor<TExpression>(expression);
+                }
+                else
+                {
+                    visitor = _visitors[_index].GetVisitor<TExpression> (expression);
+                }
             }
-            ICompositeVisitor<TExpression> visitor = _visitors[_index].GetVisitor<TExpression> (expression);
+            catch(Exception e)
+            {
+                --_index;
+                throw e;
+            }
             --_index;
             return visitor;
         }

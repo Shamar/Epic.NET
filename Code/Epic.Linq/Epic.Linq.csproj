@@ -50,6 +50,7 @@
     <Compile Include="Expressions\Visit\NullCompositeVisitor.cs" />
     <Compile Include="Expressions\UnvisitableExpressionAdapter.cs" />
     <Compile Include="Expressions\Visit\CompositeVisitorChain.cs" />
+    <Compile Include="Expressions\Visit\UnvisitableExpressionVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
