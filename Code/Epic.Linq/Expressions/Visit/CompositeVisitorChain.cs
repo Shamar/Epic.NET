@@ -63,7 +63,8 @@ namespace Epic.Linq.Expressions.Visit
                 }
                 else
                 {
-                    visitor = _visitors[_index].GetVisitor<TExpression> (expression);
+                    ICompositeVisitor next = _visitors[_index];
+                    visitor = next.GetVisitor<TExpression> (expression);
                 }
             }
             catch(Exception e)

@@ -138,6 +138,23 @@ namespace Epic.Linq.Expressions.Visit
             Assert.AreSame(dumb2, recievedLambdaVisitor);
         }
         
+        [Test]
+        public void Visit_withPrintingVisitor_works()
+        {
+            // arrange:
+            Expression<Func<int, string, int>> expression = (i,s)=> i + s.Length;
+            CompositeVisitorChain chain = new CompositeVisitorChain(new NullCompositeVisitor());
+            chain.Append(new PrintingVisitor(chain));
+            chain.Append(new UnvisitableExpressionVisitor(chain));
+            UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
+
+            // act:
+            Expression e = adapter.Accept(chain);
+            
+            // assert:
+            Assert.AreSame(expression, e);
+        }
+        
     }
 }
 
