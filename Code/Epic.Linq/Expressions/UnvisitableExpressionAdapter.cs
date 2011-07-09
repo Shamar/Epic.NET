@@ -31,7 +31,7 @@ using System.Diagnostics;
 
 namespace Epic.Linq.Expressions
 {
-    internal sealed class UnvisitableExpressionAdapter : VisitableExpression
+    public sealed class UnvisitableExpressionAdapter : VisitableExpression
     {
         private readonly Expression _expression;
         
@@ -53,11 +53,16 @@ namespace Epic.Linq.Expressions
         #region implemented abstract members of Epic.Linq.Expressions.VisitableExpression
         public override Expression Accept (ICompositeVisitor visitor)
         {
-            ICompositeVisitor<Expression> expressionVisitor = visitor.GetVisitor<Expression>(_expression);
+            if(null == visitor)
+                throw new ArgumentNullException("visitor");
+            CompositeVisitorChain chain = visitor as CompositeVisitorChain;
+            if(null == chain)
+                throw new ArgumentException("UnvisitableExpressionAdapter.Accept() can accept only a CompositeVisitorChain.");
+            new UnvisitableExpressionVisitor(chain);
+            ICompositeVisitor<Expression> expressionVisitor = chain.GetVisitor<Expression>(_expression);
             return expressionVisitor.Visit(_expression);
         }
         #endregion
-
     }
 }
 

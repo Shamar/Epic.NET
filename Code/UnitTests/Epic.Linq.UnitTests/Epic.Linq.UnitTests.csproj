@@ -64,6 +64,7 @@
     <Compile Include="RepositoryBaseQA.cs" />
     <Compile Include="FakeRepository.cs" />
     <Compile Include="Expressions\Visit\CompositeVisitorChainQA.cs" />
+    <Compile Include="Expressions\UnvisitableExpressionAdapterQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />

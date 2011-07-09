@@ -26,10 +26,10 @@ using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class CompositeVisitorChain : ICompositeVisitor
+    public class CompositeVisitorChain : ICompositeVisitor
     {
         private readonly ICompositeVisitor _end;
-        private readonly List<ICompositeVisitor> _visitors;
+        private List<ICompositeVisitor> _visitors;
         
         private int _index;
         
@@ -38,15 +38,31 @@ namespace Epic.Linq.Expressions.Visit
             if(null == chainEnd)
                 throw new ArgumentNullException("chainEnd");
             _end = chainEnd;
-            _visitors = new List<ICompositeVisitor>();
             _index = -1;
         }
         
-        public void Append(ICompositeVisitor visitor)
+        private IList<ICompositeVisitor> Visitors
+        {
+            get
+            {
+                if(null == _visitors)
+                {
+                    _visitors = new List<ICompositeVisitor>();
+                    InitializeVisitors();
+                }
+                return _visitors;
+            }
+        }
+        
+        protected virtual void InitializeVisitors()
+        {
+        }
+        
+        internal void Append(ICompositeVisitor visitor)
         {
             if(null == visitor)
-                throw new ArgumentNullException();
-            _visitors.Add(visitor);
+                throw new ArgumentNullException("visitor");
+            Visitors.Add(visitor);
         }
 
         #region ICompositeVisitor implementation
@@ -56,14 +72,14 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<TExpression> visitor;
             try
             {
-                if(_index == _visitors.Count)
+                if(_index == Visitors.Count)
                 {
                     // last visitor called;
                     visitor = _end.GetVisitor<TExpression>(expression);
                 }
                 else
                 {
-                    ICompositeVisitor next = _visitors[_index];
+                    ICompositeVisitor next = Visitors[_index];
                     visitor = next.GetVisitor<TExpression> (expression);
                 }
             }

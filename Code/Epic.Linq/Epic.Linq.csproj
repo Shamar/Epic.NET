@@ -52,6 +52,7 @@
     <Compile Include="Expressions\Visit\CompositeVisitorChain.cs" />
     <Compile Include="Expressions\Visit\UnvisitableExpressionVisitor.cs" />
     <Compile Include="Expressions\Visit\PrintingVisitor.cs" />
+    <Compile Include="Expressions\Visit\VisitorWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -27,21 +27,7 @@ using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public class PrintingVisitor : CompositeVisitorBase, 
-        ICompositeVisitor<UnaryExpression>, 
-        ICompositeVisitor<BinaryExpression>, 
-        ICompositeVisitor<ConditionalExpression>,
-        ICompositeVisitor<ConstantExpression>,
-        ICompositeVisitor<InvocationExpression>,
-        ICompositeVisitor<LambdaExpression>,
-        ICompositeVisitor<MemberExpression>,
-        ICompositeVisitor<MethodCallExpression>,
-        ICompositeVisitor<NewExpression>,
-        ICompositeVisitor<NewArrayExpression>,
-        ICompositeVisitor<MemberInitExpression>,
-        ICompositeVisitor<ListInitExpression>,
-        ICompositeVisitor<ParameterExpression>,
-        ICompositeVisitor<TypeBinaryExpression>
+    public class PrintingVisitor : CompositeVisitorBase
     {
         private readonly Stack<Expression> _stack;
         
@@ -51,29 +37,24 @@ namespace Epic.Linq.Expressions.Visit
             _stack = new Stack<Expression>();
         }
         
-        private void Display(Expression expression)
+        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        {
+            if(typeof(TExpression).Equals(typeof(Expression)))
+                return null;
+            if(_stack.Count > 0 && object.ReferenceEquals(target, _stack.Peek()))
+            {
+                return null;
+            }
+            return new VisitorWrapper<TExpression>(this, this.Display<TExpression>);
+        }
+        
+        private Expression Display<TExpression>(TExpression target) where TExpression : Expression
         {
             for(int i = 0; i < _stack.Count; ++i)
             {
                 Console.Write("    ");
             }
-            Console.WriteLine("{0} - {1}", expression.NodeType, expression.GetType().FullName);
-        }
-        
-        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
-        {
-            ICompositeVisitor<TExpression> visitor = base.AsVisitor<TExpression>(target);
-            if(null == visitor || (_stack.Count > 0 && object.ReferenceEquals(target, _stack.Peek())))
-            {
-                return null;
-            }
-            return visitor;
-        }
-        
-        #region ICompositeVisitor[UnaryExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<UnaryExpression>.Visit (UnaryExpression target)
-        {
-            Display(target);
+            Console.WriteLine("{0} - {1}", target.NodeType, target.GetType().FullName);
             _stack.Push(target);
             var visitor = GetVisitor(target);
             if(null == visitor)
@@ -82,187 +63,6 @@ namespace Epic.Linq.Expressions.Visit
             _stack.Pop();
             return visited;
         }
-        #endregion
-  
-        #region ICompositeVisitor[BinaryExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<BinaryExpression>.Visit (BinaryExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-        
-        #region ICompositeVisitor[ConditionalExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<ConditionalExpression>.Visit (ConditionalExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-        
-        #region ICompositeVisitor[ConstantExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<ConstantExpression>.Visit (ConstantExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-  
-        #region ICompositeVisitor[InvocationExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<InvocationExpression>.Visit (InvocationExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-        
-        #region ICompositeVisitor[LambdaExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<LambdaExpression>.Visit (LambdaExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-        
-        #region ICompositeVisitor[MemberExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<MemberExpression>.Visit (MemberExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-  
-        #region ICompositeVisitor[MethodCallExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<MethodCallExpression>.Visit (MethodCallExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-        
-        #region ICompositeVisitor[NewExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<NewExpression>.Visit (NewExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-        
-        #region ICompositeVisitor[NewArrayExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<NewArrayExpression>.Visit (NewArrayExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-  
-        #region ICompositeVisitor[MemberInitExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<MemberInitExpression>.Visit (MemberInitExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-        
-        #region ICompositeVisitor[ListInitExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<ListInitExpression>.Visit (ListInitExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-        
-        #region ICompositeVisitor[ParameterExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<ParameterExpression>.Visit (ParameterExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
-  
-        #region ICompositeVisitor[TypeBinaryExpression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<TypeBinaryExpression>.Visit (TypeBinaryExpression target)
-        {
-            Display(target);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
-            if(null == visitor)
-                return target;
-            Expression visited = visitor.Visit(target);
-            _stack.Pop();
-            return visited;
-        }
-        #endregion
     }
 }
 

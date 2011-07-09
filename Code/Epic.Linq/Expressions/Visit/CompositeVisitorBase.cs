@@ -30,11 +30,12 @@ namespace Epic.Linq.Expressions.Visit
     {
         private readonly ICompositeVisitor _next;
         
-        public CompositeVisitorBase (ICompositeVisitor visitor)
+        protected CompositeVisitorBase (CompositeVisitorChain chain)
         {
-            if(null == visitor)
-                throw new ArgumentNullException("visitor");
-            _next = visitor;
+            if(null == chain)
+                throw new ArgumentNullException("chain");
+            chain.Append(this);
+            _next = chain;
         }
 
         #region ICompositeVisitor implementation
