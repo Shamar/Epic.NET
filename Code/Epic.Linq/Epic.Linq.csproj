@@ -31,8 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-    </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -53,6 +52,12 @@
     <Compile Include="Expressions\Visit\UnvisitableExpressionVisitor.cs" />
     <Compile Include="Expressions\Visit\PrintingVisitor.cs" />
     <Compile Include="Expressions\Visit\VisitorWrapper.cs" />
+    <Compile Include="Expressions\QueryExpression.cs" />
+    <Compile Include="Expressions\PredicateExpression.cs" />
+    <Compile Include="Expressions\DomainExpression.cs" />
+    <Compile Include="Expressions\AndPredicateExpression.cs" />
+    <Compile Include="Translators\RepositoryTranslator.cs" />
+    <Compile Include="Expressions\SourceExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

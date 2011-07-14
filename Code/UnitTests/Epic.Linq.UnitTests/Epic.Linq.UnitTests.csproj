@@ -39,8 +39,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core">
-    </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -65,9 +64,11 @@
     <Compile Include="FakeRepository.cs" />
     <Compile Include="Expressions\Visit\CompositeVisitorChainQA.cs" />
     <Compile Include="Expressions\UnvisitableExpressionAdapterQA.cs" />
+    <Compile Include="Translators\RepositoryTranslatorQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
     <Folder Include="Expressions\Visit\" />
+    <Folder Include="Translators\" />
   </ItemGroup>
 </Project>
