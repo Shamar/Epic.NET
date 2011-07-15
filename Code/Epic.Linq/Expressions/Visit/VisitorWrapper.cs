@@ -26,20 +26,40 @@ using System.Linq.Expressions;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public class VisitorWrapper<TExpression> : ICompositeVisitor<TExpression>
-        where TExpression : Expression
+    public abstract class VisitorWrapperBase : ICompositeVisitor
     {
         private readonly ICompositeVisitor _wrapped;
-        private readonly Func<TExpression, Expression> _visit;
-        public VisitorWrapper (ICompositeVisitor wrappedVisitor, Func<TExpression, Expression> visit)
+        protected VisitorWrapperBase(ICompositeVisitor wrappedVisitor)
         {
             if(null == wrappedVisitor)
                 throw new ArgumentNullException("wrappedVisitor");
+            _wrapped = wrappedVisitor;
+        }
+        
+        public ICompositeVisitor WrappedVisitor
+        {
+            get
+            {
+                return _wrapped;
+            }
+        }
+
+        #region ICompositeVisitor implementation
+        public abstract ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : Expression;
+        #endregion
+    }
+    
+    public sealed class VisitorWrapper<TExpression> : VisitorWrapperBase, ICompositeVisitor<TExpression>
+        where TExpression : Expression
+    {
+        private readonly Func<TExpression, Expression> _visit;
+        public VisitorWrapper (ICompositeVisitor wrappedVisitor, Func<TExpression, Expression> visit)
+            : base(wrappedVisitor)
+        {
             if(null == visit)
                 throw new ArgumentNullException("visit");
-            if(!object.ReferenceEquals(wrappedVisitor, visit.Target) || visit.Target == null)
+            if(!object.ReferenceEquals(WrappedVisitor, visit.Target) || visit.Target == null)
                 throw new ArgumentException("The visit must be either static or a method of the wrapped visitor.");
-            _wrapped = wrappedVisitor;
             _visit = visit;
         }
 
@@ -51,11 +71,25 @@ namespace Epic.Linq.Expressions.Visit
         #endregion
 
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TRequiredExpression> GetVisitor<TRequiredExpression> (TRequiredExpression target) where TRequiredExpression : System.Linq.Expressions.Expression
+        public override ICompositeVisitor<TRequiredExpression> GetVisitor<TRequiredExpression> (TRequiredExpression target)
         {
-            return _wrapped.GetVisitor<TRequiredExpression>(target);
+            return WrappedVisitor.GetVisitor<TRequiredExpression>(target);
         }
         #endregion
+    }
+    
+    public sealed class PlaceholderUntypedWrapper : VisitorWrapperBase
+    {
+        public PlaceholderUntypedWrapper(ICompositeVisitor wrappedVisitor)
+            : base(wrappedVisitor)
+        {
+        }
+        
+        public override ICompositeVisitor<TRequiredExpression> GetVisitor<TRequiredExpression> (TRequiredExpression target)
+        {
+            return new VisitorWrapper<TRequiredExpression>(WrappedVisitor, e => e);
+        }
+
     }
 }
 

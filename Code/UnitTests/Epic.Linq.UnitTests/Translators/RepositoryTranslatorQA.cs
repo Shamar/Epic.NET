@@ -62,6 +62,31 @@ namespace Epic.Linq.Translators
             // assert:
             Assert.IsInstanceOf<QueryExpression>(result);
         }
+        
+        [Test]
+        public void Visit_withSimpleWhere_works()
+        {
+            // arrange:
+            CompositeVisitorChain chain = new CompositeVisitorChain(new NullCompositeVisitor());
+            new PrintingVisitor(chain);
+            
+            string providerName = "TestProvider";
+            EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
+            IQueryProvider provider = new QueryProvider(providerName);
+            env.Expect(e => e.Get<IQueryProvider>(new InstanceName<IQueryProvider>(providerName))).Return(provider).Repeat.Once();
+            ApplicationBase app = new Fakes.FakeApplication(env, null);
+            Application.Initialize(app);
+            IRepository<string,int> repository = new FakeRepository<string,int>(providerName);
+            IQueryable<string> queryable = repository.Where(s => s.Length > 2);
+            UnvisitableExpressionAdapter expressionAdapter = new UnvisitableExpressionAdapter(queryable.Expression);
+
+
+            // act:
+            Expression result = expressionAdapter.Accept(chain);
+
+            // assert:
+            Assert.AreSame(queryable.Expression, result);
+        }
     }
 }
 

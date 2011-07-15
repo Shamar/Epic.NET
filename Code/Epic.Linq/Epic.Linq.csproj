@@ -58,6 +58,7 @@
     <Compile Include="Expressions\AndPredicateExpression.cs" />
     <Compile Include="Translators\RepositoryTranslator.cs" />
     <Compile Include="Expressions\SourceExpression.cs" />
+    <Compile Include="Translators\WhereTranslator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
