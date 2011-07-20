@@ -24,6 +24,8 @@
 using System;
 using System.Linq.Expressions;
 using Epic.Linq.Translators;
+using Epic.Linq.Expressions.Visit;
+using Epic.Linq.Expressions;
 
 namespace Epic.Linq.Translator
 {
@@ -33,6 +35,42 @@ namespace Epic.Linq.Translator
         {
             QueryDataExtractor<TExpression> extractor = new QueryDataExtractor<TExpression>(template);
             return extractor.TryGetQueryData(expression, out query);
+        }
+        
+        internal static Expression<Func<TSource, TFinal>> Convert<TSource, TInitial, TFinal>(this Expression<Func<TSource, TInitial>> expression)
+        {
+            Expression<Func<TSource, TFinal>> result = 
+                Expression.Lambda<Func<TSource, TFinal>>(
+                    Expression.Condition(
+                        Expression.TypeIs(expression.Body, typeof(TFinal)), 
+                        Expression.Convert(expression.Body, typeof(TFinal)),
+                        Expression.Constant(null)
+                    ), 
+                    expression.Parameters);
+            return result;
+        }
+        
+        internal static Expression<Func<TSource, TFinal>> Access<TSource, TInitial, TFinal>(this Expression<Func<TSource, TInitial>> expression, Expression<Func<TInitial, TFinal>> propertyAccess)
+        {
+            CompositeVisitorChain chain = new CompositeVisitorChain(new NullCompositeVisitor());
+            new ExpressionReplacingVisitor<ParameterExpression>(chain, propertyAccess.Parameters[0], expression.Body);
+            UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(propertyAccess.Body);
+            
+            Expression lambdaBody = adapter.Accept(chain);
+            
+            Expression<Func<TSource, TFinal>> result = 
+                Expression.Lambda<Func<TSource, TFinal>>(
+                    Expression.Condition(
+                        Expression.Equal(
+                            Expression.Constant(null),
+                            expression.Body
+                        ),
+                        lambdaBody,
+                        Expression.Constant(null)
+                    ), 
+                    expression.Parameters);
+            
+            return result;
         }
     }
 }

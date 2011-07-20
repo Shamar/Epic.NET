@@ -32,20 +32,21 @@ namespace Epic.Linq.Translators
     internal sealed class QueryDataExtractor<TExpression>
         where TExpression : Expression
     {
-        private readonly Expression _template;
+        private readonly Dictionary<object, Expression<Func<Expression, object>>> _extractors; // TODO : use a better collection
         
         
         public QueryDataExtractor (TExpression template)
         {
             if(null == template)
                 throw new ArgumentNullException("template");
-            _template = template;
-        }
+            _extractors = new Dictionary<object, Expression<Func<Expression, object>>>();
+            Parse<TExpression>(template, e => e);
+         }
 
         public bool TryGetQueryData(TExpression target, out IQuery query)
         {
             QueryData data = new QueryData();
-            bool result = Fill(target, _template, data);
+            bool result = false;//= Fill(target, _template, data);
             if(result)
             {
                 data.Lock();
@@ -58,6 +59,30 @@ namespace Epic.Linq.Translators
             return result;
         }
         
+        // TODO : understand if this can be done with a composition chain.
+        private void Parse<TTemplate>(TTemplate expressionToParse, Expression<Func<TExpression, TTemplate>> howToGetHere)
+            where TTemplate : Expression
+        {
+            MethodCallExpression callExpression = expressionToParse as MethodCallExpression;
+            bool found = false;
+            if(null != callExpression)
+            {
+                if(callExpression.Object != null && typeof(IQuery).IsAssignableFrom(callExpression.Object.Type))
+                {
+                    // read argument[0]
+                    // create the key for the extractor
+                    // generate extractor from howToGetHere (that should be compiled)
+                    // store extractor in _extractors
+                    found = true;
+                }
+            }
+            if(!found)
+            {
+                // visit the expression to find other IQuery calls.
+            }
+        }
+        
+        /*
         private bool Fill(Expression target, Expression template, QueryData data)
         {
             // both nulls? comparison is OK
@@ -400,7 +425,7 @@ namespace Epic.Linq.Translators
         {
             return (int)obj.NodeType ^ obj.GetType().GetHashCode();
         }
-  
+  */
         class QueryData : IQuery    
         {
             private readonly Hashtable _table = new Hashtable();

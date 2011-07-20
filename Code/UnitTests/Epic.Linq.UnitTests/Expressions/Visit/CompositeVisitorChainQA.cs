@@ -150,6 +150,24 @@ namespace Epic.Linq.Expressions.Visit
             Assert.AreSame(expression, e);
         }
         
+        
+        [Test]
+        public void Visit_TernaryWithPrintingVisitor_works()
+        {
+            // arrange:
+            Expression<Func<int, string, int>> expression = (i,s)=> s == null ? i : s.Length;
+            CompositeVisitorChain chain = new CompositeVisitorChain(new NullCompositeVisitor());
+            new PrintingVisitor(chain);
+            new UnvisitableExpressionVisitor(chain);
+            UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
+
+            // act:
+            Expression e = adapter.Accept(chain);
+            
+            // assert:
+            Assert.AreSame(expression, e);
+        }
+        
     }
 }
 

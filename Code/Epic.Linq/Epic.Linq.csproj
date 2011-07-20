@@ -63,6 +63,7 @@
     <Compile Include="Translators\PredicateTranslatorBase.cs" />
     <Compile Include="Translators\Extensions.cs" />
     <Compile Include="Translators\QueryDataExtractor.cs" />
+    <Compile Include="Expressions\Visit\ExpressionReplacingVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
