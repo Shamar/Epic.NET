@@ -43,7 +43,7 @@ namespace Epic.Linq.Translators
         }
 
         #region ICompositeVisitor[Expression[Func[TEntity,System.Boolean]]] implementation
-        public Expression Visit (Expression<Func<TEntity, bool>> target)
+        public Expression Visit (Expression<Func<TEntity, bool>> target, IVisitState state)
         {
             throw new NotImplementedException ();
         }

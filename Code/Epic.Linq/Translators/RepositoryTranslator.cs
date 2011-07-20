@@ -38,7 +38,7 @@ namespace Epic.Linq.Translators
         }
 
         #region ICompositeVisitor[ConstantExpression] implementation
-        public Expression Visit (ConstantExpression target)
+        public Expression Visit (ConstantExpression target, IVisitState state)
         {
             return new QueryExpression(typeof(TEntity), typeof(TEntity).Name, new SourceExpression(typeof(TEntity), typeof(TEntity).Name));
         }

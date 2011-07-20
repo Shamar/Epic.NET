@@ -34,7 +34,7 @@ namespace Epic.Linq.Expressions.Visit
     public interface ICompositeVisitor<TExpression> : ICompositeVisitor
         where TExpression : Expression
     {
-        Expression Visit(TExpression target);
+        Expression Visit(TExpression target, IVisitState state);
     }
 }
 

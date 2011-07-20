@@ -52,8 +52,8 @@ namespace Epic.Linq.Expressions.Visit
     public sealed class VisitorWrapper<TExpression> : VisitorWrapperBase, ICompositeVisitor<TExpression>
         where TExpression : Expression
     {
-        private readonly Func<TExpression, Expression> _visit;
-        public VisitorWrapper (ICompositeVisitor wrappedVisitor, Func<TExpression, Expression> visit)
+        private readonly Func<TExpression, IVisitState, Expression> _visit;
+        public VisitorWrapper (ICompositeVisitor wrappedVisitor, Func<TExpression, IVisitState, Expression> visit)
             : base(wrappedVisitor)
         {
             if(null == visit)
@@ -64,9 +64,9 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor[TExpression] implementation
-        public System.Linq.Expressions.Expression Visit (TExpression target)
+        public System.Linq.Expressions.Expression Visit (TExpression target, IVisitState state)
         {
-            return _visit(target);
+            return _visit(target, state);
         }
         #endregion
 

@@ -75,7 +75,7 @@ namespace Epic.Linq.Translators
         }
         
         #region ICompositeVisitor[MethodCallExpression] implementation
-        public Expression Visit (MethodCallExpression target)
+        public Expression Visit (MethodCallExpression target, IVisitState state)
         {
             IQueryable<TEntity> queryable = target.Arguments[0] as IQueryable<TEntity>;
             UnaryExpression predicateQuote = target.Arguments[1] as UnaryExpression;

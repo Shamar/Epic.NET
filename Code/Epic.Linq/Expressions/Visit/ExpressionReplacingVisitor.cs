@@ -50,7 +50,7 @@ namespace Epic.Linq.Expressions.Visit
         }
         
         #region ICompositeVisitor[TExpression] implementation
-        public System.Linq.Expressions.Expression Visit (TExpression target)
+        public System.Linq.Expressions.Expression Visit (TExpression target, IVisitState state)
         {
             return _replacement;
         }

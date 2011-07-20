@@ -64,7 +64,7 @@
     <Compile Include="Translators\QueryDataExtractor.cs" />
     <Compile Include="Expressions\Visit\ExpressionReplacingVisitor.cs" />
     <Compile Include="Expressions\Visit\IVisitState.cs" />
-    <Compile Include="Expressions\Visit\EmptyState.cs" />
+    <Compile Include="Expressions\Visit\VisitState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -25,7 +25,7 @@ using System;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class EmptyState : IVisitState
+    public sealed class VisitState : IVisitState
     {
         #region IVisitState implementation
         public bool TryGet<TState> (out TState state)

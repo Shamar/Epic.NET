@@ -48,7 +48,7 @@ namespace Epic.Linq.Expressions.Visit
             return new VisitorWrapper<TExpression>(this, this.Display<TExpression>);
         }
         
-        private Expression Display<TExpression>(TExpression target) where TExpression : Expression
+        private Expression Display<TExpression>(TExpression target, IVisitState state) where TExpression : Expression
         {
             for(int i = 0; i < _stack.Count; ++i)
             {
