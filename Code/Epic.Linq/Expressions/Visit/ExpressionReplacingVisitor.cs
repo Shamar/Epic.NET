@@ -42,11 +42,11 @@ namespace Epic.Linq.Expressions.Visit
             _replacement = replacement;
         }
         
-        protected override ICompositeVisitor<TRequested> AsVisitor<TRequested> (TRequested target)
+        protected override ICompositeVisitor<TRequested> AsVisitor<TRequested> (TRequested target, IVisitState state)
         {
             if(!object.ReferenceEquals(_toReplace, target))
                 return null;
-            return base.AsVisitor (target);
+            return base.AsVisitor (target, state);
         }
         
         #region ICompositeVisitor[TExpression] implementation

@@ -71,7 +71,7 @@ namespace Epic.Linq.Expressions.Visit
             chain.Append(dumb2);
 
             // act:
-            ICompositeVisitor<MethodCallExpression> recievedVisitor = dumb2.GetVisitor<MethodCallExpression>(expression);
+            ICompositeVisitor<MethodCallExpression> recievedVisitor = dumb2.GetVisitor<MethodCallExpression>(expression, VisitState.New);
 
             // assert:
             Assert.AreSame(dumb1, recievedVisitor);
@@ -83,13 +83,13 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             ICompositeVisitor<MethodCallExpression> endVisitor = GenerateStrictMock<ICompositeVisitor<MethodCallExpression>>();
-            endVisitor.Expect(v => v.GetVisitor<MethodCallExpression>(expression)).Return(endVisitor).Repeat.Once();
+            endVisitor.Expect(v => v.GetVisitor<MethodCallExpression>(expression, VisitState.New)).Return(endVisitor).Repeat.Once();
             CompositeVisitorChain chain = new CompositeVisitorChain(endVisitor);
             new DumbVisitor(chain);
             DumbVisitor dumb2 = new DumbVisitor(chain);
 
             // act:
-            ICompositeVisitor<MethodCallExpression> recievedVisitor = dumb2.GetVisitor<MethodCallExpression>(expression);
+            ICompositeVisitor<MethodCallExpression> recievedVisitor = dumb2.GetVisitor<MethodCallExpression>(expression, VisitState.New);
 
             // assert:
             Assert.AreSame(endVisitor, recievedVisitor);
@@ -101,13 +101,13 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             ICompositeVisitor<MethodCallExpression> endVisitor = GenerateStrictMock<ICompositeVisitor<MethodCallExpression>>();
-            endVisitor.Expect(v => v.GetVisitor<MethodCallExpression>(expression)).Return(endVisitor).Repeat.Once();
+            endVisitor.Expect(v => v.GetVisitor<MethodCallExpression>(expression, VisitState.New)).Return(endVisitor).Repeat.Once();
             CompositeVisitorChain chain = new CompositeVisitorChain(endVisitor);
             new DumbVisitor(chain);
             new DumbVisitor(chain);
 
             // act:
-            ICompositeVisitor<MethodCallExpression> recievedVisitor = chain.GetVisitor<MethodCallExpression>(expression);
+            ICompositeVisitor<MethodCallExpression> recievedVisitor = chain.GetVisitor<MethodCallExpression>(expression, VisitState.New);
 
             // assert:
             Assert.AreSame(endVisitor, recievedVisitor);
@@ -125,8 +125,8 @@ namespace Epic.Linq.Expressions.Visit
             GenericDumbVisitor<Expression<Func<int, string>>> dumb2 = new GenericDumbVisitor<Expression<Func<int, string>>>(chain);
 
             // act:
-            ICompositeVisitor<MethodCallExpression> recievedMethodCallVisitor = chain.GetVisitor<MethodCallExpression>(callExpression);
-            ICompositeVisitor<Expression<Func<int, string>>> recievedLambdaVisitor = chain.GetVisitor<Expression<Func<int, string>>>(lambdaExpression);
+            ICompositeVisitor<MethodCallExpression> recievedMethodCallVisitor = chain.GetVisitor<MethodCallExpression>(callExpression, VisitState.New);
+            ICompositeVisitor<Expression<Func<int, string>>> recievedLambdaVisitor = chain.GetVisitor<Expression<Func<int, string>>>(lambdaExpression, VisitState.New);
 
             // assert:
             Assert.AreSame(dumb1, recievedMethodCallVisitor);
@@ -140,7 +140,6 @@ namespace Epic.Linq.Expressions.Visit
             Expression<Func<int, string, int>> expression = (i,s)=> (i + s.Length).ToString().Length;
             CompositeVisitorChain chain = new CompositeVisitorChain(new NullCompositeVisitor());
             new PrintingVisitor(chain);
-            new UnvisitableExpressionVisitor(chain);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
             // act:
@@ -158,7 +157,6 @@ namespace Epic.Linq.Expressions.Visit
             Expression<Func<int, string, int>> expression = (i,s)=> s == null ? i : s.Length;
             CompositeVisitorChain chain = new CompositeVisitorChain(new NullCompositeVisitor());
             new PrintingVisitor(chain);
-            new UnvisitableExpressionVisitor(chain);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
             // act:

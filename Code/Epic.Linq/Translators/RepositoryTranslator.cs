@@ -44,7 +44,7 @@ namespace Epic.Linq.Translators
         }
         #endregion
    
-        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target, IVisitState state)
         {
             ConstantExpression exp = target as ConstantExpression;
             if(null != exp)
@@ -55,7 +55,7 @@ namespace Epic.Linq.Translators
                     return null;
                 }
             }
-            return base.AsVisitor (target);
+            return base.AsVisitor (target, state);
         }
     }
 }

@@ -31,14 +31,11 @@ namespace Epic.Linq.Expressions.Visit
         private readonly ICompositeVisitor _end;
         private List<ICompositeVisitor> _visitors;
         
-        private int _index;
-        
         public CompositeVisitorChain (ICompositeVisitor chainEnd)
         {
             if(null == chainEnd)
                 throw new ArgumentNullException("chainEnd");
             _end = chainEnd;
-            _index = -1;
         }
         
         private IList<ICompositeVisitor> Visitors
@@ -66,32 +63,50 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression expression) where TExpression : System.Linq.Expressions.Expression
+        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression expression, IVisitState state) where TExpression : System.Linq.Expressions.Expression
         {
-            ++_index;
+            Callstack stack;
+            if(!state.TryGet<Callstack>(out stack))
+            {
+                stack = Callstack.New;
+            }
+
             ICompositeVisitor<TExpression> visitor;
-            try
+            if(stack.Size == Visitors.Count)
             {
-                if(_index == Visitors.Count)
-                {
-                    // last visitor called;
-                    visitor = _end.GetVisitor<TExpression>(expression);
-                }
-                else
-                {
-                    ICompositeVisitor next = Visitors[_index];
-                    visitor = next.GetVisitor<TExpression> (expression);
-                }
+                // last visitor called;
+                visitor = _end.GetVisitor<TExpression>(expression, state.Add(stack.Next()));
             }
-            catch(Exception e)
+            else
             {
-                --_index;
-                throw e;
+                ICompositeVisitor next = Visitors[stack.Size];
+                visitor = next.GetVisitor<TExpression> (expression, state.Add(stack.Next()));
             }
-            --_index;
             return visitor;
         }
         #endregion
+        
+        class Callstack
+        {
+            public readonly int Size;
+            
+            private Callstack(Callstack previous)
+            {
+                Size = previous.Size + 1;
+            }
+            
+            private Callstack()
+            {
+                Size = 0;
+            }
+            
+            public static Callstack New = new Callstack();
+   
+            public Callstack Next()
+            {
+                return new Callstack(this);
+            }
+        }
     }
 }
 

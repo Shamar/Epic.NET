@@ -44,9 +44,9 @@ namespace Epic.Linq.Translators
             
         }
         
-        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target, IVisitState state)
         {
-            ICompositeVisitor<TExpression> visitor = base.AsVisitor (target);
+            ICompositeVisitor<TExpression> visitor = base.AsVisitor (target, state);
             MethodCallExpression callExp = target as MethodCallExpression;
             if(null != visitor && null != callExp)
             {
@@ -64,7 +64,7 @@ namespace Epic.Linq.Translators
                         Expression<Func<TEntity, bool>> predicate = predicateQuote.Operand as Expression<Func<TEntity, bool>>;
                         if(null == predicate)
                             return null;
-                        ICompositeVisitor<Expression<Func<TEntity, bool>>> predicateVisitor = _predicateVisitors.GetVisitor<Expression<Func<TEntity, bool>>>(predicate);
+                        ICompositeVisitor<Expression<Func<TEntity, bool>>> predicateVisitor = _predicateVisitors.GetVisitor<Expression<Func<TEntity, bool>>>(predicate, state);
                         VisitorWrapperBase pradicateWrapper = predicateVisitor as VisitorWrapperBase;
                         if(null != pradicateWrapper && pradicateWrapper.WrappedVisitor == this)
                             return null;
@@ -81,7 +81,7 @@ namespace Epic.Linq.Translators
             UnaryExpression predicateQuote = target.Arguments[1] as UnaryExpression;
             Expression<Func<TEntity, bool>> predicate = predicateQuote.Operand as Expression<Func<TEntity, bool>>;
             
-            ICompositeVisitor<Expression<Func<TEntity, bool>>> predicateVisitor = _predicateVisitors.GetVisitor<Expression<Func<TEntity, bool>>>(predicate);
+            ICompositeVisitor<Expression<Func<TEntity, bool>>> predicateVisitor = _predicateVisitors.GetVisitor<Expression<Func<TEntity, bool>>>(predicate, state);
             return predicateVisitor.Visit(predicate, state);
         }
         #endregion

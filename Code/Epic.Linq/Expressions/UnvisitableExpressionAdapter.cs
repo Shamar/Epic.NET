@@ -59,7 +59,7 @@ namespace Epic.Linq.Expressions
             if(null == chain)
                 throw new ArgumentException("UnvisitableExpressionAdapter.Accept() can accept only a CompositeVisitorChain.");
             new UnvisitableExpressionVisitor(chain);
-            ICompositeVisitor<Expression> expressionVisitor = chain.GetVisitor<Expression>(_expression);
+            ICompositeVisitor<Expression> expressionVisitor = chain.GetVisitor<Expression>(_expression, state);
             return expressionVisitor.Visit(_expression, state);
         }
         #endregion

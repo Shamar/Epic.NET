@@ -39,23 +39,23 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
+        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target, IVisitState state) where TExpression : System.Linq.Expressions.Expression
         {
-            ICompositeVisitor<TExpression> visitor = this.AsVisitor<TExpression>(target);
+            ICompositeVisitor<TExpression> visitor = this.AsVisitor<TExpression>(target, state);
             if(null != visitor)
                 return visitor;
-            return GetNextVisitor<TExpression> (target);
+            return GetNextVisitor<TExpression> (target, state);
         }
         #endregion
         
-        protected virtual ICompositeVisitor<TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : System.Linq.Expressions.Expression
+        protected virtual ICompositeVisitor<TExpression> AsVisitor<TExpression>(TExpression target, IVisitState state) where TExpression : System.Linq.Expressions.Expression
         {
             return this as ICompositeVisitor<TExpression>;
         }
         
-        protected ICompositeVisitor<TExpression> GetNextVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
+        protected ICompositeVisitor<TExpression> GetNextVisitor<TExpression> (TExpression target, IVisitState state) where TExpression : System.Linq.Expressions.Expression
         {
-            return _next.GetVisitor<TExpression>(target);
+            return _next.GetVisitor<TExpression>(target, state);
         }
     }
 }

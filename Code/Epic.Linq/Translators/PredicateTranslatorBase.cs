@@ -37,7 +37,7 @@ namespace Epic.Linq.Translators
         
         protected abstract IEnumerable<Expression<Func<TEntity, bool>>> GetExpressionTemplates(IQuery query);
         
-        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target, IVisitState state)
         {
              return null; //base.AsVisitor (target);
         }

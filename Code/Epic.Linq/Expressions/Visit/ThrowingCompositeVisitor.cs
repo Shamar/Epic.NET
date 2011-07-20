@@ -28,7 +28,7 @@ namespace Epic.Linq.Expressions.Visit
     public sealed class ThrowingCompositeVisitor : ICompositeVisitor
     {
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
+        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target, IVisitState state) where TExpression : System.Linq.Expressions.Expression
         {
             string message = string.Format("Unknown expression type: {0}.", typeof(TExpression).FullName);
             throw new InvalidOperationException (message);

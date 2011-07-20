@@ -29,40 +29,79 @@ namespace Epic.Linq.Expressions.Visit
 {
     public class PrintingVisitor : CompositeVisitorBase
     {
-        private readonly Stack<Expression> _stack;
         
         public PrintingVisitor (CompositeVisitorChain chain)
             : base(chain)
         {
-            _stack = new Stack<Expression>();
         }
         
-        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target, IVisitState state)
         {
             if(typeof(TExpression).Equals(typeof(Expression)))
                 return null;
-            if(_stack.Count > 0 && object.ReferenceEquals(target, _stack.Peek()))
+            Callstack stack;
+            bool stackFound = state.TryGet<Callstack>(out stack);
+            if(stackFound)
             {
-                return null;
+                if(target == stack.Top)
+                    return null;
             }
             return new VisitorWrapper<TExpression>(this, this.Display<TExpression>);
         }
         
         private Expression Display<TExpression>(TExpression target, IVisitState state) where TExpression : Expression
         {
-            for(int i = 0; i < _stack.Count; ++i)
+            Callstack depth;
+            if(!state.TryGet<Callstack>(out depth))
+            {
+                depth = Callstack.New(target);
+                state = state.Add(depth.Next(target));
+            }
+            for(int i = 0; i < depth.Size; ++i)
             {
                 Console.Write("    ");
             }
             Console.WriteLine("{0} - {1}", target.NodeType, target.GetType().FullName);
-            _stack.Push(target);
-            var visitor = GetVisitor(target);
+            if(!object.ReferenceEquals(target, depth.Top))
+            {
+                depth = depth.Next(target);
+                state = state.Add(depth);
+            }
+            var visitor = GetNextVisitor(target, state);
             if(null == visitor)
                 return target;
             Expression visited = visitor.Visit(target, state);
-            _stack.Pop();
             return visited;
         }
+        
+        class Callstack
+        {
+            public readonly int Size;
+            public readonly Expression Top;
+            
+            private Callstack(int previous, Expression top)
+            {
+                Size = previous + 1;
+                Top = top;
+            }
+            
+            private Callstack(Expression top)
+            {
+                Size = 0;
+                Top = top;
+            }
+            
+            public static Callstack New(Expression top)
+            {
+                return new Callstack(top);
+            }
+   
+            public Callstack Next(Expression e)
+            {
+                return new Callstack(this.Size, e);
+            }
+        }
+
     }
 }
 

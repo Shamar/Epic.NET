@@ -64,7 +64,7 @@ namespace Epic.Linq.Expressions
         
         public override System.Linq.Expressions.Expression Accept (ICompositeVisitor visitor, IVisitState state)
         {
-            ICompositeVisitor<AndPredicateExpression> queryVisitor = visitor.GetVisitor<AndPredicateExpression>(this);
+            ICompositeVisitor<AndPredicateExpression> queryVisitor = visitor.GetVisitor<AndPredicateExpression>(this, state);
             return queryVisitor.Visit(this, state);
         }
         
