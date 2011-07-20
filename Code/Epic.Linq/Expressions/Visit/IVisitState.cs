@@ -27,13 +27,9 @@ namespace Epic.Linq.Expressions.Visit
 {
     public interface IVisitState
     {
-        bool TryGetInstance<TState>(out TState state) where TState : class;
+        bool TryGet<TState>(out TState state);
         
-        bool TryGetValue<TState>(out TState state) where TState : struct;
-        
-        IVisitState AddInstance<TState>(TState state) where TState : class;
-        
-        IVisitState AddValue<TState>(TState state) where TState : struct;
+        IVisitState Add<TState>(TState state);
     }
 }
 

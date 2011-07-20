@@ -28,108 +28,47 @@ namespace Epic.Linq.Expressions.Visit
     public sealed class EmptyState : IVisitState
     {
         #region IVisitState implementation
-        public bool TryGetInstance<TState> (out TState state) where TState : class
-        {
-            state = null;
-            return false;
-        }
-
-        public bool TryGetValue<TState> (out TState state) where TState : struct
+        public bool TryGet<TState> (out TState state)
         {
             state = default(TState);
             return false;
         }
         
-        public IVisitState AddInstance<TState> (TState state) where TState : class
+        public IVisitState Add<TState> (TState state)
         {
-            return new InstanceState<TState>(this, state);
+            return new StateHolder<TState>(this, state);
         }
         
-        public IVisitState AddValue<TState> (TState state) where TState : struct
-        {
-            return new ValueState<TState>(this, state);
-        }
         #endregion
     }
-
-    internal sealed class ValueState<TStoredState> : IVisitState
-        where TStoredState : struct
+    
+    internal sealed class StateHolder<TValue> : IVisitState
     {
         private readonly IVisitState _next;
-        private readonly TStoredState _state;
-
-        public ValueState(IVisitState next, TStoredState state)
+        private readonly TValue _state;
+        
+        public StateHolder(IVisitState next, TValue state)
         {
             _next = next;
             _state = state;
         }
 
         #region IVisitState implementation
-        public bool TryGetInstance<TState> (out TState state) where TState : class
+        public bool TryGet<TState> (out TState state)
         {
-            return _next.TryGetInstance<TState>(out state);
-        }
-
-        public bool TryGetValue<TState> (out TState state) where TState : struct
-        {
-            if(typeof(TState).IsAssignableFrom(typeof(TStoredState)))
+            StateHolder<TState> holder = this as StateHolder<TState>;
+            if(null != holder)
             {
-                state = (TState)(object)_state;
+                state = holder._state;
                 return true;
             }
-            return _next.TryGetValue<TState>(out state);
-        }
-        
-        public IVisitState AddInstance<TState> (TState state) where TState : class
-        {
-            return new InstanceState<TState>(this, state);
-        }
-        
-        public IVisitState AddValue<TState> (TState state) where TState : struct
-        {
-            return new ValueState<TState>(this, state);
-        }
-        
-        #endregion
-    }
-
-    
-    internal sealed class InstanceState<TStoredState> : IVisitState
-        where TStoredState : class
-    {
-        private readonly IVisitState _next;
-        private readonly TStoredState _state;
-
-        public InstanceState(IVisitState next, TStoredState state)
-        {
-            _next = next;
-            _state = state;
+            return _next.TryGet<TState>(out state);
         }
 
-        #region IVisitState implementation
-        public bool TryGetInstance<TState> (out TState state) where TState : class
+        public IVisitState Add<TState> (TState state)
         {
-            state = _state as TState;
-            if(null != state)
-                return true;
-            return _next.TryGetInstance<TState>(out state);
+            return new StateHolder<TState>(this, state);
         }
-  
-        public bool TryGetValue<TState> (out TState state) where TState : struct
-        {
-            return _next.TryGetValue<TState>(out state);
-        }
-        
-        public IVisitState AddInstance<TState> (TState state) where TState : class
-        {
-            return new InstanceState<TState>(this, state);
-        }
-        
-        public IVisitState AddValue<TState> (TState state) where TState : struct
-        {
-            return new ValueState<TState>(this, state);
-        }
-        
         #endregion
     }
 }
