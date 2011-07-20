@@ -27,6 +27,12 @@ namespace Epic.Linq.Expressions.Visit
 {
     public sealed class VisitState : IVisitState
     {
+        public static readonly VisitState New = new VisitState();
+        
+        private VisitState()
+        {
+        }
+        
         #region IVisitState implementation
         public bool TryGet<TState> (out TState state)
         {

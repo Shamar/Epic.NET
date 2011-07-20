@@ -57,7 +57,7 @@ namespace Epic.Linq.Translators
 
 
             // act:
-            Expression result = expressionAdapter.Accept(chain);
+            Expression result = expressionAdapter.Accept(chain, VisitState.New);
 
             // assert:
             Assert.IsInstanceOf<QueryExpression>(result);
@@ -82,7 +82,7 @@ namespace Epic.Linq.Translators
 
 
             // act:
-            Expression result = expressionAdapter.Accept(chain);
+            Expression result = expressionAdapter.Accept(chain, VisitState.New);
 
             // assert:
             Assert.AreSame(queryable.Expression, result);

@@ -56,7 +56,7 @@ namespace Epic.Linq.Translator
             new ExpressionReplacingVisitor<ParameterExpression>(chain, propertyAccess.Parameters[0], expression.Body);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(propertyAccess.Body);
             
-            Expression lambdaBody = adapter.Accept(chain);
+            Expression lambdaBody = adapter.Accept(chain, VisitState.New);
             
             Expression<Func<TSource, TFinal>> result = 
                 Expression.Lambda<Func<TSource, TFinal>>(

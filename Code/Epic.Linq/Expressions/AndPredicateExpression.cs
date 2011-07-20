@@ -62,10 +62,10 @@ namespace Epic.Linq.Expressions
         }
         #endregion
         
-        public override System.Linq.Expressions.Expression Accept (ICompositeVisitor visitor)
+        public override System.Linq.Expressions.Expression Accept (ICompositeVisitor visitor, IVisitState state)
         {
             ICompositeVisitor<AndPredicateExpression> queryVisitor = visitor.GetVisitor<AndPredicateExpression>(this);
-            return queryVisitor.Visit(this);
+            return queryVisitor.Visit(this, state);
         }
         
         public PredicateExpression First

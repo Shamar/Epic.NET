@@ -51,7 +51,7 @@ namespace Epic.Linq.Expressions
         }
         
         #region implemented abstract members of Epic.Linq.Expressions.VisitableExpression
-        public override Expression Accept (ICompositeVisitor visitor)
+        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
         {
             if(null == visitor)
                 throw new ArgumentNullException("visitor");
@@ -60,7 +60,7 @@ namespace Epic.Linq.Expressions
                 throw new ArgumentException("UnvisitableExpressionAdapter.Accept() can accept only a CompositeVisitorChain.");
             new UnvisitableExpressionVisitor(chain);
             ICompositeVisitor<Expression> expressionVisitor = chain.GetVisitor<Expression>(_expression);
-            return expressionVisitor.Visit(_expression, new VisitState());
+            return expressionVisitor.Visit(_expression, state);
         }
         #endregion
     }

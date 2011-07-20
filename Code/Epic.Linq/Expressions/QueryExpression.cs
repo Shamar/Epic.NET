@@ -77,10 +77,10 @@ namespace Epic.Linq.Expressions
         }
         #endregion
         
-        public override System.Linq.Expressions.Expression Accept (ICompositeVisitor visitor)
+        public override System.Linq.Expressions.Expression Accept (ICompositeVisitor visitor, IVisitState state)
         {
             ICompositeVisitor<QueryExpression> queryVisitor = visitor.GetVisitor<QueryExpression>(this);
-            return queryVisitor.Visit(this);
+            return queryVisitor.Visit(this, state);
         }
     }
 }

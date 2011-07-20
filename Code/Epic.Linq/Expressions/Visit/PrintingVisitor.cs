@@ -59,7 +59,7 @@ namespace Epic.Linq.Expressions.Visit
             var visitor = GetVisitor(target);
             if(null == visitor)
                 return target;
-            Expression visited = visitor.Visit(target);
+            Expression visited = visitor.Visit(target, state);
             _stack.Pop();
             return visited;
         }

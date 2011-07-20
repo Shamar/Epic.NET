@@ -87,7 +87,7 @@ namespace Epic.Linq.Expressions.Visit
         
         public override ICompositeVisitor<TRequiredExpression> GetVisitor<TRequiredExpression> (TRequiredExpression target)
         {
-            return new VisitorWrapper<TRequiredExpression>(WrappedVisitor, e => e);
+            return new VisitorWrapper<TRequiredExpression>(WrappedVisitor, (e, s) => e);
         }
 
     }

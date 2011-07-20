@@ -86,7 +86,7 @@ namespace Epic.Linq.Expressions.Visit
     
             VisitableExpression visitable = expression as VisitableExpression;
             if (visitable != null)
-                return visitable.Accept (this);
+                return visitable.Accept (this, state);
     
             switch (expression.NodeType) {
             case ExpressionType.ArrayLength:
@@ -155,7 +155,7 @@ namespace Epic.Linq.Expressions.Visit
             }
         }
     
-        private T VisitAndConvert<T> (T expression, string methodName) where T : Expression
+        private T VisitAndConvert<T> (T expression, string methodName, IVisitState state) where T : Expression
         {
             if (expression == null)
                 return null;
@@ -175,19 +175,19 @@ namespace Epic.Linq.Expressions.Visit
             return newExpression;
         }
 
-        private ReadOnlyCollection<T> VisitAndConvert<T> (ReadOnlyCollection<T> expressions, string callerName) where T : Expression
+        private ReadOnlyCollection<T> VisitAndConvert<T> (ReadOnlyCollection<T> expressions, string callerName, IVisitState state) where T : Expression
         {
-            return VisitList (expressions, expression => VisitAndConvert (expression, callerName));
+            return VisitList (expressions, (expression, s) => VisitAndConvert (expression, callerName, s), state);
         }
 
-        public ReadOnlyCollection<T> VisitList<T> (ReadOnlyCollection<T> list, Func<T, T> visitMethod)
+        public ReadOnlyCollection<T> VisitList<T> (ReadOnlyCollection<T> list, Func<T, IVisitState, T> visitMethod, IVisitState state)
             where T : class
         {
             List<T> newList = null;
     
             for (int i = 0; i < list.Count; i++) {
                 T element = list [i];
-                T newElement = visitMethod (element);
+                T newElement = visitMethod (element, state);
                 if (newElement == null)
                     throw new NotSupportedException ("The current list only supports objects of type '" + typeof(T).Name + "' as its elements.");
     
@@ -216,7 +216,7 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<UnaryExpression> visitor = GetNextVisitor<UnaryExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            Expression newOperand = VisitExpression (expression.Operand);
+            Expression newOperand = VisitExpression (expression.Operand, state);
             if (newOperand != expression.Operand) {
                 if (expression.NodeType == ExpressionType.UnaryPlus)
                     return Expression.UnaryPlus (newOperand, expression.Method);
@@ -231,9 +231,9 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<BinaryExpression> visitor = GetNextVisitor<BinaryExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            Expression newLeft = VisitExpression (expression.Left);
-            Expression newRight = VisitExpression (expression.Right);
-            var newConversion = (LambdaExpression)VisitExpression (expression.Conversion);
+            Expression newLeft = VisitExpression (expression.Left, state);
+            Expression newRight = VisitExpression (expression.Right, state);
+            var newConversion = (LambdaExpression)VisitExpression (expression.Conversion, state);
             if (newLeft != expression.Left || newRight != expression.Right || newConversion != expression.Conversion)
                 return Expression.MakeBinary (expression.NodeType, newLeft, newRight, expression.IsLiftedToNull, expression.Method, newConversion);
             return expression;
@@ -244,7 +244,7 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<TypeBinaryExpression> visitor = GetNextVisitor<TypeBinaryExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            Expression newExpression = VisitExpression (expression.Expression);
+            Expression newExpression = VisitExpression (expression.Expression, state);
             if (newExpression != expression.Expression)
                 return Expression.TypeIs (newExpression, expression.TypeOperand);
             return expression;
@@ -263,9 +263,9 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<ConditionalExpression> visitor = GetNextVisitor<ConditionalExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            Expression newTest = VisitExpression (expression.Test);
-            Expression newFalse = VisitExpression (expression.IfFalse);
-            Expression newTrue = VisitExpression (expression.IfTrue);
+            Expression newTest = VisitExpression (expression.Test, state);
+            Expression newFalse = VisitExpression (expression.IfFalse, state);
+            Expression newTrue = VisitExpression (expression.IfTrue, state);
             if ((newTest != expression.Test) || (newFalse != expression.IfFalse) || (newTrue != expression.IfTrue))
                 return Expression.Condition (newTest, newTrue, newFalse);
             return expression;
@@ -284,8 +284,8 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<LambdaExpression> visitor = GetNextVisitor<LambdaExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "Visit");
-            Expression newBody = VisitExpression (expression.Body);
+            ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "Visit", state);
+            Expression newBody = VisitExpression (expression.Body, state);
             if ((newBody != expression.Body) || (newParameters != expression.Parameters))
                 return Expression.Lambda (expression.Type, newBody, newParameters);
             return expression;
@@ -296,8 +296,8 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<MethodCallExpression> visitor = GetNextVisitor<MethodCallExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            Expression newObject = VisitExpression (expression.Object);
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit");
+            Expression newObject = VisitExpression (expression.Object, state);
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
             if ((newObject != expression.Object) || (newArguments != expression.Arguments))
                 return Expression.Call (newObject, expression.Method, newArguments);
             return expression;
@@ -308,8 +308,8 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<InvocationExpression> visitor = GetNextVisitor<InvocationExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            Expression newExpression = VisitExpression (expression.Expression);
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit");
+            Expression newExpression = VisitExpression (expression.Expression, state);
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
             if ((newExpression != expression.Expression) || (newArguments != expression.Arguments))
                 return Expression.Invoke (newExpression, newArguments);
             return expression;
@@ -320,7 +320,7 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<MemberExpression> visitor = GetNextVisitor<MemberExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            Expression newExpression = VisitExpression (expression.Expression);
+            Expression newExpression = VisitExpression (expression.Expression, state);
             if (newExpression != expression.Expression)
                 return Expression.MakeMemberAccess (newExpression, expression.Member);
             return expression;
@@ -331,7 +331,7 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<NewExpression> visitor = GetNextVisitor<NewExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit");
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
             if (newArguments != expression.Arguments) {
                 if (expression.Members == null)
                     return Expression.New (expression.Constructor, newArguments);
@@ -346,7 +346,7 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<NewArrayExpression> visitor = GetNextVisitor<NewArrayExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit");
+            ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit", state);
             if (newExpressions != expression.Expressions) {
                 var elementType = expression.Type.GetElementType ();
                 if (expression.NodeType == ExpressionType.NewArrayInit)
@@ -361,14 +361,14 @@ namespace Epic.Linq.Expressions.Visit
         {
             ICompositeVisitor<MemberInitExpression> visitor = GetNextVisitor<MemberInitExpression> (expression);
             if (this != visitor)
-                
-            var newNewExpression = VisitExpression (expression.NewExpression) as NewExpression;
+                return visitor.Visit(expression, state);
+            NewExpression newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
             if (newNewExpression == null) {
                 throw new NotSupportedException (
                 "MemberInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
             }
     
-            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (expression.Bindings);
+            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (expression.Bindings, state);
             if (newNewExpression != expression.NewExpression || newBindings != expression.Bindings)
                 return Expression.MemberInit (newNewExpression, newBindings);
             return expression;
@@ -379,70 +379,70 @@ namespace Epic.Linq.Expressions.Visit
             ICompositeVisitor<ListInitExpression> visitor = GetNextVisitor<ListInitExpression> (expression);
             if (this != visitor)
                 return visitor.Visit (expression, state);
-            var newNewExpression = VisitExpression (expression.NewExpression) as NewExpression;
+            var newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
             if (newNewExpression == null)
                 throw new NotSupportedException ("ListInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
-            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (expression.Initializers);
+            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (expression.Initializers, state);
             if (newNewExpression != expression.NewExpression || newInitializers != expression.Initializers)
                 return Expression.ListInit (newNewExpression, newInitializers);
             return expression;
         }
     
-        private ElementInit VisitElementInit (ElementInit elementInit)
+        private ElementInit VisitElementInit (ElementInit elementInit, IVisitState state)
         {
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (elementInit.Arguments, "VisitElementInit");
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (elementInit.Arguments, "VisitElementInit", state);
             if (newArguments != elementInit.Arguments)
                 return Expression.ElementInit (elementInit.AddMethod, newArguments);
             return elementInit;
         }
     
-        private MemberBinding VisitMemberBinding (MemberBinding memberBinding)
+        private MemberBinding VisitMemberBinding (MemberBinding memberBinding, IVisitState state)
         {
             switch (memberBinding.BindingType) {
             case MemberBindingType.Assignment:
-                return VisitMemberAssignment ((MemberAssignment)memberBinding);
+                return VisitMemberAssignment ((MemberAssignment)memberBinding, state);
             case MemberBindingType.MemberBinding:
-                return VisitMemberMemberBinding ((MemberMemberBinding)memberBinding);
+                return VisitMemberMemberBinding ((MemberMemberBinding)memberBinding, state);
             default:
                 Debug.Assert (
                   memberBinding.BindingType == MemberBindingType.ListBinding, "Invalid member binding type " + memberBinding.GetType ().FullName);
-                return VisitMemberListBinding ((MemberListBinding)memberBinding);
+                return VisitMemberListBinding ((MemberListBinding)memberBinding, state);
             }
         }
     
-        private MemberBinding VisitMemberAssignment (MemberAssignment memberAssigment)
+        private MemberBinding VisitMemberAssignment (MemberAssignment memberAssigment, IVisitState state)
         {
-            Expression expression = VisitExpression (memberAssigment.Expression);
+            Expression expression = VisitExpression (memberAssigment.Expression, state);
             if (expression != memberAssigment.Expression)
                 return Expression.Bind (memberAssigment.Member, expression);
             return memberAssigment;
         }
     
-        private MemberBinding VisitMemberMemberBinding (MemberMemberBinding binding)
+        private MemberBinding VisitMemberMemberBinding (MemberMemberBinding binding, IVisitState state)
         {
-            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (binding.Bindings);
+            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (binding.Bindings, state);
             if (newBindings != binding.Bindings)
                 return Expression.MemberBind (binding.Member, newBindings);
             return binding;
         }
     
-        private MemberBinding VisitMemberListBinding (MemberListBinding listBinding)
+        private MemberBinding VisitMemberListBinding (MemberListBinding listBinding, IVisitState state)
         {
-            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (listBinding.Initializers);
+            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (listBinding.Initializers, state);
     
             if (newInitializers != listBinding.Initializers)
                 return Expression.ListBind (listBinding.Member, newInitializers);
             return listBinding;
         }
     
-        private ReadOnlyCollection<MemberBinding> VisitMemberBindingList (ReadOnlyCollection<MemberBinding> expressions)
+        private ReadOnlyCollection<MemberBinding> VisitMemberBindingList (ReadOnlyCollection<MemberBinding> expressions, IVisitState state)
         {
-            return VisitList (expressions, VisitMemberBinding);
+            return VisitList (expressions, VisitMemberBinding, state);
         }
     
-        private ReadOnlyCollection<ElementInit> VisitElementInitList (ReadOnlyCollection<ElementInit> expressions)
+        private ReadOnlyCollection<ElementInit> VisitElementInitList (ReadOnlyCollection<ElementInit> expressions, IVisitState state)
         {
-            return VisitList (expressions, VisitElementInit);
+            return VisitList (expressions, VisitElementInit, state);
         }
     }
 }

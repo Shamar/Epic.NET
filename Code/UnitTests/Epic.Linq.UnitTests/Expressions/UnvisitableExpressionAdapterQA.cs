@@ -41,7 +41,7 @@ namespace Epic.Linq.Expressions
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
             // act:
-            Expression e = adapter.Accept(chain);
+            Expression e = adapter.Accept(chain, VisitState.New);
 
             // assert:
             Assert.AreSame(expression, e);

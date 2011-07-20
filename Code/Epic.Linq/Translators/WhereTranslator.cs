@@ -82,7 +82,7 @@ namespace Epic.Linq.Translators
             Expression<Func<TEntity, bool>> predicate = predicateQuote.Operand as Expression<Func<TEntity, bool>>;
             
             ICompositeVisitor<Expression<Func<TEntity, bool>>> predicateVisitor = _predicateVisitors.GetVisitor<Expression<Func<TEntity, bool>>>(predicate);
-            return predicateVisitor.Visit(predicate);
+            return predicateVisitor.Visit(predicate, state);
         }
         #endregion
 

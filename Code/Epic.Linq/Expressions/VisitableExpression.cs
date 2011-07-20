@@ -36,7 +36,7 @@ namespace Epic.Linq.Expressions
         {
         }
         
-        public abstract Expression Accept(ICompositeVisitor visitor);
+        public abstract Expression Accept(ICompositeVisitor visitor, IVisitState state);
     }
 }
 

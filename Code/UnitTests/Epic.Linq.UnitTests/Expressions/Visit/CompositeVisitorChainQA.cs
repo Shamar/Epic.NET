@@ -48,7 +48,7 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor[TExpression] implementation
-        public virtual System.Linq.Expressions.Expression Visit (TExpression target)
+        public virtual System.Linq.Expressions.Expression Visit (TExpression target, IVisitState state)
         {
             return target;
         }
@@ -144,7 +144,7 @@ namespace Epic.Linq.Expressions.Visit
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
             // act:
-            Expression e = adapter.Accept(chain);
+            Expression e = adapter.Accept(chain, VisitState.New);
             
             // assert:
             Assert.AreSame(expression, e);
@@ -162,7 +162,7 @@ namespace Epic.Linq.Expressions.Visit
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
             // act:
-            Expression e = adapter.Accept(chain);
+            Expression e = adapter.Accept(chain, VisitState.New);
             
             // assert:
             Assert.AreSame(expression, e);
