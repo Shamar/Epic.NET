@@ -72,6 +72,13 @@ namespace Epic.Linq.Translator
             
             return result;
         }
+        
+        //internal static Expression<Func<TSource, TFinal>> Conditional(this Expression<Func<TSource, TInitial>> expression, Expression<Func<TFinal, bool>> condition, 
+        
+        internal static Expression<Func<TSource, TFinal>> NullIfNot<TSource, TFinal>(this Expression<Func<TSource, TFinal>> expression, Expression<Func<TFinal, bool>> condition)
+        {
+            return null;
+        }
     }
 }
 
