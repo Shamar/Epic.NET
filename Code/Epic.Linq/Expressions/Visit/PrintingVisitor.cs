@@ -40,11 +40,10 @@ namespace Epic.Linq.Expressions.Visit
             if(typeof(TExpression).Equals(typeof(Expression)))
                 return null;
             Callstack stack;
-            bool stackFound = state.TryGet<Callstack>(out stack);
-            if(stackFound)
+            if(state.TryGet<Callstack>(out stack))  // There's a stack in the visit's state
             {
-                if(target == stack.Top)
-                    return null;
+                if(target == stack.Top)             // And the current target expression has already been printed
+                    return null;                    // return null to avoid printing the expression twice.
             }
             return new VisitorWrapper<TExpression>(this, this.Display<TExpression>);
         }
@@ -54,19 +53,16 @@ namespace Epic.Linq.Expressions.Visit
             Callstack depth;
             if(!state.TryGet<Callstack>(out depth))
             {
-                depth = Callstack.New(target);
-                state = state.Add(depth.Next(target));
+                depth = Callstack.New(target);          // The current depth is 0
             }
             for(int i = 0; i < depth.Size; ++i)
             {
                 Console.Write("    ");
             }
             Console.WriteLine("{0} - {1}", target.NodeType, target.GetType().FullName);
-            if(!object.ReferenceEquals(target, depth.Top))
-            {
-                depth = depth.Next(target);
-                state = state.Add(depth);
-            }
+            
+            state = state.Add(depth.Next(target));      // add the printed expression to the state's stack
+            
             var visitor = GetNextVisitor(target, state);
             if(null == visitor)
                 return target;
