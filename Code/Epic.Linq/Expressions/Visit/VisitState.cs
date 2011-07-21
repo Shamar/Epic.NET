@@ -42,40 +42,40 @@ namespace Epic.Linq.Expressions.Visit
         
         public IVisitState Add<TState> (TState state)
         {
-            return new StateHolder<TState>(this, state);
+            return new State<TState>(this, state);
         }
         
         #endregion
-    }
-    
-    internal sealed class StateHolder<TValue> : IVisitState
-    {
-        private readonly IVisitState _next;
-        private readonly TValue _state;
         
-        public StateHolder(IVisitState next, TValue state)
+        sealed class State<TValue> : IVisitState
         {
-            _next = next;
-            _state = state;
-        }
-
-        #region IVisitState implementation
-        public bool TryGet<TState> (out TState state)
-        {
-            StateHolder<TState> holder = this as StateHolder<TState>;
-            if(null != holder)
+            private readonly IVisitState _next;
+            private readonly TValue _state;
+            
+            public State(IVisitState next, TValue state)
             {
-                state = holder._state;
-                return true;
+                _next = next;
+                _state = state;
             }
-            return _next.TryGet<TState>(out state);
+    
+            #region IVisitState implementation
+            public bool TryGet<TState> (out TState state)
+            {
+                State<TState> holder = this as State<TState>;
+                if(null != holder)
+                {
+                    state = holder._state;
+                    return true;
+                }
+                return _next.TryGet<TState>(out state);
+            }
+    
+            public IVisitState Add<TState> (TState state)
+            {
+                return new State<TState>(this, state);
+            }
+            #endregion
         }
-
-        public IVisitState Add<TState> (TState state)
-        {
-            return new StateHolder<TState>(this, state);
-        }
-        #endregion
     }
 }
 
