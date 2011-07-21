@@ -40,32 +40,21 @@
     <Compile Include="QueryProvider.cs" />
     <Compile Include="Reflection.cs" />
     <Compile Include="RepositoryBase.cs" />
-    <Compile Include="Translators\ExpressionTranslator.cs" />
     <Compile Include="Translators\IQuery.cs" />
     <Compile Include="Expressions\Visit\ICompositeVisitor.cs" />
     <Compile Include="Expressions\VisitableExpression.cs" />
-    <Compile Include="Expressions\Visit\CompositeVisitorBase.cs" />
-    <Compile Include="Expressions\Visit\ThrowingCompositeVisitor.cs" />
-    <Compile Include="Expressions\Visit\NullCompositeVisitor.cs" />
     <Compile Include="Expressions\UnvisitableExpressionAdapter.cs" />
-    <Compile Include="Expressions\Visit\CompositeVisitorChain.cs" />
-    <Compile Include="Expressions\Visit\UnvisitableExpressionVisitor.cs" />
     <Compile Include="Expressions\Visit\PrintingVisitor.cs" />
-    <Compile Include="Expressions\Visit\VisitorWrapper.cs" />
     <Compile Include="Expressions\QueryExpression.cs" />
     <Compile Include="Expressions\PredicateExpression.cs" />
     <Compile Include="Expressions\DomainExpression.cs" />
     <Compile Include="Expressions\AndPredicateExpression.cs" />
-    <Compile Include="Translators\RepositoryTranslator.cs" />
     <Compile Include="Expressions\SourceExpression.cs" />
-    <Compile Include="Translators\WhereTranslator.cs" />
-    <Compile Include="Translators\PredicateTranslatorBase.cs" />
-    <Compile Include="Translators\Extensions.cs" />
-    <Compile Include="Translators\QueryDataExtractor.cs" />
-    <Compile Include="Expressions\Visit\ExpressionReplacingVisitor.cs" />
     <Compile Include="Expressions\Visit\IVisitState.cs" />
     <Compile Include="Expressions\Visit\VisitState.cs" />
     <Compile Include="Expressions\Visit\VisitorsComposition.cs" />
+    <Compile Include="Expressions\Visit\VisitorWrapper.cs" />
+    <Compile Include="Expressions\Visit\UnvisitableExpressionsVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -27,24 +27,17 @@ using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public class PrintingVisitor : CompositeVisitorBase
+    public class PrintingVisitor : VisitorsComposition.VisitorBase
     {
-        
-        public PrintingVisitor (CompositeVisitorChain chain)
+        public PrintingVisitor (VisitorsComposition chain)
             : base(chain)
         {
         }
         
-        protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target, IVisitState state)
+        protected internal override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
         {
             if(typeof(TExpression).Equals(typeof(Expression)))
                 return null;
-            Callstack stack;
-            if(state.TryGet<Callstack>(out stack))  // There's a stack in the visit's state
-            {
-                if(target == stack.Top)             // And the current target expression has already been printed
-                    return null;                    // return null to avoid printing the expression twice.
-            }
             return new VisitorWrapper<TExpression>(this, this.Display<TExpression>);
         }
         
@@ -63,9 +56,7 @@ namespace Epic.Linq.Expressions.Visit
             
             state = state.Add(depth.Next(target));      // add the printed expression to the state's stack
             
-            var visitor = GetNextVisitor(target, state);
-            if(null == visitor)
-                return target;
+            ICompositeVisitor<TExpression> visitor = GetNextVisitor(target);
             Expression visited = visitor.Visit(target, state);
             return visited;
         }

@@ -33,35 +33,36 @@ namespace Epic.Linq.Expressions.Visit
         public VisitorsComposition ()
         {
             _chain = new List<VisitorBase>();
+            new UnvisitableExpressionsVisitor(this);
         }
 
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target, IVisitState state) where TExpression : System.Linq.Expressions.Expression
+        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
         {
-            return GetVisitor<TExpression>(target, 0);
+            return GetVisitor<TExpression>(target, _chain.Count);
         }
         #endregion
         
         private void Register(VisitorBase visitor, out int compositionSize)
         {
-            _chain.Add(visitor);
             compositionSize = _chain.Count;
+            _chain.Add(visitor);
         }
         
         private ICompositeVisitor<TExpression> GetVisitor<TExpression>(TExpression target, int startingPosition) where TExpression : Expression
         {
             ICompositeVisitor<TExpression> foundVisitor = null;
             
-            while(startingPosition < _chain.Count)
+            while(startingPosition > 0)
             {
+                --startingPosition;
                 VisitorBase visitor = _chain[startingPosition];
                 foundVisitor = visitor.AsVisitor<TExpression>(target);
                 if(null != foundVisitor)
                     return foundVisitor;
-                ++startingPosition;
             }
             
-            return new IdentityVisitor<TExpression>(this);
+            return new IdentityVisitor<TExpression>(this); // TODO : should we throw ???
         }
         
         public abstract class VisitorBase : ICompositeVisitor
@@ -93,14 +94,14 @@ namespace Epic.Linq.Expressions.Visit
             }
             
             #region ICompositeVisitor implementation
-            public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target, IVisitState state) where TExpression : System.Linq.Expressions.Expression
+            public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
             {
-                return _composition.GetVisitor<TExpression>(target, state);
+                return _composition.GetVisitor<TExpression>(target);
             }
             #endregion
         }
         
-        internal sealed class IdentityVisitor<TExpression> : VisitorBase, ICompositeVisitor<TExpression>
+        sealed class IdentityVisitor<TExpression> : VisitorBase, ICompositeVisitor<TExpression>
              where TExpression : System.Linq.Expressions.Expression
         {
             internal IdentityVisitor(VisitorsComposition composition)
