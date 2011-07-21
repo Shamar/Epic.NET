@@ -65,6 +65,7 @@
     <Compile Include="Expressions\Visit\ExpressionReplacingVisitor.cs" />
     <Compile Include="Expressions\Visit\IVisitState.cs" />
     <Compile Include="Expressions\Visit\VisitState.cs" />
+    <Compile Include="Expressions\Visit\VisitorsComposition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

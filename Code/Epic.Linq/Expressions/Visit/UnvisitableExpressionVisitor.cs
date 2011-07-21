@@ -30,6 +30,7 @@ using System.Diagnostics;
 
 namespace Epic.Linq.Expressions.Visit
 {
+    // TODO : this is an identity visitor, isn't it?
     internal sealed class UnvisitableExpressionVisitor : CompositeVisitorBase, ICompositeVisitor<Expression>,
         ICompositeVisitor<UnaryExpression>, 
         ICompositeVisitor<BinaryExpression>, 
@@ -229,14 +230,18 @@ namespace Epic.Linq.Expressions.Visit
         public Expression Visit (BinaryExpression expression, IVisitState state)
         {
             ICompositeVisitor<BinaryExpression> visitor = GetNextVisitor<BinaryExpression> (expression, state);
+            Expression visitedExpression = expression;
             if (this != visitor)
-                return visitor.Visit (expression, state);
-            Expression newLeft = VisitExpression (expression.Left, state);
-            Expression newRight = VisitExpression (expression.Right, state);
-            var newConversion = (LambdaExpression)VisitExpression (expression.Conversion, state);
-            if (newLeft != expression.Left || newRight != expression.Right || newConversion != expression.Conversion)
-                return Expression.MakeBinary (expression.NodeType, newLeft, newRight, expression.IsLiftedToNull, expression.Method, newConversion);
-            return expression;
+                visitedExpression = visitor.Visit (expression, state);
+            if(expression == visitedExpression)
+            {
+                Expression newLeft = VisitExpression (expression.Left, state);
+                Expression newRight = VisitExpression (expression.Right, state);
+                var newConversion = (LambdaExpression)VisitExpression (expression.Conversion, state);
+                if (newLeft != expression.Left || newRight != expression.Right || newConversion != expression.Conversion)
+                    return Expression.MakeBinary (expression.NodeType, newLeft, newRight, expression.IsLiftedToNull, expression.Method, newConversion);
+            }
+            return visitedExpression;
         }
     
         public Expression Visit (TypeBinaryExpression expression, IVisitState state)
