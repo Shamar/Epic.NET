@@ -40,7 +40,6 @@
     <Compile Include="QueryProvider.cs" />
     <Compile Include="Reflection.cs" />
     <Compile Include="RepositoryBase.cs" />
-    <Compile Include="Translators\IQuery.cs" />
     <Compile Include="Expressions\Visit\ICompositeVisitor.cs" />
     <Compile Include="Expressions\VisitableExpression.cs" />
     <Compile Include="Expressions\UnvisitableExpressionAdapter.cs" />
@@ -56,6 +55,9 @@
     <Compile Include="Expressions\Visit\UnvisitableExpressionsVisitor.cs" />
     <Compile Include="Expressions\Visit\ExpressionReplacingVisitor.cs" />
     <Compile Include="Expressions\Visit\LoggingVisitor.cs" />
+    <Compile Include="Expressions\Templates\TemplateVisitor.cs" />
+    <Compile Include="Expressions\Templates\IQuery.cs" />
+    <Compile Include="Expressions\Templates\QueryDataExtractor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -68,5 +70,6 @@
     <Folder Include="Expressions\" />
     <Folder Include="Translators\" />
     <Folder Include="Expressions\Visit\" />
+    <Folder Include="Expressions\Templates\" />
   </ItemGroup>
 </Project>
