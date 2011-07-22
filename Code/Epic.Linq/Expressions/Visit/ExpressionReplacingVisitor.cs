@@ -26,12 +26,12 @@ using System.Linq.Expressions;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class ExpressionReplacingVisitor<TExpression> : CompositeVisitorBase, ICompositeVisitor<TExpression>
+    public sealed class ExpressionReplacingVisitor<TExpression> : VisitorsComposition.VisitorBase, ICompositeVisitor<TExpression>
         where TExpression : Expression
     {
-        private readonly TExpression _toReplace; 
-        private readonly Expression _replacement;
-        public ExpressionReplacingVisitor (CompositeVisitorChain chain, TExpression toReplace, Expression replacement)
+        private readonly Func<TExpression, bool> _toReplace; 
+        private readonly Func<TExpression, IVisitState, Expression> _replacement;
+        public ExpressionReplacingVisitor (VisitorsComposition chain, Func<TExpression, bool> toReplace, Func<TExpression, IVisitState, Expression> replacement )
             : base(chain)
         {
             if(null == toReplace)
@@ -42,17 +42,23 @@ namespace Epic.Linq.Expressions.Visit
             _replacement = replacement;
         }
         
-        protected override ICompositeVisitor<TRequested> AsVisitor<TRequested> (TRequested target, IVisitState state)
+        public ExpressionReplacingVisitor(VisitorsComposition chain, TExpression toReplace, Expression replacement)
+            : this(chain, e => e == toReplace, (e, s) => replacement)
         {
-            if(!object.ReferenceEquals(_toReplace, target))
-                return null;
-            return base.AsVisitor (target, state);
+        }
+        
+        protected internal override ICompositeVisitor<TRequested> AsVisitor<TRequested> (TRequested target)
+        {
+            ExpressionReplacingVisitor<TRequested> visitor = this as ExpressionReplacingVisitor<TRequested>;
+            if(null != visitor && visitor._toReplace(target))
+                return visitor;
+            return null;
         }
         
         #region ICompositeVisitor[TExpression] implementation
         public System.Linq.Expressions.Expression Visit (TExpression target, IVisitState state)
         {
-            return _replacement;
+            return _replacement(target, state);
         }
         #endregion
 

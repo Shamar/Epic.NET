@@ -55,6 +55,7 @@
     <Compile Include="Expressions\Visit\VisitorsComposition.cs" />
     <Compile Include="Expressions\Visit\VisitorWrapper.cs" />
     <Compile Include="Expressions\Visit\UnvisitableExpressionsVisitor.cs" />
+    <Compile Include="Expressions\Visit\ExpressionReplacingVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
