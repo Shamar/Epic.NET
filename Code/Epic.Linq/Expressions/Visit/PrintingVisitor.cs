@@ -46,7 +46,7 @@ namespace Epic.Linq.Expressions.Visit
             Callstack depth;
             if(!state.TryGet<Callstack>(out depth))
             {
-                depth = Callstack.New(target);          // The current depth is 0
+                depth = Callstack.New;          // The current depth is 0
             }
             for(int i = 0; i < depth.Size; ++i)
             {
@@ -54,38 +54,27 @@ namespace Epic.Linq.Expressions.Visit
             }
             Console.WriteLine("{0} - {1}", target.NodeType, target.GetType().FullName);
             
-            state = state.Add(depth.Next(target));      // add the printed expression to the state's stack
+            state = state.Add(depth.Next());      // add the printed expression to the state's stack
             
             ICompositeVisitor<TExpression> visitor = GetNextVisitor(target);
             Expression visited = visitor.Visit(target, state);
             return visited;
         }
         
-        class Callstack
+        struct Callstack
         {
             public readonly int Size;
-            public readonly Expression Top;
             
-            private Callstack(int previous, Expression top)
+            private Callstack(int previous)
             {
                 Size = previous + 1;
-                Top = top;
             }
             
-            private Callstack(Expression top)
-            {
-                Size = 0;
-                Top = top;
-            }
-            
-            public static Callstack New(Expression top)
-            {
-                return new Callstack(top);
-            }
+            public static readonly Callstack New = new Callstack();
    
-            public Callstack Next(Expression e)
+            public Callstack Next()
             {
-                return new Callstack(this.Size, e);
+                return new Callstack(this.Size);
             }
         }
 
