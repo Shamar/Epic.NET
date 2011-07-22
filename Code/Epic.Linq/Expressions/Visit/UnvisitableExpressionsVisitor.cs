@@ -56,18 +56,18 @@ namespace Epic.Linq.Expressions.Visit
         {
             internal readonly Expression Expression;
             
-            internal Visited(Expression e)
+            internal Visited (Expression e)
             {
                 this.Expression = e;
             }
         }
         
-        private static bool ShouldVisit(Expression expression, IVisitState state)
+        private static bool ShouldVisit (Expression expression, IVisitState state)
         {
             Visited lastVisited = null;
-            if(!state.TryGet<Visited>(out lastVisited))
+            if (!state.TryGet<Visited> (out lastVisited))
                 return true;
-            if(lastVisited.Expression != expression)
+            if (lastVisited.Expression != expression)
                 return true;
             return false;
         }
@@ -75,7 +75,7 @@ namespace Epic.Linq.Expressions.Visit
         #region ICompositeVisitor[Expression] implementation
         System.Linq.Expressions.Expression ICompositeVisitor<Expression>.Visit (Expression target, IVisitState state)
         {
-            return VisitExpression(target, state);
+            return VisitExpression (target, state);
         }
         #endregion
    
@@ -233,11 +233,10 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (UnaryExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
+            if (ShouldVisit (expression, state)) {
                 ICompositeVisitor<UnaryExpression> visitor = GetVisitor<UnaryExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
             Expression newOperand = VisitExpression (expression.Operand, state);
             if (newOperand != expression.Operand) {
@@ -251,12 +250,10 @@ namespace Epic.Linq.Expressions.Visit
 
         public Expression Visit (BinaryExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
+            if (ShouldVisit (expression, state)) {
                 ICompositeVisitor<BinaryExpression> visitor = GetVisitor<BinaryExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
             Expression newLeft = VisitExpression (expression.Left, state);
             Expression newRight = VisitExpression (expression.Right, state);
@@ -268,12 +265,10 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (TypeBinaryExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
+            if (ShouldVisit (expression, state)) {
                 ICompositeVisitor<TypeBinaryExpression> visitor = GetVisitor<TypeBinaryExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
             Expression newExpression = VisitExpression (expression.Expression, state);
             if (newExpression != expression.Expression)
@@ -283,192 +278,165 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (ConstantExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<ConstantExpression> visitor = GetVisitor<ConstantExpression> (expression);
-            if (this != visitor)
-                return visitor.Visit (expression, state.Add(new Visited(expression)));
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<ConstantExpression> visitor = GetVisitor<ConstantExpression> (expression);
+                if (this != visitor)
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
             return expression;
         }
     
         public Expression Visit (ConditionalExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<ConditionalExpression> visitor = GetVisitor<ConditionalExpression> (expression);
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<ConditionalExpression> visitor = GetVisitor<ConditionalExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                Expression newTest = VisitExpression (expression.Test, state);
-                Expression newFalse = VisitExpression (expression.IfFalse, state);
-                Expression newTrue = VisitExpression (expression.IfTrue, state);
-                if ((newTest != expression.Test) || (newFalse != expression.IfFalse) || (newTrue != expression.IfTrue))
-                    return Expression.Condition (newTest, newTrue, newFalse);
-                return expression;
+            Expression newTest = VisitExpression (expression.Test, state);
+            Expression newFalse = VisitExpression (expression.IfFalse, state);
+            Expression newTrue = VisitExpression (expression.IfTrue, state);
+            if ((newTest != expression.Test) || (newFalse != expression.IfFalse) || (newTrue != expression.IfTrue))
+                return Expression.Condition (newTest, newTrue, newFalse);
+            return expression;
         }
     
         public Expression Visit (ParameterExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<ParameterExpression> visitor = GetVisitor<ParameterExpression> (expression);
-            if (this != visitor)
-                return visitor.Visit (expression, state.Add(new Visited(expression)));
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<ParameterExpression> visitor = GetVisitor<ParameterExpression> (expression);
+                if (this != visitor)
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
             return expression;
         }
     
         public Expression Visit (LambdaExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<LambdaExpression> visitor = GetVisitor<LambdaExpression> (expression);
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<LambdaExpression> visitor = GetVisitor<LambdaExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "Visit", state);
-                Expression newBody = VisitExpression (expression.Body, state);
-                if ((newBody != expression.Body) || (newParameters != expression.Parameters))
-                    return Expression.Lambda (expression.Type, newBody, newParameters);
-                return expression;
+            ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "Visit", state);
+            Expression newBody = VisitExpression (expression.Body, state);
+            if ((newBody != expression.Body) || (newParameters != expression.Parameters))
+                return Expression.Lambda (expression.Type, newBody, newParameters);
+            return expression;
 
         }
     
         public Expression Visit (MethodCallExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<MethodCallExpression> visitor = GetVisitor<MethodCallExpression> (expression);
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<MethodCallExpression> visitor = GetVisitor<MethodCallExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                Expression newObject = VisitExpression (expression.Object, state);
-                ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
-                if ((newObject != expression.Object) || (newArguments != expression.Arguments))
-                    return Expression.Call (newObject, expression.Method, newArguments);
-                return expression;
+            Expression newObject = VisitExpression (expression.Object, state);
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
+            if ((newObject != expression.Object) || (newArguments != expression.Arguments))
+                return Expression.Call (newObject, expression.Method, newArguments);
+            return expression;
 
         }
     
         public Expression Visit (InvocationExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
+            if (ShouldVisit (expression, state)) {
 
-            ICompositeVisitor<InvocationExpression> visitor = GetVisitor<InvocationExpression> (expression);
+                ICompositeVisitor<InvocationExpression> visitor = GetVisitor<InvocationExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                Expression newExpression = VisitExpression (expression.Expression, state);
-                ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
-                if ((newExpression != expression.Expression) || (newArguments != expression.Arguments))
-                    return Expression.Invoke (newExpression, newArguments);
-                return expression;
-
+            Expression newExpression = VisitExpression (expression.Expression, state);
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
+            if ((newExpression != expression.Expression) || (newArguments != expression.Arguments))
+                return Expression.Invoke (newExpression, newArguments);
+            return expression;
         }
     
         public Expression Visit (MemberExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<MemberExpression> visitor = GetVisitor<MemberExpression> (expression);
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<MemberExpression> visitor = GetVisitor<MemberExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                Expression newExpression = VisitExpression (expression.Expression, state);
-                if (newExpression != expression.Expression)
-                    return Expression.MakeMemberAccess (newExpression, expression.Member);
-                return expression;
-
+            Expression newExpression = VisitExpression (expression.Expression, state);
+            if (newExpression != expression.Expression)
+                return Expression.MakeMemberAccess (newExpression, expression.Member);
+            return expression;
         }
     
         public Expression Visit (NewExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<NewExpression> visitor = GetVisitor<NewExpression> (expression);
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<NewExpression> visitor = GetVisitor<NewExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
-                if (newArguments != expression.Arguments) {
-                    if (expression.Members == null)
-                        return Expression.New (expression.Constructor, newArguments);
-                    else
-                        return Expression.New (expression.Constructor, AdjustArgumentsForNewExpression (newArguments, expression.Members), expression.Members);
-                }
-                return expression;
-
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
+            if (newArguments != expression.Arguments) {
+                if (expression.Members == null)
+                    return Expression.New (expression.Constructor, newArguments);
+                else
+                    return Expression.New (expression.Constructor, AdjustArgumentsForNewExpression (newArguments, expression.Members), expression.Members);
+            }
+            return expression;
         }
     
         public Expression Visit (NewArrayExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<NewArrayExpression> visitor = GetVisitor<NewArrayExpression> (expression);
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<NewArrayExpression> visitor = GetVisitor<NewArrayExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit", state);
-                if (newExpressions != expression.Expressions) {
-                    var elementType = expression.Type.GetElementType ();
-                    if (expression.NodeType == ExpressionType.NewArrayInit)
-                        return Expression.NewArrayInit (elementType, newExpressions);
-                    else
-                        return Expression.NewArrayBounds (elementType, newExpressions);
-                }
-                return expression;
-
+            ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit", state);
+            if (newExpressions != expression.Expressions) {
+                var elementType = expression.Type.GetElementType ();
+                if (expression.NodeType == ExpressionType.NewArrayInit)
+                    return Expression.NewArrayInit (elementType, newExpressions);
+                else
+                    return Expression.NewArrayBounds (elementType, newExpressions);
+            }
+            return expression;
         }
     
         public Expression Visit (MemberInitExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<MemberInitExpression> visitor = GetVisitor<MemberInitExpression> (expression);
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<MemberInitExpression> visitor = GetVisitor<MemberInitExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                NewExpression newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
-                if (newNewExpression == null) {
-                    throw new NotSupportedException (
+            NewExpression newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
+            if (newNewExpression == null) {
+                throw new NotSupportedException (
                     "MemberInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
-                }
+            }
         
-                ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (expression.Bindings, state);
-                if (newNewExpression != expression.NewExpression || newBindings != expression.Bindings)
-                    return Expression.MemberInit (newNewExpression, newBindings);
-                return expression;
-
+            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (expression.Bindings, state);
+            if (newNewExpression != expression.NewExpression || newBindings != expression.Bindings)
+                return Expression.MemberInit (newNewExpression, newBindings);
+            return expression;
         }
     
         public Expression Visit (ListInitExpression expression, IVisitState state)
         {
-            if(ShouldVisit(expression, state))
-            {
-
-            ICompositeVisitor<ListInitExpression> visitor = GetVisitor<ListInitExpression> (expression);
+            if (ShouldVisit (expression, state)) {
+                ICompositeVisitor<ListInitExpression> visitor = GetVisitor<ListInitExpression> (expression);
                 if (this != visitor)
-                    return visitor.Visit (expression, state.Add(new Visited(expression)));
+                    return visitor.Visit (expression, state.Add (new Visited (expression)));
             }
-                var newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
-                if (newNewExpression == null)
-                    throw new NotSupportedException ("ListInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
-                ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (expression.Initializers, state);
-                if (newNewExpression != expression.NewExpression || newInitializers != expression.Initializers)
-                    return Expression.ListInit (newNewExpression, newInitializers);
-                return expression;
-
+            var newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
+            if (newNewExpression == null)
+                throw new NotSupportedException ("ListInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
+            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (expression.Initializers, state);
+            if (newNewExpression != expression.NewExpression || newInitializers != expression.Initializers)
+                return Expression.ListInit (newNewExpression, newInitializers);
+            return expression;
         }
     
         private ElementInit VisitElementInit (ElementInit elementInit, IVisitState state)
