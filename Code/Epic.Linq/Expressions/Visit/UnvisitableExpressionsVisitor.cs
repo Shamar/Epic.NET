@@ -344,7 +344,6 @@ namespace Epic.Linq.Expressions.Visit
         public Expression Visit (InvocationExpression expression, IVisitState state)
         {
             if (ShouldVisit (expression, state)) {
-
                 ICompositeVisitor<InvocationExpression> visitor = GetVisitor<InvocationExpression> (expression);
                 if (this != visitor)
                     return visitor.Visit (expression, state.Add (new Visited (expression)));
