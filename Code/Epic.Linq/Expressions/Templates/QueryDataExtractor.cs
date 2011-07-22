@@ -36,7 +36,7 @@ namespace Epic.Linq.Expressions.Templates
         {
         }
         
-        IQuery Parse(TExpression expression)
+        public IQuery Parse(TExpression expression)
         {
             QueryData data = new QueryData();
             foreach(Func<QueryData, TExpression, bool> register in _registrations)
