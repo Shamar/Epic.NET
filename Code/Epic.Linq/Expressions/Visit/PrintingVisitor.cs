@@ -27,7 +27,7 @@ using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public class PrintingVisitor : VisitorsComposition.VisitorBase
+    public sealed class PrintingVisitor : VisitorsComposition.VisitorBase
     {
         public PrintingVisitor (VisitorsComposition chain)
             : base(chain)

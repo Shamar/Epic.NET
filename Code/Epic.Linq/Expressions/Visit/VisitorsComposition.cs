@@ -85,7 +85,6 @@ namespace Epic.Linq.Expressions.Visit
                 if(null == composition)
                     throw new ArgumentNullException("composition");
                 _composition = composition;
-                Type myType = this.GetType();
                 _composition.Register(this, out _nextVisitor);
             }
             
