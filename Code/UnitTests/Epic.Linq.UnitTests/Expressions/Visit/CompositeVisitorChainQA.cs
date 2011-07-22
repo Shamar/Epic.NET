@@ -131,7 +131,7 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             Expression<Func<int, string, int>> expression = (i,s)=> (i + s.Length).ToString().Length;
             VisitorsComposition chain = new VisitorsComposition();
-            new PrintingVisitor(chain);
+            new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
             // act:
@@ -148,7 +148,7 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             Expression<Func<int, string, int>> expression = (i,s)=> s == null ? i : s.Length;
             VisitorsComposition chain = new VisitorsComposition();
-            new PrintingVisitor(chain);
+            new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
             // act:
@@ -156,6 +156,15 @@ namespace Epic.Linq.Expressions.Visit
             
             // assert:
             Assert.AreSame(expression, e);
+        }
+        
+        public static void WriteToConsole(int depth, Expression expression, IVisitState state)
+        {
+            for(int i = 0; i < depth; ++i)
+            {
+                Console.Write("    ");
+            }
+            Console.WriteLine("{0} - {1}", expression.NodeType, expression.GetType().Name);
         }
         
     }

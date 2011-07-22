@@ -27,11 +27,18 @@ using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class PrintingVisitor : VisitorsComposition.VisitorBase
+    public sealed class LoggingVisitor : VisitorsComposition.VisitorBase
     {
-        public PrintingVisitor (VisitorsComposition chain)
+        private readonly Action<int, Expression, IVisitState> _log;
+        
+        public LoggingVisitor (VisitorsComposition chain, Action<int, Expression, IVisitState> loggingAction)
             : base(chain)
         {
+            if(null == loggingAction)
+                throw new ArgumentNullException("loggingAction");
+            if(null != loggingAction.Target)
+                throw new ArgumentException("The loggingAction must be a static delegate.", "loggingAction");
+            _log = loggingAction;
         }
         
         protected internal override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
@@ -46,15 +53,12 @@ namespace Epic.Linq.Expressions.Visit
             Callstack depth;
             if(!state.TryGet<Callstack>(out depth))
             {
-                depth = Callstack.New;          // The current depth is 0
+                depth = Callstack.New;              // The current depth is 0
             }
-            for(int i = 0; i < depth.Size; ++i)
-            {
-                Console.Write("    ");
-            }
-            Console.WriteLine("{0} - {1}", target.NodeType, target.GetType().FullName);
             
-            state = state.Add(depth.Next());      // add the printed expression to the state's stack
+            _log(depth.Size, target, state);
+            
+            state = state.Add(depth.Next());        // add the printed expression to the state's stack
             
             ICompositeVisitor<TExpression> visitor = GetNextVisitor(target);
             Expression visited = visitor.Visit(target, state);

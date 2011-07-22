@@ -44,7 +44,6 @@
     <Compile Include="Expressions\Visit\ICompositeVisitor.cs" />
     <Compile Include="Expressions\VisitableExpression.cs" />
     <Compile Include="Expressions\UnvisitableExpressionAdapter.cs" />
-    <Compile Include="Expressions\Visit\PrintingVisitor.cs" />
     <Compile Include="Expressions\QueryExpression.cs" />
     <Compile Include="Expressions\PredicateExpression.cs" />
     <Compile Include="Expressions\DomainExpression.cs" />
@@ -56,6 +55,7 @@
     <Compile Include="Expressions\Visit\VisitorWrapper.cs" />
     <Compile Include="Expressions\Visit\UnvisitableExpressionsVisitor.cs" />
     <Compile Include="Expressions\Visit\ExpressionReplacingVisitor.cs" />
+    <Compile Include="Expressions\Visit\LoggingVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
