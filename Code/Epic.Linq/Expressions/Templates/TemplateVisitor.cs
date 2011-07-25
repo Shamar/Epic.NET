@@ -30,16 +30,25 @@ namespace Epic.Linq.Expressions.Templates
     public sealed class TemplateVisitor<TTemplateExpression> : VisitorsComposition.VisitorBase, ICompositeVisitor<MethodCallExpression>
         where TTemplateExpression : Expression
     {
+        private readonly VisitorWrapper<TTemplateExpression> _initializer;
+        
         public TemplateVisitor (VisitorsComposition composition)
             : base(composition)
         {
+            _initializer = new VisitorWrapper<TTemplateExpression>(this, InitializeVisit);
         }
         
         internal protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
         {
             ICompositeVisitor<TExpression> visitor = base.AsVisitor<TExpression>(target);
             if(null == visitor || !IsQueryAccess(target as MethodCallExpression))
-                visitor = new VisitorWrapper<TExpression>(this, this.Parse<TExpression>);
+            {
+                visitor = _initializer as ICompositeVisitor<TExpression>;
+                if(null == visitor)
+                {
+                    visitor = new VisitorWrapper<TExpression>(this, this.Parse<TExpression>);
+                }
+            }
             return visitor;
         }
         
@@ -51,19 +60,40 @@ namespace Epic.Linq.Expressions.Templates
                 return false;
             return typeof(IQuery).Equals(call.Object.Type);
         }
+                
+        private Expression InitializeVisit(TTemplateExpression expression, IVisitState state)
+        {
+            state = state.Add<QueryDataExtractor<TTemplateExpression>>(new QueryDataExtractor<TTemplateExpression>());
+            state = state.Add<ExpressionPath<TTemplateExpression>>(new ExpressionPath<TTemplateExpression>(e => e));
+            ICompositeVisitor<TTemplateExpression> nextVisitor = GetNextVisitor<TTemplateExpression>(expression);
+            return nextVisitor.Visit(expression, state);
+        }
         
         private Expression Parse<TExpression>(TExpression target, IVisitState state) where TExpression : Expression
         {
-            return target;
+            ExpressionPath<TExpression> path = null;
+            state.TryGet<ExpressionPath<TExpression>>(out path);
+            
+            // TODO : visit logic here
+            
+            ICompositeVisitor<TExpression> nextVisitor = GetNextVisitor<TExpression>(target);
+            return nextVisitor.Visit(target, state);
         }
 
         #region ICompositeVisitor[MethodCallExpression] implementation
         public Expression Visit (MethodCallExpression target, IVisitState state)
         {
             // read argument[0]
-            // create the key for the extractor
-            // generate extractor from howToGetHere (that should be compiled)
-            // store extractor in _extractors
+            ConstantExpression nameExpression = target.Arguments[0] as ConstantExpression; // TODO : handle closures
+            string name = nameExpression.Value as string;
+            
+            // register the path to here in the extractor
+            QueryDataExtractor<TTemplateExpression> extractor = null;
+            state.TryGet<QueryDataExtractor<TTemplateExpression>>(out extractor);
+            ExpressionPath<MethodCallExpression> path = null;
+            state.TryGet<ExpressionPath<MethodCallExpression>>(out path);
+            
+            path.Register(name, extractor);
            
             return target;
         }
@@ -73,7 +103,7 @@ namespace Epic.Linq.Expressions.Templates
         class ExpressionPath<TExpression>
             where TExpression : Expression
         {
-            public readonly Expression<Func<TTemplateExpression, TExpression>> Path;
+            private readonly Expression<Func<TTemplateExpression, TExpression>> Path;
             
             public ExpressionPath(Expression<Func<TTemplateExpression, TExpression>> path)
             {
@@ -92,6 +122,11 @@ namespace Epic.Linq.Expressions.Templates
                     Expression.Lambda<Func<TTemplateExpression, TNextExpression>>(lambdaBody, Path.Parameters);
                 
                 return new ExpressionPath<TNextExpression>(nextPath);    
+            }
+            
+            public void Register(string name, QueryDataExtractor<TTemplateExpression> dataExtractor)
+            {
+                dataExtractor.Register<TExpression>(name, Path);
             }
         }
     }

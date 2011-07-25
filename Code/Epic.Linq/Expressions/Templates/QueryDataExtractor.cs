@@ -45,7 +45,7 @@ namespace Epic.Linq.Expressions.Templates
             return data;
         }
         
-        private void Register<TerminalExpression>(string name, Expression<Func<TExpression, TerminalExpression>> visitExpression)
+        public void Register<TerminalExpression>(string name, Expression<Func<TExpression, TerminalExpression>> visitExpression)
             where TerminalExpression : Expression
         {
             Func<TExpression, TerminalExpression> visit = visitExpression.Compile();
