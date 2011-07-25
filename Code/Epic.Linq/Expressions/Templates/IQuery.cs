@@ -23,7 +23,7 @@
 //  
 using System;
 
-namespace Epic.Linq.Translators
+namespace Epic.Linq.Expressions.Templates
 {
     public interface IQuery
     {
