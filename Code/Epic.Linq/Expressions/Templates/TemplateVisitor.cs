@@ -27,7 +27,8 @@ using System.Linq.Expressions;
 
 namespace Epic.Linq.Expressions.Templates
 {
-    public sealed class TemplateVisitor : VisitorsComposition.VisitorBase, ICompositeVisitor<MethodCallExpression>
+    public sealed class TemplateVisitor<TTemplateExpression> : VisitorsComposition.VisitorBase, ICompositeVisitor<MethodCallExpression>
+        where TTemplateExpression : Expression
     {
         public TemplateVisitor (VisitorsComposition composition)
             : base(composition)
@@ -67,6 +68,33 @@ namespace Epic.Linq.Expressions.Templates
             return target;
         }
         #endregion
+        
+        
+        class ExpressionPath<TExpression>
+            where TExpression : Expression
+        {
+            public readonly Expression<Func<TTemplateExpression, TExpression>> Path;
+            
+            public ExpressionPath(Expression<Func<TTemplateExpression, TExpression>> path)
+            {
+                Path = path;
+            }
+            
+            public ExpressionPath<TNextExpression> Add<TNextExpression>(Expression<Func<TExpression, TNextExpression>> nextStep) where TNextExpression : Expression
+            {
+                VisitorsComposition composition = new VisitorsComposition();
+                new ExpressionReplacingVisitor<ParameterExpression>(composition, nextStep.Parameters[0], Path.Body);
+                UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextStep.Body);
+            
+                Expression lambdaBody = adapter.Accept(composition, VisitState.New);
+
+                Expression<Func<TTemplateExpression, TNextExpression>> nextPath = 
+                    Expression.Lambda<Func<TTemplateExpression, TNextExpression>>(lambdaBody, Path.Parameters);
+                
+                return new ExpressionPath<TNextExpression>(nextPath);    
+            }
+        }
     }
+    
 }
 
