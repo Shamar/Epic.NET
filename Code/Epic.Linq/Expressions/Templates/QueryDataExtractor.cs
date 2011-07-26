@@ -27,7 +27,7 @@ using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Templates
 {
-    public sealed class QueryDataExtractor<TExpression>
+    internal sealed class QueryDataExtractor<TExpression> : IQueryDataExtractor<TExpression>
         where TExpression : Expression
     {
         private readonly List<Func<QueryData, TExpression, bool>> _registrations = new List<Func<QueryData, TExpression, bool>>();
@@ -61,7 +61,7 @@ namespace Epic.Linq.Expressions.Templates
             return data.Register(name, expression.Compile());
         }
         
-        class QueryData : IQuery
+        sealed class QueryData : IQuery
         {
             private readonly Dictionary<string, Delegate> _dataProviders = new Dictionary<string, Delegate>();
             

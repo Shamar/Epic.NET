@@ -301,7 +301,7 @@ namespace Epic.Linq.Expressions.Templates
         
         #endregion tracking path methods
 
-        public static QueryDataExtractor<TTemplateExpression> Parse(TTemplateExpression template)
+        public static IQueryDataExtractor<TTemplateExpression> Parse(TTemplateExpression template)
         {
             if(null == template)
                 throw new ArgumentNullException("template");
