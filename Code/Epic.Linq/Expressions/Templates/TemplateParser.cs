@@ -42,35 +42,20 @@ namespace Epic.Linq.Expressions.Templates
         
         #region tracking path methods
         
-        private static bool MatchUnaryExpression(UnaryExpression expression, UnaryExpression template)
-        {
-            if(template.IsLifted != expression.IsLifted || template.IsLiftedToNull != expression.IsLiftedToNull)
-                return false;
-            return template.Method.Equals(expression.Method);
-        }
-
-        
         private static void ParseUnaryExpression(UnaryExpression expression, IVisitState state)
         {
             ExpressionPath<UnaryExpression> path = null;
             state.TryGet<ExpressionPath<UnaryExpression>>(out path);
-            ParseExpression(expression.Operand, state.Add(path.Bind<Expression>(e => MatchUnaryExpression(e, expression), e => e.Operand)));
-        }
-        
-        private static bool MatchBinaryExpression(BinaryExpression expression, BinaryExpression template)
-        {
-            if(template.IsLifted != expression.IsLifted || template.IsLiftedToNull != expression.IsLiftedToNull)
-                return false;
-            return template.Method.Equals(expression.Method);
+            ParseExpression(expression.Operand, state.Add(path.Bind<Expression>(e => Match.UnaryExpression(e, expression), e => e.Operand)));
         }
         
         private static void ParseBinaryExpression(BinaryExpression expression, IVisitState state)
         {
             ExpressionPath<BinaryExpression> path = null;
             state.TryGet<ExpressionPath<BinaryExpression>>(out path);
-            ParseExpression (expression.Left, state.Add(path.Bind(e => MatchBinaryExpression(e, expression), e => e.Left)));
-            ParseExpression (expression.Right, state.Add(path.Bind(e => MatchBinaryExpression(e, expression), e => e.Right)));
-            ParseExpression (expression.Conversion, state.Add(path.Bind(e => MatchBinaryExpression(e, expression), e => e.Conversion)));
+            ParseExpression (expression.Left, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Left)));
+            ParseExpression (expression.Right, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Right)));
+            ParseExpression (expression.Conversion, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Conversion)));
         }
   
         private static void ParseConditionalExpression (ConditionalExpression expression, IVisitState state)
@@ -93,31 +78,21 @@ namespace Epic.Linq.Expressions.Templates
             */
         }
   
-        private static bool MatchInvocationExpression(InvocationExpression expression, InvocationExpression template)
-        {
-            return template.Arguments.Count == expression.Arguments.Count;
-        }
-        
         private static void ParseInvocationExpression (InvocationExpression expression, IVisitState state)
         {
             ExpressionPath<InvocationExpression> path = null;
             state.TryGet<ExpressionPath<InvocationExpression>>(out path);
             
-            ParseExpression (expression.Expression, state.Add(path.Bind(e => MatchInvocationExpression(e, expression), e => e.Expression)));
+            ParseExpression (expression.Expression, state.Add(path.Bind(e => Match.InvocationExpression(e, expression), e => e.Expression)));
    
             int i = 0;
             while(i < expression.Arguments.Count)
             {
-                ParseExpression(expression.Arguments[i], state.Add(path.Bind(e => MatchInvocationExpression(e, expression), e => e.Arguments[i])));
+                ParseExpression(expression.Arguments[i], state.Add(path.Bind(e => Match.InvocationExpression(e, expression), e => e.Arguments[i])));
                 ++i;
             }
         }
         
-        private static bool MatchLambdaExpression(LambdaExpression expression, LambdaExpression template)
-        {
-            return template.Parameters.Count == expression.Parameters.Count;
-        }
-
         private static void ParseLambdaExpression (LambdaExpression expression, IVisitState state)
         {
             ExpressionPath<LambdaExpression> path = null;
@@ -126,32 +101,20 @@ namespace Epic.Linq.Expressions.Templates
             int i = 0;
             while(i < expression.Parameters.Count)
             {
-                ParseParameterExpression(expression.Parameters[i], state.Add(path.Bind(e => MatchLambdaExpression(e, expression), e => e.Parameters[i])));
+                ParseParameterExpression(expression.Parameters[i], state.Add(path.Bind(e => Match.LambdaExpression(e, expression), e => e.Parameters[i])));
                 ++i;
             }
-            ParseExpression(expression.Body, state.Add(path.Bind(e => MatchLambdaExpression(e, expression), e => e.Body)));
+            ParseExpression(expression.Body, state.Add(path.Bind(e => Match.LambdaExpression(e, expression), e => e.Body)));
         }
         
-        private static bool MatchMemberExpression(MemberExpression expression, MemberExpression template)
-        {
-            return template.Member.Equals(expression.Member);
-        }
-
         private static void ParseMemberExpression (MemberExpression expression, IVisitState state)
         {
             ExpressionPath<MemberExpression> path = null;
             state.TryGet<ExpressionPath<MemberExpression>>(out path);
             
-            ParseExpression(expression.Expression, state.Add(path.Bind(e => MatchMemberExpression(e, expression), e => e.Expression)));
+            ParseExpression(expression.Expression, state.Add(path.Bind(e => Match.MemberExpression(e, expression), e => e.Expression)));
         }
   
-        private static bool MatchMethodCall(MethodCallExpression expression, MethodCallExpression template)
-        {
-            if(template.Arguments.Count != expression.Arguments.Count)
-                return false;
-            return template.Method.Equals(expression.Method);
-        }
-        
         private static void ParseMethodCallExpression (MethodCallExpression expression, IVisitState state)
         {
             if(IsQueryAccess(expression))
@@ -163,8 +126,8 @@ namespace Epic.Linq.Expressions.Templates
                 // register the path to here in the extractor
                 QueryDataExtractor<TTemplateExpression> extractor = null;
                 state.TryGet<QueryDataExtractor<TTemplateExpression>>(out extractor);
-                ExpressionPath<MethodCallExpression> path = null;
-                state.TryGet<ExpressionPath<MethodCallExpression>>(out path);
+                ExpressionPath<Expression> path = null;
+                state.TryGet<ExpressionPath<Expression>>(out path);
                 
                 path.Register(name, extractor);
             }
@@ -173,12 +136,12 @@ namespace Epic.Linq.Expressions.Templates
                 ExpressionPath<MethodCallExpression> path = null;
                 state.TryGet<ExpressionPath<MethodCallExpression>>(out path);
                 
-                ParseExpression(expression.Object, state.Add(path.Bind(e => MatchMethodCall(e, expression), e => e.Object)));
+                ParseExpression(expression.Object, state.Add(path.Bind(e => Match.MethodCall(e, expression), e => e.Object)));
                 
                 int i = 0;
                 while(i < expression.Arguments.Count)
                 {
-                    ParseExpression(expression.Arguments[i], state.Add(path.Bind(e => MatchMethodCall(e, expression), e => e.Arguments[i])));
+                    ParseExpression(expression.Arguments[i], state.Add(path.Bind(e => Match.MethodCall(e, expression), e => e.Arguments[i])));
                     ++i;
                 }
             }
@@ -189,22 +152,12 @@ namespace Epic.Linq.Expressions.Templates
             // nothing to do ? ? ?
         }
   
-        private static bool MatchMemberInit(MemberInitExpression expression, MemberInitExpression template)
-        {
-            if(template.Bindings.Count != expression.Bindings.Count)
-                return false;
-            if(!template.NewExpression.Constructor.Equals(expression.NewExpression.Constructor))
-                return false;
-            
-            return true;
-        }
-        
         private static void ParseMemberInitExpression (MemberInitExpression expression, IVisitState state)
         {
             ExpressionPath<MemberInitExpression> path = null;
             state.TryGet<ExpressionPath<MemberInitExpression>>(out path);
             
-            ParseNewExpression(expression.NewExpression, state.Add(path.Bind(e => MatchMemberInit(e, expression), e => e.NewExpression)));
+            ParseNewExpression(expression.NewExpression, state.Add(path.Bind(e => Match.MemberInit(e, expression), e => e.NewExpression)));
             
             /* nothing to do ? ? ?
             int i = 0;
@@ -215,11 +168,6 @@ namespace Epic.Linq.Expressions.Templates
             */
         }
         
-        private static bool MatchNewArrayExpression(NewArrayExpression expression, NewArrayExpression template)
-        {
-            return template.Expressions.Count == expression.Expressions.Count;
-        }
-
         private static void ParseNewArrayExpression (NewArrayExpression expression, IVisitState state)
         {
             ExpressionPath<NewArrayExpression> path = null;
@@ -228,35 +176,17 @@ namespace Epic.Linq.Expressions.Templates
             int i = 0;
             while(i < expression.Expressions.Count)
             {
-                ParseExpression(expression.Expressions[i], state.Add(path.Bind(e => MatchNewArrayExpression(e, expression), e => e.Expressions[i])));
+                ParseExpression(expression.Expressions[i], state.Add(path.Bind(e => Match.NewArrayExpression(e, expression), e => e.Expressions[i])));
                 ++i;
             }
         }
         
-        private static bool MatchListInitExpression(ListInitExpression expression, ListInitExpression template)
-        {
-            if(template.Initializers.Count != expression.Initializers.Count)
-                return false;
-            
-            int i = 0;
-            while(i < expression.Initializers.Count)
-            {
-                ElementInit templateInit = template.Initializers[i];
-                ElementInit expressionInit = template.Initializers[i];
-                if(templateInit.Arguments.Count != expressionInit.Arguments.Count || !templateInit.AddMethod.Equals(expressionInit.AddMethod))
-                    return false;
-                ++i;
-            }
-            
-            return true;
-        }
-
         private static void ParseListInitExpression (ListInitExpression expression, IVisitState state)
         {
             ExpressionPath<ListInitExpression> path = null;
             state.TryGet<ExpressionPath<ListInitExpression>>(out path);
             
-            ParseNewExpression(expression.NewExpression, state.Add(path.Bind(e => MatchListInitExpression(e, expression), e => e.NewExpression)));
+            ParseNewExpression(expression.NewExpression, state.Add(path.Bind(e => Match.ListInitExpression(e, expression), e => e.NewExpression)));
             
             int i = 0;
             while(i < expression.Initializers.Count)
@@ -264,7 +194,7 @@ namespace Epic.Linq.Expressions.Templates
                 int j = 0;
                 while(j < expression.Initializers[i].Arguments.Count)
                 {
-                    ParseExpression(expression.Initializers[i].Arguments[j], state.Add(path.Bind(e => MatchListInitExpression(e, expression), e => e.Initializers[i].Arguments[j])));
+                    ParseExpression(expression.Initializers[i].Arguments[j], state.Add(path.Bind(e => Match.ListInitExpression(e, expression), e => e.Initializers[i].Arguments[j])));
                 }
                 ++i;
             }            
@@ -275,28 +205,18 @@ namespace Epic.Linq.Expressions.Templates
             // nothing to do ? ? ?
         }
   
-        private static bool MatchTypeBinaryExpression(TypeBinaryExpression expression, TypeBinaryExpression template)
-        {
-            return template.TypeOperand.Equals(expression.TypeOperand);
-        }
-        
         private static void ParseTypeBinaryExpression (TypeBinaryExpression expression, IVisitState state)
         {
             ExpressionPath<TypeBinaryExpression> path = null;
             state.TryGet<ExpressionPath<TypeBinaryExpression>>(out path);
-            ParseExpression(expression.Expression, state.Add(path.Bind(e => MatchTypeBinaryExpression(e, expression), e => e.Expression)));
-        }
-        
-        private static bool MatchExpression(Expression expression, Expression template)
-        {
-            return template.NodeType == expression.NodeType && template.Type.Equals(expression.Type);
+            ParseExpression(expression.Expression, state.Add(path.Bind(e => Match.TypeBinaryExpression(e, expression), e => e.Expression)));
         }
         
         private static IVisitState CastNodeType<TExpression>(IVisitState state, Expression template) where TExpression : Expression
         {
             ExpressionPath<Expression> path = null;
             state.TryGet<ExpressionPath<Expression>>(out path);
-            return state.Add(path.Bind(e => MatchExpression(e, template), e => e as TExpression));
+            return state.Add(path.Bind(e => Match.Expression(e, template), e => e as TExpression));
         }
         
         private static void ParseExpression(Expression expression, IVisitState state)
