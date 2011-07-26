@@ -53,42 +53,42 @@ namespace Epic.Linq.Expressions.Templates
             
         #region tracking path methods
         
-        private Expression ParseUnaryExpression(UnaryExpression expression, IVisitState state)
+        private static Expression ParseUnaryExpression(UnaryExpression expression, IVisitState state)
         {
             return expression;
         }
         
-        private Expression ParseBinaryExpression(BinaryExpression expression, IVisitState state)
+        private static Expression ParseBinaryExpression(BinaryExpression expression, IVisitState state)
         {
             throw new NotImplementedException();
         }
 
-        private Expression ParseConditionalExpression (ConditionalExpression expression, IVisitState state)
+        private static Expression ParseConditionalExpression (ConditionalExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseConstantExpression (ConstantExpression expression, IVisitState state)
+        private static Expression ParseConstantExpression (ConstantExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseInvocationExpression (InvocationExpression expression, IVisitState state)
+        private static Expression ParseInvocationExpression (InvocationExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseLambdaExpression (LambdaExpression expression, IVisitState state)
+        private static Expression ParseLambdaExpression (LambdaExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseMemberExpression (MemberExpression expression, IVisitState state)
+        private static Expression ParseMemberExpression (MemberExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseMethodCallExpression (MethodCallExpression expression, IVisitState state)
+        private static Expression ParseMethodCallExpression (MethodCallExpression expression, IVisitState state)
         {
             if(IsQueryAccess(expression))
             {
@@ -111,37 +111,37 @@ namespace Epic.Linq.Expressions.Templates
             return expression;
         }
 
-        private Expression ParseNewExpression (NewExpression expression, IVisitState state)
+        private static Expression ParseNewExpression (NewExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseMemberInitExpression (MemberInitExpression expression, IVisitState state)
+        private static Expression ParseMemberInitExpression (MemberInitExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseNewArrayExpression (NewArrayExpression expression, IVisitState state)
+        private static Expression ParseNewArrayExpression (NewArrayExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseListInitExpression (ListInitExpression expression, IVisitState state)
+        private static Expression ParseListInitExpression (ListInitExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseParameterExpression (ParameterExpression expression, IVisitState state)
+        private static Expression ParseParameterExpression (ParameterExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
 
-        private Expression ParseTypeBinaryExpression (TypeBinaryExpression expression, IVisitState state)
+        private static Expression ParseTypeBinaryExpression (TypeBinaryExpression expression, IVisitState state)
         {
             throw new NotImplementedException ();
         }
         
-        private Expression ParseExpression(Expression expression, IVisitState state)
+        private static Expression ParseExpression(Expression expression, IVisitState state)
         {
             ExpressionPath<Expression> path = null;
             state.TryGet<ExpressionPath<Expression>>(out path);
