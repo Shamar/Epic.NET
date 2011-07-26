@@ -44,13 +44,6 @@ namespace Epic.Linq.Expressions.Templates
             return typeof(IQuery).Equals(call.Object.Type);
         }
                 
-        private Expression InitializeVisit(TTemplateExpression expression, IVisitState state)
-        {
-            state = state.Add<QueryDataExtractor<TTemplateExpression>>(new QueryDataExtractor<TTemplateExpression>());
-            state = state.Add<ExpressionPath<TTemplateExpression>>(new ExpressionPath<TTemplateExpression>(e => e));
-            return ParseExpression(expression, state);
-        }
-            
         #region tracking path methods
         
         private static Expression ParseUnaryExpression(UnaryExpression expression, IVisitState state)
