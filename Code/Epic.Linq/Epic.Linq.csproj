@@ -57,7 +57,7 @@
     <Compile Include="Expressions\Visit\LoggingVisitor.cs" />
     <Compile Include="Expressions\Templates\IQuery.cs" />
     <Compile Include="Expressions\Templates\QueryDataExtractor.cs" />
-    <Compile Include="Expressions\Templates\TemplateVisitor.cs" />
+    <Compile Include="Expressions\Templates\TemplateParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
