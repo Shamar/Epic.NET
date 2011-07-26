@@ -52,6 +52,12 @@ namespace Epic.Linq.Expressions.Templates
             _registrations.Add((d, e) => Register<TerminalExpression>(name, visit, d, e));
         }
         
+        public void Register<TerminalExpression>(string name, Func<TExpression, TerminalExpression> visit)
+            where TerminalExpression : Expression
+        {
+            _registrations.Add((d, e) => Register<TerminalExpression>(name, visit, d, e));
+        }
+        
         private static bool Register<TerminalExpression>(string name, Func<TExpression, TerminalExpression> visit, QueryData data, TExpression expressionToVisit)
             where TerminalExpression : Expression
         {
