@@ -55,7 +55,7 @@ namespace Epic.Linq.Expressions.Templates
             where TerminalExpression : Expression
         {
             TerminalExpression exp = visit(expressionToVisit);
-            if(visit == null)
+            if (exp == null)
                 return false;
             LambdaExpression expression = Expression.Lambda(typeof(Func<>).MakeGenericType(exp.Type), exp);
             return data.Register(name, expression.Compile());

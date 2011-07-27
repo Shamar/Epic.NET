@@ -55,7 +55,8 @@ namespace Epic.Linq.Expressions.Templates
             state.TryGet<ExpressionPath<BinaryExpression>>(out path);
             ParseExpression (expression.Left, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Left)));
             ParseExpression (expression.Right, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Right)));
-            ParseExpression (expression.Conversion, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Conversion)));
+            if(expression.NodeType == ExpressionType.Coalesce)
+                ParseExpression (expression.Conversion, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Conversion)));
         }
   
         private static void ParseConditionalExpression (ConditionalExpression expression, IVisitState state)
@@ -114,14 +115,22 @@ namespace Epic.Linq.Expressions.Templates
             
             ParseExpression(expression.Expression, state.Add(path.Bind(e => Match.MemberExpression(e, expression), e => e.Expression)));
         }
+
+        private static string GetTemplateVariableName(Expression expression)
+        {
+            ConstantExpression constant = expression as ConstantExpression;
+            if (null != constant)
+                return constant.Value as string;
+            Expression<Func<string>> nameReader = Expression.Lambda<Func<string>>(expression);
+            return nameReader.Compile()();
+        }
   
         private static void ParseMethodCallExpression (MethodCallExpression expression, IVisitState state)
         {
             if(IsQueryAccess(expression))
             {
                 // read argument[0]
-                ConstantExpression nameExpression = expression.Arguments[0] as ConstantExpression; // TODO : handle closures
-                string name = nameExpression.Value as string;
+                string name = GetTemplateVariableName(expression.Arguments[0]);
                 
                 // register the path to here in the extractor
                 QueryDataExtractor<TTemplateExpression> extractor = null;
@@ -309,8 +318,8 @@ namespace Epic.Linq.Expressions.Templates
             IVisitState state = VisitState.New;
             QueryDataExtractor<TTemplateExpression> extractor = new QueryDataExtractor<TTemplateExpression>();
             
-            state = state.Add<QueryDataExtractor<TTemplateExpression>>(extractor);
-            state = state.Add<ExpressionPath<TTemplateExpression>>(new ExpressionPath<TTemplateExpression>(e => e));
+            state = state.Add(extractor);
+            state = state.Add(new ExpressionPath<Expression>(e => e));
             ParseExpression(template, state);
             
             return extractor;

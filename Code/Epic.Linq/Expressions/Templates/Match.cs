@@ -33,6 +33,8 @@ namespace Epic.Linq.Expressions.Templates
         {
             if(template.IsLifted != expression.IsLifted || template.IsLiftedToNull != expression.IsLiftedToNull)
                 return false;
+            if (null == template.Method)
+                return null == expression.Method;
             return template.Method.Equals(expression.Method);
         }
         
@@ -40,6 +42,8 @@ namespace Epic.Linq.Expressions.Templates
         {
             if(template.IsLifted != expression.IsLifted || template.IsLiftedToNull != expression.IsLiftedToNull)
                 return false;
+            if (null == template.Method)
+                return null == expression.Method;
             return template.Method.Equals(expression.Method);
         }
         
@@ -62,6 +66,8 @@ namespace Epic.Linq.Expressions.Templates
         {
             if(template.Arguments.Count != expression.Arguments.Count)
                 return false;
+            if (null == template.Method)
+                return null == expression.Method;
             return template.Method.Equals(expression.Method);
         }
         
