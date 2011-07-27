@@ -44,6 +44,7 @@ namespace Epic.Linq.Expressions.Templates
             IQuery matchingQueryData = extractor.Parse(matching);
    
             // assert:
+            Assert.IsTrue(extractor.CanParse(matching));
             Assert.IsNotNull(matchingQueryData);
             Assert.AreEqual(10, matchingQueryData.Get<int>(lenghtOfString));
         }
@@ -62,6 +63,7 @@ namespace Epic.Linq.Expressions.Templates
             IQuery notMatchingQueryData = extractor.Parse(notMatching);
 
             // assert:
+            Assert.IsFalse(extractor.CanParse(notMatching));
             Assert.IsNull(notMatchingQueryData);
         }
         
@@ -79,6 +81,7 @@ namespace Epic.Linq.Expressions.Templates
             IQuery matchingQueryData = extractor.Parse(matching);
    
             // assert:
+            Assert.IsTrue(extractor.CanParse(matching));
             Assert.IsNotNull(matchingQueryData);
             Assert.AreEqual(10, matchingQueryData.Get<int>(lenghtOfString));
         }
@@ -97,6 +100,7 @@ namespace Epic.Linq.Expressions.Templates
             IQuery notMatchingQueryData = extractor.Parse(notMatching);
 
             // assert:
+            Assert.IsFalse(extractor.CanParse(notMatching));
             Assert.IsNull(notMatchingQueryData);
         }
 
@@ -114,6 +118,7 @@ namespace Epic.Linq.Expressions.Templates
             IQuery matchingQueryData = extractor.Parse(matching);
 
             // assert:
+            Assert.IsTrue(extractor.CanParse(matching));
             Assert.IsNotNull(matchingQueryData);
             Assert.AreEqual(value, matchingQueryData.Get<int>("lenghtOfString"));
         }
@@ -132,6 +137,7 @@ namespace Epic.Linq.Expressions.Templates
             IQuery matchingQueryData = extractor.Parse(matching);
 
             // assert:
+            Assert.IsTrue(extractor.CanParse(matching));
             Assert.IsNotNull(matchingQueryData);
             Assert.AreEqual(value, matchingQueryData.Get<int>("lenghtOfString"));
             Assert.AreEqual("test", matchingQueryData.Get<string>("containedString"));

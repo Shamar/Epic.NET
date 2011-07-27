@@ -31,10 +31,27 @@ namespace Epic.Linq.Expressions.Templates
     internal sealed class QueryDataExtractor<TExpression> : IQueryDataExtractor<TExpression>
         where TExpression : Expression
     {
+        private readonly Dictionary<string, List<Func<TExpression, bool>>> _knownCheckers = new Dictionary<string, List<Func<TExpression, bool>>>();
         private readonly List<Action<QueryData, TExpression>> _registrations = new List<Action<QueryData, TExpression>>();
         
         public QueryDataExtractor ()
         {
+        }
+        
+        public bool CanParse(TExpression expression)
+        {
+            foreach(List<Func<TExpression, bool>> knownCheckers in _knownCheckers.Values)
+            {
+                bool canParse = false;
+                for(int i = 0; i < knownCheckers.Count && !canParse; ++i)
+                {
+                    canParse = knownCheckers[i](expression);
+                }
+                if(! canParse)
+                    return false;
+            }
+            
+            return true;
         }
         
         public IQuery Parse(TExpression expression)
@@ -47,9 +64,23 @@ namespace Epic.Linq.Expressions.Templates
             return data;
         }
         
+        private static bool CanRead(Expression e)
+        {
+            if(null == e)
+                return false;
+            return CanBeCompiled(e);
+        }
+        
         public void Register<TerminalExpression>(string name, Func<TExpression, TerminalExpression> visit)
             where TerminalExpression : Expression
         {
+            List<Func<TExpression, bool>> knownCheckers = null;
+            if(!_knownCheckers.TryGetValue(name, out knownCheckers))
+            {
+                knownCheckers = new List<Func<TExpression, bool>>();
+                _knownCheckers[name] = knownCheckers;
+            }
+            knownCheckers.Add(e => CanRead(visit(e)));
             _registrations.Add((d, e) => Register<TerminalExpression>(name, visit, d, e));
         }
 

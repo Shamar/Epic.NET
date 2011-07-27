@@ -29,6 +29,8 @@ namespace Epic.Linq.Expressions.Templates
     public interface IQueryDataExtractor<TExpression> where TExpression : Expression
     {
         IQuery Parse(TExpression expression);
+        
+        bool CanParse(TExpression expression);
     }
 }
 
