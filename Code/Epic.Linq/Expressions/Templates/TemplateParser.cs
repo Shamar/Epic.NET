@@ -55,6 +55,21 @@ namespace Epic.Linq.Expressions.Templates
             state.TryGet<ExpressionPath<BinaryExpression>>(out path);
             ParseExpression (expression.Left, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Left)));
             ParseExpression (expression.Right, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Right)));
+            /* how to handle commutativity ? ? ? */
+            switch(expression.NodeType)
+            {
+                case ExpressionType.AddChecked:
+                case ExpressionType.MultiplyChecked:
+                case ExpressionType.AndAlso:
+                case ExpressionType.OrElse:
+                case ExpressionType.ExclusiveOr:
+                case ExpressionType.Equal:
+                case ExpressionType.NotEqual:
+                    ParseExpression (expression.Left, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Right)));
+                    ParseExpression (expression.Right, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Left)));
+                break;
+            }
+             /* */ 
             if(expression.NodeType == ExpressionType.Coalesce)
                 ParseExpression (expression.Conversion, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Conversion)));
         }

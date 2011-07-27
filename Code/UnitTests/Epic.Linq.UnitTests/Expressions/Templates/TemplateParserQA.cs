@@ -31,24 +31,91 @@ namespace Epic.Linq.Expressions.Templates
     public class TemplateParserQA
     {
         [Test]
-        public void Parse_Template1_buildQueryExtractor()
+        public void Parse_matchingExpressions_returnQueryData()
         {
             // arrange:
             string lenghtOfString = "lenghtOfString";
             IQuery query = null;
             Expression<Func<string, bool>> template = s => s.Length == query.Get<int>(lenghtOfString);
             Expression<Func<string, bool>> matching = a => a.Length == 10;
-            Expression<Func<string, bool>> notMatching = b => b.Length < 5;
 
             // act:
             IQueryDataExtractor<Expression<Func<string, bool>>> extractor = TemplateParser<Expression<Func<string, bool>>>.Parse(template);
             IQuery matchingQueryData = extractor.Parse(matching);
+   
+            // assert:
+            Assert.IsNotNull(matchingQueryData);
+            Assert.AreEqual(10, matchingQueryData.Get<int>(lenghtOfString));
+        }
+
+        [Test]
+        public void Parse_unmatchingParametricExpressions_returnNull()
+        {
+            // arrange:
+            string lenghtOfString = "lenghtOfString";
+            IQuery query = null;
+            Expression<Func<string, bool>> template = s => s.Length == query.Get<int>(lenghtOfString);
+            Expression<Func<string, bool>> notMatching = a => a.Length == a.Length;
+
+            // act:
+            IQueryDataExtractor<Expression<Func<string, bool>>> extractor = TemplateParser<Expression<Func<string, bool>>>.Parse(template);
             IQuery notMatchingQueryData = extractor.Parse(notMatching);
 
             // assert:
             Assert.IsNull(notMatchingQueryData);
+        }
+        
+        [Test]
+        public void Parse_matchingCommutatedExpressions_returnQueryData()
+        {
+            // arrange:
+            string lenghtOfString = "lenghtOfString";
+            IQuery query = null;
+            Expression<Func<string, bool>> template = s => s.Length == query.Get<int>(lenghtOfString);
+            Expression<Func<string, bool>> matching = a => 10 == a.Length;
+
+            // act:
+            IQueryDataExtractor<Expression<Func<string, bool>>> extractor = TemplateParser<Expression<Func<string, bool>>>.Parse(template);
+            IQuery matchingQueryData = extractor.Parse(matching);
+   
+            // assert:
             Assert.IsNotNull(matchingQueryData);
             Assert.AreEqual(10, matchingQueryData.Get<int>(lenghtOfString));
+        }
+        
+        [Test]
+        public void Parse_notMatchingExpression_returnNull()
+        {
+            // arrange:
+            string lenghtOfString = "lenghtOfString";
+            IQuery query = null;
+            Expression<Func<string, bool>> template = s => s.Length == query.Get<int>(lenghtOfString);
+            Expression<Func<string, bool>> notMatching = b => b.Length < 5;
+
+            // act:
+            IQueryDataExtractor<Expression<Func<string, bool>>> extractor = TemplateParser<Expression<Func<string, bool>>>.Parse(template);
+            IQuery notMatchingQueryData = extractor.Parse(notMatching);
+
+            // assert:
+            Assert.IsNull(notMatchingQueryData);
+        }
+
+        [Test]
+        public void Parse_matchingCommutedAndAlsoExpressions_returnQueryData()
+        {
+            // arrange:
+            int value = 10;
+            IQuery query = null;
+            Expression<Func<string, bool>> template = s => s.Length == query.Get<int>("lenghtOfString") && s.Contains("test");
+            Expression<Func<string, bool>> matching = a => a.Contains("test") && a.Length == value;
+
+            // act:
+            IQueryDataExtractor<Expression<Func<string, bool>>> extractor = TemplateParser<Expression<Func<string, bool>>>.Parse(template);
+            IQuery matchingQueryData = extractor.Parse(matching);
+
+            // assert:
+            Assert.IsNotNull(matchingQueryData);
+            Assert.AreEqual(value, matchingQueryData.Get<int>("lenghtOfString"));
         }
     }
 }
