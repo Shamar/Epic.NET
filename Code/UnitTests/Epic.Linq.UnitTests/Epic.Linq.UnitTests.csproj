@@ -69,5 +69,6 @@
     <Folder Include="Expressions\" />
     <Folder Include="Expressions\Visit\" />
     <Folder Include="Translators\" />
+    <Folder Include="Expressions\Templates\" />
   </ItemGroup>
 </Project>
