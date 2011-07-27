@@ -117,6 +117,25 @@ namespace Epic.Linq.Expressions.Templates
             Assert.IsNotNull(matchingQueryData);
             Assert.AreEqual(value, matchingQueryData.Get<int>("lenghtOfString"));
         }
+        
+        [Test]
+        public void Parse_matchingExpressionWith2Variable_returnQueryData()
+        {
+            // arrange:
+            int value = 10;
+            IQuery query = null;
+            Expression<Func<string, bool>> template = s => s.Length == query.Get<int>("lenghtOfString") && s.Contains(query.Get<string>("containedString"));
+            Expression<Func<string, bool>> matching = a => a.Contains("test") && value == a.Length;
+
+            // act:
+            IQueryDataExtractor<Expression<Func<string, bool>>> extractor = TemplateParser<Expression<Func<string, bool>>>.Parse(template);
+            IQuery matchingQueryData = extractor.Parse(matching);
+
+            // assert:
+            Assert.IsNotNull(matchingQueryData);
+            Assert.AreEqual(value, matchingQueryData.Get<int>("lenghtOfString"));
+            Assert.AreEqual("test", matchingQueryData.Get<string>("containedString"));
+        }
     }
 }
 

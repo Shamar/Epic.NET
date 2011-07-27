@@ -55,21 +55,18 @@ namespace Epic.Linq.Expressions.Templates
             state.TryGet<ExpressionPath<BinaryExpression>>(out path);
             ParseExpression (expression.Left, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Left)));
             ParseExpression (expression.Right, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Right)));
-            /* how to handle commutativity ? ? ? */
             switch(expression.NodeType)
             {
                 case ExpressionType.AddChecked:
                 case ExpressionType.MultiplyChecked:
                 case ExpressionType.AndAlso:
                 case ExpressionType.OrElse:
-                case ExpressionType.ExclusiveOr:
                 case ExpressionType.Equal:
                 case ExpressionType.NotEqual:
                     ParseExpression (expression.Left, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Right)));
                     ParseExpression (expression.Right, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Left)));
                 break;
             }
-             /* */ 
             if(expression.NodeType == ExpressionType.Coalesce)
                 ParseExpression (expression.Conversion, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Conversion)));
         }
@@ -104,7 +101,8 @@ namespace Epic.Linq.Expressions.Templates
             int i = 0;
             while(i < expression.Arguments.Count)
             {
-                ParseExpression(expression.Arguments[i], state.Add(path.Bind(e => Match.InvocationExpression(e, expression), e => e.Arguments[i])));
+                int index = i;
+                ParseExpression(expression.Arguments[index], state.Add(path.Bind(e => Match.InvocationExpression(e, expression), e => e.Arguments[index])));
                 ++i;
             }
         }
@@ -117,7 +115,8 @@ namespace Epic.Linq.Expressions.Templates
             int i = 0;
             while(i < expression.Parameters.Count)
             {
-                ParseParameterExpression(expression.Parameters[i], state.Add(path.Bind(e => Match.LambdaExpression(e, expression), e => e.Parameters[i])));
+                int index = i;
+                ParseParameterExpression(expression.Parameters[index], state.Add(path.Bind(e => Match.LambdaExpression(e, expression), e => e.Parameters[index])));
                 ++i;
             }
             ParseExpression(expression.Body, state.Add(path.Bind(e => Match.LambdaExpression(e, expression), e => e.Body)));
@@ -165,7 +164,8 @@ namespace Epic.Linq.Expressions.Templates
                 int i = 0;
                 while(i < expression.Arguments.Count)
                 {
-                    ParseExpression(expression.Arguments[i], state.Add(path.Bind(e => Match.MethodCall(e, expression), e => e.Arguments[i])));
+                    int index = i;
+                    ParseExpression(expression.Arguments[index], state.Add(path.Bind(e => Match.MethodCall(e, expression), e => e.Arguments[index])));
                     ++i;
                 }
             }
@@ -200,7 +200,8 @@ namespace Epic.Linq.Expressions.Templates
             int i = 0;
             while(i < expression.Expressions.Count)
             {
-                ParseExpression(expression.Expressions[i], state.Add(path.Bind(e => Match.NewArrayExpression(e, expression), e => e.Expressions[i])));
+                int index = i;
+                ParseExpression(expression.Expressions[index], state.Add(path.Bind(e => Match.NewArrayExpression(e, expression), e => e.Expressions[index])));
                 ++i;
             }
         }
@@ -215,10 +216,13 @@ namespace Epic.Linq.Expressions.Templates
             int i = 0;
             while(i < expression.Initializers.Count)
             {
+                int index = i;
                 int j = 0;
                 while(j < expression.Initializers[i].Arguments.Count)
                 {
-                    ParseExpression(expression.Initializers[i].Arguments[j], state.Add(path.Bind(e => Match.ListInitExpression(e, expression), e => e.Initializers[i].Arguments[j])));
+                    int indexj = j;
+                    ParseExpression(expression.Initializers[index].Arguments[indexj], state.Add(path.Bind(e => Match.ListInitExpression(e, expression), e => e.Initializers[index].Arguments[indexj])));
+                    ++j;
                 }
                 ++i;
             }            
