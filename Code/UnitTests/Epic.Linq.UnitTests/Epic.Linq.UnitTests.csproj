@@ -40,6 +40,18 @@
       <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="Challenge00.DDDSample.ACME, Version=0.2.4226.20767, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Challenges\Challenge00.DDDSample\build\bin\Debug\Challenge00.DDDSample.ACME.dll</HintPath>
+    </Reference>
+    <Reference Include="Challenge00.DDDSample.Default, Version=0.2.4226.20766, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Challenges\Challenge00.DDDSample\build\bin\Debug\Challenge00.DDDSample.Default.dll</HintPath>
+    </Reference>
+    <Reference Include="Challenge00.DDDSample, Version=0.2.4226.20766, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Challenges\Challenge00.DDDSample\build\bin\Debug\Challenge00.DDDSample.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
