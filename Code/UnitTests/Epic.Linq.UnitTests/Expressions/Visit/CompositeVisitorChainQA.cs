@@ -168,6 +168,16 @@ namespace Epic.Linq.Expressions.Visit
             Assert.AreSame(expression, e);
         }
         
+        public static string GetTypeName(Type type)
+        {
+            string typeName = type.Name;
+            if(type.IsGenericType)
+            {
+                typeName = typeName + "[[" + string.Join("], [", type.GetGenericArguments().Select(t => GetTypeName(t)).ToArray()) + "]]";
+            }
+            return typeName;
+        }
+        
         public static void WriteToConsole(int depth, Expression expression, IVisitState state)
         {
             for(int i = 0; i < depth; ++i)
@@ -187,7 +197,8 @@ namespace Epic.Linq.Expressions.Visit
                     Console.Write(" : " + call.Method.Name);
                 break;
             }
-            Console.WriteLine(" / " + expression.Type.Name);
+            string typeName = GetTypeName(expression.Type);
+            Console.WriteLine(" / " + typeName);
         }
         
         [Test]
