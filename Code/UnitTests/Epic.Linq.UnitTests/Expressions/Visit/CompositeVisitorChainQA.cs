@@ -28,6 +28,10 @@ using System.Linq.Expressions;
 using Rhino.Mocks;
 using System.Reflection;
 using System.Linq;
+using Challenge00.DDDSample.Cargo;
+using Epic.Environment;
+using Challenge00.DDDSample.Voyage;
+using Challenge00.DDDSample.Location;
 
 namespace Epic.Linq.Expressions.Visit
 {
@@ -58,6 +62,12 @@ namespace Epic.Linq.Expressions.Visit
     [TestFixture]
     public class CompositeVisitorChainQA : RhinoMocksFixtureBase
     {
+        [SetUp]
+        public void ResetApplication()
+        {
+            TestUtilities.ResetApplication();
+        }
+        
         [Test]
         public void GetVisitor_withKnownExpression_dontReachEnd()
         {
@@ -162,11 +172,95 @@ namespace Epic.Linq.Expressions.Visit
         {
             for(int i = 0; i < depth; ++i)
             {
-                Console.Write("    ");
+                Console.Write("|   ");
             }
-            Console.WriteLine("{0} - {1}", expression.NodeType, expression.GetType().Name);
+            Console.Write("{0} - {1}", expression.NodeType, expression.GetType().Name);
+            switch(expression.NodeType)
+            {
+                case ExpressionType.Constant:
+                case ExpressionType.Parameter:
+                case ExpressionType.Lambda:
+                    Console.Write(" : " + expression.ToString());
+                break;
+                case ExpressionType.Call:
+                    MethodCallExpression call = expression as MethodCallExpression;
+                    Console.Write(" : " + call.Method.Name);
+                break;
+            }
+            Console.WriteLine(" / " + expression.Type.Name);
         }
         
+        [Test]
+        public void Visit_CargoVisitLocationWithPrintingVisitor_works()
+        {
+            // arrange:
+            string providerName = "test";
+            EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
+            InstanceName<IQueryProvider> instanceName = new InstanceName<IQueryProvider>(providerName);
+            IQueryProvider mockProvider = new QueryProvider(providerName);
+            env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
+            ApplicationBase app = new Fakes.FakeApplication(env, null);
+            Application.Initialize(app);
+            IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
+            IQueryable<ICargo> movingCargos = from c in cargos 
+                                              where c.Delivery.TransportStatus == TransportStatus.OnboardCarrier 
+                                              select c;
+            IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
+            IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
+            IQueryable<ILocation> locationsTraversedFromVoyagesEndingToday = 
+                    from c in movingCargos
+                    from l in locations
+                    from v in voyages
+                    where   c.Delivery.CurrentVoyage == v.Number 
+                        &&  v.WillStopOverAt(l)
+                        &&  c.Itinerary.FinalArrivalDate == DateTime.Today
+                    select l;
+            VisitorsComposition chain = new VisitorsComposition();
+            new LoggingVisitor(chain, WriteToConsole);
+            UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(locationsTraversedFromVoyagesEndingToday.Expression);
+                                  
+
+            // act:
+            Expression returnedExpression = adapter.Accept(chain, VisitState.New);
+            
+            // assert:
+            Assert.AreSame(locationsTraversedFromVoyagesEndingToday.Expression, returnedExpression);
+        }
+        
+        [Test]
+        public void Visit_nextLocationsOfMovingVoyagesWithPrintingVisitor_works()
+        {
+            // arrange:
+            string providerName = "test";
+            EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
+            InstanceName<IQueryProvider> instanceName = new InstanceName<IQueryProvider>(providerName);
+            IQueryProvider mockProvider = new QueryProvider(providerName);
+            env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
+            ApplicationBase app = new Fakes.FakeApplication(env, null);
+            Application.Initialize(app);
+            IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
+            IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
+            IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
+            IQueryable<IVoyage> movingVoyages = voyages.Where(v => v.IsMoving);
+            var nextLocationsOfMovingVoyages = 
+                    from v in movingVoyages
+                    from l in locations
+                    where v.WillStopOverAt(l)
+                    select l;
+            VisitorsComposition chain = new VisitorsComposition();
+            new LoggingVisitor(chain, WriteToConsole);
+            UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextLocationsOfMovingVoyages.Expression);
+                                  
+
+            // act:
+            Expression returnedExpression = adapter.Accept(chain, VisitState.New);
+            
+            // assert:
+            Assert.AreSame(nextLocationsOfMovingVoyages.Expression, returnedExpression);
+        }
+
     }
+    
+    
 }
 
