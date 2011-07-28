@@ -70,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
-    <Folder Include="Translators\" />
     <Folder Include="Expressions\Visit\" />
   </ItemGroup>
 </Project>
