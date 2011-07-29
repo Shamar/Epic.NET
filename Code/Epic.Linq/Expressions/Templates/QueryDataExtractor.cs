@@ -102,8 +102,10 @@ namespace Epic.Linq.Expressions.Templates
             }
         }
 
-        private static bool CanBeCompiled(Expression expression)
+        private static bool CanBeCompiled(Expression expression, params ParameterExpression[] availableParameters)
         {
+            if(null == availableParameters)
+                availableParameters = new ParameterExpression[0];
             switch(expression.NodeType)
             {
                 case ExpressionType.ArrayLength:
@@ -156,7 +158,17 @@ namespace Epic.Linq.Expressions.Templates
                     }
                     return CanBeCompiled(invocationExp.Expression);
                 case ExpressionType.Lambda:
-                    return false;
+                    LambdaExpression lambdaExp = expression as LambdaExpression;
+                    if(lambdaExp.Parameters.Count > 0 || availableParameters.Length > 0)
+                    {
+                        List<ParameterExpression> parameters = new List<ParameterExpression>(lambdaExp.Parameters);
+                        parameters.AddRange(availableParameters);
+                        return CanBeCompiled(lambdaExp.Body, parameters.ToArray());
+                    }
+                    else
+                    {
+                        return CanBeCompiled(lambdaExp.Body);
+                    }
                 case ExpressionType.MemberAccess:
                     return CanBeCompiled((expression as MemberExpression).Expression);
                 case ExpressionType.Call:

@@ -57,6 +57,7 @@ namespace Epic.Linq.Expressions.Templates
             ParseExpression (expression.Right, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Right)));
             switch(expression.NodeType)
             {
+                // TODO : verify if this is the best method to handle commutative operators.
                 case ExpressionType.AddChecked:
                 case ExpressionType.MultiplyChecked:
                 case ExpressionType.AndAlso:
