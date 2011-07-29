@@ -73,7 +73,7 @@ namespace Epic.Linq.Expressions.Visit
         {
             // arrange:
             MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
-            VisitorsComposition chain = new VisitorsComposition();
+            VisitorsComposition chain = new VisitorsComposition("test");
             GenericDumbVisitor<MethodCallExpression> dumb1 = new GenericDumbVisitor<MethodCallExpression> (chain);
             GenericDumbVisitor<MemberInitExpression> dumb2 = new GenericDumbVisitor<MemberInitExpression>(chain);
 
@@ -89,7 +89,7 @@ namespace Epic.Linq.Expressions.Visit
         {
             // arrange:
             MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
-            VisitorsComposition chain = new VisitorsComposition();
+            VisitorsComposition chain = new VisitorsComposition("test");
             new DumbVisitor(chain);
             DumbVisitor dumb2 = new DumbVisitor(chain);
 
@@ -105,7 +105,7 @@ namespace Epic.Linq.Expressions.Visit
         {
             // arrange:
             MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
-            VisitorsComposition chain = new VisitorsComposition();
+            VisitorsComposition chain = new VisitorsComposition("test");
             new DumbVisitor(chain);
             new DumbVisitor(chain);
 
@@ -122,7 +122,7 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             MethodCallExpression callExpression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             Expression<Func<int, string>> lambdaExpression = x => x.ToString();
-            VisitorsComposition chain = new VisitorsComposition();
+            VisitorsComposition chain = new VisitorsComposition("test");
             GenericDumbVisitor<MethodCallExpression> dumb1 = new GenericDumbVisitor<MethodCallExpression> (chain);
             GenericDumbVisitor<Expression<Func<int, string>>> dumb2 = new GenericDumbVisitor<Expression<Func<int, string>>>(chain);
 
@@ -140,7 +140,7 @@ namespace Epic.Linq.Expressions.Visit
         {
             // arrange:
             Expression<Func<int, string, int>> expression = (i,s)=> (i + s.Length).ToString().Length;
-            VisitorsComposition chain = new VisitorsComposition();
+            VisitorsComposition chain = new VisitorsComposition("test");
             new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
@@ -157,7 +157,7 @@ namespace Epic.Linq.Expressions.Visit
         {
             // arrange:
             Expression<Func<int, string, int>> expression = (i,s)=> s == null ? i : s.Length;
-            VisitorsComposition chain = new VisitorsComposition();
+            VisitorsComposition chain = new VisitorsComposition("test");
             new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
@@ -226,7 +226,7 @@ namespace Epic.Linq.Expressions.Visit
                         &&  v.WillStopOverAt(l)
                         &&  c.Itinerary.FinalArrivalDate == DateTime.Today
                     select l;
-            VisitorsComposition chain = new VisitorsComposition();
+            VisitorsComposition chain = new VisitorsComposition("test");
             new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(locationsTraversedFromVoyagesEndingToday.Expression);
                                   
@@ -259,7 +259,7 @@ namespace Epic.Linq.Expressions.Visit
                     from l in usLocations
                     where v.WillStopOverAt(l)
                     select l;
-            VisitorsComposition chain = new VisitorsComposition();
+            VisitorsComposition chain = new VisitorsComposition("test");
             new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextLocationsOfMovingVoyages.Expression);
                                   

@@ -31,7 +31,7 @@ using System.Diagnostics;
 namespace Epic.Linq.Expressions.Visit
 {
     // TODO : this is an identity visitor, isn't it?
-    internal sealed class UnvisitableExpressionsVisitor : VisitorsComposition.VisitorBase, ICompositeVisitor<Expression>,
+    internal sealed class UnvisitableExpressionsVisitor : VisitorsComposition.VisitorBase,
         ICompositeVisitor<UnaryExpression>, 
         ICompositeVisitor<BinaryExpression>, 
         ICompositeVisitor<ConditionalExpression>,
@@ -52,33 +52,6 @@ namespace Epic.Linq.Expressions.Visit
         {
         }
   
-        class Visited
-        {
-            internal readonly Expression Expression;
-            
-            internal Visited (Expression e)
-            {
-                this.Expression = e;
-            }
-        }
-        
-        private static bool ShouldVisit (Expression expression, IVisitState state)
-        {
-            Visited lastVisited = null;
-            if (!state.TryGet<Visited> (out lastVisited))
-                return true;
-            if (lastVisited.Expression != expression)
-                return true;
-            return false;
-        }
-
-        #region ICompositeVisitor[Expression] implementation
-        System.Linq.Expressions.Expression ICompositeVisitor<Expression>.Visit (Expression target, IVisitState state)
-        {
-            return VisitExpression (target, state);
-        }
-        #endregion
-   
         /// <summary>
         /// Adjusts the arguments for a <see cref="NewExpression"/> so that they match the given members.
         /// </summary>
@@ -101,78 +74,8 @@ namespace Epic.Linq.Expressions.Visit
     
         private Expression VisitExpression (Expression expression, IVisitState state)
         {
-            if (expression == null)
-                return null;
-    
-            VisitableExpression visitable = expression as VisitableExpression;
-            if (visitable != null)
-                return visitable;
-    
-            switch (expression.NodeType) {
-            case ExpressionType.ArrayLength:
-            case ExpressionType.Convert:
-            case ExpressionType.ConvertChecked:
-            case ExpressionType.Negate:
-            case ExpressionType.NegateChecked:
-            case ExpressionType.Not:
-            case ExpressionType.Quote:
-            case ExpressionType.TypeAs:
-            case ExpressionType.UnaryPlus:
-                return Visit ((UnaryExpression)expression, state);
-            case ExpressionType.Add:
-            case ExpressionType.AddChecked:
-            case ExpressionType.Divide:
-            case ExpressionType.Modulo:
-            case ExpressionType.Multiply:
-            case ExpressionType.MultiplyChecked:
-            case ExpressionType.Power:
-            case ExpressionType.Subtract:
-            case ExpressionType.SubtractChecked:
-            case ExpressionType.And:
-            case ExpressionType.Or:
-            case ExpressionType.ExclusiveOr:
-            case ExpressionType.LeftShift:
-            case ExpressionType.RightShift:
-            case ExpressionType.AndAlso:
-            case ExpressionType.OrElse:
-            case ExpressionType.Equal:
-            case ExpressionType.NotEqual:
-            case ExpressionType.GreaterThanOrEqual:
-            case ExpressionType.GreaterThan:
-            case ExpressionType.LessThan:
-            case ExpressionType.LessThanOrEqual:
-            case ExpressionType.Coalesce:
-            case ExpressionType.ArrayIndex:
-                return Visit ((BinaryExpression)expression, state);
-            case ExpressionType.Conditional:
-                return Visit ((ConditionalExpression)expression, state);
-            case ExpressionType.Constant:
-                return Visit ((ConstantExpression)expression, state);
-            case ExpressionType.Invoke:
-                return Visit ((InvocationExpression)expression, state);
-            case ExpressionType.Lambda:
-                return Visit ((LambdaExpression)expression, state);
-            case ExpressionType.MemberAccess:
-                return Visit ((MemberExpression)expression, state);
-            case ExpressionType.Call:
-                return Visit ((MethodCallExpression)expression, state);
-            case ExpressionType.New:
-                return Visit ((NewExpression)expression, state);
-            case ExpressionType.NewArrayBounds:
-            case ExpressionType.NewArrayInit:
-                return Visit ((NewArrayExpression)expression, state);
-            case ExpressionType.MemberInit:
-                return Visit ((MemberInitExpression)expression, state);
-            case ExpressionType.ListInit:
-                return Visit ((ListInitExpression)expression, state);
-            case ExpressionType.Parameter:
-                return Visit ((ParameterExpression)expression, state);
-            case ExpressionType.TypeIs:
-                return Visit ((TypeBinaryExpression)expression, state);
-    
-            default:
-                return VisitUnknownNonVisitableExpression (expression);
-            }
+            ICompositeVisitor<Expression> visitor = GetVisitor<Expression>(expression);
+            return visitor.Visit(expression, state);
         }
     
         private T VisitAndConvert<T> (T expression, string methodName, IVisitState state) where T : Expression
@@ -225,19 +128,8 @@ namespace Epic.Linq.Expressions.Visit
                 return list;
         }
     
-        private Expression VisitUnknownNonVisitableExpression (Expression expression)
-        {
-            var message = string.Format ("Expression type '{0}' is not supported by this {1}.", expression.GetType ().Name, GetType ().Name);
-            throw new NotSupportedException (message);
-        }
-    
         public Expression Visit (UnaryExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<UnaryExpression> visitor = GetVisitor<UnaryExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             Expression newOperand = VisitExpression (expression.Operand, state);
             if (newOperand != expression.Operand) {
                 if (expression.NodeType == ExpressionType.UnaryPlus)
@@ -250,11 +142,6 @@ namespace Epic.Linq.Expressions.Visit
 
         public Expression Visit (BinaryExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<BinaryExpression> visitor = GetVisitor<BinaryExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             Expression newLeft = VisitExpression (expression.Left, state);
             Expression newRight = VisitExpression (expression.Right, state);
             var newConversion = (LambdaExpression)VisitExpression (expression.Conversion, state);
@@ -265,11 +152,6 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (TypeBinaryExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<TypeBinaryExpression> visitor = GetVisitor<TypeBinaryExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             Expression newExpression = VisitExpression (expression.Expression, state);
             if (newExpression != expression.Expression)
                 return Expression.TypeIs (newExpression, expression.TypeOperand);
@@ -278,21 +160,11 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (ConstantExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<ConstantExpression> visitor = GetVisitor<ConstantExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             return expression;
         }
     
         public Expression Visit (ConditionalExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<ConditionalExpression> visitor = GetVisitor<ConditionalExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             Expression newTest = VisitExpression (expression.Test, state);
             Expression newFalse = VisitExpression (expression.IfFalse, state);
             Expression newTrue = VisitExpression (expression.IfTrue, state);
@@ -303,21 +175,11 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (ParameterExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<ParameterExpression> visitor = GetVisitor<ParameterExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             return expression;
         }
     
         public Expression Visit (LambdaExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<LambdaExpression> visitor = GetVisitor<LambdaExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "Visit", state);
             Expression newBody = VisitExpression (expression.Body, state);
             if ((newBody != expression.Body) || (newParameters != expression.Parameters))
@@ -328,11 +190,6 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (MethodCallExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<MethodCallExpression> visitor = GetVisitor<MethodCallExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             Expression newObject = VisitExpression (expression.Object, state);
             ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
             if ((newObject != expression.Object) || (newArguments != expression.Arguments))
@@ -343,11 +200,6 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (InvocationExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<InvocationExpression> visitor = GetVisitor<InvocationExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             Expression newExpression = VisitExpression (expression.Expression, state);
             ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
             if ((newExpression != expression.Expression) || (newArguments != expression.Arguments))
@@ -357,11 +209,6 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (MemberExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<MemberExpression> visitor = GetVisitor<MemberExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             Expression newExpression = VisitExpression (expression.Expression, state);
             if (newExpression != expression.Expression)
                 return Expression.MakeMemberAccess (newExpression, expression.Member);
@@ -370,11 +217,6 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (NewExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<NewExpression> visitor = GetVisitor<NewExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
             if (newArguments != expression.Arguments) {
                 if (expression.Members == null)
@@ -387,11 +229,6 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (NewArrayExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<NewArrayExpression> visitor = GetVisitor<NewArrayExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit", state);
             if (newExpressions != expression.Expressions) {
                 var elementType = expression.Type.GetElementType ();
@@ -405,11 +242,6 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (MemberInitExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<MemberInitExpression> visitor = GetVisitor<MemberInitExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             NewExpression newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
             if (newNewExpression == null) {
                 throw new NotSupportedException (
@@ -424,11 +256,6 @@ namespace Epic.Linq.Expressions.Visit
     
         public Expression Visit (ListInitExpression expression, IVisitState state)
         {
-            if (ShouldVisit (expression, state)) {
-                ICompositeVisitor<ListInitExpression> visitor = GetVisitor<ListInitExpression> (expression);
-                if (this != visitor)
-                    return visitor.Visit (expression, state.Add (new Visited (expression)));
-            }
             var newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
             if (newNewExpression == null)
                 throw new NotSupportedException ("ListInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
