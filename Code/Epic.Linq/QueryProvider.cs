@@ -23,6 +23,9 @@
 //  
 using System;
 using System.Linq;
+using Epic;
+using Epic.Linq.Expressions;
+using Epic.Linq.Expressions.Visit;
 
 namespace Epic.Linq
 {
@@ -38,7 +41,6 @@ namespace Epic.Linq
 	internal sealed class QueryProvider : IQueryProvider
 	{
 		private readonly string _name;
-        
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Epic.Linq.QueryProvider"/> class.
@@ -99,7 +101,13 @@ namespace Epic.Linq
 
 		public object Execute (System.Linq.Expressions.Expression expression)
 		{
-			throw new NotImplementedException ();
+            // TODO : optimize
+            return this.GetType()
+                .GetMethods()
+                .Where(m => m.Name == "Execute" && m.IsGenericMethod)
+                .Single()
+                .MakeGenericMethod(new Type[] { expression.Type })
+                .Invoke(this, new object[] { expression });
 		}
 		
 		/// <summary>
@@ -116,12 +124,16 @@ namespace Epic.Linq
 		/// </typeparam>
 		IQueryable<TElement> IQueryProvider.CreateQuery<TElement> (System.Linq.Expressions.Expression expression)
 		{
-			return new Queryable<TElement>(this, expression);
+            return new Queryable<TElement>(this, expression);
 		}
 
 		TResult IQueryProvider.Execute<TResult> (System.Linq.Expressions.Expression expression)
 		{
-			throw new NotImplementedException ();
+			ICompositeVisitor<System.Linq.Expressions.Expression> visitor = Application.Environment.Get(new InstanceName<ICompositeVisitor<System.Linq.Expressions.Expression>>(_name));
+            IQueryExecutor executor = Application.Environment.Get(new InstanceName<IQueryExecutor>(_name));
+            IVisitState state = VisitState.New.Add<IQueryProvider>(this);
+            VisitableExpression visitableExpression = visitor.GetVisitor(expression).Visit(expression, state) as VisitableExpression;
+            return executor.Execute<TResult>(visitableExpression);
 		}
 		#endregion
 	}

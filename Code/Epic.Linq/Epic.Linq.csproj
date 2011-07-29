@@ -60,6 +60,7 @@
     <Compile Include="Expressions\Templates\TemplateParser.cs" />
     <Compile Include="Expressions\Templates\Match.cs" />
     <Compile Include="Expressions\Templates\IQueryDataExtractor.cs" />
+    <Compile Include="IQueryExecutor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
