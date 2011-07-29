@@ -87,6 +87,40 @@ namespace Epic.Linq.Expressions.Templates
         }
         
         [Test]
+        public void Parse_matchingWithoutQueryVariables_returnQueryData()
+        {
+            // arrange:
+            Expression<Func<string, bool>> template = s => s.Length == s.Length;
+            Expression<Func<string, bool>> matching = a => a.Length == a.Length;
+
+            TestingUtilities.PrintExpression(template);
+            
+            // act:
+            IQueryDataExtractor<Expression<Func<string, bool>>> extractor = TemplateParser<Expression<Func<string, bool>>>.Parse(template);
+            IQuery matchingQueryData = extractor.Parse(matching);
+   
+            // assert:
+            Assert.IsTrue(extractor.CanParse(matching));
+            Assert.IsNotNull(matchingQueryData);
+        }
+        
+        [Test]
+        public void Parse_notMatchingWithoutQueryVariables_returnQueryData()
+        {
+            // arrange:
+            Expression<Func<string, bool>> template = s => s.Length == s.Length;
+            Expression<Func<string, bool>> notMatching = a => a.Length == a.GetHashCode();
+   
+            // act:
+            IQueryDataExtractor<Expression<Func<string, bool>>> extractor = TemplateParser<Expression<Func<string, bool>>>.Parse(template);
+            IQuery matchingQueryData = extractor.Parse(notMatching);
+   
+            // assert:
+            Assert.IsFalse(extractor.CanParse(notMatching));
+            Assert.IsNull(matchingQueryData);
+        }
+        
+        [Test]
         public void Parse_notMatchingExpression_returnNull()
         {
             // arrange:

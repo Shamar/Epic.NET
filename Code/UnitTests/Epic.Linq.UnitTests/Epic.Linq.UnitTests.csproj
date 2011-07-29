@@ -77,6 +77,7 @@
     <Compile Include="Expressions\Visit\CompositeVisitorChainQA.cs" />
     <Compile Include="Expressions\UnvisitableExpressionAdapterQA.cs" />
     <Compile Include="Expressions\Templates\TemplateParserQA.cs" />
+    <Compile Include="TestingUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
