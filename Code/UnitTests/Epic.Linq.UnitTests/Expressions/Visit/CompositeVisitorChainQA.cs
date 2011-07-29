@@ -184,7 +184,7 @@ namespace Epic.Linq.Expressions.Visit
             {
                 Console.Write("|   ");
             }
-            Console.Write("{0} - {1}", expression.NodeType, expression.GetType().Name);
+            Console.Write("{0}", expression.NodeType);
             switch(expression.NodeType)
             {
                 case ExpressionType.Constant:
@@ -239,23 +239,24 @@ namespace Epic.Linq.Expressions.Visit
         }
         
         [Test]
-        public void Visit_nextLocationsOfMovingVoyagesWithPrintingVisitor_works()
+        public void Visit_nextUsLocationsOfMovingVoyagesWithPrintingVisitor_works()
         {
             // arrange:
             string providerName = "test";
             EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
             InstanceName<IQueryProvider> instanceName = new InstanceName<IQueryProvider>(providerName);
             IQueryProvider mockProvider = new QueryProvider(providerName);
-            env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
+            env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.AtLeastOnce();
             ApplicationBase app = new Fakes.FakeApplication(env, null);
             Application.Initialize(app);
             IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
             IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
+            IQueryable<ILocation> usLocations = from l in locations where l.UnLocode.StartsWith("US") select l;
             IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
             IQueryable<IVoyage> movingVoyages = voyages.Where(v => v.IsMoving);
             var nextLocationsOfMovingVoyages = 
                     from v in movingVoyages
-                    from l in locations
+                    from l in usLocations
                     where v.WillStopOverAt(l)
                     select l;
             VisitorsComposition chain = new VisitorsComposition();
