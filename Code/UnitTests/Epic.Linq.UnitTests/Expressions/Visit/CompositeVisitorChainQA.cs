@@ -278,6 +278,43 @@ namespace Epic.Linq.Expressions.Visit
             // assert:
             Assert.AreSame(nextLocationsOfMovingVoyages.Expression, returnedExpression);
         }
+        
+        [Test]
+        public void Visit_nextUsLocationsOfMovingVoyagesWithPrintingVisitor_works_2()
+        {
+            // arrange:
+            string providerName = "test";
+            EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
+            InstanceName<IQueryProvider> instanceName = new InstanceName<IQueryProvider>(providerName);
+            IQueryProvider mockProvider = new QueryProvider(providerName);
+            env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.AtLeastOnce();
+            ApplicationBase app = new Fakes.FakeApplication(env, null);
+            Application.Initialize(app);
+            IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
+            IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
+            IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
+            IQueryable<IVoyage> movingVoyages = voyages.Where(v => v.IsMoving);
+            var nextLocationsOfMovingVoyages = 
+                    from v in movingVoyages
+                    from l in locations.Where(loc => loc.UnLocode.StartsWith("US"))
+                    where v.WillStopOverAt(l)
+                    select l;
+            VisitorsComposition chain = new VisitorsComposition("test");
+            new UnvisitableExpressionsVisitor(chain);
+            new QueryableMemberAccessVisitor(chain);
+            UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextLocationsOfMovingVoyages.Expression);
+                                  
+            // act:
+            Console.WriteLine("  --  Before:");
+            TestingUtilities.PrintExpression(nextLocationsOfMovingVoyages.Expression);
+            Expression returnedExpression = adapter.Accept(chain, VisitState.New);
+            
+            Console.WriteLine("  --  After:");
+            TestingUtilities.PrintExpression(returnedExpression);
+            
+            // assert:
+            Assert.AreNotSame(nextLocationsOfMovingVoyages.Expression, returnedExpression);
+        }
 
     }
     
