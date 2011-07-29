@@ -104,8 +104,6 @@ namespace Epic.Linq.Expressions.Templates
 
         private static bool CanBeCompiled(Expression expression, params ParameterExpression[] availableParameters)
         {
-            if(null == availableParameters)
-                availableParameters = new ParameterExpression[0];
             switch(expression.NodeType)
             {
                 case ExpressionType.ArrayLength:
@@ -117,7 +115,7 @@ namespace Epic.Linq.Expressions.Templates
                 case ExpressionType.Quote:
                 case ExpressionType.TypeAs:
                 case ExpressionType.UnaryPlus:
-                    return CanBeCompiled((expression as UnaryExpression).Operand);
+                    return CanBeCompiled((expression as UnaryExpression).Operand, availableParameters);
                 case ExpressionType.Add:
                 case ExpressionType.AddChecked:
                 case ExpressionType.Divide:
@@ -143,47 +141,50 @@ namespace Epic.Linq.Expressions.Templates
                 case ExpressionType.Coalesce:
                 case ExpressionType.ArrayIndex:
                     BinaryExpression binaryExp = expression as BinaryExpression;
-                    return CanBeCompiled(binaryExp.Left) && CanBeCompiled(binaryExp.Right);
+                    return CanBeCompiled(binaryExp.Left, availableParameters) && CanBeCompiled(binaryExp.Right, availableParameters);
                 case ExpressionType.Conditional:
                     ConditionalExpression conditionalExp = expression as ConditionalExpression;
-                    return CanBeCompiled(conditionalExp.Test) && CanBeCompiled(conditionalExp.IfTrue) && CanBeCompiled(conditionalExp.IfFalse);
+                    return CanBeCompiled(conditionalExp.Test, availableParameters) && CanBeCompiled(conditionalExp.IfTrue, availableParameters) && CanBeCompiled(conditionalExp.IfFalse, availableParameters);
                 case ExpressionType.Constant:
                     return true;
                 case ExpressionType.Invoke:
                     InvocationExpression invocationExp = expression as InvocationExpression;
                     foreach (Expression arg in invocationExp.Arguments)
                     {
-                        if (!CanBeCompiled(arg))
+                        if (!CanBeCompiled(arg, availableParameters))
                             return false;
                     }
-                    return CanBeCompiled(invocationExp.Expression);
+                    return CanBeCompiled(invocationExp.Expression, availableParameters);
                 case ExpressionType.Lambda:
                     LambdaExpression lambdaExp = expression as LambdaExpression;
-                    if(lambdaExp.Parameters.Count > 0 || availableParameters.Length > 0)
+                    if(lambdaExp.Parameters.Count > 0 || (null != availableParameters && availableParameters.Length > 0))
                     {
                         List<ParameterExpression> parameters = new List<ParameterExpression>(lambdaExp.Parameters);
-                        parameters.AddRange(availableParameters);
+                        if(null != availableParameters && availableParameters.Length > 0)
+                        {
+                            parameters.AddRange(availableParameters);
+                        }
                         return CanBeCompiled(lambdaExp.Body, parameters.ToArray());
                     }
                     else
                     {
-                        return CanBeCompiled(lambdaExp.Body);
+                        return CanBeCompiled(lambdaExp.Body, availableParameters);
                     }
                 case ExpressionType.MemberAccess:
-                    return CanBeCompiled((expression as MemberExpression).Expression);
+                    return CanBeCompiled((expression as MemberExpression).Expression, availableParameters);
                 case ExpressionType.Call:
                     MethodCallExpression callExp = expression as MethodCallExpression;
                     foreach (Expression arg in callExp.Arguments)
                     {
-                        if (!CanBeCompiled(arg))
+                        if (!CanBeCompiled(arg, availableParameters))
                             return false;
                     }
-                    return null == callExp.Object || CanBeCompiled(callExp.Object);
+                    return null == callExp.Object || CanBeCompiled(callExp.Object, availableParameters);
                 case ExpressionType.New:
                     NewExpression newExp = expression as NewExpression;
                     foreach (Expression arg in newExp.Arguments)
                     {
-                        if (!CanBeCompiled(arg))
+                        if (!CanBeCompiled(arg, availableParameters))
                             return false;
                     }
                     return true;
@@ -192,7 +193,7 @@ namespace Epic.Linq.Expressions.Templates
                     NewArrayExpression newArrExp = expression as NewArrayExpression;
                     foreach (Expression arg in newArrExp.Expressions)
                     {
-                        if (!CanBeCompiled(arg))
+                        if (!CanBeCompiled(arg, availableParameters))
                             return false;
                     }
                     return true;
@@ -204,7 +205,7 @@ namespace Epic.Linq.Expressions.Templates
                         {
                             case MemberBindingType.Assignment:
                                 MemberAssignment assign = binding as MemberAssignment;
-                                if (!CanBeCompiled(assign.Expression))
+                                if (!CanBeCompiled(assign.Expression, availableParameters))
                                     return false;
                                 break;
                             case MemberBindingType.MemberBinding:
@@ -213,19 +214,19 @@ namespace Epic.Linq.Expressions.Templates
                                 return false;
                             default:
                                 MemberListBinding list = binding as MemberListBinding;
-                                if(!list.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e))))
+                                if(!list.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e, availableParameters))))
                                     return false;
                                 break;
                         }
                     }
-                    return CanBeCompiled(initExp.NewExpression);
+                    return CanBeCompiled(initExp.NewExpression, availableParameters);
                 case ExpressionType.ListInit:
                     ListInitExpression listExp = expression as ListInitExpression;
-                    return CanBeCompiled(listExp.NewExpression) && listExp.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e)));
+                    return CanBeCompiled(listExp.NewExpression) && listExp.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e, availableParameters)));
                 case ExpressionType.Parameter:
                     return false;
                 case ExpressionType.TypeIs:
-                    return CanBeCompiled((expression as TypeBinaryExpression).Expression);
+                    return CanBeCompiled((expression as TypeBinaryExpression).Expression, availableParameters);
                 default:
                     return false;
             }
