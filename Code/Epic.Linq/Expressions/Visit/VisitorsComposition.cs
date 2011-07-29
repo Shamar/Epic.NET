@@ -37,7 +37,6 @@ namespace Epic.Linq.Expressions.Visit
                 throw new ArgumentNullException("name");
             _name = name;
             _chain = new List<VisitorBase>();
-            new UnvisitableExpressionsVisitor(this);
         }
 
         #region ICompositeVisitor implementation
