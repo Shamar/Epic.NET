@@ -224,6 +224,12 @@ namespace Epic.Linq.Expressions.Templates
                     ListInitExpression listExp = expression as ListInitExpression;
                     return CanBeCompiled(listExp.NewExpression) && listExp.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e, availableParameters)));
                 case ExpressionType.Parameter:
+                    if(null != availableParameters)
+                    {
+                        for(int i = 0; i < availableParameters.Length; ++i)
+                            if(expression == availableParameters[i])
+                                return true;
+                    }
                     return false;
                 case ExpressionType.TypeIs:
                     return CanBeCompiled((expression as TypeBinaryExpression).Expression, availableParameters);
