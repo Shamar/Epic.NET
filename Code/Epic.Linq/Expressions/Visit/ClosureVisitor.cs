@@ -1,5 +1,5 @@
 //  
-//  QueryableMemberAccessVisitor.cs
+//  ClosureVisitor.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -23,27 +23,47 @@
 //  
 using System;
 using System.Linq.Expressions;
-using System.Linq;
+using System.Reflection;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class QueryableMemberAccessVisitor : VisitorsComposition.VisitorBase, ICompositeVisitor<MemberExpression>
+    /// <summary>
+    /// Closure visitor. Replace a closure with its value. Closures are defined as accesses to fields or properties of constants.
+    /// </summary>
+    public sealed class ClosureVisitor : VisitorsComposition.VisitorBase, ICompositeVisitor<MemberExpression>
     {
-        public QueryableMemberAccessVisitor (VisitorsComposition chain)
+        public ClosureVisitor (VisitorsComposition chain)
             : base(chain)
         {
         }
+        
+        internal protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        {
+            ICompositeVisitor<TExpression> visitor = base.AsVisitor (target);
+            
+            if(null != visitor)
+            {
+                MemberExpression expression = target as MemberExpression;
+                if( expression.Expression.NodeType != ExpressionType.Constant 
+                    || (expression.Member.MemberType != MemberTypes.Field && expression.Member.MemberType != MemberTypes.Property))
+                {
+                    return null;
+                }
+            }
+            
+            return visitor;
+        }
 
         #region ICompositeVisitor[MemberExpression] implementation
-        public System.Linq.Expressions.Expression Visit (MemberExpression target, IVisitState state)
+        public Expression Visit (MemberExpression target, IVisitState state)
         {
             try
             {
                 LambdaExpression lambda = Expression.Lambda(typeof(Func<>).MakeGenericType(target.Type), target);
-                IQueryable queryable = lambda.Compile().DynamicInvoke() as IQueryable;
+                ConstantExpression constant = Expression.Constant(lambda.Compile().DynamicInvoke(), target.Type);
                 
-                ICompositeVisitor<Expression> visitor = GetVisitor<Expression>(queryable.Expression);
-                return visitor.Visit(queryable.Expression, state);
+                ICompositeVisitor<ConstantExpression> visitor = GetVisitor<ConstantExpression>(constant);
+                return visitor.Visit(constant, state);
             }
             catch
             {
@@ -52,20 +72,6 @@ namespace Epic.Linq.Expressions.Visit
             }
         }
         #endregion
-
-        internal protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
-        {
-            ICompositeVisitor<TExpression> visitor = base.AsVisitor (target);
-            if(null != visitor)
-            {
-                MemberExpression memberExp = target as MemberExpression;
-                if(!(typeof(IQueryable).IsAssignableFrom(memberExp.Type) && memberExp.Expression.NodeType == ExpressionType.Constant))
-                {
-                    return null;
-                }
-            }
-            return visitor;
-        }
     }
 }
 

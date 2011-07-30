@@ -188,11 +188,21 @@ namespace Epic.Linq.Expressions.Visit
         {
             for(int i = 0; i < depth; ++i)
             {
-                Console.Write("|   ");
+                if(i == depth - 1)
+                {
+                    Console.Write("\\___");
+                }
+                else
+                {
+                    Console.Write("    ");
+                }
             }
             Console.Write("{0}", expression.NodeType);
             switch(expression.NodeType)
             {
+                case ExpressionType.MemberAccess:
+                    Console.Write(" : " + ((MemberExpression)expression).Member.MemberType.ToString());
+                break;
                 case ExpressionType.Constant:
                 case ExpressionType.Parameter:
                 case ExpressionType.Lambda:
@@ -245,6 +255,8 @@ namespace Epic.Linq.Expressions.Visit
             Assert.AreSame(locationsTraversedFromVoyagesEndingToday.Expression, returnedExpression);
         }
         
+        private readonly string _usLocationStart = "US";
+        
         [Test]
         public void Visit_nextUsLocationsOfMovingVoyagesWithPrintingVisitor_works()
         {
@@ -258,7 +270,7 @@ namespace Epic.Linq.Expressions.Visit
             Application.Initialize(app);
             IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
             IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
-            IQueryable<ILocation> usLocations = from l in locations where l.UnLocode.StartsWith("US") select l;
+            IQueryable<ILocation> usLocations = from l in locations where l.UnLocode.StartsWith(_usLocationStart) select l;
             IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
             IQueryable<IVoyage> movingVoyages = voyages.Where(v => v.IsMoving);
             var nextLocationsOfMovingVoyages = 
@@ -268,15 +280,21 @@ namespace Epic.Linq.Expressions.Visit
                     select l;
             VisitorsComposition chain = new VisitorsComposition("test");
             new UnvisitableExpressionsVisitor(chain);
-            new LoggingVisitor(chain, WriteToConsole);
+            new QueryableConstantVisitor(chain);
+            new ClosureVisitor(chain);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextLocationsOfMovingVoyages.Expression);
                                   
 
             // act:
-            Expression returnedExpression = adapter.Accept(chain, VisitState.New);
+            Console.WriteLine("  --  Before:");
+            TestingUtilities.PrintExpression(nextLocationsOfMovingVoyages.Expression);
+            Expression returnedExpression = adapter.Accept(chain, VisitState.New.Add(mockProvider));
+            
+            Console.WriteLine("  --  After:");
+            TestingUtilities.PrintExpression(returnedExpression);
             
             // assert:
-            Assert.AreSame(nextLocationsOfMovingVoyages.Expression, returnedExpression);
+            Assert.AreNotSame(nextLocationsOfMovingVoyages.Expression, returnedExpression);
         }
         
         [Test]
@@ -293,21 +311,23 @@ namespace Epic.Linq.Expressions.Visit
             IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
             IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
             IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
+            string usLocationStart = "US";
             IQueryable<IVoyage> movingVoyages = voyages.Where(v => v.IsMoving);
             var nextLocationsOfMovingVoyages = 
                     from v in movingVoyages
-                    from l in locations.Where(loc => loc.UnLocode.StartsWith("US"))
+                    from l in locations.Where(loc => loc.UnLocode.StartsWith(usLocationStart))
                     where v.WillStopOverAt(l)
                     select l;
             VisitorsComposition chain = new VisitorsComposition("test");
             new UnvisitableExpressionsVisitor(chain);
-            new QueryableMemberAccessVisitor(chain);
+            new QueryableConstantVisitor(chain);
+            new ClosureVisitor(chain);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextLocationsOfMovingVoyages.Expression);
                                   
             // act:
             Console.WriteLine("  --  Before:");
             TestingUtilities.PrintExpression(nextLocationsOfMovingVoyages.Expression);
-            Expression returnedExpression = adapter.Accept(chain, VisitState.New);
+            Expression returnedExpression = adapter.Accept(chain, VisitState.New.Add(mockProvider));
             
             Console.WriteLine("  --  After:");
             TestingUtilities.PrintExpression(returnedExpression);

@@ -24,6 +24,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Epic.Linq
 {
@@ -122,6 +123,18 @@ namespace Epic.Linq
                 default:
                     throw new ArgumentException ("The member must be FieldInfo, PropertyInfo, or MethodInfo.", "member");
             }
+        }
+        
+        public static bool IsCompilerGenerated(Type type)
+        {
+            return type.IsSealed
+               && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic
+               && Attribute.IsDefined(type, typeof (CompilerGeneratedAttribute), false);
+        }
+        
+        public static bool IsAnonymous(Type type)
+        {
+            return type.IsGenericType && IsCompilerGenerated(type);
         }
 	}
 }

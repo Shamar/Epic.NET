@@ -61,7 +61,8 @@
     <Compile Include="Expressions\Templates\Match.cs" />
     <Compile Include="Expressions\Templates\IQueryDataExtractor.cs" />
     <Compile Include="IQueryExecutor.cs" />
-    <Compile Include="Expressions\Visit\QueryableMemberAccessVisitor.cs" />
+    <Compile Include="Expressions\Visit\QueryableConstantVisitor.cs" />
+    <Compile Include="Expressions\Visit\ClosureVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
