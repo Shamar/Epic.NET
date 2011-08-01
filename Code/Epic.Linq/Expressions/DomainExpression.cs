@@ -43,8 +43,7 @@ namespace Epic.Linq.Expressions
         
         public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
         {
-            ICompositeVisitor<DomainExpression<T>> myVisitor = visitor.GetVisitor<DomainExpression<T>>(this);
-            return myVisitor.Visit(this, state);
+            return AcceptAs<DomainExpression<T>>(visitor, state);
         }
         
         #region IEquatable[RelationExpression] implementation

@@ -63,6 +63,11 @@
     <Compile Include="Expressions\Visit\ClosureVisitor.cs" />
     <Compile Include="Expressions\ExpressionType.cs" />
     <Compile Include="Expressions\RelationExpression.cs" />
+    <Compile Include="Expressions\ConstantExpression.cs" />
+    <Compile Include="Expressions\AttributeExpression.cs" />
+    <Compile Include="Expressions\AttributeComparisonPredicateBase.cs" />
+    <Compile Include="Expressions\AttributeEqualPredicate.cs" />
+    <Compile Include="Expressions\SelectionExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

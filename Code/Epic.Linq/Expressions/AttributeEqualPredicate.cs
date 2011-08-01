@@ -1,5 +1,5 @@
 //  
-//  ExpressionType.cs
+//  EqualAttributePredicate.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,20 +22,22 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Linq.Expressions;
+using Epic.Linq.Expressions.Visit;
 
 namespace Epic.Linq.Expressions
 {
-    public enum ExpressionType
+    public sealed class AttributeEqualPredicate : AttributeComparisonPredicateBase
     {
-        Unvisitable = 32768,
+        public AttributeEqualPredicate (RelationExpression relation, VisitableExpression left, VisitableExpression right)
+            : base(relation, left, right)
+        {
+        }
         
-        Domain,
-        Selection,
-        Predicate,
-        Constant,
-        Attribute,
-        
-        Extensions
+        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        {
+            return AcceptAs<AttributeEqualPredicate>(visitor, state);
+        }
     }
 }
 
