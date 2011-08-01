@@ -44,7 +44,7 @@ namespace Epic.Linq.Expressions.Visit
             if(null != visitor)
             {
                 MemberExpression expression = target as MemberExpression;
-                if( expression.Expression.NodeType != ExpressionType.Constant 
+                if( expression.Expression.NodeType != System.Linq.Expressions.ExpressionType.Constant 
                     || (expression.Member.MemberType != MemberTypes.Field && expression.Member.MemberType != MemberTypes.Property))
                 {
                     return null;

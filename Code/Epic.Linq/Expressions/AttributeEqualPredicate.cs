@@ -1,5 +1,5 @@
 //  
-//  DomainExpression.cs
+//  EqualAttributePredicate.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -27,33 +27,17 @@ using Epic.Linq.Expressions.Visit;
 
 namespace Epic.Linq.Expressions
 {
-    public sealed class DomainExpression<T> : RelationExpression, IEquatable<RelationExpression>
+    public sealed class AttributeEqualPredicate : AttributeComparisonPredicateBase
     {
-        public DomainExpression (string name)
-            : base(name, ExpressionType.Domain, typeof(T))
+        public AttributeEqualPredicate (RelationExpression relation, VisitableExpression left, VisitableExpression right)
+            : base(relation, left, right)
         {
-        }
-        
-        private bool Equals(DomainExpression<T> other)
-        {
-            if(null == other)
-                return false;
-            return Name.Equals(other.Name);
         }
         
         public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
         {
-            return AcceptAs<DomainExpression<T>>(visitor, state);
+            return AcceptAs<AttributeEqualPredicate>(visitor, state);
         }
-        
-        #region IEquatable[RelationExpression] implementation
-        
-        public override bool Equals (RelationExpression other)
-        {
-            return Equals(other as DomainExpression<T>);
-        }
-        
-        #endregion
     }
 }
 

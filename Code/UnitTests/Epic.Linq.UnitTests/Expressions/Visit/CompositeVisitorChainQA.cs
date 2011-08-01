@@ -32,6 +32,7 @@ using Challenge00.DDDSample.Cargo;
 using Epic.Environment;
 using Challenge00.DDDSample.Voyage;
 using Challenge00.DDDSample.Location;
+using ExprType = System.Linq.Expressions.ExpressionType;
 
 namespace Epic.Linq.Expressions.Visit
 {
@@ -200,15 +201,15 @@ namespace Epic.Linq.Expressions.Visit
             Console.Write("{0}", expression.NodeType);
             switch(expression.NodeType)
             {
-                case ExpressionType.MemberAccess:
+                case ExprType.MemberAccess:
                     Console.Write(" : " + ((MemberExpression)expression).Member.MemberType.ToString());
                 break;
-                case ExpressionType.Constant:
-                case ExpressionType.Parameter:
-                case ExpressionType.Lambda:
+                case ExprType.Constant:
+                case ExprType.Parameter:
+                case ExprType.Lambda:
                     Console.Write(" : " + expression.ToString());
                 break;
-                case ExpressionType.Call:
+                case ExprType.Call:
                     MethodCallExpression call = expression as MethodCallExpression;
                     Console.Write(" : " + call.Method.Name);
                 break;

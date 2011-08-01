@@ -35,17 +35,18 @@ namespace Epic.Linq.Expressions
     {
         private readonly Expression _expression;
         
+        
         private static Type GetUnvisitableExpressionType (Expression unvisitableExpression)
         {
             if (null == unvisitableExpression)
                 throw new ArgumentNullException ("unvisitableExpression");
-            if (unvisitableExpression.NodeType.Equals (VisitableExpression.VisitableNodeType))
+            if (unvisitableExpression.NodeType >= (System.Linq.Expressions.ExpressionType)ExpressionType.Unvisitable)
                 throw new ArgumentException ("The expression provided is visitable.");        
             return unvisitableExpression.Type;
         }
         
         public UnvisitableExpressionAdapter (Expression unvisitableExpression)
-            : base(GetUnvisitableExpressionType(unvisitableExpression))
+            : base(ExpressionType.Unvisitable, GetUnvisitableExpressionType(unvisitableExpression))
         {
             _expression = unvisitableExpression;
         }

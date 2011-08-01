@@ -1,5 +1,5 @@
 //  
-//  PredicateExpression.cs
+//  ConstantExpression.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,42 +22,53 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Linq.Expressions;
+using Epic.Linq.Expressions.Visit;
+using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions
 {
-    public abstract class PredicateExpression : VisitableExpression, IEquatable<PredicateExpression>
+    public sealed class ConstantExpression<T> : VisitableExpression, IEquatable<ConstantExpression<T>>
     {
-        private readonly RelationExpression _domain;
-        public PredicateExpression (RelationExpression domain)
-            : base(ExpressionType.Predicate, typeof(bool))
+        private readonly T _value;
+        public ConstantExpression (T value)
+            : base(ExpressionType.Constant, typeof(T))
         {
-            if(null == domain)
-                throw new ArgumentNullException("domain");
-            _domain = domain;
+            _value = value;
         }
         
-        public RelationExpression Domain
+        public T Value
         {
             get
             {
-                return _domain;
+                return _value;
             }
         }
 
-        #region IEquatable[PredicateExpression] implementation
-        
-        public abstract bool Equals (PredicateExpression other);
-        
+        #region implemented abstract members of Epic.Linq.Expressions.VisitableExpression
+        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        {
+            return AcceptAs<ConstantExpression<T>>(visitor, state);
+        }
+        #endregion
+
+        #region IEquatable[ConstantExpression[T]] implementation
+        public bool Equals (ConstantExpression<T> other)
+        {
+            if(null == other)
+                return false;
+            return EqualityComparer<T>.Default.Equals(_value, other.Value);
+        }
         #endregion
         
         public override bool Equals (object obj)
         {
-            return this.Equals(obj as PredicateExpression);
+            return Equals (obj as ConstantExpression<T>);
         }
         
         public override int GetHashCode ()
         {
-            return this.GetType().GetHashCode() ^ _domain.GetHashCode();
+            return Type.GetHashCode ();
         }
     }
 }

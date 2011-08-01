@@ -29,7 +29,7 @@ namespace Epic.Linq.Expressions
     public sealed class AndPredicateExpression : PredicateExpression
     {
         // TODO: move on static helper
-        private static DomainExpression ValidateAndGetDomain(PredicateExpression first, PredicateExpression second)
+        private static RelationExpression ValidateAndGetDomain(PredicateExpression first, PredicateExpression second)
         {
             if(null == first)
                 throw new ArgumentNullException("first");

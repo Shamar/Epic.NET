@@ -25,6 +25,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using ExprType = System.Linq.Expressions.ExpressionType;
 
 namespace Epic.Linq.Expressions.Templates
 {
@@ -106,48 +107,48 @@ namespace Epic.Linq.Expressions.Templates
         {
             switch(expression.NodeType)
             {
-                case ExpressionType.ArrayLength:
-                case ExpressionType.Convert:
-                case ExpressionType.ConvertChecked:
-                case ExpressionType.Negate:
-                case ExpressionType.NegateChecked:
-                case ExpressionType.Not:
-                case ExpressionType.Quote:
-                case ExpressionType.TypeAs:
-                case ExpressionType.UnaryPlus:
+                case ExprType.ArrayLength:
+                case ExprType.Convert:
+                case ExprType.ConvertChecked:
+                case ExprType.Negate:
+                case ExprType.NegateChecked:
+                case ExprType.Not:
+                case ExprType.Quote:
+                case ExprType.TypeAs:
+                case ExprType.UnaryPlus:
                     return CanBeCompiled((expression as UnaryExpression).Operand, availableParameters);
-                case ExpressionType.Add:
-                case ExpressionType.AddChecked:
-                case ExpressionType.Divide:
-                case ExpressionType.Modulo:
-                case ExpressionType.Multiply:
-                case ExpressionType.MultiplyChecked:
-                case ExpressionType.Power:
-                case ExpressionType.Subtract:
-                case ExpressionType.SubtractChecked:
-                case ExpressionType.And:
-                case ExpressionType.Or:
-                case ExpressionType.ExclusiveOr:
-                case ExpressionType.LeftShift:
-                case ExpressionType.RightShift:
-                case ExpressionType.AndAlso:
-                case ExpressionType.OrElse:
-                case ExpressionType.Equal:
-                case ExpressionType.NotEqual:
-                case ExpressionType.GreaterThanOrEqual:
-                case ExpressionType.GreaterThan:
-                case ExpressionType.LessThan:
-                case ExpressionType.LessThanOrEqual:
-                case ExpressionType.Coalesce:
-                case ExpressionType.ArrayIndex:
+                case ExprType.Add:
+                case ExprType.AddChecked:
+                case ExprType.Divide:
+                case ExprType.Modulo:
+                case ExprType.Multiply:
+                case ExprType.MultiplyChecked:
+                case ExprType.Power:
+                case ExprType.Subtract:
+                case ExprType.SubtractChecked:
+                case ExprType.And:
+                case ExprType.Or:
+                case ExprType.ExclusiveOr:
+                case ExprType.LeftShift:
+                case ExprType.RightShift:
+                case ExprType.AndAlso:
+                case ExprType.OrElse:
+                case ExprType.Equal:
+                case ExprType.NotEqual:
+                case ExprType.GreaterThanOrEqual:
+                case ExprType.GreaterThan:
+                case ExprType.LessThan:
+                case ExprType.LessThanOrEqual:
+                case ExprType.Coalesce:
+                case ExprType.ArrayIndex:
                     BinaryExpression binaryExp = expression as BinaryExpression;
                     return CanBeCompiled(binaryExp.Left, availableParameters) && CanBeCompiled(binaryExp.Right, availableParameters);
-                case ExpressionType.Conditional:
+                case ExprType.Conditional:
                     ConditionalExpression conditionalExp = expression as ConditionalExpression;
                     return CanBeCompiled(conditionalExp.Test, availableParameters) && CanBeCompiled(conditionalExp.IfTrue, availableParameters) && CanBeCompiled(conditionalExp.IfFalse, availableParameters);
-                case ExpressionType.Constant:
+                case ExprType.Constant:
                     return true;
-                case ExpressionType.Invoke:
+                case ExprType.Invoke:
                     InvocationExpression invocationExp = expression as InvocationExpression;
                     foreach (Expression arg in invocationExp.Arguments)
                     {
@@ -155,7 +156,7 @@ namespace Epic.Linq.Expressions.Templates
                             return false;
                     }
                     return CanBeCompiled(invocationExp.Expression, availableParameters);
-                case ExpressionType.Lambda:
+                case ExprType.Lambda:
                     LambdaExpression lambdaExp = expression as LambdaExpression;
                     if(lambdaExp.Parameters.Count > 0 || (null != availableParameters && availableParameters.Length > 0))
                     {
@@ -170,9 +171,9 @@ namespace Epic.Linq.Expressions.Templates
                     {
                         return CanBeCompiled(lambdaExp.Body, availableParameters);
                     }
-                case ExpressionType.MemberAccess:
+                case ExprType.MemberAccess:
                     return CanBeCompiled((expression as MemberExpression).Expression, availableParameters);
-                case ExpressionType.Call:
+                case ExprType.Call:
                     MethodCallExpression callExp = expression as MethodCallExpression;
                     foreach (Expression arg in callExp.Arguments)
                     {
@@ -180,7 +181,7 @@ namespace Epic.Linq.Expressions.Templates
                             return false;
                     }
                     return null == callExp.Object || CanBeCompiled(callExp.Object, availableParameters);
-                case ExpressionType.New:
+                case ExprType.New:
                     NewExpression newExp = expression as NewExpression;
                     foreach (Expression arg in newExp.Arguments)
                     {
@@ -188,8 +189,8 @@ namespace Epic.Linq.Expressions.Templates
                             return false;
                     }
                     return true;
-                case ExpressionType.NewArrayBounds:
-                case ExpressionType.NewArrayInit:
+                case ExprType.NewArrayBounds:
+                case ExprType.NewArrayInit:
                     NewArrayExpression newArrExp = expression as NewArrayExpression;
                     foreach (Expression arg in newArrExp.Expressions)
                     {
@@ -197,7 +198,7 @@ namespace Epic.Linq.Expressions.Templates
                             return false;
                     }
                     return true;
-                case ExpressionType.MemberInit:
+                case ExprType.MemberInit:
                     MemberInitExpression initExp = expression as MemberInitExpression;
                     foreach (MemberBinding binding in initExp.Bindings)
                     {
@@ -220,10 +221,10 @@ namespace Epic.Linq.Expressions.Templates
                         }
                     }
                     return CanBeCompiled(initExp.NewExpression, availableParameters);
-                case ExpressionType.ListInit:
+                case ExprType.ListInit:
                     ListInitExpression listExp = expression as ListInitExpression;
                     return CanBeCompiled(listExp.NewExpression) && listExp.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e, availableParameters)));
-                case ExpressionType.Parameter:
+                case ExprType.Parameter:
                     if(null != availableParameters)
                     {
                         for(int i = 0; i < availableParameters.Length; ++i)
@@ -231,7 +232,7 @@ namespace Epic.Linq.Expressions.Templates
                                 return true;
                     }
                     return false;
-                case ExpressionType.TypeIs:
+                case ExprType.TypeIs:
                     return CanBeCompiled((expression as TypeBinaryExpression).Expression, availableParameters);
                 default:
                     return false;

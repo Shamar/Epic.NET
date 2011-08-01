@@ -29,14 +29,25 @@ namespace Epic.Linq.Expressions
 {
     public abstract class VisitableExpression : Expression
     {
-        public const ExpressionType VisitableNodeType = (ExpressionType) 150000;
-        
-        protected VisitableExpression(Type type)
-            : base(VisitableNodeType, type)
+        protected VisitableExpression(ExpressionType nodeType, Type type)
+            : base((System.Linq.Expressions.ExpressionType)nodeType, type)
         {
         }
         
         public abstract Expression Accept(ICompositeVisitor visitor, IVisitState state);
+        
+        protected Expression AcceptAs<TVisitableExpression>(ICompositeVisitor visitor, IVisitState state) where TVisitableExpression : VisitableExpression
+        {
+            TVisitableExpression visitable = this as TVisitableExpression;
+            if(null == visitable)
+            {
+                // this would be a bug.
+                string message = string.Format("The current expression is of type {0}. Can not be visited as {1}.", this.GetType().FullName, typeof(TVisitableExpression).FullName);
+                throw new InvalidOperationException(message);
+            }
+            var myVisitor = visitor.GetVisitor(visitable);
+            return myVisitor.Visit(visitable, state);
+        }
     }
 }
 

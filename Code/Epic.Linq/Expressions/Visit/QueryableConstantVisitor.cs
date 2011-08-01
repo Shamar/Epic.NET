@@ -50,7 +50,7 @@ namespace Epic.Linq.Expressions.Visit
             
             if(object.ReferenceEquals(currentProvider, query.Provider))
             {
-                if(query.Expression.NodeType == ExpressionType.Constant)
+                if(query.Expression.NodeType == System.Linq.Expressions.ExpressionType.Constant)
                 {
                     // it is a repository
                     ConstantExpression constantExpression = query.Expression as ConstantExpression;
