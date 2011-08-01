@@ -52,6 +52,7 @@ namespace Epic.Linq.Expressions.Visit
             {
                 if(query.Expression.NodeType == ExpressionType.Constant)
                 {
+                    // it is a repository
                     ConstantExpression constantExpression = query.Expression as ConstantExpression;
                     return GetNextVisitor(constantExpression).Visit(constantExpression, state);
                 }

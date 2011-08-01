@@ -134,7 +134,7 @@ namespace Epic.Linq
         
         public static bool IsAnonymous(Type type)
         {
-            return type.IsGenericType && IsCompilerGenerated(type);
+            return type.IsGenericType && IsCompilerGenerated(type) && type.Name.StartsWith("<>"); // No need to work with VB
         }
 	}
 }
