@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Collections.ObjectModel; 
 using System.Diagnostics;
+using ExprType = System.Linq.Expressions.ExpressionType;
 
 namespace Epic.Linq.Expressions.Visit
 {
@@ -132,7 +133,7 @@ namespace Epic.Linq.Expressions.Visit
         {
             Expression newOperand = VisitExpression (expression.Operand, state);
             if (newOperand != expression.Operand) {
-                if (expression.NodeType == ExpressionType.UnaryPlus)
+                if (expression.NodeType == ExprType.UnaryPlus)
                     return Expression.UnaryPlus (newOperand, expression.Method);
                 else
                     return Expression.MakeUnary (expression.NodeType, newOperand, expression.Type, expression.Method);
@@ -232,7 +233,7 @@ namespace Epic.Linq.Expressions.Visit
             ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit", state);
             if (newExpressions != expression.Expressions) {
                 var elementType = expression.Type.GetElementType ();
-                if (expression.NodeType == ExpressionType.NewArrayInit)
+                if (expression.NodeType == ExprType.NewArrayInit)
                     return Expression.NewArrayInit (elementType, newExpressions);
                 else
                     return Expression.NewArrayBounds (elementType, newExpressions);

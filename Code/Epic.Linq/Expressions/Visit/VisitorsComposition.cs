@@ -24,6 +24,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using ExprType = System.Linq.Expressions.ExpressionType;
 
 namespace Epic.Linq.Expressions.Visit
 {
@@ -60,65 +61,65 @@ namespace Epic.Linq.Expressions.Visit
                 return visitable.Accept(this, state);
 
             switch (target.NodeType) {
-                case ExpressionType.ArrayLength:
-                case ExpressionType.Convert:
-                case ExpressionType.ConvertChecked:
-                case ExpressionType.Negate:
-                case ExpressionType.NegateChecked:
-                case ExpressionType.Not:
-                case ExpressionType.Quote:
-                case ExpressionType.TypeAs:
-                case ExpressionType.UnaryPlus:
+                case ExprType.ArrayLength:
+                case ExprType.Convert:
+                case ExprType.ConvertChecked:
+                case ExprType.Negate:
+                case ExprType.NegateChecked:
+                case ExprType.Not:
+                case ExprType.Quote:
+                case ExprType.TypeAs:
+                case ExprType.UnaryPlus:
                     return RouteToVisitors ((UnaryExpression)target, state);
-                case ExpressionType.Add:
-                case ExpressionType.AddChecked:
-                case ExpressionType.Divide:
-                case ExpressionType.Modulo:
-                case ExpressionType.Multiply:
-                case ExpressionType.MultiplyChecked:
-                case ExpressionType.Power:
-                case ExpressionType.Subtract:
-                case ExpressionType.SubtractChecked:
-                case ExpressionType.And:
-                case ExpressionType.Or:
-                case ExpressionType.ExclusiveOr:
-                case ExpressionType.LeftShift:
-                case ExpressionType.RightShift:
-                case ExpressionType.AndAlso:
-                case ExpressionType.OrElse:
-                case ExpressionType.Equal:
-                case ExpressionType.NotEqual:
-                case ExpressionType.GreaterThanOrEqual:
-                case ExpressionType.GreaterThan:
-                case ExpressionType.LessThan:
-                case ExpressionType.LessThanOrEqual:
-                case ExpressionType.Coalesce:
-                case ExpressionType.ArrayIndex:
+                case ExprType.Add:
+                case ExprType.AddChecked:
+                case ExprType.Divide:
+                case ExprType.Modulo:
+                case ExprType.Multiply:
+                case ExprType.MultiplyChecked:
+                case ExprType.Power:
+                case ExprType.Subtract:
+                case ExprType.SubtractChecked:
+                case ExprType.And:
+                case ExprType.Or:
+                case ExprType.ExclusiveOr:
+                case ExprType.LeftShift:
+                case ExprType.RightShift:
+                case ExprType.AndAlso:
+                case ExprType.OrElse:
+                case ExprType.Equal:
+                case ExprType.NotEqual:
+                case ExprType.GreaterThanOrEqual:
+                case ExprType.GreaterThan:
+                case ExprType.LessThan:
+                case ExprType.LessThanOrEqual:
+                case ExprType.Coalesce:
+                case ExprType.ArrayIndex:
                     return RouteToVisitors ((BinaryExpression)target, state);
-                case ExpressionType.Conditional:
+                case ExprType.Conditional:
                     return RouteToVisitors ((ConditionalExpression)target, state);
-                case ExpressionType.Constant:
+                case ExprType.Constant:
                     return RouteToVisitors ((ConstantExpression)target, state);
-                case ExpressionType.Invoke:
+                case ExprType.Invoke:
                     return RouteToVisitors ((InvocationExpression)target, state);
-                case ExpressionType.Lambda:
+                case ExprType.Lambda:
                     return RouteToVisitors ((LambdaExpression)target, state);
-                case ExpressionType.MemberAccess:
+                case ExprType.MemberAccess:
                     return RouteToVisitors ((MemberExpression)target, state);
-                case ExpressionType.Call:
+                case ExprType.Call:
                     return RouteToVisitors ((MethodCallExpression)target, state);
-                case ExpressionType.New:
+                case ExprType.New:
                     return RouteToVisitors ((NewExpression)target, state);
-                case ExpressionType.NewArrayBounds:
-                case ExpressionType.NewArrayInit:
+                case ExprType.NewArrayBounds:
+                case ExprType.NewArrayInit:
                     return RouteToVisitors ((NewArrayExpression)target, state);
-                case ExpressionType.MemberInit:
+                case ExprType.MemberInit:
                     return RouteToVisitors ((MemberInitExpression)target, state);
-                case ExpressionType.ListInit:
+                case ExprType.ListInit:
                     return RouteToVisitors ((ListInitExpression)target, state);
-                case ExpressionType.Parameter:
+                case ExprType.Parameter:
                     return RouteToVisitors ((ParameterExpression)target, state);
-                case ExpressionType.TypeIs:
+                case ExprType.TypeIs:
                     return RouteToVisitors ((TypeBinaryExpression)target, state);
         
                 default:

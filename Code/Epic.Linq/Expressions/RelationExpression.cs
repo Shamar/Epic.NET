@@ -1,5 +1,5 @@
 //  
-//  SourceExpression.cs
+//  RelationExpression.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,33 +22,40 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Epic.Linq.Expressions.Visit;
 
 namespace Epic.Linq.Expressions
 {
-    public sealed class SourceExpression : DomainExpression
+    public abstract class RelationExpression : VisitableExpression, IEquatable<RelationExpression>
     {
-        public SourceExpression (Type type, string name)
-            : base(type, name)
+        private readonly string _name;
+        public RelationExpression (string name, ExpressionType nodeType, Type type)
+            : base(nodeType, type)
         {
+            if(string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(name);
+            _name = name;
         }
         
-        #region implemented abstract members of Epic.Linq.Expressions.DomainExpression
-        public override bool Equals (DomainExpression other)
+        public string Name
         {
-            if(object.ReferenceEquals(this, other))
-                return true;
-            SourceExpression otherQuery = other as SourceExpression;
-            if(null == otherQuery)
-                return false;
-            return Name.Equals(otherQuery.Name) && Type.Equals(otherQuery.Type);
+            get
+            {
+                return _name;
+            }
         }
+
+        #region IEquatable[RelationExpression] implementation
+        public abstract bool Equals (RelationExpression other);
         #endregion
         
-        public override System.Linq.Expressions.Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        public sealed override bool Equals (object obj)
         {
-            ICompositeVisitor<SourceExpression> queryVisitor = visitor.GetVisitor<SourceExpression>(this);
-            return queryVisitor.Visit(this, state);
+            return Equals (obj as RelationExpression);
+        }
+        
+        public override int GetHashCode ()
+        {
+            return _name.GetHashCode() ^ Type.GetHashCode();
         }
     }
 }

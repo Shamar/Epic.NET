@@ -43,11 +43,9 @@
     <Compile Include="Expressions\Visit\ICompositeVisitor.cs" />
     <Compile Include="Expressions\VisitableExpression.cs" />
     <Compile Include="Expressions\UnvisitableExpressionAdapter.cs" />
-    <Compile Include="Expressions\QueryExpression.cs" />
     <Compile Include="Expressions\PredicateExpression.cs" />
     <Compile Include="Expressions\DomainExpression.cs" />
     <Compile Include="Expressions\AndPredicateExpression.cs" />
-    <Compile Include="Expressions\SourceExpression.cs" />
     <Compile Include="Expressions\Visit\IVisitState.cs" />
     <Compile Include="Expressions\Visit\VisitState.cs" />
     <Compile Include="Expressions\Visit\VisitorsComposition.cs" />
@@ -63,6 +61,8 @@
     <Compile Include="IQueryExecutor.cs" />
     <Compile Include="Expressions\Visit\QueryableConstantVisitor.cs" />
     <Compile Include="Expressions\Visit\ClosureVisitor.cs" />
+    <Compile Include="Expressions\ExpressionType.cs" />
+    <Compile Include="Expressions\RelationExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

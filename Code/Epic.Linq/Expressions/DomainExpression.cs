@@ -22,45 +22,39 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Linq.Expressions;
+using Epic.Linq.Expressions.Visit;
 
 namespace Epic.Linq.Expressions
 {
-    public abstract class DomainExpression : VisitableExpression, IEquatable<DomainExpression>
+    public sealed class DomainExpression<T> : RelationExpression, IEquatable<RelationExpression>
     {
-        private readonly string _name;
-        protected DomainExpression (Type type, string name)
-            : base(type)
+        public DomainExpression (string name)
+            : base(name, ExpressionType.Domain, typeof(T))
         {
-            if(string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentNullException("name");
-            }
-            _name = name;
         }
         
-        public string Name 
-        { 
-            get
-            {
-                return _name;
-            }
+        private bool Equals(DomainExpression<T> other)
+        {
+            if(null == other)
+                return false;
+            return Name.Equals(other.Name);
         }
-
-        #region IEquatable[DomainExpression] implementation
         
-        public abstract bool Equals (DomainExpression other);
+        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        {
+            ICompositeVisitor<DomainExpression<T>> myVisitor = visitor.GetVisitor<DomainExpression<T>>(this);
+            return myVisitor.Visit(this, state);
+        }
+        
+        #region IEquatable[RelationExpression] implementation
+        
+        public override bool Equals (RelationExpression other)
+        {
+            return Equals(other as DomainExpression<T>);
+        }
         
         #endregion
-        
-        public override bool Equals (object obj)
-        {
-            return this.Equals(obj as DomainExpression);
-        }
-        
-        public override int GetHashCode ()
-        {
-            return this.Type.GetHashCode() ^ _name.GetHashCode();
-        }
     }
 }
 

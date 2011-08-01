@@ -1,5 +1,5 @@
 //  
-//  VisitableExpression.cs
+//  ExpressionType.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,19 +22,19 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Linq.Expressions;
-using Epic.Linq.Expressions.Visit;
 
 namespace Epic.Linq.Expressions
 {
-    public abstract class VisitableExpression : Expression
+    public enum ExpressionType
     {
-        protected VisitableExpression(ExpressionType nodeType, Type type)
-            : base((System.Linq.Expressions.ExpressionType)nodeType, type)
-        {
-        }
+        Unvisitable = 32768,
         
-        public abstract Expression Accept(ICompositeVisitor visitor, IVisitState state);
+        Domain,
+        Predicate,
+        
+        
+        
+        Extensions
     }
 }
 

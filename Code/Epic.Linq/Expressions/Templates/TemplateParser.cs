@@ -25,6 +25,7 @@ using System;
 using Epic.Linq.Expressions.Visit;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using ExprType = System.Linq.Expressions.ExpressionType;
 
 namespace Epic.Linq.Expressions.Templates
 {
@@ -58,17 +59,17 @@ namespace Epic.Linq.Expressions.Templates
             switch(expression.NodeType)
             {
                 // TODO : verify if this is the best method to handle commutative operators.
-                case ExpressionType.AddChecked:
-                case ExpressionType.MultiplyChecked:
-                case ExpressionType.AndAlso:
-                case ExpressionType.OrElse:
-                case ExpressionType.Equal:
-                case ExpressionType.NotEqual:
+                case ExprType.AddChecked:
+                case ExprType.MultiplyChecked:
+                case ExprType.AndAlso:
+                case ExprType.OrElse:
+                case ExprType.Equal:
+                case ExprType.NotEqual:
                     ParseExpression (expression.Left, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Right)));
                     ParseExpression (expression.Right, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Left)));
                 break;
             }
-            if(expression.NodeType == ExpressionType.Coalesce)
+            if(expression.NodeType == ExprType.Coalesce)
                 ParseExpression (expression.Conversion, state.Add(path.Bind(e => Match.BinaryExpression(e, expression), e => e.Conversion)));
         }
   
@@ -251,78 +252,78 @@ namespace Epic.Linq.Expressions.Templates
         private static void ParseExpression(Expression expression, IVisitState state)
         {
             switch (expression.NodeType) {
-                case ExpressionType.ArrayLength:
-                case ExpressionType.Convert:
-                case ExpressionType.ConvertChecked:
-                case ExpressionType.Negate:
-                case ExpressionType.NegateChecked:
-                case ExpressionType.Not:
-                case ExpressionType.Quote:
-                case ExpressionType.TypeAs:
-                case ExpressionType.UnaryPlus:
+                case ExprType.ArrayLength:
+                case ExprType.Convert:
+                case ExprType.ConvertChecked:
+                case ExprType.Negate:
+                case ExprType.NegateChecked:
+                case ExprType.Not:
+                case ExprType.Quote:
+                case ExprType.TypeAs:
+                case ExprType.UnaryPlus:
                     ParseUnaryExpression((UnaryExpression)expression, CastNodeType<UnaryExpression>(state, expression));
                 break;
-                case ExpressionType.Add:
-                case ExpressionType.AddChecked:
-                case ExpressionType.Divide:
-                case ExpressionType.Modulo:
-                case ExpressionType.Multiply:
-                case ExpressionType.MultiplyChecked:
-                case ExpressionType.Power:
-                case ExpressionType.Subtract:
-                case ExpressionType.SubtractChecked:
-                case ExpressionType.And:
-                case ExpressionType.Or:
-                case ExpressionType.ExclusiveOr:
-                case ExpressionType.LeftShift:
-                case ExpressionType.RightShift:
-                case ExpressionType.AndAlso:
-                case ExpressionType.OrElse:
-                case ExpressionType.Equal:
-                case ExpressionType.NotEqual:
-                case ExpressionType.GreaterThanOrEqual:
-                case ExpressionType.GreaterThan:
-                case ExpressionType.LessThan:
-                case ExpressionType.LessThanOrEqual:
-                case ExpressionType.Coalesce:
-                case ExpressionType.ArrayIndex:
+                case ExprType.Add:
+                case ExprType.AddChecked:
+                case ExprType.Divide:
+                case ExprType.Modulo:
+                case ExprType.Multiply:
+                case ExprType.MultiplyChecked:
+                case ExprType.Power:
+                case ExprType.Subtract:
+                case ExprType.SubtractChecked:
+                case ExprType.And:
+                case ExprType.Or:
+                case ExprType.ExclusiveOr:
+                case ExprType.LeftShift:
+                case ExprType.RightShift:
+                case ExprType.AndAlso:
+                case ExprType.OrElse:
+                case ExprType.Equal:
+                case ExprType.NotEqual:
+                case ExprType.GreaterThanOrEqual:
+                case ExprType.GreaterThan:
+                case ExprType.LessThan:
+                case ExprType.LessThanOrEqual:
+                case ExprType.Coalesce:
+                case ExprType.ArrayIndex:
                     ParseBinaryExpression((BinaryExpression)expression, CastNodeType<BinaryExpression>(state, expression));
                 break;
-                case ExpressionType.Conditional:
+                case ExprType.Conditional:
                     ParseConditionalExpression((ConditionalExpression)expression, CastNodeType<ConditionalExpression>(state, expression));
                 break;
-                case ExpressionType.Constant:
+                case ExprType.Constant:
                     ParseConstantExpression((ConstantExpression)expression, CastNodeType<ConstantExpression>(state, expression));
                 break;
-                case ExpressionType.Invoke:
+                case ExprType.Invoke:
                     ParseInvocationExpression((InvocationExpression)expression, CastNodeType<InvocationExpression>(state, expression));
                 break;
-                case ExpressionType.Lambda:
+                case ExprType.Lambda:
                     ParseLambdaExpression((LambdaExpression)expression, CastNodeType<LambdaExpression>(state, expression));
                 break;
-                case ExpressionType.MemberAccess:
+                case ExprType.MemberAccess:
                     ParseMemberExpression((MemberExpression)expression, CastNodeType<MemberExpression>(state, expression));
                 break;
-                case ExpressionType.Call:
+                case ExprType.Call:
                     ParseMethodCallExpression((MethodCallExpression)expression, CastNodeType<MethodCallExpression>(state, expression));
                 break;
-                case ExpressionType.New:
+                case ExprType.New:
                     ParseNewExpression((NewExpression)expression, CastNodeType<NewExpression>(state, expression));
                 break;
-                case ExpressionType.NewArrayBounds:
-                case ExpressionType.NewArrayInit:
+                case ExprType.NewArrayBounds:
+                case ExprType.NewArrayInit:
                     ParseNewArrayExpression((NewArrayExpression)expression, CastNodeType<NewArrayExpression>(state, expression));
                 break;
-                case ExpressionType.MemberInit:
+                case ExprType.MemberInit:
                     ParseMemberInitExpression((MemberInitExpression)expression, CastNodeType<MemberInitExpression>(state, expression));
                 break;
-                case ExpressionType.ListInit:
+                case ExprType.ListInit:
                     ParseListInitExpression((ListInitExpression)expression, CastNodeType<ListInitExpression>(state, expression));
                 break;
-                case ExpressionType.Parameter:
+                case ExprType.Parameter:
                     ParseParameterExpression((ParameterExpression)expression, CastNodeType<ParameterExpression>(state, expression));
                 break;
-                case ExpressionType.TypeIs:
+                case ExprType.TypeIs:
                     ParseTypeBinaryExpression((TypeBinaryExpression)expression, CastNodeType<TypeBinaryExpression>(state, expression));
                 break;
             }
