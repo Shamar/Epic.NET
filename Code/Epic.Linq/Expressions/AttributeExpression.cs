@@ -42,6 +42,22 @@ namespace Epic.Linq.Expressions
             _name = name;
         }
         
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+        }
+        
+        public RelationExpression Relation
+        {
+            get
+            {
+                return _relation;
+            }
+        }
+        
         #region implemented abstract members of Epic.Linq.Expressions.VisitableExpression
         public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
         {

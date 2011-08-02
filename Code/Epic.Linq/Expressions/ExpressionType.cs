@@ -35,6 +35,8 @@ namespace Epic.Linq.Expressions
         Constant,
         Attribute,
         
+        Sql,
+        
         Extensions
     }
 }
