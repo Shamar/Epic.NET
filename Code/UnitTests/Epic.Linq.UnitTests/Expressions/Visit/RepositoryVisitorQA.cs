@@ -36,20 +36,6 @@ namespace Epic.Linq.Expressions.Visit
     [TestFixture()]
     public class RepositoryVisitorQA : RhinoMocksFixtureBase
     {
-        [Test]
-        public void Cast_withGeneric_works()
-        {
-            // arrange:
-            Concrete<ICargo> concrete = new Concrete<ICargo>();
-            UnLocode location = new UnLocode("USTST");
-
-            // act:
-            IGeneric<Expression<Func<ICargo, bool>>> gen = concrete.Get<Expression<Func<ICargo, bool>>>(i => i.Delivery.LastKnownLocation == location);
-
-            // assert:
-            Assert.IsNotNull(gen);
-        }
-        
         [SetUp]
         public void ResetApplication()
         {
