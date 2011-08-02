@@ -41,6 +41,8 @@ namespace Epic.Linq.Expressions.Templates
         
         public bool CanParse(TExpression expression)
         {
+            if(null == expression)
+                return false;
             foreach(List<Func<TExpression, bool>> knownCheckers in _knownCheckers.Values)
             {
                 bool canParse = false;

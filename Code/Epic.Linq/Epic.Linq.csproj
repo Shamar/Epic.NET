@@ -68,6 +68,9 @@
     <Compile Include="Expressions\AttributeComparisonPredicateBase.cs" />
     <Compile Include="Expressions\AttributeEqualPredicate.cs" />
     <Compile Include="Expressions\SelectionExpression.cs" />
+    <Compile Include="Expressions\Visit\RepositoryVisitor.cs" />
+    <Compile Include="Expressions\Visit\WhereVisitor.cs" />
+    <Compile Include="Expressions\Visit\PredicateVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
