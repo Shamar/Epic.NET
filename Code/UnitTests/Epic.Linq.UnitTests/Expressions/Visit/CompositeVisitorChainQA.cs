@@ -75,7 +75,7 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             GenericDumbVisitor<MethodCallExpression> dumb1 = new GenericDumbVisitor<MethodCallExpression> (chain);
             GenericDumbVisitor<MemberInitExpression> dumb2 = new GenericDumbVisitor<MemberInitExpression>(chain);
 
@@ -92,7 +92,7 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             new DumbVisitor(chain);
             DumbVisitor dumb2 = new DumbVisitor(chain);
 
@@ -109,7 +109,7 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             MethodCallExpression expression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             new DumbVisitor(chain);
             new DumbVisitor(chain);
 
@@ -128,7 +128,7 @@ namespace Epic.Linq.Expressions.Visit
             MethodCallExpression callExpression = Expression.Call(Expression.Constant(this), (MethodInfo)MethodBase.GetCurrentMethod());
             Expression<Func<int, string>> lambdaExpression = x => x.ToString();
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             GenericDumbVisitor<MethodCallExpression> dumb1 = new GenericDumbVisitor<MethodCallExpression> (chain);
             GenericDumbVisitor<Expression<Func<int, string>>> dumb2 = new GenericDumbVisitor<Expression<Func<int, string>>>(chain);
 
@@ -147,7 +147,7 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             Expression<Func<int, string, int>> expression = (i,s)=> (i + s.Length).ToString().Length;
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
@@ -165,7 +165,7 @@ namespace Epic.Linq.Expressions.Visit
             // arrange:
             Expression<Func<int, string, int>> expression = (i,s)=> s == null ? i : s.Length;
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 
@@ -245,7 +245,7 @@ namespace Epic.Linq.Expressions.Visit
                         &&  c.Itinerary.FinalArrivalDate == DateTime.Today
                     select l;
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             new LoggingVisitor(chain, WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(locationsTraversedFromVoyagesEndingToday.Expression);
                                   
@@ -281,7 +281,7 @@ namespace Epic.Linq.Expressions.Visit
                     where v.WillStopOverAt(l)
                     select l;
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             new QueryableConstantVisitor(chain);
             new ClosureVisitor(chain);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextLocationsOfMovingVoyages.Expression);
@@ -321,7 +321,7 @@ namespace Epic.Linq.Expressions.Visit
                     where v.WillStopOverAt(l)
                     select l;
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             new QueryableConstantVisitor(chain);
             new ClosureVisitor(chain);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextLocationsOfMovingVoyages.Expression);

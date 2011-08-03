@@ -70,7 +70,7 @@ namespace Epic.Linq.Expressions.Visit
             new RepositoryVisitor<ICargo, TrackingId>(chain, rep => new DomainExpression<TrackingId>("public.cargos"));
             
             VisitorsComposition<Expression> partialEvaluation = new VisitorsComposition<Expression>("test.part");
-            
+            new UnvisitableExpressionsVisitor(partialEvaluation);
             new QueryableConstantVisitor(partialEvaluation);
             new ClosureVisitor(partialEvaluation);
             
@@ -80,7 +80,8 @@ namespace Epic.Linq.Expressions.Visit
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(selecteds.Expression);
 
             // act:
-            SqlExpression result = adapter.Accept(binder2, VisitState.New.Add(mockProvider));
+            RelationExpression relation = adapter.Accept(binder1, VisitState.New.Add(mockProvider));
+            SqlExpression result = relation.Accept(new SimpleStringVisitor(), VisitState.New.Add(mockProvider));
 
             // assert:
             Assert.IsNotNull(result);

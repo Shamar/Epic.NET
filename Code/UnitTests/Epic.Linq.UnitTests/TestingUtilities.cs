@@ -32,7 +32,7 @@ namespace Epic.Linq
         public static void PrintExpression(Expression expression)
         {
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("print");
-            //new UnvisitableExpressionsVisitor(chain);
+            new UnvisitableExpressionsVisitor(chain);
             new LoggingVisitor(chain, CompositeVisitorChainQA.WriteToConsole);
             chain.Visit(expression, VisitState.New);
         }

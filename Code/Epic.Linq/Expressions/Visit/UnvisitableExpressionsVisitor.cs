@@ -32,23 +32,23 @@ using ExprType = System.Linq.Expressions.ExpressionType;
 namespace Epic.Linq.Expressions.Visit
 {
     // TODO : this is an identity visitor, isn't it?
-    internal sealed class UnvisitableExpressionsVisitor : VisitorsComposition.VisitorBase,
-        ICompositeVisitor<UnaryExpression>, 
-        ICompositeVisitor<BinaryExpression>, 
-        ICompositeVisitor<ConditionalExpression>,
-        ICompositeVisitor<ConstantExpression>,
-        ICompositeVisitor<InvocationExpression>,
-        ICompositeVisitor<LambdaExpression>,
-        ICompositeVisitor<MemberExpression>,
-        ICompositeVisitor<MethodCallExpression>,
-        ICompositeVisitor<NewExpression>,
-        ICompositeVisitor<NewArrayExpression>,
-        ICompositeVisitor<MemberInitExpression>,
-        ICompositeVisitor<ListInitExpression>,
-        ICompositeVisitor<ParameterExpression>,
-        ICompositeVisitor<TypeBinaryExpression>
+    internal sealed class UnvisitableExpressionsVisitor : VisitorsComposition<Expression>.VisitorBase,
+        ICompositeVisitor<Expression, UnaryExpression>, 
+        ICompositeVisitor<Expression, BinaryExpression>, 
+        ICompositeVisitor<Expression, ConditionalExpression>,
+        ICompositeVisitor<Expression, ConstantExpression>,
+        ICompositeVisitor<Expression, InvocationExpression>,
+        ICompositeVisitor<Expression, LambdaExpression>,
+        ICompositeVisitor<Expression, MemberExpression>,
+        ICompositeVisitor<Expression, MethodCallExpression>,
+        ICompositeVisitor<Expression, NewExpression>,
+        ICompositeVisitor<Expression, NewArrayExpression>,
+        ICompositeVisitor<Expression, MemberInitExpression>,
+        ICompositeVisitor<Expression, ListInitExpression>,
+        ICompositeVisitor<Expression, ParameterExpression>,
+        ICompositeVisitor<Expression, TypeBinaryExpression>
     {
-        public UnvisitableExpressionsVisitor (VisitorsComposition chain)
+        public UnvisitableExpressionsVisitor (VisitorsComposition<Expression> chain)
             : base(chain)
         {
         }
@@ -75,7 +75,7 @@ namespace Epic.Linq.Expressions.Visit
     
         private Expression VisitExpression (Expression expression, IVisitState state)
         {
-            ICompositeVisitor<Expression> visitor = GetVisitor<Expression>(expression);
+            ICompositeVisitor<Expression, Expression> visitor = GetVisitor<Expression>(expression);
             return visitor.Visit(expression, state);
         }
     

@@ -28,7 +28,7 @@ using ExprType = System.Linq.Expressions.ExpressionType;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class VisitorsComposition<TResult> : ICompositeVisitor<TResult>
+    public sealed class VisitorsComposition<TResult> : ICompositeVisitor<TResult, Expression>
     {
         private readonly List<VisitorBase> _chain;
         private readonly string _name;
