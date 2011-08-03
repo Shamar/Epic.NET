@@ -28,7 +28,7 @@ using ExprType = System.Linq.Expressions.ExpressionType;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class VisitorsComposition : ICompositeVisitor<Expression>
+    public sealed class VisitorsComposition<TResult> : ICompositeVisitor<TResult>
     {
         private readonly List<VisitorBase> _chain;
         private readonly string _name;
@@ -41,20 +41,20 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
+        public ICompositeVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
         {
-            ICompositeVisitor<TExpression> visitor = this as ICompositeVisitor<TExpression>;
+            ICompositeVisitor<TResult, TExpression> visitor = this as ICompositeVisitor<TResult, TExpression>;
             if(null != visitor)
                 return visitor;
             return GetVisitor<TExpression>(target, _chain.Count);
         }
         #endregion
 
-        #region ICompositeVisitor[Expression] implementation
-        public Expression Visit (Expression target, IVisitState state)
+        #region ICompositeVisitor[TResult, Expression] implementation
+        public TResult Visit (Expression target, IVisitState state)
         {
             if (target == null)
-                return null;
+                return default(TResult);
 
             VisitableExpression visitable = target as VisitableExpression;
             if (visitable != null)
@@ -130,9 +130,9 @@ namespace Epic.Linq.Expressions.Visit
         }
         #endregion
         
-        private Expression RouteToVisitors<TExpression>(TExpression expression, IVisitState state) where TExpression : Expression
+        private TResult RouteToVisitors<TExpression>(TExpression expression, IVisitState state) where TExpression : Expression
         {
-            ICompositeVisitor<TExpression> visitor = this.GetVisitor<TExpression>(expression, _chain.Count);
+            ICompositeVisitor<TResult, TExpression> visitor = this.GetVisitor<TExpression>(expression, _chain.Count);
             if(null == visitor)
             {
                 string message = string.Format("No visitor for expression of type {0} (NodeType: {1}) has been registered in the composition named '{2}'.", typeof(TExpression).FullName, expression.NodeType.ToString(), _name);
@@ -147,14 +147,9 @@ namespace Epic.Linq.Expressions.Visit
             _chain.Add(visitor);
         }
         
-        private static Expression IdentityVisit<TExpression>(TExpression expression, IVisitState state) where TExpression : Expression
+        private ICompositeVisitor<TResult, TExpression> GetVisitor<TExpression>(TExpression target, int startingPosition) where TExpression : Expression
         {
-            return expression;
-        }
-        
-        private ICompositeVisitor<TExpression> GetVisitor<TExpression>(TExpression target, int startingPosition) where TExpression : Expression
-        {
-            ICompositeVisitor<TExpression> foundVisitor = null;
+            ICompositeVisitor<TResult, TExpression> foundVisitor = null;
             
             while(startingPosition > 0)
             {
@@ -164,21 +159,21 @@ namespace Epic.Linq.Expressions.Visit
                 if(null != foundVisitor)
                     return foundVisitor;
             }
-            
-            return new VisitorWrapper<TExpression>(this, IdentityVisit<TExpression>); // TODO : should we throw ???
+            string message = string.Format("No visitor available for the expression {0}.", target);
+            throw new ArgumentException(message);
         }
         
-        public abstract class VisitorBase : ICompositeVisitor
+        public abstract class VisitorBase : ICompositeVisitor<TResult>
         {
             private readonly int _nextVisitor;
-            private readonly VisitorsComposition _composition;
+            private readonly VisitorsComposition<TResult> _composition;
             
-            protected ICompositeVisitor<TExpression> GetNextVisitor<TExpression>(TExpression target) where TExpression : Expression
+            protected ICompositeVisitor<TResult, TExpression> GetNextVisitor<TExpression>(TExpression target) where TExpression : Expression
             {
                 return _composition.GetVisitor<TExpression>(target, _nextVisitor);
             }
             
-            protected VisitorBase(VisitorsComposition composition)
+            protected VisitorBase(VisitorsComposition<TResult> composition)
             {
                 if(null == composition)
                     throw new ArgumentNullException("composition");
@@ -186,13 +181,13 @@ namespace Epic.Linq.Expressions.Visit
                 _composition.Register(this, out _nextVisitor);
             }
             
-            protected internal virtual ICompositeVisitor<TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : Expression
+            protected internal virtual ICompositeVisitor<TResult, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : Expression
             {
-                return this as ICompositeVisitor<TExpression>;
+                return this as ICompositeVisitor<TResult, TExpression>;
             }
             
             #region ICompositeVisitor implementation
-            public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
+            public ICompositeVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
             {
                 return _composition.GetVisitor<TExpression>(target);
             }

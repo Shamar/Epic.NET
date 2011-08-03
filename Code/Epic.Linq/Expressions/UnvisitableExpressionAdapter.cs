@@ -52,11 +52,11 @@ namespace Epic.Linq.Expressions
         }
         
         #region implemented abstract members of Epic.Linq.Expressions.VisitableExpression
-        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        public override TResult Accept<TResult>(ICompositeVisitor<TResult> visitor, IVisitState state)
         {
             if(null == visitor)
                 throw new ArgumentNullException("visitor");
-            ICompositeVisitor<Expression> expressionVisitor = visitor.GetVisitor<Expression>(_expression);
+            ICompositeVisitor<TResult, Expression> expressionVisitor = visitor.GetVisitor<Expression>(_expression);
             return expressionVisitor.Visit(_expression, state);
         }
         #endregion

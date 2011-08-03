@@ -61,33 +61,39 @@ namespace Epic.Linq.Expressions.Visit
             IQuery query = null;
             IQueryDataExtractor<Expression<Func<ICargo, bool>>> extractor = TemplateParser<Expression<Func<ICargo, bool>>>.Parse(c => c.Delivery.LastKnownLocation == query.Get<UnLocode>("lastLocation"));
             
-            VisitorsComposition chain = new VisitorsComposition("test");
-            new UnvisitableExpressionsVisitor(chain);
-            new WhereVisitor<ICargo>(chain);
+            VisitorsComposition<RelationExpression> predicates = new VisitorsComposition<RelationExpression>("test.pred");
+            new PredicateVisitor<ICargo>(predicates, extractor, (q, r) => new SelectionExpression(r, new AttributeEqualPredicate(r, new AttributeExpression<string>(r, "lastloc"), new ConstantExpression<string>(q.Get<UnLocode>("lastLocation").ToString()))));
+            
+            VisitorsComposition<RelationExpression> chain = new VisitorsComposition<RelationExpression>("test");
+            //new UnvisitableExpressionsVisitor(chain);
+            new WhereVisitor<ICargo>(chain, predicates);
             new RepositoryVisitor<ICargo, TrackingId>(chain, rep => new DomainExpression<TrackingId>("public.cargos"));
-            new PredicateVisitor<ICargo>(chain, extractor, (q, r) => new AttributeEqualPredicate(r, new AttributeExpression<string>(r, "lastloc"), new ConstantExpression<string>(q.Get<UnLocode>("lastLocation").ToString())));
-            new QueryableConstantVisitor(chain);
-            new ClosureVisitor(chain);
+            
+            VisitorsComposition<Expression> partialEvaluation = new VisitorsComposition<Expression>("test.part");
+            
+            new QueryableConstantVisitor(partialEvaluation);
+            new ClosureVisitor(partialEvaluation);
+            
+            ICompositeVisitor<RelationExpression, Expression> binder1 = new VisitResultsBinder<RelationExpression, Expression, Expression>(partialEvaluation, chain);
+            ICompositeVisitor<SqlExpression, Expression> binder2 = new VisitResultsBinder<SqlExpression, RelationExpression, Expression>(binder1, new SimpleStringVisitor());
+            
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(selecteds.Expression);
 
             // act:
-            VisitableExpression result = adapter.Accept(chain, VisitState.New.Add(mockProvider)) as VisitableExpression;
-            SqlExpression sql = result.Accept(new SimpleStringVisitor(), VisitState.New) as SqlExpression;
+            SqlExpression result = adapter.Accept(binder2, VisitState.New.Add(mockProvider));
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.AreEqual((System.Linq.Expressions.ExpressionType)ExpressionType.Selection, result.NodeType);
-            Assert.IsNotNull(sql);
-            Console.WriteLine(sql.Expression);
+            Console.WriteLine(result.Expression);
         }
     }
     
     class SimpleStringVisitor :
-            ICompositeVisitor<SelectionExpression>,
-            ICompositeVisitor<AttributeEqualPredicate>,
-            ICompositeVisitor<AttributeExpression<string>>,
-            ICompositeVisitor<ConstantExpression<string>>,
-            ICompositeVisitor<DomainExpression<TrackingId>>
+            ICompositeVisitor<SqlExpression, SelectionExpression>,
+            ICompositeVisitor<SqlExpression, AttributeEqualPredicate>,
+            ICompositeVisitor<SqlExpression, AttributeExpression<string>>,
+            ICompositeVisitor<SqlExpression, ConstantExpression<string>>,
+            ICompositeVisitor<SqlExpression, DomainExpression<TrackingId>>
     {
         public SimpleStringVisitor()
         {
@@ -96,7 +102,7 @@ namespace Epic.Linq.Expressions.Visit
         
 
         #region ICompositeVisitor[SelectionExpression] implementation
-        public Expression Visit (SelectionExpression target, IVisitState state)
+        public SqlExpression Visit (SelectionExpression target, IVisitState state)
         {
             SqlExpression predicate = target.Predicate.Accept(this, state) as SqlExpression;
             SqlExpression source = target.Source.Accept(this, state) as SqlExpression;
@@ -107,7 +113,7 @@ namespace Epic.Linq.Expressions.Visit
         #endregion
 
         #region ICompositeVisitor[PredicateExpression] implementation
-        public Expression Visit (AttributeEqualPredicate target, IVisitState state)
+        public SqlExpression Visit (AttributeEqualPredicate target, IVisitState state)
         {
             SqlExpression left = target.Left.Accept(this, state) as SqlExpression;
             SqlExpression right = target.Right.Accept(this, state) as SqlExpression;
@@ -116,30 +122,30 @@ namespace Epic.Linq.Expressions.Visit
         #endregion
 
         #region ICompositeVisitor[AttributeExpression[System.String]] implementation
-        public Expression Visit (AttributeExpression<string> target, IVisitState state)
+        public SqlExpression Visit (AttributeExpression<string> target, IVisitState state)
         {
             return new SqlExpression(target.Name);
         }
         #endregion
 
         #region ICompositeVisitor[ConstantExpression[System.String]] implementation
-        public Expression Visit (ConstantExpression<string> target, IVisitState state)
+        public SqlExpression Visit (ConstantExpression<string> target, IVisitState state)
         {
             return new SqlExpression("\"{0}\"", target.Value);
         }
         #endregion
 
         #region ICompositeVisitor[DomainExpression[TrackingId]] implementation
-        public Expression Visit (DomainExpression<TrackingId> target, IVisitState state)
+        public SqlExpression Visit (DomainExpression<TrackingId> target, IVisitState state)
         {
             return new SqlExpression(target.Name);
         }
         #endregion
 
         #region ICompositeVisitor implementation
-        public ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : Expression
+        public ICompositeVisitor<SqlExpression, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : Expression
         {
-            return this as ICompositeVisitor<TExpression>;
+            return this as ICompositeVisitor<SqlExpression, TExpression>;
         }
         #endregion
     }

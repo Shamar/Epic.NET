@@ -34,9 +34,9 @@ namespace Epic.Linq.Expressions
         {
         }
         
-        public abstract Expression Accept(ICompositeVisitor visitor, IVisitState state);
+        public abstract TResult Accept<TResult>(ICompositeVisitor<TResult> visitor, IVisitState state);
         
-        protected Expression AcceptAs<TVisitableExpression>(ICompositeVisitor visitor, IVisitState state) where TVisitableExpression : VisitableExpression
+        protected TResult AcceptAs<TResult, TVisitableExpression>(ICompositeVisitor<TResult> visitor, IVisitState state) where TVisitableExpression : VisitableExpression
         {
             TVisitableExpression visitable = this as TVisitableExpression;
             if(null == visitable)

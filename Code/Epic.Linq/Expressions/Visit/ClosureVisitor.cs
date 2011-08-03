@@ -30,16 +30,16 @@ namespace Epic.Linq.Expressions.Visit
     /// <summary>
     /// Closure visitor. Replace a closure with its value. Closures are defined as accesses to fields or properties of constants.
     /// </summary>
-    public sealed class ClosureVisitor : VisitorsComposition.VisitorBase, ICompositeVisitor<MemberExpression>
+    public sealed class ClosureVisitor : VisitorsComposition<Expression>.VisitorBase, ICompositeVisitor<Expression, MemberExpression>
     {
-        public ClosureVisitor (VisitorsComposition chain)
+        public ClosureVisitor (VisitorsComposition<Expression> chain)
             : base(chain)
         {
         }
         
-        internal protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        internal protected override ICompositeVisitor<Expression, TExpression> AsVisitor<TExpression> (TExpression target)
         {
-            ICompositeVisitor<TExpression> visitor = base.AsVisitor (target);
+            ICompositeVisitor<Expression, TExpression> visitor = base.AsVisitor (target);
             
             if(null != visitor)
             {
@@ -62,12 +62,12 @@ namespace Epic.Linq.Expressions.Visit
                 LambdaExpression lambda = Expression.Lambda(typeof(Func<>).MakeGenericType(target.Type), target);
                 ConstantExpression constant = Expression.Constant(lambda.Compile().DynamicInvoke(), target.Type);
                 
-                ICompositeVisitor<ConstantExpression> visitor = GetVisitor<ConstantExpression>(constant);
+                ICompositeVisitor<Expression, ConstantExpression> visitor = GetVisitor<ConstantExpression>(constant);
                 return visitor.Visit(constant, state);
             }
             catch
             {
-                ICompositeVisitor<MemberExpression> visitor = GetNextVisitor<MemberExpression>(target);
+                ICompositeVisitor<Expression, MemberExpression> visitor = GetNextVisitor<MemberExpression>(target);
                 return visitor.Visit(target, state);
             }
         }

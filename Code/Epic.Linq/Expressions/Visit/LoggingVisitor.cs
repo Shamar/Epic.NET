@@ -27,11 +27,11 @@ using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class LoggingVisitor : VisitorsComposition.VisitorBase
+    public sealed class LoggingVisitor : VisitorsComposition<Expression>.VisitorBase
     {
         private readonly Action<int, Expression, IVisitState> _log;
         
-        public LoggingVisitor (VisitorsComposition chain, Action<int, Expression, IVisitState> loggingAction)
+        public LoggingVisitor (VisitorsComposition<Expression> chain, Action<int, Expression, IVisitState> loggingAction)
             : base(chain)
         {
             if(null == loggingAction)
@@ -41,11 +41,11 @@ namespace Epic.Linq.Expressions.Visit
             _log = loggingAction;
         }
         
-        protected internal override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        protected internal override ICompositeVisitor<Expression, TExpression> AsVisitor<TExpression> (TExpression target)
         {
             if(typeof(TExpression).Equals(typeof(Expression)))
                 return null;
-            return new VisitorWrapper<TExpression>(this, this.Display<TExpression>);
+            return new VisitorWrapper<Expression, TExpression>(this, this.Display<TExpression>);
         }
         
         private Expression Display<TExpression>(TExpression target, IVisitState state) where TExpression : Expression
@@ -60,7 +60,7 @@ namespace Epic.Linq.Expressions.Visit
             
             state = state.Add(depth.Next());        // add the printed expression to the state's stack
             
-            ICompositeVisitor<TExpression> visitor = GetNextVisitor(target);
+            ICompositeVisitor<Expression, TExpression> visitor = GetNextVisitor(target);
             Expression visited = visitor.Visit(target, state);
             return visited;
         }

@@ -28,16 +28,21 @@ using System.Linq;
 namespace Epic.Linq.Expressions.Visit
 {
     // TODO : optimize and fix! this is just a draft
-    public sealed class WhereVisitor<TEntity> : VisitorsComposition.VisitorBase, ICompositeVisitor<MethodCallExpression>
+    public sealed class WhereVisitor<TEntity> : VisitorsComposition<RelationExpression>.VisitorBase, ICompositeVisitor<RelationExpression, MethodCallExpression>
     {
-        public WhereVisitor (VisitorsComposition chain)
+        private readonly ICompositeVisitor<RelationExpression> _predicateVisitors;
+        
+        public WhereVisitor (VisitorsComposition<RelationExpression> chain, ICompositeVisitor<RelationExpression> predicateVisitors)
             : base(chain)
         {
+            if(null == predicateVisitors)
+                throw new ArgumentNullException("predicateVisitor");
+            _predicateVisitors = predicateVisitors;
         }
         
-        internal protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        internal protected override ICompositeVisitor<RelationExpression, TExpression> AsVisitor<TExpression> (TExpression target)
         {
-            ICompositeVisitor<TExpression> visitor = base.AsVisitor (target);
+            ICompositeVisitor<RelationExpression, TExpression> visitor = base.AsVisitor (target);
             if(null != visitor)
             {
                 MethodCallExpression expression = target as MethodCallExpression;
@@ -50,16 +55,16 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor[MethodCallExpression] implementation
-        public Expression Visit (MethodCallExpression target, IVisitState state)
+        public RelationExpression Visit (MethodCallExpression target, IVisitState state)
         {
-            ICompositeVisitor<Expression> sourceVisitor = GetVisitor<Expression>(target.Arguments[0]);
+            ICompositeVisitor<RelationExpression, Expression> sourceVisitor = GetVisitor<Expression>(target.Arguments[0]);
             RelationExpression relation = sourceVisitor.Visit(target.Arguments[0], state) as RelationExpression;
             
-            ICompositeVisitor<Expression> predVisitor = GetVisitor<Expression>(target.Arguments[1]);
             UnaryExpression quote = target.Arguments[1] as UnaryExpression;
-            Expression predicateExp = predVisitor.Visit(quote.Operand, state.Add<RelationExpression>(relation));
+            ICompositeVisitor<RelationExpression, Expression> predVisitor = _predicateVisitors.GetVisitor<Expression>(quote.Operand);
+            RelationExpression result = predVisitor.Visit(quote.Operand, state.Add<RelationExpression>(relation));
             
-            return new SelectionExpression(relation, predicateExp as PredicateExpression);
+            return result;
         }
         #endregion
 

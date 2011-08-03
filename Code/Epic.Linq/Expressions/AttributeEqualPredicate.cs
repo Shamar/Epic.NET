@@ -34,9 +34,9 @@ namespace Epic.Linq.Expressions
         {
         }
         
-        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        public override TResult Accept<TResult> (ICompositeVisitor<TResult> visitor, IVisitState state)
         {
-            return AcceptAs<AttributeEqualPredicate>(visitor, state);
+            return AcceptAs<TResult, AttributeEqualPredicate>(visitor, state);
         }
     }
 }

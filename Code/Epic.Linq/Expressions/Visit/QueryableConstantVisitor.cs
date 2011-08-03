@@ -33,9 +33,9 @@ namespace Epic.Linq.Expressions.Visit
     /// <exception cref='InvalidOperationException'>
     /// Is thrown when an operation cannot be performed.
     /// </exception>
-    public class QueryableConstantVisitor : VisitorsComposition.VisitorBase, ICompositeVisitor<ConstantExpression>
+    public class QueryableConstantVisitor : VisitorsComposition<Expression>.VisitorBase, ICompositeVisitor<Expression, ConstantExpression>
     {
-        public QueryableConstantVisitor (VisitorsComposition chain)
+        public QueryableConstantVisitor (VisitorsComposition<Expression> chain)
             : base(chain)
         {
         }
@@ -65,9 +65,9 @@ namespace Epic.Linq.Expressions.Visit
         }
         #endregion
         
-        internal protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        internal protected override ICompositeVisitor<Expression, TExpression> AsVisitor<TExpression> (TExpression target)
         {
-            ICompositeVisitor<TExpression> visitor = base.AsVisitor (target);
+            ICompositeVisitor<Expression, TExpression> visitor = base.AsVisitor (target);
             
             if(null != visitor)
             {

@@ -28,12 +28,12 @@ using System.Linq.Expressions;
 namespace Epic.Linq.Expressions.Visit
 {
     // TODO : this is a draft... consider an abstract class instead of "logic"! ! !
-    public sealed class PredicateVisitor<TEntity> : VisitorsComposition.VisitorBase, ICompositeVisitor<LambdaExpression>
+    public sealed class PredicateVisitor<TEntity> : VisitorsComposition<RelationExpression>.VisitorBase, ICompositeVisitor<RelationExpression, LambdaExpression>
         where TEntity : class
     {
         private readonly IQueryDataExtractor<Expression<Func<TEntity, bool>>> _extractor;
-        private readonly Func<IQuery, RelationExpression, PredicateExpression> _logic;
-        public PredicateVisitor (VisitorsComposition chain, IQueryDataExtractor<Expression<Func<TEntity, bool>>> extractor, Func<IQuery, RelationExpression, PredicateExpression> logic)
+        private readonly Func<IQuery, RelationExpression, RelationExpression> _logic;
+        public PredicateVisitor (VisitorsComposition<RelationExpression> chain, IQueryDataExtractor<Expression<Func<TEntity, bool>>> extractor, Func<IQuery, RelationExpression, RelationExpression> logic)
             : base(chain)
         {
             if(null == extractor)
@@ -44,9 +44,9 @@ namespace Epic.Linq.Expressions.Visit
             _logic = logic;
         }
         
-        internal protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        internal protected override ICompositeVisitor<RelationExpression, TExpression> AsVisitor<TExpression> (TExpression target)
         {
-            ICompositeVisitor<TExpression> visitor = base.AsVisitor<TExpression>(target);
+            ICompositeVisitor<RelationExpression, TExpression> visitor = base.AsVisitor<TExpression>(target);
             if(null != visitor)
             {
                 if(!_extractor.CanParse(target as Expression<Func<TEntity, bool>>))
@@ -55,13 +55,13 @@ namespace Epic.Linq.Expressions.Visit
             return visitor;
         }
         
-        public Expression Visit (LambdaExpression target, IVisitState state)
+        public RelationExpression Visit (LambdaExpression target, IVisitState state)
         {
             return Visit(target as Expression<Func<TEntity, bool>>, state);
         }
         
         #region ICompositeVisitor[Expression[Func[TEntity,System.Boolean]]] implementation
-        public Expression Visit (Expression<Func<TEntity, bool>> target, IVisitState state)
+        public RelationExpression Visit (Expression<Func<TEntity, bool>> target, IVisitState state)
         {
             RelationExpression relation = null;
             if(!state.TryGet<RelationExpression>(out relation))

@@ -36,8 +36,8 @@ namespace Epic.Linq.Expressions
         {
             // arrange:
             Expression<Func<int, string, int>> expression = (i,s)=> (i + s.Length).ToString().Length;
-            VisitorsComposition chain = new VisitorsComposition("test");
-            new UnvisitableExpressionsVisitor(chain);
+            VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
+            //new UnvisitableExpressionsVisitor(chain);
             new LoggingVisitor(chain, CompositeVisitorChainQA.WriteToConsole);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(expression);
 

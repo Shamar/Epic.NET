@@ -41,9 +41,9 @@ namespace Epic.Linq.Expressions
             return Name.Equals(other.Name);
         }
         
-        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        public override TResult Accept<TResult>(ICompositeVisitor<TResult> visitor, IVisitState state)
         {
-            return AcceptAs<DomainExpression<T>>(visitor, state);
+            return AcceptAs<TResult, DomainExpression<T>>(visitor, state);
         }
         
         #region IEquatable[RelationExpression] implementation

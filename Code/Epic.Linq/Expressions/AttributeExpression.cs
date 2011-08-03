@@ -59,9 +59,9 @@ namespace Epic.Linq.Expressions
         }
         
         #region implemented abstract members of Epic.Linq.Expressions.VisitableExpression
-        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        public override TResult Accept<TResult> (ICompositeVisitor<TResult> visitor, IVisitState state)
         {
-            return AcceptAs<AttributeExpression<T>>(visitor, state);
+            return AcceptAs<TResult, AttributeExpression<T>>(visitor, state);
         }
         #endregion
 

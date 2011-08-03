@@ -27,13 +27,13 @@ using Epic;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class RepositoryVisitor<TEntity, TIdentity> : VisitorsComposition.VisitorBase, ICompositeVisitor<ConstantExpression>
+    public sealed class RepositoryVisitor<TEntity, TIdentity> : VisitorsComposition<RelationExpression>.VisitorBase, ICompositeVisitor<RelationExpression, ConstantExpression>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
         private readonly Func<IRepository<TEntity, TIdentity>, RelationExpression> _transformation;
             
-        public RepositoryVisitor (VisitorsComposition chain, Func<IRepository<TEntity, TIdentity>, RelationExpression> transformation)
+        public RepositoryVisitor (VisitorsComposition<RelationExpression> chain, Func<IRepository<TEntity, TIdentity>, RelationExpression> transformation)
             : base(chain)
         {
             if(null == transformation)
@@ -42,15 +42,15 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor[ConstantExpression] implementation
-        public Expression Visit (ConstantExpression target, IVisitState state)
+        public RelationExpression Visit (ConstantExpression target, IVisitState state)
         {
             return _transformation(target.Value as IRepository<TEntity, TIdentity>);
         }
         #endregion
   
-        internal protected override ICompositeVisitor<TExpression> AsVisitor<TExpression> (TExpression target)
+        internal protected override ICompositeVisitor<RelationExpression, TExpression> AsVisitor<TExpression> (TExpression target)
         {
-            ICompositeVisitor<TExpression> visitor = base.AsVisitor (target);
+            ICompositeVisitor<RelationExpression, TExpression> visitor = base.AsVisitor (target);
             if(null != visitor)
             {
                 ConstantExpression expression = target as ConstantExpression;

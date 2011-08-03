@@ -26,15 +26,15 @@ using System.Linq.Expressions;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public interface ICompositeVisitor
+    public interface ICompositeVisitor<TResult>
     {
-        ICompositeVisitor<TExpression> GetVisitor<TExpression>(TExpression target) where TExpression : Expression;
+        ICompositeVisitor<TResult, TExpression> GetVisitor<TExpression>(TExpression target) where TExpression : Expression;
     }
     
-    public interface ICompositeVisitor<TExpression> : ICompositeVisitor
+    public interface ICompositeVisitor<TResult, TExpression> : ICompositeVisitor<TResult>
         where TExpression : Expression
     {
-        Expression Visit(TExpression target, IVisitState state);
+        TResult Visit(TExpression target, IVisitState state);
     }
 }
 

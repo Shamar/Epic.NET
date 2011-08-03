@@ -75,9 +75,9 @@ namespace Epic.Linq.Expressions
             return this.Name.Equals(other.Name) && _source.Equals(other._source) && _predicate.Equals(other._predicate);
         }
         
-        public override Expression Accept (ICompositeVisitor visitor, IVisitState state)
+        public override TResult Accept<TResult> (ICompositeVisitor<TResult> visitor, IVisitState state)
         {
-            return base.AcceptAs<SelectionExpression>(visitor, state);
+            return base.AcceptAs<TResult, SelectionExpression>(visitor, state);
         }
         
         #region implemented abstract members of Epic.Linq.Expressions.RelationExpression

@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Epic.Linq</RootNamespace>
     <AssemblyName>Epic.Linq</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,7 +49,6 @@
     <Compile Include="Expressions\Visit\VisitState.cs" />
     <Compile Include="Expressions\Visit\VisitorsComposition.cs" />
     <Compile Include="Expressions\Visit\VisitorWrapper.cs" />
-    <Compile Include="Expressions\Visit\UnvisitableExpressionsVisitor.cs" />
     <Compile Include="Expressions\Visit\ExpressionReplacingVisitor.cs" />
     <Compile Include="Expressions\Visit\LoggingVisitor.cs" />
     <Compile Include="Expressions\Templates\IQuery.cs" />
@@ -72,6 +70,7 @@
     <Compile Include="Expressions\Visit\WhereVisitor.cs" />
     <Compile Include="Expressions\Visit\PredicateVisitor.cs" />
     <Compile Include="Expressions\SqlExpression.cs" />
+    <Compile Include="Expressions\Visit\VisitResultsBinder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

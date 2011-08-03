@@ -26,12 +26,12 @@ using System.Linq.Expressions;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public sealed class ExpressionReplacingVisitor<TExpression> : VisitorsComposition.VisitorBase, ICompositeVisitor<TExpression>
+    public sealed class ExpressionReplacingVisitor<TExpression> : VisitorsComposition<Expression>.VisitorBase, ICompositeVisitor<Expression, TExpression>
         where TExpression : Expression
     {
         private readonly Func<TExpression, bool> _toReplace; 
         private readonly Func<TExpression, IVisitState, Expression> _replacement;
-        public ExpressionReplacingVisitor (VisitorsComposition chain, Func<TExpression, bool> toReplace, Func<TExpression, IVisitState, Expression> replacement )
+        public ExpressionReplacingVisitor (VisitorsComposition<Expression> chain, Func<TExpression, bool> toReplace, Func<TExpression, IVisitState, Expression> replacement )
             : base(chain)
         {
             if(null == toReplace)
@@ -42,12 +42,12 @@ namespace Epic.Linq.Expressions.Visit
             _replacement = replacement;
         }
         
-        public ExpressionReplacingVisitor(VisitorsComposition chain, TExpression toReplace, Expression replacement)
+        public ExpressionReplacingVisitor(VisitorsComposition<Expression> chain, TExpression toReplace, Expression replacement)
             : this(chain, e => e == toReplace, (e, s) => replacement)
         {
         }
         
-        protected internal override ICompositeVisitor<TRequested> AsVisitor<TRequested> (TRequested target)
+        protected internal override ICompositeVisitor<Expression, TRequested> AsVisitor<TRequested> (TRequested target)
         {
             ExpressionReplacingVisitor<TRequested> visitor = this as ExpressionReplacingVisitor<TRequested>;
             if(null != visitor && visitor._toReplace(target))

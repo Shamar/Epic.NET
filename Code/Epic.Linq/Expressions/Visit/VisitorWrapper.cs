@@ -26,17 +26,17 @@ using System.Linq.Expressions;
 
 namespace Epic.Linq.Expressions.Visit
 {
-    public abstract class VisitorWrapperBase : ICompositeVisitor
+    public abstract class VisitorWrapperBase<TResult> : ICompositeVisitor<TResult>
     {
-        private readonly ICompositeVisitor _wrapped;
-        protected VisitorWrapperBase(ICompositeVisitor wrappedVisitor)
+        private readonly ICompositeVisitor<TResult> _wrapped;
+        protected VisitorWrapperBase(ICompositeVisitor<TResult> wrappedVisitor)
         {
             if(null == wrappedVisitor)
                 throw new ArgumentNullException("wrappedVisitor");
             _wrapped = wrappedVisitor;
         }
         
-        public ICompositeVisitor WrappedVisitor
+        public ICompositeVisitor<TResult> WrappedVisitor
         {
             get
             {
@@ -45,15 +45,15 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor implementation
-        public abstract ICompositeVisitor<TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : Expression;
+        public abstract ICompositeVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : Expression;
         #endregion
     }
     
-    public sealed class VisitorWrapper<TExpression> : VisitorWrapperBase, ICompositeVisitor<TExpression>
+    public sealed class VisitorWrapper<TResult, TExpression> : VisitorWrapperBase<TResult>, ICompositeVisitor<TResult, TExpression>
         where TExpression : Expression
     {
-        private readonly Func<TExpression, IVisitState, Expression> _visit;
-        public VisitorWrapper (ICompositeVisitor wrappedVisitor, Func<TExpression, IVisitState, Expression> visit)
+        private readonly Func<TExpression, IVisitState, TResult> _visit;
+        public VisitorWrapper (ICompositeVisitor<TResult> wrappedVisitor, Func<TExpression, IVisitState, TResult> visit)
             : base(wrappedVisitor)
         {
             if(null == visit)
@@ -64,14 +64,14 @@ namespace Epic.Linq.Expressions.Visit
         }
 
         #region ICompositeVisitor[TExpression] implementation
-        public System.Linq.Expressions.Expression Visit (TExpression target, IVisitState state)
+        public TResult Visit (TExpression target, IVisitState state)
         {
             return _visit(target, state);
         }
         #endregion
 
         #region ICompositeVisitor implementation
-        public override ICompositeVisitor<TRequiredExpression> GetVisitor<TRequiredExpression> (TRequiredExpression target)
+        public override ICompositeVisitor<TResult, TRequiredExpression> GetVisitor<TRequiredExpression> (TRequiredExpression target)
         {
             return WrappedVisitor.GetVisitor<TRequiredExpression>(target);
         }
