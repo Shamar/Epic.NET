@@ -71,6 +71,7 @@
     <Compile Include="Expressions\Visit\RepositoryVisitor.cs" />
     <Compile Include="Expressions\Visit\WhereVisitor.cs" />
     <Compile Include="Expressions\Visit\PredicateVisitor.cs" />
+    <Compile Include="Expressions\SqlExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

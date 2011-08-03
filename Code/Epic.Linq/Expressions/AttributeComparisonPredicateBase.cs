@@ -30,6 +30,22 @@ namespace Epic.Linq.Expressions
         private readonly VisitableExpression _left;
         private readonly VisitableExpression _right;
         
+        public VisitableExpression Left
+        {
+            get
+            {
+                return _left;
+            }
+        }
+        
+        public VisitableExpression Right
+        {
+            get
+            {
+                return _right;
+            }
+        }
+        
         public AttributeComparisonPredicateBase (RelationExpression relation, VisitableExpression left, VisitableExpression right)
             : base(relation)
         {
