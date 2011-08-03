@@ -58,7 +58,7 @@ namespace Epic.Linq.Expressions.Visit
         {
             if(null == visit)
                 throw new ArgumentNullException("visit");
-            if(!object.ReferenceEquals(WrappedVisitor, visit.Target) || visit.Target == null)
+            if(!(object.ReferenceEquals(WrappedVisitor, visit.Target) || visit.Target == null))
                 throw new ArgumentException("The visit must be either static or a method of the wrapped visitor.");
             _visit = visit;
         }
