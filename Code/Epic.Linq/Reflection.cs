@@ -25,6 +25,10 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using ExprType = System.Linq.Expressions.ExpressionType;
+using System.Linq.Expressions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Epic.Linq
 {
@@ -135,6 +139,142 @@ namespace Epic.Linq
         public static bool IsAnonymous(Type type)
         {
             return type.IsGenericType && IsCompilerGenerated(type) && type.Name.StartsWith("<>"); // No need to work with VB
+        }
+        
+        public static bool CanBeCompiled(Expression expression, params ParameterExpression[] availableParameters)
+        {
+            switch(expression.NodeType)
+            {
+                case ExprType.ArrayLength:
+                case ExprType.Convert:
+                case ExprType.ConvertChecked:
+                case ExprType.Negate:
+                case ExprType.NegateChecked:
+                case ExprType.Not:
+                case ExprType.Quote:
+                case ExprType.TypeAs:
+                case ExprType.UnaryPlus:
+                    return CanBeCompiled((expression as UnaryExpression).Operand, availableParameters);
+                case ExprType.Add:
+                case ExprType.AddChecked:
+                case ExprType.Divide:
+                case ExprType.Modulo:
+                case ExprType.Multiply:
+                case ExprType.MultiplyChecked:
+                case ExprType.Power:
+                case ExprType.Subtract:
+                case ExprType.SubtractChecked:
+                case ExprType.And:
+                case ExprType.Or:
+                case ExprType.ExclusiveOr:
+                case ExprType.LeftShift:
+                case ExprType.RightShift:
+                case ExprType.AndAlso:
+                case ExprType.OrElse:
+                case ExprType.Equal:
+                case ExprType.NotEqual:
+                case ExprType.GreaterThanOrEqual:
+                case ExprType.GreaterThan:
+                case ExprType.LessThan:
+                case ExprType.LessThanOrEqual:
+                case ExprType.Coalesce:
+                case ExprType.ArrayIndex:
+                    BinaryExpression binaryExp = expression as BinaryExpression;
+                    return CanBeCompiled(binaryExp.Left, availableParameters) && CanBeCompiled(binaryExp.Right, availableParameters);
+                case ExprType.Conditional:
+                    ConditionalExpression conditionalExp = expression as ConditionalExpression;
+                    return CanBeCompiled(conditionalExp.Test, availableParameters) && CanBeCompiled(conditionalExp.IfTrue, availableParameters) && CanBeCompiled(conditionalExp.IfFalse, availableParameters);
+                case ExprType.Constant:
+                    return true;
+                case ExprType.Invoke:
+                    InvocationExpression invocationExp = expression as InvocationExpression;
+                    foreach (Expression arg in invocationExp.Arguments)
+                    {
+                        if (!CanBeCompiled(arg, availableParameters))
+                            return false;
+                    }
+                    return CanBeCompiled(invocationExp.Expression, availableParameters);
+                case ExprType.Lambda:
+                    LambdaExpression lambdaExp = expression as LambdaExpression;
+                    if(lambdaExp.Parameters.Count > 0 || (null != availableParameters && availableParameters.Length > 0))
+                    {
+                        List<ParameterExpression> parameters = new List<ParameterExpression>(lambdaExp.Parameters);
+                        if(null != availableParameters && availableParameters.Length > 0)
+                        {
+                            parameters.AddRange(availableParameters);
+                        }
+                        return CanBeCompiled(lambdaExp.Body, parameters.ToArray());
+                    }
+                    else
+                    {
+                        return CanBeCompiled(lambdaExp.Body, availableParameters);
+                    }
+                case ExprType.MemberAccess:
+                    return CanBeCompiled((expression as MemberExpression).Expression, availableParameters);
+                case ExprType.Call:
+                    MethodCallExpression callExp = expression as MethodCallExpression;
+                    foreach (Expression arg in callExp.Arguments)
+                    {
+                        if (!CanBeCompiled(arg, availableParameters))
+                            return false;
+                    }
+                    return null == callExp.Object || CanBeCompiled(callExp.Object, availableParameters);
+                case ExprType.New:
+                    NewExpression newExp = expression as NewExpression;
+                    foreach (Expression arg in newExp.Arguments)
+                    {
+                        if (!CanBeCompiled(arg, availableParameters))
+                            return false;
+                    }
+                    return true;
+                case ExprType.NewArrayBounds:
+                case ExprType.NewArrayInit:
+                    NewArrayExpression newArrExp = expression as NewArrayExpression;
+                    foreach (Expression arg in newArrExp.Expressions)
+                    {
+                        if (!CanBeCompiled(arg, availableParameters))
+                            return false;
+                    }
+                    return true;
+                case ExprType.MemberInit:
+                    MemberInitExpression initExp = expression as MemberInitExpression;
+                    foreach (MemberBinding binding in initExp.Bindings)
+                    {
+                        switch (binding.BindingType)
+                        {
+                            case MemberBindingType.Assignment:
+                                MemberAssignment assign = binding as MemberAssignment;
+                                if (!CanBeCompiled(assign.Expression, availableParameters))
+                                    return false;
+                                break;
+                            case MemberBindingType.MemberBinding:
+                                MemberMemberBinding member = binding as MemberMemberBinding;
+                                // TODO : complete
+                                return false;
+                            default:
+                                MemberListBinding list = binding as MemberListBinding;
+                                if(!list.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e, availableParameters))))
+                                    return false;
+                                break;
+                        }
+                    }
+                    return CanBeCompiled(initExp.NewExpression, availableParameters);
+                case ExprType.ListInit:
+                    ListInitExpression listExp = expression as ListInitExpression;
+                    return CanBeCompiled(listExp.NewExpression) && listExp.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e, availableParameters)));
+                case ExprType.Parameter:
+                    if(null != availableParameters)
+                    {
+                        for(int i = 0; i < availableParameters.Length; ++i)
+                            if(expression == availableParameters[i])
+                                return true;
+                    }
+                    return false;
+                case ExprType.TypeIs:
+                    return CanBeCompiled((expression as TypeBinaryExpression).Expression, availableParameters);
+                default:
+                    return false;
+            }
         }
 	}
 }
