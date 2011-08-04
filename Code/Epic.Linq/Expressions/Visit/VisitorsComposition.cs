@@ -173,18 +173,15 @@ namespace Epic.Linq.Expressions.Visit
                 return _composition.GetVisitor<TExpression>(target, _nextVisitor);
             }
             
-            protected TResult Continue<TExpression>(TExpression target, IVisitState state) where TExpression : Expression
+            protected TResult ForwardToNext<TExpression>(TExpression target, IVisitState state) where TExpression : Expression
             {
-                ICompositeVisitor<TResult, TExpression> next = null;
-                if(this is ICompositeVisitor<TResult, TExpression>)
-                {
-                    next = GetNextVisitor<TExpression>(target);
-                }
-                else
-                {
-                    next = GetVisitor<TExpression>(target);
-                }
-                
+                ICompositeVisitor<TResult, TExpression> next = GetNextVisitor<TExpression>(target);
+                return next.Visit(target, state);
+            }
+            
+            protected TResult ForwardToChain<TExpression>(TExpression target, IVisitState state) where TExpression : Expression
+            {
+                ICompositeVisitor<TResult, TExpression> next = GetVisitor<TExpression>(target);
                 return next.Visit(target, state);
             }
             
@@ -200,8 +197,8 @@ namespace Epic.Linq.Expressions.Visit
             {
                 return this as ICompositeVisitor<TResult, TExpression>;
             }
-            
-            #region ICompositeVisitor implementation
+
+            #region ICompositeVisitor<TResult> implementation
             public ICompositeVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : System.Linq.Expressions.Expression
             {
                 return _composition.GetVisitor<TExpression>(target);

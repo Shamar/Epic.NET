@@ -40,7 +40,7 @@ namespace Epic.Linq.Expressions.Visit
         #region ICompositeVisitor[Expression,MemberExpression] implementation
         public Expression Visit (MemberExpression target, IVisitState state)
         {
-            Expression owner = Continue(target.Expression, state);
+            Expression owner = ForwardToChain(target.Expression, state);
             if(owner.NodeType != System.Linq.Expressions.ExpressionType.Constant)
             {
                 if(target.Expression != owner)
@@ -77,7 +77,7 @@ namespace Epic.Linq.Expressions.Visit
 			
 			
             if(null != target.Object)
-                owner = Continue(target.Object, state);
+                owner = ForwardToChain(target.Object, state);
 			
 			bool canBeCompiled = null == owner || owner.NodeType == System.Linq.Expressions.ExpressionType.Constant;
             
@@ -86,7 +86,7 @@ namespace Epic.Linq.Expressions.Visit
                 arguments = new List<Expression>();
                 for(int i = 0; i < target.Arguments.Count; ++i)
                 {
-                    Expression arg = Continue(target.Arguments[i], state);
+                    Expression arg = ForwardToChain(target.Arguments[i], state);
 					if(arg.NodeType != System.Linq.Expressions.ExpressionType.Constant)
 					{
 						canBeCompiled = false;
@@ -114,6 +114,10 @@ namespace Epic.Linq.Expressions.Visit
 			}
             else
             {
+                if(null == arguments)
+                {
+                    return Expression.Call(owner, target.Method);
+                }
                 return Expression.Call(owner, target.Method, arguments);
             }
         }

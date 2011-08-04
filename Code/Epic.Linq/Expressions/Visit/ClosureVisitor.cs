@@ -62,11 +62,11 @@ namespace Epic.Linq.Expressions.Visit
                 LambdaExpression lambda = Expression.Lambda(typeof(Func<>).MakeGenericType(target.Type), target);
                 ConstantExpression constant = Expression.Constant(lambda.Compile().DynamicInvoke(), target.Type);
                 
-                return Continue(constant, state);
+                return ForwardToChain(constant, state);
             }
             catch
             {
-                return Continue(target, state);
+                return ForwardToNext(target, state);
             }
         }
         #endregion

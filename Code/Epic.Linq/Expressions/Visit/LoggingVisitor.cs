@@ -60,7 +60,7 @@ namespace Epic.Linq.Expressions.Visit
             
             state = state.Add(depth.Next());        // add the printed expression to the state's stack
             
-            return base.Continue(target, state);
+            return base.ForwardToNext(target, state);
         }
         
         struct Callstack

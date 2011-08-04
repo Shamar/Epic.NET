@@ -54,9 +54,9 @@ namespace Epic.Linq.Expressions.Visit
                 {
                     // it is a repository
                     ConstantExpression constantExpression = query.Expression as ConstantExpression;
-                    return Continue(constantExpression, state);
+                    return ForwardToNext(constantExpression, state);
                 }
-                return GetVisitor(query.Expression).Visit(query.Expression, state);
+                return ForwardToChain(query.Expression, state);
             }
             else
             {
