@@ -60,9 +60,7 @@ namespace Epic.Linq.Expressions.Visit
             
             state = state.Add(depth.Next());        // add the printed expression to the state's stack
             
-            ICompositeVisitor<Expression, TExpression> visitor = GetNextVisitor(target);
-            Expression visited = visitor.Visit(target, state);
-            return visited;
+            return base.Continue(target, state);
         }
         
         struct Callstack

@@ -168,9 +168,24 @@ namespace Epic.Linq.Expressions.Visit
             private readonly int _nextVisitor;
             private readonly VisitorsComposition<TResult> _composition;
             
-            protected ICompositeVisitor<TResult, TExpression> GetNextVisitor<TExpression>(TExpression target) where TExpression : Expression
+            private ICompositeVisitor<TResult, TExpression> GetNextVisitor<TExpression>(TExpression target) where TExpression : Expression
             {
                 return _composition.GetVisitor<TExpression>(target, _nextVisitor);
+            }
+            
+            protected TResult Continue<TExpression>(TExpression target, IVisitState state) where TExpression : Expression
+            {
+                ICompositeVisitor<TResult, TExpression> next = null;
+                if(this is ICompositeVisitor<TResult, TExpression>)
+                {
+                    next = GetNextVisitor<TExpression>(target);
+                }
+                else
+                {
+                    next = GetVisitor<TExpression>(target);
+                }
+                
+                return next.Visit(target, state);
             }
             
             protected VisitorBase(VisitorsComposition<TResult> composition)

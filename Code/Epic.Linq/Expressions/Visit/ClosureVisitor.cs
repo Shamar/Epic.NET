@@ -62,13 +62,11 @@ namespace Epic.Linq.Expressions.Visit
                 LambdaExpression lambda = Expression.Lambda(typeof(Func<>).MakeGenericType(target.Type), target);
                 ConstantExpression constant = Expression.Constant(lambda.Compile().DynamicInvoke(), target.Type);
                 
-                ICompositeVisitor<Expression, ConstantExpression> visitor = GetVisitor<ConstantExpression>(constant);
-                return visitor.Visit(constant, state);
+                return Continue(constant, state);
             }
             catch
             {
-                ICompositeVisitor<Expression, MemberExpression> visitor = GetNextVisitor<MemberExpression>(target);
-                return visitor.Visit(target, state);
+                return Continue(target, state);
             }
         }
         #endregion
