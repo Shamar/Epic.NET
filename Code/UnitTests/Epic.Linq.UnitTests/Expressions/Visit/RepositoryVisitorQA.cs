@@ -56,13 +56,13 @@ namespace Epic.Linq.Expressions.Visit
             Application.Initialize(app);
             UnLocode location = new UnLocode("USTST");
             IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
-            IQueryable<ICargo> selecteds = cargos.Where(c => c.Delivery.LastKnownLocation == location);
+            IQueryable<ICargo> selecteds = cargos.Where(c => c.Delivery.LastKnownLocation.ToString() == location.ToString());
             
             IQuery query = null;
-            IQueryDataExtractor<Expression<Func<ICargo, bool>>> extractor = TemplateParser<Expression<Func<ICargo, bool>>>.Parse(c => c.Delivery.LastKnownLocation == query.Get<UnLocode>("lastLocation"));
+            IQueryDataExtractor<Expression<Func<ICargo, bool>>> extractor = TemplateParser<Expression<Func<ICargo, bool>>>.Parse(c => c.Delivery.LastKnownLocation.ToString() == query.Get<string>("lastLocation"));
             
             VisitorsComposition<RelationExpression> predicates = new VisitorsComposition<RelationExpression>("test.pred");
-            new PredicateVisitor<ICargo>(predicates, extractor, (q, r) => new SelectionExpression(r, new AttributeEqualPredicate(r, new AttributeExpression<string>(r, "lastloc"), new ConstantExpression<string>(q.Get<UnLocode>("lastLocation").ToString()))));
+            new PredicateVisitor<ICargo>(predicates, extractor, (q, r) => new SelectionExpression(r, new AttributeEqualPredicate(r, new AttributeExpression<string>(r, "lastloc"), new ConstantExpression<string>(q.Get<string>("lastLocation")))));
             
             VisitorsComposition<RelationExpression> chain = new VisitorsComposition<RelationExpression>("test");
             //new UnvisitableExpressionsVisitor(chain);
@@ -73,6 +73,7 @@ namespace Epic.Linq.Expressions.Visit
             new UnvisitableExpressionsVisitor(partialEvaluation);
             new QueryableConstantVisitor(partialEvaluation);
             new ClosureVisitor(partialEvaluation);
+            new PartialEvaluatorVisitor(partialEvaluation);
             
             ICompositeVisitor<RelationExpression, Expression> binder1 = new VisitResultsBinder<RelationExpression, Expression, Expression>(partialEvaluation, chain);
             ICompositeVisitor<SqlExpression, Expression> binder2 = new VisitResultsBinder<SqlExpression, RelationExpression, Expression>(binder1, new SimpleStringVisitor());
@@ -80,12 +81,14 @@ namespace Epic.Linq.Expressions.Visit
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(selecteds.Expression);
 
             // act:
-            RelationExpression relation = adapter.Accept(binder1, VisitState.New.Add(mockProvider));
-            SqlExpression result = relation.Accept(new SimpleStringVisitor(), VisitState.New.Add(mockProvider));
+            Expression optimized = adapter.Accept(partialEvaluation, VisitState.New.Add(mockProvider));
+            TestingUtilities.PrintExpression(optimized);
+            //RelationExpression relation = adapter.Accept(binder1, VisitState.New.Add(mockProvider));
+            //SqlExpression result = relation.Accept(new SimpleStringVisitor(), VisitState.New.Add(mockProvider));
 
             // assert:
-            Assert.IsNotNull(result);
-            Console.WriteLine(result.Expression);
+            //Assert.IsNotNull(result);
+            //Console.WriteLine(result.Expression);
         }
     }
     
