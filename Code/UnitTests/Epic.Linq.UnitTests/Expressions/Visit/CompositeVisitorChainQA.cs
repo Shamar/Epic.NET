@@ -33,6 +33,7 @@ using Epic.Environment;
 using Challenge00.DDDSample.Voyage;
 using Challenge00.DDDSample.Location;
 using ExprType = System.Linq.Expressions.ExpressionType;
+using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Visit
 {
@@ -312,18 +313,19 @@ namespace Epic.Linq.Expressions.Visit
             Application.Initialize(app);
             IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
             IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
-            IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
+            IEnumerable<IVoyage> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
             string usLocationStart = "US";
-            IQueryable<IVoyage> movingVoyages = voyages.Where(v => v.IsMoving);
             var nextLocationsOfMovingVoyages = 
-                    from v in movingVoyages
                     from l in locations.Where(loc => loc.UnLocode.StartsWith(usLocationStart))
+                    from v in voyages.Where(voy => voy.IsMoving)
                     where v.WillStopOverAt(l)
                     select l;
             VisitorsComposition<Expression> chain = new VisitorsComposition<Expression>("test");
             new UnvisitableExpressionsVisitor(chain);
             new QueryableConstantVisitor(chain);
             new ClosureVisitor(chain);
+            new PartialEvaluatorVisitor(chain);
+            new EnumerableMethodsVisitor(chain);
             UnvisitableExpressionAdapter adapter = new UnvisitableExpressionAdapter(nextLocationsOfMovingVoyages.Expression);
                                   
             // act:
