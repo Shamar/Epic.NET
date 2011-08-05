@@ -47,7 +47,6 @@ namespace Epic.Linq.Expressions
         }
         
         public AttributeComparisonPredicateBase (RelationExpression relation, VisitableExpression left, VisitableExpression right)
-            : base(relation)
         {
             if(null == relation)
                 throw new ArgumentNullException("relation");
@@ -78,7 +77,7 @@ namespace Epic.Linq.Expressions
                 return false;
             if(object.ReferenceEquals(this, other))
                 return true;
-            if(_left.Equals(other._left) && _right.Equals(other._left) && this.Domain.Equals(other.Domain))
+            if(_left.Equals(other._left) && _right.Equals(other._right))
                 return this.GetType().Equals(other.GetType());
             return false;
         }

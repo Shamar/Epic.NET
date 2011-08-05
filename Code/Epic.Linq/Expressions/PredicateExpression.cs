@@ -27,21 +27,9 @@ namespace Epic.Linq.Expressions
 {
     public abstract class PredicateExpression : VisitableExpression, IEquatable<PredicateExpression>
     {
-        private readonly RelationExpression _domain;
-        public PredicateExpression (RelationExpression domain)
+        public PredicateExpression ()
             : base(ExpressionType.Predicate, typeof(bool))
         {
-            if(null == domain)
-                throw new ArgumentNullException("domain");
-            _domain = domain;
-        }
-        
-        public RelationExpression Domain
-        {
-            get
-            {
-                return _domain;
-            }
         }
 
         #region IEquatable[PredicateExpression] implementation
@@ -57,7 +45,7 @@ namespace Epic.Linq.Expressions
         
         public override int GetHashCode ()
         {
-            return this.GetType().GetHashCode() ^ _domain.GetHashCode();
+            return this.GetType().GetHashCode();
         }
     }
 }

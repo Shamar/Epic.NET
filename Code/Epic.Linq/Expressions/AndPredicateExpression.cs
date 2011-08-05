@@ -28,24 +28,15 @@ namespace Epic.Linq.Expressions
 {
     public sealed class AndPredicateExpression : PredicateExpression
     {
-        // TODO: move on static helper
-        private static RelationExpression ValidateAndGetDomain(PredicateExpression first, PredicateExpression second)
+        private readonly PredicateExpression _first;
+        private readonly PredicateExpression _second;
+        
+        public AndPredicateExpression (PredicateExpression first, PredicateExpression second)
         {
             if(null == first)
                 throw new ArgumentNullException("first");
             if(null == second)
                 throw new ArgumentNullException("second");
-            if(!first.Domain.Equals(second.Domain))
-                throw new ArgumentException("The predicates do not share the same domain.");
-            return first.Domain;
-        }
-        
-        private readonly PredicateExpression _first;
-        private readonly PredicateExpression _second;
-        
-        public AndPredicateExpression (PredicateExpression first, PredicateExpression second)
-            : base(ValidateAndGetDomain(first, second))
-        {
             _first = first;
             _second = second;
         }
