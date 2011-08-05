@@ -61,7 +61,6 @@ namespace Epic.Linq.Expressions.Visit
                 Type enumerableType = null;
                 if(constantSource.Value is IQueryable && Reflection.TryGetItemTypeOfEnumerable(constantSource.Type, out enumerableType))
                 {
-                    
                     arguments.Add(Expression.Constant(constantSource.Value, typeof(IQueryable<>).MakeGenericType(enumerableType)));
                     for(int i = 1; i < target.Arguments.Count; ++i)
                     {

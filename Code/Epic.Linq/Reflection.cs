@@ -286,27 +286,53 @@ namespace Epic.Linq
                 Type enumerableType = typeof(System.Linq.Enumerable);
                 Type queryableType = typeof(System.Linq.Queryable);
                 
-                MethodInfo[] enumerablePublicMethods = enumerableType.GetMethods(BindingFlags.Public);
-                MethodInfo[] queryablePublicMethods = queryableType.GetMethods(BindingFlags.Public);
+                MethodInfo[] enumerablePublicMethods = enumerableType.GetMethods(BindingFlags.Public|BindingFlags.Static|BindingFlags.DeclaredOnly);
+                MethodInfo[] queryablePublicMethods = queryableType.GetMethods(BindingFlags.Public|BindingFlags.Static|BindingFlags.DeclaredOnly);
                 
                 for(int i = 0; i < queryablePublicMethods.Length; ++i)
                 {
-                    MethodInfo queryableMethod = queryablePublicMethods[i];
+                    MethodInfo enumerableMethod = queryablePublicMethods[i];
                     for(int j = 0; j < enumerablePublicMethods.Length; ++j)
                     {
-                        MethodInfo enumerableMethod = enumerablePublicMethods[j];
-                        if(enumerableMethod.GetParameters().Length == queryableMethod.GetParameters().Length && enumerableMethod.Name.Equals(queryableMethod.Name))
+                        MethodInfo queryableMethod = enumerablePublicMethods[j];
+                        ParameterInfo[] enumerableParameters = enumerableMethod.GetParameters();
+                        ParameterInfo[] queryableParameters = queryableMethod.GetParameters();
+                        if(enumerableParameters.Length == queryableParameters.Length && enumerableMethod.Name.Equals(queryableMethod.Name))
                         {
-                            _methodsTranslations[queryableMethod] = enumerableMethod;
+                            bool parametersMatches = true;
+                            for(int p = 0; p < enumerableParameters.Length && parametersMatches; ++p)
+                            {
+                                Type ePType = enumerableParameters[p].ParameterType;
+                                Type qPType = queryableParameters[p].ParameterType;
+                                Type expectedQPType = typeof(Expression<>).MakeGenericType(ePType);
+                                string qPTypeName = qPType.FullName;
+                                string expectedQPTypeName = expectedQPType.FullName;
+                                if(p > 0 && !(ePType.Name.Equals(qPType.Name) || qPTypeName == expectedQPTypeName))
+                                {
+                                    parametersMatches = false;
+                                }
+                            }
+                            if(parametersMatches)
+                            {
+                                _methodsTranslations[queryableMethod] = enumerableMethod;
+                            }
                         }
                     }
                 }
-                
             }
             
             public static MethodInfo GetEnumerableEquivalent(MethodInfo queryableMethod)
             {
-                return _methodsTranslations[queryableMethod];
+                MethodInfo method = null;
+                try
+                {
+                    method = _methodsTranslations[queryableMethod.GetGenericMethodDefinition()];
+                }
+                catch(KeyNotFoundException e)
+                {
+                    throw new KeyNotFoundException(string.Format("Can not find the Queryable equivalent of the Enumerable's {0} method.", queryableMethod.Name), e);
+                }
+                return method.MakeGenericMethod(queryableMethod.GetGenericArguments());
             }
         }
         
