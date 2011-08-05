@@ -56,7 +56,7 @@ namespace Epic.Linq.Expressions.Visit
             Application.Initialize(app);
             UnLocode location = new UnLocode("USTST");
             IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
-            IQueryable<ICargo> selecteds = cargos.Where(c => c.Delivery.LastKnownLocation.ToString() == location.ToString());
+            IQueryable<ICargo> selecteds = cargos.Where(c => !(c.Delivery.LastKnownLocation.ToString() == location.ToString()));
             
             IQuery query = null;
             IQueryDataExtractor<Expression<Func<ICargo, bool>>> extractor = TemplateParser<Expression<Func<ICargo, bool>>>.Parse(c => c.Delivery.LastKnownLocation.ToString() == query.Get<string>("lastLocation"));

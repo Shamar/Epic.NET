@@ -23,6 +23,7 @@
 //  
 using System;
 using System.Linq.Expressions;
+using System.Linq;
 
 namespace Epic.Linq.Expressions.Visit
 {
@@ -52,7 +53,7 @@ namespace Epic.Linq.Expressions.Visit
         #region ICompositeVisitor[Expressions,LambdaExpression] implementation
         public RelationExpression Visit (LambdaExpression target, IVisitState state)
         {
-            UnaryExpression notExp = lambda.Body as UnaryExpression;
+            UnaryExpression notExp = target.Body as UnaryExpression;
             Expression content = notExp.Operand;
             if(content.NodeType == System.Linq.Expressions.ExpressionType.Quote)
             {
@@ -60,7 +61,7 @@ namespace Epic.Linq.Expressions.Visit
                 content = quoteExp.Operand;
             }
             
-            LambdaExpression expressionToForward = Expression.Lambda(content, target.Parameters);
+            LambdaExpression expressionToForward = Expression.Lambda(content, target.Parameters.ToArray());
             
             
             return ForwardToChain(expressionToForward, state.Add(new Promemoria(expressionToForward)));

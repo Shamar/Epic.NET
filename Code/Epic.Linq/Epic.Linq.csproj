@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Epic.Linq</RootNamespace>
     <AssemblyName>Epic.Linq</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -77,6 +78,7 @@
     <Compile Include="Expressions\Visit\QueryableMethodsVisitor.cs" />
     <Compile Include="Expressions\NotPredicateExpression.cs" />
     <Compile Include="Expressions\Visit\NegatedPredicateVisitor.cs" />
+    <Compile Include="Expressions\OrPredicateExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

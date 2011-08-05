@@ -141,6 +141,160 @@ namespace Epic.Linq
             return type.IsGenericType && IsCompilerGenerated(type) && type.Name.StartsWith("<>"); // No need to work with VB
         }
         
+        private static void AddContainedParameters(Expression expression, HashSet<ParameterExpression> containedParameters, params ParameterExpression[] parametersToIgnore)
+        {
+            switch(expression.NodeType)
+            {
+                case ExprType.ArrayLength:
+                case ExprType.Convert:
+                case ExprType.ConvertChecked:
+                case ExprType.Negate:
+                case ExprType.NegateChecked:
+                case ExprType.Not:
+                case ExprType.Quote:
+                case ExprType.TypeAs:
+                case ExprType.UnaryPlus:
+                    AddContainedParameters((expression as UnaryExpression).Operand, containedParameters, parametersToIgnore);
+                break;
+                case ExprType.Add:
+                case ExprType.AddChecked:
+                case ExprType.Divide:
+                case ExprType.Modulo:
+                case ExprType.Multiply:
+                case ExprType.MultiplyChecked:
+                case ExprType.Power:
+                case ExprType.Subtract:
+                case ExprType.SubtractChecked:
+                case ExprType.And:
+                case ExprType.Or:
+                case ExprType.ExclusiveOr:
+                case ExprType.LeftShift:
+                case ExprType.RightShift:
+                case ExprType.AndAlso:
+                case ExprType.OrElse:
+                case ExprType.Equal:
+                case ExprType.NotEqual:
+                case ExprType.GreaterThanOrEqual:
+                case ExprType.GreaterThan:
+                case ExprType.LessThan:
+                case ExprType.LessThanOrEqual:
+                case ExprType.Coalesce:
+                case ExprType.ArrayIndex:
+                    BinaryExpression binaryExp = expression as BinaryExpression;
+                    AddContainedParameters(binaryExp.Left, containedParameters, parametersToIgnore);
+                    AddContainedParameters(binaryExp.Right, containedParameters, parametersToIgnore);
+                break;
+                case ExprType.Conditional:
+                    ConditionalExpression conditionalExp = expression as ConditionalExpression;
+                    AddContainedParameters(conditionalExp.Test, containedParameters, parametersToIgnore);
+                    AddContainedParameters(conditionalExp.IfTrue, containedParameters, parametersToIgnore);
+                    AddContainedParameters(conditionalExp.IfFalse, containedParameters, parametersToIgnore);
+                break;
+                //case ExprType.Constant:
+                //break;
+                case ExprType.Invoke:
+                    InvocationExpression invocationExp = expression as InvocationExpression;
+                    foreach (Expression arg in invocationExp.Arguments)
+                    {
+                        AddContainedParameters(arg, containedParameters, parametersToIgnore);
+                    }
+                    AddContainedParameters(invocationExp.Expression, containedParameters, parametersToIgnore);
+                break;
+                case ExprType.Lambda:
+                    LambdaExpression lambdaExp = expression as LambdaExpression;
+                    if(lambdaExp.Parameters.Count > 0 || (null != parametersToIgnore && parametersToIgnore.Length > 0))
+                    {
+                        List<ParameterExpression> parameters = new List<ParameterExpression>(lambdaExp.Parameters);
+                        if(null != parametersToIgnore && parametersToIgnore.Length > 0)
+                        {
+                            parameters.AddRange(parametersToIgnore);
+                        }
+                        AddContainedParameters(lambdaExp.Body, containedParameters, parameters.ToArray());
+                    }
+                    else
+                    {
+                        AddContainedParameters(lambdaExp.Body, containedParameters, parametersToIgnore);
+                    }
+                break;
+                case ExprType.MemberAccess:
+                    AddContainedParameters((expression as MemberExpression).Expression, containedParameters, parametersToIgnore);
+                break;
+                case ExprType.Call:
+                    MethodCallExpression callExp = expression as MethodCallExpression;
+                    foreach (Expression arg in callExp.Arguments)
+                    {
+                        AddContainedParameters(arg, containedParameters, parametersToIgnore);
+                    }
+                    AddContainedParameters(callExp.Object, containedParameters, parametersToIgnore);
+                break;
+                case ExprType.New:
+                    NewExpression newExp = expression as NewExpression;
+                    foreach (Expression arg in newExp.Arguments)
+                    {
+                        AddContainedParameters(arg, containedParameters, parametersToIgnore);
+                    }
+                break;
+                case ExprType.NewArrayBounds:
+                case ExprType.NewArrayInit:
+                    NewArrayExpression newArrExp = expression as NewArrayExpression;
+                    foreach (Expression arg in newArrExp.Expressions)
+                    {
+                        AddContainedParameters(arg, containedParameters, parametersToIgnore);
+                    }
+                break;
+                case ExprType.MemberInit:
+                    MemberInitExpression initExp = expression as MemberInitExpression;
+                    foreach (MemberBinding binding in initExp.Bindings)
+                    {
+                        switch (binding.BindingType)
+                        {
+                            case MemberBindingType.Assignment:
+                                MemberAssignment assign = binding as MemberAssignment;
+                                AddContainedParameters(assign.Expression, containedParameters, parametersToIgnore);
+                            break;
+                            case MemberBindingType.MemberBinding:
+                                MemberMemberBinding member = binding as MemberMemberBinding;
+                                // TODO : complete
+                            break;
+                            default:
+                                // TODO : complete
+                                break;
+                        }
+                    }
+                    AddContainedParameters(initExp.NewExpression, containedParameters, parametersToIgnore);
+                break;
+                case ExprType.ListInit:
+                    ListInitExpression listExp = expression as ListInitExpression;
+                    AddContainedParameters(listExp.NewExpression, containedParameters, parametersToIgnore);
+                    // TODO : complete
+                    // listExp.Initializers.All(i => i.Arguments.All(e => CanBeCompiled(e, parametersToIgnore)));
+                break;
+                case ExprType.Parameter:
+                    bool toBeAdded = true;
+                    if(null != parametersToIgnore)
+                    {
+                        for(int i = 0; toBeAdded && (i < parametersToIgnore.Length); ++i)
+                            if(expression == parametersToIgnore[i])
+                                toBeAdded = false;
+                    }
+                    if(toBeAdded)
+                        containedParameters.Add(expression as ParameterExpression);
+                break;
+                case ExprType.TypeIs:
+                    AddContainedParameters((expression as TypeBinaryExpression).Expression, containedParameters, parametersToIgnore);
+                break;
+                default:
+                    return;
+            }
+        }
+        
+        public static ParameterExpression[] GetContainedParameters(Expression expression)
+        {
+            HashSet<ParameterExpression> parameters = new HashSet<ParameterExpression>();
+            AddContainedParameters(expression, parameters);
+            return parameters.ToArray(); // TODO : in which order?
+        }
+        
         public static bool CanBeCompiled(Expression expression, params ParameterExpression[] availableParameters)
         {
             switch(expression.NodeType)

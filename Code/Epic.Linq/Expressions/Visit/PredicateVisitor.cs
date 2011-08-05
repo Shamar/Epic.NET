@@ -24,9 +24,89 @@
 using System;
 using Epic.Linq.Expressions.Templates;
 using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Visit
 {
+    public sealed class PredicateStructureVisitor : VisitorsComposition<PredicateExpression>.VisitorBase, ICompositeVisitor<PredicateExpression, LambdaExpression>
+    {
+        public PredicateStructureVisitor(VisitorsComposition<PredicateExpression> chain)
+            : base(chain)
+        {
+        }
+        
+        internal protected override ICompositeVisitor<PredicateExpression, TExpression> AsVisitor<TExpression> (TExpression target)
+        {
+            ICompositeVisitor<PredicateExpression, TExpression> visitor = base.AsVisitor<TExpression>(target);
+            if(null != visitor)
+            {
+                LambdaExpression lambdaExp = target as LambdaExpression;
+                if(!lambdaExp.Type.Equals(typeof(bool)) && lambdaExp.Parameters.Count != 1) // Filters has only one parameter
+                    return null;
+            }
+            return visitor;
+        }
+        
+        public PredicateExpression Visit (LambdaExpression target, IVisitState state)
+        {
+            switch(target.Body.NodeType)
+            {
+                case System.Linq.Expressions.ExpressionType.AndAlso:
+                    return VisitAndAlso(target.Body as BinaryExpression, state, target.Parameters[0]);
+                case System.Linq.Expressions.ExpressionType.OrElse:
+                    return VisitOrElse(target.Body as BinaryExpression, state, target.Parameters[0]);
+                case System.Linq.Expressions.ExpressionType.Not:
+                    return VisitNot(target.Body as UnaryExpression, state, target.Parameters[0]);
+            }
+            
+            // TODO : check for outer Selects/SelectManys, as a where out of the outer could have an anonymous type that is not a transparent identifier
+            
+            if(Reflection.IsAnonymous(target.Parameters[0].Type))
+            {
+                // a transparent identifier to handle
+                ParameterExpression[] usedParameters = Reflection.GetContainedParameters(target.Body); // FIX : WRONG ! ! no parameter will be found, as the transparent identifier is the only parameter used ! !
+                LambdaExpression newLambda = Expression.Lambda(target.Body, usedParameters);
+                return ForwardToChain(newLambda, state);
+            }
+            else
+            {
+                return ForwardToNext(target, state);
+            }
+        }
+        
+        
+        
+        private PredicateExpression VisitNot(UnaryExpression target, IVisitState state, ParameterExpression parameter) // even transparent identifier is a single parameter
+        {
+            PredicateExpression operand = ForwardToChain(Expression.Lambda(target.Operand, new ParameterExpression[1] { parameter }), state);
+            if(operand is NotPredicateExpression)
+                return (operand as NotPredicateExpression).Predicate;
+            return new NotPredicateExpression(operand);
+        }
+  
+        private PredicateExpression VisitAndAlso(BinaryExpression target, IVisitState state, ParameterExpression parameter)
+        {
+            PredicateExpression left = ForwardToChain(Expression.Lambda(target.Left, new ParameterExpression[1] { parameter }), state);
+            PredicateExpression right = ForwardToChain(Expression.Lambda(target.Right, new ParameterExpression[1] { parameter }), state);
+            
+            return new AndPredicateExpression(left, right);
+        }
+        
+        private PredicateExpression VisitOrElse(BinaryExpression target, IVisitState state, ParameterExpression parameter)
+        {
+            PredicateExpression left = ForwardToChain(Expression.Lambda(target.Left, new ParameterExpression[1] { parameter }), state);
+            PredicateExpression right = ForwardToChain(Expression.Lambda(target.Right, new ParameterExpression[1] { parameter }), state);
+            
+            return new OrPredicateExpression(left, right);
+        }
+    }
+    
+    internal sealed class TransparentIdentifier
+    {
+        
+    }
+    
+    
     // TODO : this is a draft... consider an abstract class instead of "logic"! ! !
     public sealed class PredicateVisitor<TEntity> : VisitorsComposition<RelationExpression>.VisitorBase, ICompositeVisitor<RelationExpression, LambdaExpression>
         where TEntity : class
