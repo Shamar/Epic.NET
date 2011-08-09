@@ -28,7 +28,6 @@ using Rhino.Mocks;
 
 namespace Epic
 {
-	[TestFixture]
 	public class RhinoMocksFixtureBase
 	{
 		private readonly IList<object> _mocks = new List<object>();
