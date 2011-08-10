@@ -43,6 +43,8 @@
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="Expressions\ICompositeVisitor.cs" />
     <Compile Include="Expressions\IVisitContext.cs" />
+    <Compile Include="Expressions\VisitContext.cs" />
+    <Compile Include="Expressions\VisitableBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -53,5 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
+    <Folder Include="Expressions\Normalization\" />
+    <Folder Include="Expressions\Relational\" />
+    <Folder Include="Expressions\Relational\Visitors\" />
+    <Folder Include="Expressions\Templates\" />
   </ItemGroup>
 </Project>
