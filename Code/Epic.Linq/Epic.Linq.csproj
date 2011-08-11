@@ -45,6 +45,9 @@
     <Compile Include="Expressions\IVisitContext.cs" />
     <Compile Include="Expressions\VisitContext.cs" />
     <Compile Include="Expressions\VisitableBase.cs" />
+    <Compile Include="Expressions\Relational\Relation.cs" />
+    <Compile Include="Expressions\Relational\RelationType.cs" />
+    <Compile Include="Expressions\Relational\BaseRelation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
