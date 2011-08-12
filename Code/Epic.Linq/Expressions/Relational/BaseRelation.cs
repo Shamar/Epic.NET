@@ -56,7 +56,19 @@ namespace Epic.Linq.Expressions.Relational
         }
         #endregion
         
-        public override TResult Accept<TResult> (ICompositeVisitor<TResult> visitor, IVisitContext context)
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// Type of the result produced from the visitor.
+        /// </typeparam>
+        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);
         }

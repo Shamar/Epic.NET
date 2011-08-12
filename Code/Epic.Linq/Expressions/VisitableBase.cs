@@ -50,7 +50,7 @@ namespace Epic.Linq.Expressions
         /// <typeparam name='TResult'>
         /// Type of the result of the visit.
         /// </typeparam>
-        public abstract TResult Accept<TResult>(ICompositeVisitor<TResult> visitor, IVisitContext context);
+        public abstract TResult Accept<TResult>(IVisitor<TResult> visitor, IVisitContext context);
         
         /// <summary>
         /// Utility method. You can implement Accept simply with "return AcceptMe(this, visitor, context);".
@@ -78,7 +78,7 @@ namespace Epic.Linq.Expressions
         /// <exception cref='InvalidOperationException'>
         /// Is thrown when called from a non leaf in the hierachy tree.
         /// </exception>
-        protected TResult AcceptMe<TResult, TVisitable>(TVisitable visitable, ICompositeVisitor<TResult> visitor, IVisitContext context) where TVisitable : VisitableBase
+        protected TResult AcceptMe<TResult, TVisitable>(TVisitable visitable, IVisitor<TResult> visitor, IVisitContext context) where TVisitable : VisitableBase
         {
             if(!object.ReferenceEquals(this, visitable))
             {

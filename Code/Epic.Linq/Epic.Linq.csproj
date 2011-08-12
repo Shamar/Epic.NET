@@ -41,13 +41,14 @@
     <Compile Include="QueryProvider.cs" />
     <Compile Include="Reflection.cs" />
     <Compile Include="RepositoryBase.cs" />
-    <Compile Include="Expressions\ICompositeVisitor.cs" />
     <Compile Include="Expressions\IVisitContext.cs" />
     <Compile Include="Expressions\VisitContext.cs" />
     <Compile Include="Expressions\VisitableBase.cs" />
     <Compile Include="Expressions\Relational\Relation.cs" />
     <Compile Include="Expressions\Relational\RelationType.cs" />
     <Compile Include="Expressions\Relational\BaseRelation.cs" />
+    <Compile Include="Expressions\CompositeVisitor.cs" />
+    <Compile Include="Expressions\IVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -30,7 +30,7 @@ namespace Epic.Linq.Expressions
     /// </summary>
     /// <typeparam name="TResult">Type of the result of the visit.</typeparam>
     /// <seealso cref="IVisitState"/>
-    public interface ICompositeVisitor<TResult>
+    public interface IVisitor<TResult>
     {
         /// <summary>
         /// Return the visitor that can visit <paramref name="target">.
@@ -44,7 +44,7 @@ namespace Epic.Linq.Expressions
         /// <typeparam name='TExpression'>
         /// Type of the expression that will be visited from the provided visitor.
         /// </typeparam>
-        ICompositeVisitor<TResult, TExpression> GetVisitor<TExpression>(TExpression target);
+        IVisitor<TResult, TExpression> GetVisitor<TExpression>(TExpression target);
     }
     
     /// <summary>
@@ -52,7 +52,7 @@ namespace Epic.Linq.Expressions
     /// </summary>
     /// <typeparam name="TResult">Type of the result of the visit.</typeparam>
     /// <typeparam name="TExpression">Expression to visit.</typeparam>
-    public interface ICompositeVisitor<TResult, TExpression> : ICompositeVisitor<TResult>
+    public interface IVisitor<TResult, TExpression> : IVisitor<TResult>
     {
         /// <summary>
         /// Visit the specified expression.
