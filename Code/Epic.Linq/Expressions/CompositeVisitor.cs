@@ -136,7 +136,7 @@ namespace Epic.Linq.Expressions
         }
         #endregion
   
-        public sealed override IVisitor<TResult, TRequiredExpression> GetVisitor<TExpression> (TRequiredExpression target)
+        public sealed override IVisitor<TResult, TRequiredExpression> GetVisitor<TRequiredExpression> (TRequiredExpression target)
         {
             return this as IVisitor<TResult, TRequiredExpression>;
         }

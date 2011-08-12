@@ -49,6 +49,8 @@
     <Compile Include="Expressions\Relational\BaseRelation.cs" />
     <Compile Include="Expressions\CompositeVisitor.cs" />
     <Compile Include="Expressions\IVisitor.cs" />
+    <Compile Include="Expressions\Relational\Selection.cs" />
+    <Compile Include="Expressions\Relational\Predicate.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
