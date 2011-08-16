@@ -64,7 +64,7 @@ Providing a new instance of a value object does not change the system: you can
 create all the copies of a +PreferredStockQuantity+ you like, but until you do 
 not +Purchase(PreferredStockQuantity)+ that quantity, your securities account 
 doesn't change!  +
-Since such operation do not change the observable state of the sistem, it is a
+Since such operation do not change the observable state of the system, it is a
 query and should return a value.
 
 Creating a new securities account, instead, deeply changes the system: first 
