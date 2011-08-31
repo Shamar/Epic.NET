@@ -23,7 +23,7 @@
 //  
 using System;
 
-namespace Epic.Linq.UnitTests
+namespace Epic.Linq
 {
     [Serializable]
     public class FakeRepository<TEntity, TIdentity> : RepositoryBase<TEntity, TIdentity>

@@ -7,9 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{02C38623-6934-439B-ABA9-FFDEFB4D9842}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Epic.Linq.UnitTests</RootNamespace>
+    <RootNamespace>Epic.Linq</RootNamespace>
     <AssemblyName>Epic.Linq.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,15 +30,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="System.Core" />
+    <Reference Include="nunit.framework">
       <HintPath>..\..\..\3rdParties\NUnit\framework\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Core">
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -63,5 +59,8 @@
     <Compile Include="QueryProviderQA.cs" />
     <Compile Include="RepositoryBaseQA.cs" />
     <Compile Include="FakeRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\" />
   </ItemGroup>
 </Project>
