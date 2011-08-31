@@ -59,6 +59,7 @@
     <Compile Include="QueryProviderQA.cs" />
     <Compile Include="RepositoryBaseQA.cs" />
     <Compile Include="FakeRepository.cs" />
+    <Compile Include="Expressions\VisitContextQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
