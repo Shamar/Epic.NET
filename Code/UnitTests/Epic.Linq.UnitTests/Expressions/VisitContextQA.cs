@@ -38,6 +38,38 @@ namespace Epic.Linq.Expressions
         
         [TestCase("testString")]
         [TestCase(1)]
+        public void TryGet_onAContextWithAValue_returnsTheValue<T>(T valueToSet)
+        {
+            // arrange:
+            T valueHolder;
+            IVisitContext context = VisitContext.New.With<T>(valueToSet);
+            
+            // act:
+            bool valueHasBeenFound = context.TryGet<T>(out valueHolder);
+
+            // assert:
+            Assert.IsTrue(valueHasBeenFound);
+            Assert.AreEqual(valueToSet, valueHolder);
+        }
+
+        [TestCase("testString")]
+        [TestCase(1)]
+        public void TryGet_anAbsentTypeInAContextWithAValue_returnsFalse<T>(T valueToSet)
+        {
+            // arrange:
+            object valueHolder;
+            IVisitContext context = VisitContext.New.With<T>(valueToSet);
+            
+            // act:
+            bool valueHasBeenFound = context.TryGet<object>(out valueHolder);
+
+            // assert:
+            Assert.IsFalse(valueHasBeenFound);
+            Assert.IsNull(valueHolder);
+        }
+
+        [TestCase("testString")]
+        [TestCase(1)]
         public void TryGet_onANewVisitContext_returnsFalse<T>(T ignoredValue)
         {
             // arrange:
@@ -51,6 +83,7 @@ namespace Epic.Linq.Expressions
             Assert.IsFalse(valueHasBeenFound);
             Assert.AreEqual(default(T), dummyVar);
         }
+
         
         [TestCase("testString")]
         [TestCase(1)]
@@ -64,6 +97,39 @@ namespace Epic.Linq.Expressions
             Assert.Throws<InvalidOperationException>(delegate {
                 dummyVar = context.Get<T>();
             });
+        }
+
+        [TestCase("testString")]
+        [TestCase(1)]
+        public void Get_anAbsentTypeInAContextWithAValue_throwsInvalidOperationException<T>(T valueToSet)
+        {
+            // arrange:
+            object valueHolder;
+            IVisitContext context = VisitContext.New
+                                        .With<T>(valueToSet)
+                                        .With<DateTime>(DateTime.Now);
+            
+            // assert:
+            Assert.Throws<InvalidOperationException>(delegate {
+                valueHolder = context.Get<object>();
+            });
+        }
+
+        
+        [TestCase("testString")]
+        [TestCase(1)]
+        public void Get_onAContextWithAValue_returnsTheValue<T>(T valueToSet)
+        {
+            // arrange:
+            T valueHolder;
+            IVisitContext context = VisitContext.New;
+            context = context.With<T>(valueToSet);
+
+            // act:
+            valueHolder = context.Get<T>();
+
+            // assert:
+            Assert.AreEqual(valueToSet, valueHolder);
         }
     }
 }
