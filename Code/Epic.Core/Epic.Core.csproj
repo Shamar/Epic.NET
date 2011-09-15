@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Epic</RootNamespace>
     <AssemblyName>Epic.Core</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,6 +54,7 @@
     <Compile Include="Enterprise\RoleBuilderBase.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="EpicException.cs" />
+    <Compile Include="ObserverBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
