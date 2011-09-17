@@ -41,20 +41,19 @@ the knowledge of the right types to use, their initialization techniques and
 their livecycle.
 
 Being a static class coupled with +EnterpriseBase+, +Enterprise+ is the trick to
-doing things properly down to roles, since you have to use the base
+do things properly down to roles, since you have to use the base
 classes provided, with all the connected long term benefit.
 
 The environment
 ~~~~~~~~~~~~~~~
 Each company operates in an environment. 
 From the company point of view, such an environment (physical, social 
-and economic) provides a range of services beyond its core business, 
-despite being crucial to its success. 
+and economic) provides a range of services that are crucial to its success. 
 Buildings, roads, laws and electricity are simple yet evident examples.
 
 The model of that company's core business can not be that different.
 
-Indeed, it needs to be stored and tracked for example. 
+Indeed it needs to be stored and tracked for example. 
 While writing pure POCOs, a modeler shouldn't consider neither persistence nor 
 logging. Yet, the application must do both!
 
