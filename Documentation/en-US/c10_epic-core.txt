@@ -1,13 +1,13 @@
 [[epic-core]]
 Epic.Core
 ---------
-[quote, Strong, D.M. & Volkoff, O., A roadmap for enterprise system implementation (2004)]
+[quote, Strong D.M. &#38; Volkoff O., A roadmap for enterprise system implementation (2004)]
 An enterprise system is a system that supports the day to day operations of 
 an enterprise or organization in real time.
 
 At the core of the Epic framework there is a model of the corporate that uses 
 the software. It's a quite simple model, a generic one, that describes a well 
-defined context: the corporate organization.
+defined context: the corporate daily life.
 
 Indeed, our applications target the core business of our customers.
 The way each user approaches the application depends on the roles he plays in 
@@ -24,7 +24,7 @@ that could be missed during the development.
 The company, first
 ~~~~~~~~~~~~~~~~~~
 The first entity we encounter while working with Epic is the 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Enterprise.cs[enterprise].
+https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Enterprise.cs[Enterprise].
 It's a singleton, a static class that must be initialized before use.
 
 In the initialization we have to provide an implementation of the abstract class
@@ -40,8 +40,8 @@ The abstract methods +RetrieveEnvironmentInstance()+ and
 the knowledge of the right types to use, their initialization techniques and 
 their livecycle.
 
-Being a static class coupled with +ApplicationBase+, Application is the trick to
-get things right down to roles, since you can't avoid to implement use the base
+Being a static class coupled with +EnterpriseBase+, +Enterprise+ is the trick to
+doing things properly down to roles, since you have to use the base
 classes provided, with all the connected long term benefit.
 
 The environment
