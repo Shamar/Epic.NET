@@ -186,7 +186,4 @@ done in the future.
 
 --
 
-[[epic-core]]
-Epic.Core
----------
-(Coming soon)
+include::c10_epic-core.txt[]
