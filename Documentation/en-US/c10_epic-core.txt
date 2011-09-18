@@ -18,8 +18,13 @@ people will have different kind of tasks to execute.
 
 Such models are contained in the Epic.Core assembly: under the +Epic+ namespace
 you find a set of interfaces and abstract classes that leaves you all the
-flexibility you could need but it still imposes some important invariants
+flexibility you could need but forcing important invariants
 that could be missed during the development.
+
+[NOTE]
+This chapter is still under development. Please
+https://groups.google.com/group/epic-net/[send us] feedback, 
+questions and suggestions.
 
 The company, first
 ~~~~~~~~~~~~~~~~~~
