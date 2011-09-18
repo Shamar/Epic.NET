@@ -22,7 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Epic
 {
@@ -35,12 +35,10 @@ namespace Epic
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument is null.
     /// </exception>
-    public abstract class ObserverBase<TEntity, TIdentifier> : IDisposable
+    public abstract class ObserverBase<TEntity> : IDisposable
         where TEntity : class
-        where TIdentifier : IEquatable<TIdentifier>
     {
-        private readonly Hashtable _observed = new Hashtable();
-        private readonly Func<TEntity, TIdentifier> _identityReader;
+        private readonly HashSet<TEntity> _observed = new HashSet<TEntity>();
         private bool _disposed = false;
         
         /// <summary>
@@ -52,11 +50,8 @@ namespace Epic
         /// <exception cref='ArgumentNullException'>
         /// Is thrown when <paramref name="identityReader"/> is null.
         /// </exception>
-        protected ObserverBase (Func<TEntity, TIdentifier> identityReader)
+        protected ObserverBase ()
         {
-            if (null == identityReader)
-                throw new ArgumentNullException("identityReader");
-            _identityReader = identityReader;
         }
         
         /// <summary>
@@ -93,11 +88,10 @@ namespace Epic
                 throw new ObjectDisposedException(this.GetType().Name);
             if(null == entity)
                 throw new ArgumentNullException("entity");
-            TIdentifier identifier = _identityReader(entity);
-            if(!_observed.ContainsKey(identifier))
+            if(!_observed.Contains(entity))
             {
                 Subscribe(entity);
-                _observed[identifier] = entity;
+                _observed.Add(entity);
             }
         }
         
@@ -119,11 +113,10 @@ namespace Epic
                 throw new ObjectDisposedException(this.GetType().Name);
             if(null == entity)
                 throw new ArgumentNullException("entity");
-            TIdentifier identifier = _identityReader(entity);
-            if(_observed.ContainsKey(identifier))
+            if(_observed.Contains(entity))
             {
                 Unsubscribe(entity);
-                _observed.Remove(identifier);
+                _observed.Remove(entity);
             }
         }
 
@@ -140,11 +133,11 @@ namespace Epic
         public void Dispose ()
         {
             _disposed = true;
-            foreach(TEntity entity in _observed.Values)
+            foreach(TEntity entity in _observed)
             {
                 Unsubscribe(entity);
-                _observed.Clear();
             }
+            _observed.Clear();
         }
         #endregion
     }

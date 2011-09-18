@@ -25,15 +25,9 @@ using System;
 
 namespace Epic.Fakes
 {
-    public class FakeObserver<TEntity, TIdentifier> : ObserverBase<TEntity, TIdentifier>
+    public class FakeObserver<TEntity> : ObserverBase<TEntity>
          where TEntity : class
-         where TIdentifier : IEquatable<TIdentifier>
     {
-        public FakeObserver (Func<TEntity, TIdentifier> identityReader)
-                : base(identityReader)
-        {
-        }
-            
         #region templates for tests
         public virtual void CallSubscribe (TEntity entity)
         {
