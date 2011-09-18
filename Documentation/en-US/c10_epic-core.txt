@@ -81,4 +81,10 @@ legitimate to derive +EnvironmentBase+ directly.
 
 The corporate organization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-(Coming soon)
++IOrganization+ provides access to the domain model for the 
+corporate members. After the authentication, the users can have to start 
+an +IWorkingSession+. During such working session, they will be able to
+achieve different roles and access the different entities, repositories and 
+services that they need for their work.
+
+(continue)
