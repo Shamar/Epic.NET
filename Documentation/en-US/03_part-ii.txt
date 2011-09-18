@@ -187,3 +187,8 @@ done in the future.
 --
 
 include::c10_epic-core.txt[]
+
+[[epic-linq]]
+Epic.Linq
+---------
+Coming soon.
