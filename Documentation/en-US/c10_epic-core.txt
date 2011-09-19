@@ -13,8 +13,8 @@ Indeed, our applications target the core business of our customers.
 The way each user approaches the application depends on the roles he plays in 
 the organization.
 It is not simply a matter of access control and security, every instance of
-the software run under the responsibility of a specific person, and different
-people will have different kind of tasks to execute.
+the software runs under the responsibility of a specific person, and different
+people will have different kinds of tasks to execute.
 
 Such models are contained in the Epic.Core assembly: under the +Epic+ namespace
 you find a set of interfaces and abstract classes that leaves you all the
@@ -96,10 +96,10 @@ working sessions lifetime.
 Yet another working day!
 ~~~~~~~~~~~~~~~~~~~~~~~~
 To design +IWorkingSession+ we analyzed a tipical working day in a 
-succesfull company. Each day a lot of smart people enter in the company and they 
-start their own tasks. Each person has specific responsibility and roles.
-Each role provide access to a set of resource and services that are required 
-for to complete a set of tasks. Most resources require exclusive control for 
+successful company. Each day a lot of smart people enter in the company and 
+start their own tasks. Each person has specific responsibilities and roles.
+Each role provides access to a set of resource and services that are required 
+to complete a set of tasks. Most resources require exclusive control for 
 an amount of time (did you say "the bathroom"?) but a few (hopefully very few) 
 require concurrent access and realtime synchronization.
 
@@ -117,7 +117,7 @@ is an abstract class that can not be derived directly, but through
 https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Organization/RoleBuilderBase.cs[RoleBuilderBase].
 These two classes enforce a controversial rule: the clients must use the roles
 through pure interfaces designed without any constraint, but all concrete 
-role must derive +RoleBase+, that is an abstract class serializable and 
+roles must derive +RoleBase+, that is an abstract class serializable and 
 disposable. Indeed roles' serialization and their disposition will be 
 required from the framework, as we will see in Epic.Poem.
 
