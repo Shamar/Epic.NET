@@ -29,6 +29,8 @@ using Epic;
 using Rhino.Mocks;
 using System.Linq;
 using System.Collections.Generic;
+using Epic.Fakes;
+
 
 namespace Epic.Linq
 {
@@ -46,10 +48,10 @@ namespace Epic.Linq
         {
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-               new FakeRepository<string,int>(null);
+               new Fakes.FakeRepository<string,int>(null);
             });
             Assert.Throws<ArgumentNullException>(delegate {
-               new FakeRepository<object,string>(string.Empty);
+               new Fakes.FakeRepository<object,string>(string.Empty);
             });
         }
         
@@ -57,7 +59,7 @@ namespace Epic.Linq
         public void Initialize_withProviderName_works()
         {
             // act:
-            IRepository<string,int> repository = new FakeRepository<string,int>("test");
+            IRepository<string,int> repository = new Fakes.FakeRepository<string,int>("test");
 
             // assert:
             Assert.IsNotNull(repository);
@@ -75,9 +77,9 @@ namespace Epic.Linq
             InstanceName<IQueryProvider> instanceName = new InstanceName<IQueryProvider>(providerName);
             IQueryProvider mockProvider = GenerateStrictMock<IQueryProvider>();
             env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
-            ApplicationBase app = new Fakes.FakeApplication(env, null);
+            ApplicationBase app = new FakeApplication(env, null);
             Application.Initialize(app);
-            IRepository<string,int> repository = new FakeRepository<string,int>(providerName);
+            IRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
 
             // act:
             IQueryProvider provider = repository.Provider;
@@ -93,7 +95,7 @@ namespace Epic.Linq
         {
             // arrange:
             string providerName = "TestProvider";
-            IRepository<string,int> repository = new FakeRepository<string,int>(providerName);
+            IRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
             EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
             IEnumerator<string> mockEnumerator = GenerateStrictMock<IEnumerator<string>>();
             IEnumerable<string> enumerable = GenerateStrictMock<IEnumerable<string>>();
@@ -103,7 +105,7 @@ namespace Epic.Linq
             mockProvider.Expect(p => p.Execute<IEnumerable<string>>(Arg<Expression>.Matches(e => e is ConstantExpression && object.ReferenceEquals(((ConstantExpression)e).Value, repository))))
                 .Return(enumerable).Repeat.Once();
             env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
-            ApplicationBase app = new Fakes.FakeApplication(env, null);
+            ApplicationBase app = new FakeApplication(env, null);
             Application.Initialize(app);
 
             // act:
@@ -118,7 +120,7 @@ namespace Epic.Linq
         {
             // arrange:
             string providerName = "TestProvider";
-            IRepository<string,int> repository = new FakeRepository<string,int>(providerName);
+            IRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
             EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
             IEnumerator<string> mockEnumerator = GenerateStrictMock<IEnumerator<string>>();
             IEnumerable<string> enumerable = GenerateStrictMock<IEnumerable<string>>();
@@ -128,7 +130,7 @@ namespace Epic.Linq
             mockProvider.Expect(p => p.Execute<IEnumerable<string>>(Arg<Expression>.Matches(e => e is ConstantExpression && object.ReferenceEquals(((ConstantExpression)e).Value, repository))))
                 .Return(enumerable).Repeat.Once();
             env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
-            ApplicationBase app = new Fakes.FakeApplication(env, null);
+            ApplicationBase app = new FakeApplication(env, null);
             Application.Initialize(app);
             System.Collections.IEnumerable enumerableRepository = repository;
 

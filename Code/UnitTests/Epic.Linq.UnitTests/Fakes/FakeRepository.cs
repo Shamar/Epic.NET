@@ -23,7 +23,7 @@
 //  
 using System;
 
-namespace Epic.Linq
+namespace Epic.Linq.Fakes
 {
     [Serializable]
     public class FakeRepository<TEntity, TIdentity> : RepositoryBase<TEntity, TIdentity>
