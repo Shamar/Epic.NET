@@ -25,11 +25,12 @@ using System;
 using NUnit.Framework;
 using Epic.Linq.Fakes;
 using System.Linq.Expressions;
+using Rhino.Mocks;
 
 namespace Epic.Linq.Expressions
 {
     [TestFixture]
-    public class VisitorBaseQA
+    public class VisitorBaseQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withoutComposition_throwsArgumentNullException()
@@ -41,18 +42,49 @@ namespace Epic.Linq.Expressions
         }
         
         [Test]
+        public void Initialize_twiceWithTheSameComposition_throwsArgumentException()
+        {
+            // arrange:
+            CompositeVisitor<int> composition = new FakeCompositeVisitor<int>("test");
+            new FakeVisitor<int, ConstantExpression>(composition);
+
+            // assert:
+            Assert.Throws<ArgumentException>(delegate {
+                new FakeVisitor<int, ConstantExpression>(composition);
+            });
+        }
+        
+        [Test]
         public void Initialize_withAComposition_registerTheVisitorInTheComposition()
         {
             // arrange:
-            Expression expression = Expression.Constant(0);
+            ConstantExpression expression = Expression.Constant(0);
             CompositeVisitor<int> composition = new FakeCompositeVisitor<int>("test");
 
             // act:
-            IVisitor<int, Expression> visitor = new FakeVisitor<int, Expression>(composition);
-            IVisitor<int, Expression> returnedVisitor = composition.GetFirstVisitor<Expression>(expression);
+            IVisitor<int, ConstantExpression> visitor = new FakeVisitor<int, ConstantExpression>(composition);
+            IVisitor<int, ConstantExpression> returnedVisitor = composition.GetFirstVisitor<ConstantExpression>(expression);
 
             // assert:
             Assert.AreSame(visitor, returnedVisitor);
+        }
+        
+        [Test]
+        public void GetVisitor_withAnExpressionThatCouldBeHandled_callAsVisitorAndReturnTheVisitorItself()
+        {
+            // arrange:
+            ConstantExpression expression = Expression.Constant(0);
+            CompositeVisitor<int> composition = new FakeCompositeVisitor<int>("test");
+            FakeVisitor<int, ConstantExpression> visitor = GeneratePartialMock<FakeVisitor<int, ConstantExpression>>(composition);
+            visitor.Expect(v => v.CallAsVisitor(expression)).Return(visitor).Repeat.Twice ();
+
+            // act:
+            IVisitor<int, ConstantExpression> returnedFromVisitor = visitor.GetVisitor(expression);
+            IVisitor<int, ConstantExpression> returnedFromComposition = visitor.GetVisitor(expression);
+
+            // assert:
+            Assert.AreSame(visitor, returnedFromVisitor);
+            Assert.AreSame(visitor, returnedFromComposition);
         }
     }
 }

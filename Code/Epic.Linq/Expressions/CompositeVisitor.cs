@@ -22,6 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions
@@ -69,7 +70,7 @@ namespace Epic.Linq.Expressions
         /// </exception>
         private void Register(VisitorBase visitor, out int position)
         {
-            if(_chain.Contains(visitor))
+            if(_chain.Any(v => v.GetType().Equals(visitor.GetType())) )
             {
                 // a visitor can be registered only once
                 string message = string.Format("Already registered in visitors' composition \"{0}\".", _name);

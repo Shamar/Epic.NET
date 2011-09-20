@@ -38,7 +38,21 @@ namespace Epic.Linq.Fakes
         {
             return default(TResult);
         }
-        #endregion
+        #endregion IVisitor[TResult,TExpression] implementation
+        
+        protected internal override IVisitor<TResult, TRequested> AsVisitor<TRequested> (TRequested target)
+        {
+            return CallAsVisitor(target);
+        }
+        
+        #region templates for tests
+        
+        public virtual IVisitor<TResult, TRequested> CallAsVisitor<TRequested> (TRequested target)
+        {
+            return base.AsVisitor (target);
+        }
+        
+        #endregion templates for tests
     }
 }
 
