@@ -1,14 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{02C38623-6934-439B-ABA9-FFDEFB4D9842}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Epic.Linq</RootNamespace>
     <AssemblyName>Epic.Linq.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,7 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <HintPath>..\..\..\3rdParties\NUnit\framework\nunit.framework.dll</HintPath>
     </Reference>
@@ -66,9 +69,5 @@
     <Compile Include="Fakes\FakeCompositeVisitor.cs" />
     <Compile Include="Expressions\VisitorBaseQA.cs" />
     <Compile Include="Fakes\FakeVisitor.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Expressions\" />
-    <Folder Include="Fakes\" />
   </ItemGroup>
 </Project>
