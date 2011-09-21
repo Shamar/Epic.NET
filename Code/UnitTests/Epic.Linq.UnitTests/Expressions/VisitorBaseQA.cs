@@ -42,16 +42,24 @@ namespace Epic.Linq.Expressions
         }
         
         [Test]
-        public void Initialize_twiceWithTheSameComposition_throwsArgumentException()
+        public void Initialize_withACompositionAlreadyContainingAnAnalogueVisitor_alwaysReturnTheLastRegisteredOne()
         {
             // arrange:
+            ConstantExpression expression = Expression.Constant(0);
             CompositeVisitor<int> composition = new FakeCompositeVisitor<int>("test");
-            new FakeVisitor<int, ConstantExpression>(composition);
+            FakeVisitor<int, ConstantExpression> firstRegistered = GeneratePartialMock<FakeVisitor<int, ConstantExpression>>(composition);
+            FakeVisitor<int, ConstantExpression> lastRegistered = GeneratePartialMock<FakeVisitor<int, ConstantExpression>>(composition);
+            lastRegistered.Expect(v => v.CallAsVisitor(expression)).Return(lastRegistered).Repeat.Times(3);
+
+            // act:
+            IVisitor<int, ConstantExpression> returnedFromFirstVisitor = firstRegistered.GetVisitor(expression);
+            IVisitor<int, ConstantExpression> returnedFromLastVisitor = lastRegistered.GetVisitor(expression);
+            IVisitor<int, ConstantExpression> returnedFromComposition = composition.GetFirstVisitor(expression);
 
             // assert:
-            Assert.Throws<ArgumentException>(delegate {
-                new FakeVisitor<int, ConstantExpression>(composition);
-            });
+            Assert.AreSame(lastRegistered, returnedFromFirstVisitor);
+            Assert.AreSame(lastRegistered, returnedFromLastVisitor);
+            Assert.AreSame(lastRegistered, returnedFromComposition);
         }
         
         [Test]
@@ -68,6 +76,7 @@ namespace Epic.Linq.Expressions
             // assert:
             Assert.AreSame(visitor, returnedVisitor);
         }
+       
         
         [Test]
         public void GetVisitor_withAnExpressionThatCouldBeHandled_callAsVisitorAndReturnTheVisitorItself()
@@ -80,7 +89,7 @@ namespace Epic.Linq.Expressions
 
             // act:
             IVisitor<int, ConstantExpression> returnedFromVisitor = visitor.GetVisitor(expression);
-            IVisitor<int, ConstantExpression> returnedFromComposition = visitor.GetVisitor(expression);
+            IVisitor<int, ConstantExpression> returnedFromComposition = composition.GetFirstVisitor(expression);
 
             // assert:
             Assert.AreSame(visitor, returnedFromVisitor);

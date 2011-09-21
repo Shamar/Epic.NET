@@ -70,12 +70,6 @@ namespace Epic.Linq.Expressions
         /// </exception>
         private void Register(VisitorBase visitor, out int position)
         {
-            if(_chain.Any(v => v.GetType().Equals(visitor.GetType())) )
-            {
-                // a visitor can be registered only once
-                string message = string.Format("Already registered in visitors' composition \"{0}\".", _name);
-                throw new ArgumentException(message, "visitor");
-            }
             position = _chain.Count;
             _chain.Add(visitor);
         }
