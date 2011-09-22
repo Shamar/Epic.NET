@@ -32,9 +32,9 @@ namespace Epic.Linq.Fakes
             : base(composition)
         {
         }
-
+        
         #region IVisitor[TResult,TExpression] implementation
-        public TResult Visit (TExpression target, IVisitContext context)
+        public virtual TResult Visit (TExpression target, IVisitContext context)
         {
             return default(TResult);
         }
@@ -46,6 +46,16 @@ namespace Epic.Linq.Fakes
         }
         
         #region templates for tests
+        
+        public TResult CallContinueVisit<TRequested>(TRequested target, IVisitContext context)
+        {
+            return base.ContinueVisit(target, context);
+        }
+
+        public TResult CallVisitInner<TRequested>(TRequested target, IVisitContext context)
+        {
+            return base.VisitInner(target, context);
+        }
         
         public virtual IVisitor<TResult, TRequested> CallAsVisitor<TRequested> (TRequested target)
         {

@@ -29,6 +29,7 @@ namespace Epic.Linq.Expressions
     /// Visitors' composition base class. This class must be derived from concrete compositions.
     /// </summary>
     public abstract class CompositeVisitorBase<TResult, TExpression> : CompositeVisitor<TResult>, IVisitor<TResult, TExpression>
+        where TExpression : class
     {
         /// <summary>
         /// Initializes a new instance of the visitors' composition.

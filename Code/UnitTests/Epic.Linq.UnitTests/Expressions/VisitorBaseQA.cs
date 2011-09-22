@@ -95,6 +95,69 @@ namespace Epic.Linq.Expressions
             Assert.AreSame(visitor, returnedFromVisitor);
             Assert.AreSame(visitor, returnedFromComposition);
         }
+        
+        [Test]
+        public void ContinueVisit_withAnExpressionThatCouldBeHandled_dontCallAsVisitorAndReturnTheNextVisitorMatchingVisitor()
+        {
+            // arrange:
+            ConstantExpression expression = Expression.Constant(0);
+            IVisitContext context = VisitContext.New;
+            int resultReturnedFromTheVisitorThatWillContinue = 1;
+            CompositeVisitor<int> composition = new FakeCompositeVisitor<int>("test");
+            FakeVisitor<int, ConstantExpression> visitorThatWillContinue = GeneratePartialMock<FakeVisitor<int, ConstantExpression>>(composition);
+            visitorThatWillContinue.Expect(v => v.CallAsVisitor(expression)).Return(visitorThatWillContinue).Repeat.Once ();
+            visitorThatWillContinue.Expect(v => v.Visit(expression, context)).Return(resultReturnedFromTheVisitorThatWillContinue).Repeat.Once();
+            FakeVisitor<int, ConstantExpression> visitor = new FakeVisitor<int, ConstantExpression>(composition);
+
+            // act:
+            int visitResult = visitor.CallContinueVisit(expression, context);
+
+            // assert:
+            Assert.AreEqual(resultReturnedFromTheVisitorThatWillContinue, visitResult);
+        }
+        
+        [Test]
+        public void VisitInner_withAnExpressionThatCouldBeHandled_callAsVisitorAndReturnTheVisitorItself()
+        {
+            // arrange:
+            ConstantExpression expression = Expression.Constant(0);
+            IVisitContext context = VisitContext.New;
+            int resultReturnedFromTheVisitorThatWillContinue = 1;
+            CompositeVisitor<int> composition = new FakeCompositeVisitor<int>("test");
+            FakeVisitor<int, ConstantExpression> visitorNotReached = new FakeVisitor<int, ConstantExpression>(composition);
+            FakeVisitor<int, ConstantExpression> visitor = GeneratePartialMock<FakeVisitor<int, ConstantExpression>>(composition);
+            visitor.Expect(v => v.CallAsVisitor(expression)).Return(visitor).Repeat.Once ();
+            visitor.Expect(v => v.Visit(expression, context)).Return(resultReturnedFromTheVisitorThatWillContinue).Repeat.Once();
+
+            // act:
+            int visitResult = visitor.CallVisitInner(expression, context);
+
+            // assert:
+            Assert.AreEqual(resultReturnedFromTheVisitorThatWillContinue, visitResult);
+        }
+        
+        [Test]
+        public void VisitInner_withAnExpressionThatCanNotBeHandled_callAsVisitorButReturnTheFirstValidVisitor()
+        {
+            // arrange:
+            ConstantExpression expression = Expression.Constant(0);
+            IVisitContext context = VisitContext.New;
+            int resultReturnedFromTheVisitorThatWillContinue = 1;
+            CompositeVisitor<int> composition = new FakeCompositeVisitor<int>("test");
+            FakeVisitor<int, ConstantExpression> visitorNotReached = new FakeVisitor<int, ConstantExpression>(composition);
+            FakeVisitor<int, ConstantExpression> constantVisitor = GeneratePartialMock<FakeVisitor<int, ConstantExpression>>(composition);
+            constantVisitor.Expect(v => v.CallAsVisitor(expression)).Return(constantVisitor).Repeat.Once ();
+            constantVisitor.Expect(v => v.Visit(expression, context)).Return(resultReturnedFromTheVisitorThatWillContinue).Repeat.Once();
+            
+            FakeVisitor<int, MethodCallExpression> visitor = GeneratePartialMock<FakeVisitor<int, MethodCallExpression>>(composition);
+            visitor.Expect(v => v.CallAsVisitor(expression)).Return(null).Repeat.Once ();
+
+            // act:
+            int visitResult = visitor.CallVisitInner<ConstantExpression>(expression, context);
+
+            // assert:
+            Assert.AreEqual(resultReturnedFromTheVisitorThatWillContinue, visitResult);
+        }
     }
 }
 

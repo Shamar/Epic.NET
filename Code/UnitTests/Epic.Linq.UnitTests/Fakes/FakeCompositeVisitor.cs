@@ -33,5 +33,30 @@ namespace Epic.Linq.Fakes
         {
         }
     }
+    
+    public class FakeCompositeVisitor<TResult, TExpression> : CompositeVisitorBase<TResult, TExpression>
+        where TExpression : class
+    {
+        public FakeCompositeVisitor (string name)
+            : base(name)
+        {
+        }
+
+        #region implemented abstract members of Epic.Linq.Expressions.CompositeVisitorBase[TResult,TExpression]
+        protected override IVisitContext InitializeVisitContext (TExpression target, IVisitContext context)
+        {
+            return CallInitializeVisitContext(target, context);
+        }
+        #endregion
+        
+        #region templates for tests
+
+        public virtual IVisitContext CallInitializeVisitContext (TExpression target, IVisitContext context)
+        {
+            return context;
+        }
+        
+        #endregion templates for tests
+    }
 }
 
