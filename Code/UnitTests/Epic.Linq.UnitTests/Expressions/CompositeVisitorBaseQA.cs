@@ -25,11 +25,12 @@ using NUnit.Framework;
 using System;
 using System.Linq.Expressions;
 using Epic.Linq.Fakes;
+using Rhino.Mocks;
 
 namespace Epic.Linq.Expressions
 {
     [TestFixture()]
-    public class CompositeVisitorBaseQA
+    public class CompositeVisitorBaseQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withoutName_throwsArgumentNullException()
@@ -42,6 +43,60 @@ namespace Epic.Linq.Expressions
             Assert.Throws<ArgumentNullException>(delegate {
                 new FakeCompositeVisitor<object, Expression>(string.Empty);
             });
+        }
+        
+        [Test]
+        public void Initialize_withAName_works()
+        {
+            // arrange:
+            string name = "test";
+
+            // act:
+            IVisitor<object, Expression> visitor = new FakeCompositeVisitor<object, Expression>(name);
+
+            // assert:
+            Assert.IsNotNull(visitor);
+        }
+        
+        [Test]
+        public void Visit_withoutAnyArgument_throwsArgumentNullException()
+        {
+            // arrange:
+            string name = "test";
+            Expression expression = Expression.Constant(1);
+            IVisitor<object, Expression> visitor = new FakeCompositeVisitor<object, Expression>(name);
+            object result = null;
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                result = visitor.Visit(null, VisitContext.New);
+            });
+            Assert.Throws<ArgumentNullException>(delegate {
+                result = visitor.Visit(expression, null);
+            });
+        }
+        
+        [Test]
+        public void Visit_withValidArguments_callInitializeVisitContext()
+        {
+            // arrange:
+            string name = "test";
+            object expectedResult = new object();
+            IVisitContext initialContext = GenerateStrictMock<IVisitContext>();
+            IVisitContext initializedContext = GenerateStrictMock<IVisitContext>();
+            Expression expression = Expression.Constant(1);
+            FakeCompositeVisitor<object, Expression> composition = GeneratePartialMock<FakeCompositeVisitor<object, Expression>>(name);
+            composition.Expect(c => c.CallInitializeVisitContext(expression, initialContext)).Return(initializedContext).Repeat.Once();
+            FakeVisitor<object, Expression> registered = GeneratePartialMock<FakeVisitor<object, Expression>>(composition);
+            registered.Expect(v => v.CallAsVisitor(expression)).Return(registered).Repeat.Once();
+            registered.Expect(v => v.Visit(expression, initializedContext)).Return(expectedResult).Repeat.Once();
+
+            // act:
+            object result = composition.Visit(expression, initialContext);
+
+
+            // assert:
+            Assert.AreSame(expectedResult, result);
         }
     }
 }

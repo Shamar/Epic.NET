@@ -24,6 +24,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Epic.Linq.Expressions
 {
@@ -35,6 +36,7 @@ namespace Epic.Linq.Expressions
     {
         private readonly List<VisitorBase> _chain;
         private readonly string _name;
+
         
         /// <summary>
         /// Initializes a new instance of a composition.
@@ -162,6 +164,7 @@ namespace Epic.Linq.Expressions
         /// <summary>
         /// Base class for composable visitors.
         /// </summary>
+        [DebuggerDisplay("{GetType().Name} at position {_position} in {_composition._name}")]
         public abstract class VisitorBase : IVisitor<TResult>
         {
             private readonly int _position;

@@ -22,12 +22,14 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Diagnostics;
 
 namespace Epic.Linq.Expressions
 {
     /// <summary>
     /// Visitors' composition base class. This class must be derived from concrete compositions.
     /// </summary>
+    [DebuggerDisplay("CompositeVisitor<{typeof(TResult).Name, nq}, {typeof(TExpression).Name, nq}> {_name} ({_chain.Count} visitors)")]
     public abstract class CompositeVisitorBase<TResult, TExpression> : CompositeVisitor<TResult>, IVisitor<TResult, TExpression>
         where TExpression : class
     {
