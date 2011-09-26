@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Epic</RootNamespace>
     <AssemblyName>Epic.Core</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,7 +39,6 @@
     <Compile Include="Application.cs" />
     <Compile Include="ApplicationBase.cs" />
     <Compile Include="IEnvironment.cs" />
-    <Compile Include="IEnterprise.cs" />
     <Compile Include="IWorkingSession.cs" />
     <Compile Include="Events\ChangeEventArgs.cs" />
     <Compile Include="Environment\EnvironmentBase.cs" />
@@ -48,16 +46,17 @@
     <Compile Include="Environment\EnvironmentsChain.cs" />
     <Compile Include="Environment\EnvironmentChainLinkBase.cs" />
     <Compile Include="InstanceName.cs" />
-    <Compile Include="Enterprise\EnterpriseBase.cs" />
-    <Compile Include="Enterprise\EnterpriseSerializationHelper.cs" />
-    <Compile Include="Enterprise\WorkingSessionBase.cs" />
-    <Compile Include="Enterprise\RoleBase.cs" />
-    <Compile Include="Enterprise\RoleRef.cs" />
-    <Compile Include="Enterprise\RoleBuilder.cs" />
-    <Compile Include="Enterprise\RoleBuilderBase.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="EpicException.cs" />
     <Compile Include="ObserverBase.cs" />
+    <Compile Include="IOrganization.cs" />
+    <Compile Include="Organization\OrganizationBase.cs" />
+    <Compile Include="Organization\EnterpriseSerializationHelper.cs" />
+    <Compile Include="Organization\WorkingSessionBase.cs" />
+    <Compile Include="Organization\RoleBase.cs" />
+    <Compile Include="Organization\RoleRef.cs" />
+    <Compile Include="Organization\RoleBuilder.cs" />
+    <Compile Include="Organization\RoleBuilderBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

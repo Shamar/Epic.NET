@@ -22,7 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Epic.Enterprise;
+using Epic.Organization;
 
 namespace Epic.Fakes
 {
@@ -38,7 +38,7 @@ namespace Epic.Fakes
 			Dispose(); // coverage oriented :-)
 		}
 
-		#region implemented abstract members of Epic.Enterprise.RoleBase
+		#region implemented abstract members of Epic.Organization.RoleBase
 		public override void Dispose ()
 		{
 		}

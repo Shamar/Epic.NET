@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Epic</RootNamespace>
     <AssemblyName>Epic.Core.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,11 +54,6 @@
     <Compile Include="Fakes\FakeEnvironment.cs" />
     <Compile Include="Environment\EnvironmentsChainQA.cs" />
     <Compile Include="InstanceNameQA.cs" />
-    <Compile Include="Enterprise\EnterpriseBaseQA.cs" />
-    <Compile Include="Fakes\FakeEnterprise.cs" />
-    <Compile Include="Enterprise\RoleBuilderBaseQA.cs" />
-    <Compile Include="Enterprise\RoleRefQA.cs" />
-    <Compile Include="Enterprise\WorkingSessionBaseQA.cs" />
     <Compile Include="Fakes\FakeRoleBuilder.cs" />
     <Compile Include="Fakes\FakeRole.cs" />
     <Compile Include="Fakes\FakeWorkingSession.cs" />
@@ -67,6 +61,11 @@
     <Compile Include="EpicExceptionQA.cs" />
     <Compile Include="ObserverBaseQA.cs" />
     <Compile Include="Fakes\FakeObserver.cs" />
+    <Compile Include="Fakes\FakeOrganization.cs" />
+    <Compile Include="Organization\OrganizationBaseQA.cs" />
+    <Compile Include="Organization\RoleBuilderBaseQA.cs" />
+    <Compile Include="Organization\RoleRefQA.cs" />
+    <Compile Include="Organization\WorkingSessionBaseQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">

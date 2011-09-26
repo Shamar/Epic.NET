@@ -81,13 +81,13 @@ namespace Epic
 
 
 		/// <summary>
-		/// Enterprise that use the domain model.
+		/// Organization that use the domain model.
 		/// </summary>
-		public static IEnterprise Enterprise
+		public static IOrganization Organization
 		{
 			get 
 			{
-				return _application.Enterprise;
+				return _application.Organization;
 			}
 		}
 		
@@ -108,7 +108,7 @@ namespace Epic
 				throw new InvalidOperationException("Initialization required.");
 			}
 			
-			public override IEnterprise Enterprise 
+			public override IOrganization Organization 
 			{
 				get 
 				{

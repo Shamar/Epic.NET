@@ -22,7 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Epic.Enterprise;
+using Epic.Organization;
 
 namespace Epic.Fakes
 {
@@ -38,7 +38,7 @@ namespace Epic.Fakes
 		}
 		#endregion templates for tests
 
-		#region implemented abstract members of Epic.Enterprise.RoleBuilderBase[TRole,TConcreteRole]
+		#region implemented abstract members of Epic.Organization.RoleBuilderBase[TRole,TConcreteRole]
 		protected override TConcreteRole CreateRoleFor (System.Security.Principal.IPrincipal player)
 		{
 			return CallCreateRoleFor(player);

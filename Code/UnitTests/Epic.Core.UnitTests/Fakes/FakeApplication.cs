@@ -32,19 +32,19 @@ namespace Epic.Fakes
 		{
 		}
 		
-		public FakeApplication(EnvironmentBase environment, IEnterprise enterprise)
+		public FakeApplication(EnvironmentBase environment, IOrganization organization)
 			: this("Fake Application")
 		{
 			_environment = environment;
-			_enterprise = enterprise;
+			_organization = organization;
 		}
 
 		
 		private readonly EnvironmentBase _environment;
 		protected override EnvironmentBase RetrieveEnvironmentInstance() { return _environment; }
 	
-		private readonly IEnterprise _enterprise;
-		public override IEnterprise Enterprise { get { return _enterprise; } }
+		private readonly IOrganization _organization;
+		public override IOrganization Organization { get { return _organization; } }
 	}
 }
 

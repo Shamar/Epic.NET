@@ -27,7 +27,7 @@ using Epic.Events;
 namespace Epic
 {
 	/// <summary>
-	/// A user working session. It can be created or disposed by <see cref="IEnterprise"/>
+	/// A user working session. It can be created or disposed by <see cref="IOrganization"/>
 	/// </summary>
 	public interface IWorkingSession
 	{
@@ -35,7 +35,7 @@ namespace Epic
 		/// Unique identifier of the working session.
 		/// </summary>
 		/// <value>
-		/// A unpredictable identifier, unique in the whole enterprise.
+		/// A unpredictable identifier, unique in the whole organization.
 		/// </value>
 		string Identifier { get; }
 		

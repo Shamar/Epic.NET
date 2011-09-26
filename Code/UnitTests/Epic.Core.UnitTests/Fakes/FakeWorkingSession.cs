@@ -22,7 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Epic.Enterprise;
+using Epic.Organization;
 using System.Security.Principal;
 using System.Collections.Generic;
 using System.Reflection;
@@ -75,7 +75,7 @@ namespace Epic.Fakes
 
 		#endregion templates for tests
 
-		#region implemented abstract members of Epic.Enterprise.WorkingSessionBase
+		#region implemented abstract members of Epic.Organization.WorkingSessionBase
 
 
 		protected override bool IsAllowed<TRole> ()
@@ -119,7 +119,7 @@ namespace Epic.Fakes
 			}
 		}
 		
-		#region implemented abstract members of Epic.Enterprise.WorkingSessionBase
+		#region implemented abstract members of Epic.Organization.WorkingSessionBase
 		protected override bool IsAllowed<TRole> ()
 		{
 			_calledMethods.Add(MethodBase.GetCurrentMethod().Name);

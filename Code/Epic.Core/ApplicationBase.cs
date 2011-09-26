@@ -28,7 +28,7 @@ namespace Epic
 	/// Application base class, to be injected in <see cref="Application"/> during initialization.
 	/// </summary>
 	/// <remarks>
-	/// It MUST be implemented by a class tailored to the application and enterprise that will use the domain.
+	/// It MUST be implemented by a class tailored to the application and organization that will use the domain.
 	/// </remarks>
 	public abstract class ApplicationBase
 	{
@@ -70,9 +70,9 @@ namespace Epic
 		protected abstract Epic.Environment.EnvironmentBase RetrieveEnvironmentInstance();
 		
 		/// <summary>
-		/// Enterprise that use the domain model.
+		/// Organization that use the domain model.
 		/// </summary>
-		public abstract IEnterprise Enterprise { get; }
+		public abstract IOrganization Organization { get; }
 	}
 }
 

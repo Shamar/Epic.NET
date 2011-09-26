@@ -41,14 +41,14 @@ namespace Epic
 		{
 			// arrange:
 			IEnvironment environment = null;
-			IEnterprise enterprise = null;
+			IOrganization organization = null;
 			
 			// assert:
 			Assert.AreEqual("Uninitialized", Application.Name);
 			Assert.Throws<InvalidOperationException>(delegate { environment = Application.Environment; });
-			Assert.Throws<InvalidOperationException>(delegate { enterprise = Application.Enterprise; });
+			Assert.Throws<InvalidOperationException>(delegate { organization = Application.Organization; });
 			Assert.IsNull(environment);
-			Assert.IsNull(enterprise);
+			Assert.IsNull(organization);
 		}
 		
 		[Test]
@@ -57,10 +57,10 @@ namespace Epic
 			// arrange:
 			string appName = "SampleApp";
 			EnvironmentBase environment = MockRepository.GenerateStrictMock<EnvironmentBase>();
-			IEnterprise enterprise = MockRepository.GenerateStrictMock<IEnterprise>();
+			IOrganization organization = MockRepository.GenerateStrictMock<IOrganization>();
 			ApplicationBase appSingleton = MockRepository.GeneratePartialMock<ApplicationBase>(appName);
 			appSingleton.Expect(a => a.Environment).Return(environment).Repeat.Once();
-			appSingleton.Expect(a => a.Enterprise).Return(enterprise).Repeat.Once();
+			appSingleton.Expect(a => a.Organization).Return(organization).Repeat.Once();
 			
 			// act:
 			Application.Initialize(appSingleton);
@@ -68,7 +68,7 @@ namespace Epic
 			// assert:
 			Assert.AreEqual(appName,    Application.Name);
 			Assert.AreSame(environment, Application.Environment);
-			Assert.AreSame(enterprise,  Application.Enterprise);
+			Assert.AreSame(organization,  Application.Organization);
 			appSingleton.VerifyAllExpectations();
 		}
 		

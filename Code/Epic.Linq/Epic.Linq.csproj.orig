@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7B1F063C-C646-4C14-962A-28325218420F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Epic.Linq</RootNamespace>
+    <AssemblyName>Epic.Linq</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\build\bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\build\bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="IEntityLoader.cs" />
+    <Compile Include="Queryable.cs" />
+    <Compile Include="QueryProvider.cs" />
+    <Compile Include="Reflection.cs" />
+    <Compile Include="RepositoryBase.cs" />
+<<<<<<< HEAD
+    <Compile Include="Expressions\IVisitContext.cs" />
+    <Compile Include="Expressions\VisitContext.cs" />
+    <Compile Include="Expressions\VisitableBase.cs" />
+    <Compile Include="Expressions\Relational\Relation.cs" />
+    <Compile Include="Expressions\Relational\RelationType.cs" />
+    <Compile Include="Expressions\Relational\BaseRelation.cs" />
+    <Compile Include="Expressions\CompositeVisitor.cs" />
+    <Compile Include="Expressions\IVisitor.cs" />
+    <Compile Include="Expressions\Relational\Selection.cs" />
+    <Compile Include="Expressions\Relational\Predicate.cs" />
+    <Compile Include="Expressions\CompositeVisitorBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\Normalization\" />
+    <Folder Include="Expressions\Relational\Visitors\" />
+    <Folder Include="Expressions\Templates\" />
+=======
+    <Compile Include="Expressions\QueryExpression.cs" />
+    <Compile Include="Expressions\IVisitor.cs" />
+    <Compile Include="Expressions\SourceExpression.cs" />
+    <Compile Include="Expressions\FilterExpression.cs" />
+    <Compile Include="Expressions\SortExpression.cs" />
+    <Compile Include="Translators\ExpressionTranslator.cs" />
+    <Compile Include="Translators\IQuery.cs" />
+    <Compile Include="Expressions\ChunkExpression.cs" />
+>>>>>>> expression tree's sketches
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Epic.Core\Epic.Core.csproj">
+      <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
+      <Name>Epic.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\" />
+    <Folder Include="Translators\" />
+  </ItemGroup>
+</Project>
