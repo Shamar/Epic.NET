@@ -27,7 +27,7 @@ using System.Security.Permissions;
 namespace Epic.Environment
 {
 	/// <summary>
-	/// Base class for applications environments. It handle serialization.
+	/// Base class for enterprises environments. It handle serialization.
 	/// </summary>
 	[Serializable]
 	public abstract class EnvironmentBase : IEnvironment, ISerializable

@@ -27,11 +27,11 @@ namespace Epic
 	public static class TestUtilities
 	{
 		/// <summary>
-		/// Reset the application (to be used in TestFixtures' setups.
+		/// Reset the enterprise (to be used in TestFixtures' setups.
 		/// </summary>
-		public static void ResetApplication()
+		public static void ResetEnterprise()
 		{
-			Application.Reset();
+			Enterprise.Reset();
 		}
 		
 		/// <summary>

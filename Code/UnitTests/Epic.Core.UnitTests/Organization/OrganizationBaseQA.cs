@@ -35,9 +35,9 @@ namespace Epic.Organization
 	public class OrganizationBaseQA : RhinoMocksFixtureBase
 	{
 		[SetUp]
-		public void ResetApplication()
+		public void ResetEnterprise()
 		{
-			TestUtilities.ResetApplication();
+			TestUtilities.ResetEnterprise();
 		}
 		
 		/// <summary>
@@ -56,8 +56,8 @@ namespace Epic.Organization
 		{
 			// arrange:
 			OrganizationBase organization = CreateNewOrganizationToTestSerialization();
-			ApplicationBase app = new Fakes.FakeApplication(null, organization);
-			Application.Initialize(app);
+			EnterpriseBase app = new Fakes.FakeEnterprise(null, organization);
+			Enterprise.Initialize(app);
 			
 			// act:
 			Stream stream = TestUtilities.Serialize<IOrganization>(organization);
@@ -67,12 +67,12 @@ namespace Epic.Organization
 		}
 		
 		[Test]
-		public void Deserialization_returnApplicationOrganizationInstance()
+		public void Deserialization_returnEnterpriseOrganizationInstance()
 		{
 			// arrange:
 			OrganizationBase organization = CreateNewOrganizationToTestSerialization();
-			ApplicationBase app = new Fakes.FakeApplication(null, organization);
-			Application.Initialize(app);
+			EnterpriseBase app = new Fakes.FakeEnterprise(null, organization);
+			Enterprise.Initialize(app);
 			Stream stream = TestUtilities.Serialize<IOrganization>(organization);
 			
 			// act:

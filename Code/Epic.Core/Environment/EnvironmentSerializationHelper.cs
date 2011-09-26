@@ -26,7 +26,7 @@ using System.Runtime.Serialization;
 namespace Epic.Environment
 {
 	/// <summary>
-	/// When deserialiing this object, return a reference to the <see cref="Application.Environment"/>.
+	/// When deserialiing this object, return a reference to the <see cref="Enterprise.Environment"/>.
 	/// </summary>
 	[Serializable]
 	internal sealed class EnvironmentSerializationHelper : IObjectReference
@@ -34,8 +34,8 @@ namespace Epic.Environment
 	    public Object GetRealObject(StreamingContext context) 
 	    {
 	        // When deserialiing this object, return a reference to 
-	        // the Application.Environment.
-	        return Application.Environment;
+	        // the Enterprise.Environment.
+	        return Enterprise.Environment;
 	    }
 	}
 }

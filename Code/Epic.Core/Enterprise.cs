@@ -1,5 +1,5 @@
 //  
-//  Application.cs
+//  Enterprise.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -26,56 +26,56 @@ using System.Configuration;
 namespace Epic
 {
 	/// <summary>
-	///	Application entry point. It MUST be initialized once.
+	///	Enterprise entry point. It MUST be initialized once.
 	/// </summary>
-	public static class Application
+	public static class Enterprise
 	{
-		private static ApplicationBase _application = new Uninitialized();
+		private static EnterpriseBase _enterprise = new Uninitialized();
 		
 		/// <summary>
-		/// Initialize the application entry point.
+		/// Initialize the enterprise entry point.
 		/// </summary>
-		/// <param name="application">
-		/// A <see cref="ApplicationBase"/> to handle request.
+		/// <param name="enterprise">
+		/// A <see cref="EnterpriseBase"/> to handle request.
 		/// </param>
-		/// <exception cref="ArgumentNullException">When <paramref name="application"/> is <value>null</value>.</exception>
+		/// <exception cref="ArgumentNullException">When <paramref name="enterprise"/> is <value>null</value>.</exception>
 		/// <exception cref="InvalidOperationException">When called more then once.</exception>
-		public static void Initialize(ApplicationBase application)
+		public static void Initialize(EnterpriseBase enterprise)
 		{
-			if(null == application)
-				throw new ArgumentNullException("application");
-			if(!(_application is Uninitialized))
+			if(null == enterprise)
+				throw new ArgumentNullException("enterprise");
+			if(!(_enterprise is Uninitialized))
 				throw new InvalidOperationException("Already initialized.");
-			_application = application;
+			_enterprise = enterprise;
 		}
 		
 		/// <summary>
-		/// Reset the application entry point (for testing purpose). 
+		/// Reset the enterprise entry point (for testing purpose). 
 		/// </summary>
 		internal static void Reset()
 		{
-			_application = new Uninitialized();
+			_enterprise = new Uninitialized();
 		}
 		
 		/// <summary>
-		/// The application name.
+		/// The enterprise name.
 		/// </summary>
 		public static string Name
 		{
 			get 
 			{
-				return _application.Name;
+				return _enterprise.Name;
 			}
 		}
 
 		/// <summary>
-		/// Application's <see cref="IEnvironment"/>.
+		/// Enterprise's <see cref="IEnvironment"/>.
 		/// </summary>
 		public static IEnvironment Environment
 		{
 			get 
 			{
-				return _application.Environment;
+				return _enterprise.Environment;
 			}
 		}
 
@@ -87,21 +87,21 @@ namespace Epic
 		{
 			get 
 			{
-				return _application.Organization;
+				return _enterprise.Organization;
 			}
 		}
 		
 		/// <summary>
-		/// Uninitialized application: throws InvalidOperationException.
+		/// Uninitialized enterprise: throws InvalidOperationException.
 		/// </summary>
-		sealed class Uninitialized : ApplicationBase
+		sealed class Uninitialized : EnterpriseBase
 		{
 			public Uninitialized()
 				: base("Uninitialized")
 			{
 			}
 			
-			#region implemented abstract members of Epic.ApplicationBase
+			#region implemented abstract members of Epic.EnterpriseBase
 			
 			protected override Epic.Environment.EnvironmentBase RetrieveEnvironmentInstance()
 			{

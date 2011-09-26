@@ -1,5 +1,5 @@
 //  
-//  ApplicationBase.cs
+//  EnterpriseBase.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -25,12 +25,12 @@ using System;
 namespace Epic
 {
 	/// <summary>
-	/// Application base class, to be injected in <see cref="Application"/> during initialization.
+	/// Enterprise base class, to be injected in <see cref="Enterprise"/> during initialization.
 	/// </summary>
 	/// <remarks>
-	/// It MUST be implemented by a class tailored to the application and organization that will use the domain.
+	/// It MUST be implemented by a class tailored to the enterprise and organization that will use the domain.
 	/// </remarks>
-	public abstract class ApplicationBase
+	public abstract class EnterpriseBase
 	{
 		private readonly string _name;
 		
@@ -38,9 +38,9 @@ namespace Epic
 		/// Constructor 
 		/// </summary>
 		/// <param name="name">
-		/// The application name.
+		/// The enterprise name.
 		/// </param>
-		protected ApplicationBase (string name)
+		protected EnterpriseBase (string name)
 		{
 			if(string.IsNullOrEmpty(name))
 				throw new ArgumentNullException("name");
@@ -48,7 +48,7 @@ namespace Epic
 		}
 		
 		/// <summary>
-		/// Application name.
+		/// Enterprise name.
 		/// </summary>
 		public string Name 
 		{ 
@@ -56,13 +56,13 @@ namespace Epic
 		}
 		
 		/// <summary>
-		/// Application's <see cref="IEnvironment"/>.
+		/// Enterprise's <see cref="IEnvironment"/>.
 		/// </summary>
 		public IEnvironment Environment { get { return RetrieveEnvironmentInstance(); } }
 		
 		/// <summary>
 		/// Retrieves the environment instance to be returned from 
-		/// the <see cref="ApplicationBase.Environment"/> property.
+		/// the <see cref="EnterpriseBase.Environment"/> property.
 		/// </summary>
 		/// <returns>
 		/// The environment instance.

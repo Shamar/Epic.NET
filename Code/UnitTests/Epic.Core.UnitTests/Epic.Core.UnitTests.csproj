@@ -45,12 +45,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="ApplicationQA.cs" />
     <Compile Include="TestUtilities.cs" />
-    <Compile Include="ApplicationBaseQA.cs" />
     <Compile Include="Events\ChangeEventArgsQA.cs" />
     <Compile Include="Environment\EnvironmentBaseQA.cs" />
-    <Compile Include="Fakes\FakeApplication.cs" />
     <Compile Include="Fakes\FakeEnvironment.cs" />
     <Compile Include="Environment\EnvironmentsChainQA.cs" />
     <Compile Include="InstanceNameQA.cs" />
@@ -66,6 +63,9 @@
     <Compile Include="Organization\RoleBuilderBaseQA.cs" />
     <Compile Include="Organization\RoleRefQA.cs" />
     <Compile Include="Organization\WorkingSessionBaseQA.cs" />
+    <Compile Include="EnterpriseQA.cs" />
+    <Compile Include="Fakes\FakeEnterprise.cs" />
+    <Compile Include="EnterpriseBaseQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">

@@ -102,7 +102,7 @@ namespace Epic.Linq
 			get {
                 if(null == _provider)
                 {
-                    _provider = Application.Environment.Get<IQueryProvider>(new InstanceName<IQueryProvider>(_providerName));
+                    _provider = Enterprise.Environment.Get<IQueryProvider>(new InstanceName<IQueryProvider>(_providerName));
                 }
 				return _provider;
 			}

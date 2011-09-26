@@ -30,9 +30,9 @@ namespace Epic.Environment
 	public class EnvironmentBaseQA
 	{
 		[SetUp]
-		public void ResetApplication()
+		public void ResetEnterprise()
 		{
-			TestUtilities.ResetApplication();
+			TestUtilities.ResetEnterprise();
 		}
 		
 		/// <summary>
@@ -51,8 +51,8 @@ namespace Epic.Environment
 		{
 			// arrange:
 			EnvironmentBase environment = CreateNewEnvironmentToTestSerialization();
-			ApplicationBase app = new Fakes.FakeApplication(environment, null);
-			Application.Initialize(app);
+			EnterpriseBase app = new Fakes.FakeEnterprise(environment, null);
+			Enterprise.Initialize(app);
 			
 			// act:
 			Stream stream = TestUtilities.Serialize<IEnvironment>(environment);
@@ -62,12 +62,12 @@ namespace Epic.Environment
 		}
 		
 		[Test]
-		public void Deserialization_returnApplicationEnvironmentInstance()
+		public void Deserialization_returnEnterpriseEnvironmentInstance()
 		{
 			// arrange:
 			EnvironmentBase environment = CreateNewEnvironmentToTestSerialization();
-			ApplicationBase app = new Fakes.FakeApplication(environment, null);
-			Application.Initialize(app);
+			EnterpriseBase app = new Fakes.FakeEnterprise(environment, null);
+			Enterprise.Initialize(app);
 			Stream stream = TestUtilities.Serialize<IEnvironment>(environment);
 			
 			// act:

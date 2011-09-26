@@ -1,5 +1,5 @@
 //  
-//  OrganizationSerializationHelper.cs
+//  EnterpriseBaseQA.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,21 +22,38 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Runtime.Serialization;
-namespace Epic.Organization
+using NUnit.Framework;
+using Epic.Fakes;
+namespace Epic
 {
-	/// <summary>
-	/// When deserialiing this object, return a reference to the <see cref="Enterprise.Organization"/>.
-	/// </summary>
-	[Serializable]
-	public sealed class OrganizationSerializationHelper : IObjectReference
+	[TestFixture]
+	public class EnterpriseBaseQA
 	{
-	    public Object GetRealObject(StreamingContext context) 
-	    {
-	        // When deserialiing this object, return a reference to 
-	        // the Enterprise.Organization.
-	        return Enterprise.Organization;
-	    }
+		[Test]
+		public void Ctor_withNullName_throwsArgumentNullException()
+		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new FakeEnterprise(null); });
+		}
+
+		[Test]
+		public void Ctor_withEmptyName_throwsArgumentNullException()
+		{
+			// assert:
+			Assert.Throws<ArgumentNullException>(delegate { new FakeEnterprise(string.Empty); });
+		}
+		
+		[TestCase("Test1")]
+		[TestCase("Test2")]
+		[TestCase("Test3")]
+		public void Ctor_withName_works(string name)
+		{
+			// act:
+			EnterpriseBase enterprise = new FakeEnterprise(name);
+			
+			// assert:
+			Assert.AreEqual(name, enterprise.Name);
+		}
 	}
 }
 

@@ -25,18 +25,18 @@ using System;
 namespace Epic
 {
 	/// <summary>
-	/// Environment of the running application.
-	/// It will provide informations useful for the application, but not belonging to the domain.
+	/// Environment of the running enterprise.
+	/// It will provide informations useful for the enterprise, but not belonging to the domain.
 	/// Obviously, no domain class should depend on either the environment or the tools 
 	/// it provide: the domain model have to be coded, not configured.
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// The environment that host an application provide a set of configured tools, options, thread values and so on.
-	/// This mean that it must behave the same among all instances of any specific application deployed.
+	/// The environment that host an enterprise provide a set of configured tools, options, thread values and so on.
+	/// This mean that it must behave the same among all instances of any specific enterprise deployed.
 	/// </para>
 	/// <para>
-	/// For example it could provide appsettings values, the arguments used when starting the application, 
+	/// For example it could provide appsettings values, the arguments used when starting the enterprise, 
 	/// the current thread culture, the logging services and so on.
 	/// </para>
 	/// <para>
@@ -46,7 +46,7 @@ namespace Epic
 	public interface IEnvironment
 	{
 		/// <summary>
-		/// Provide a tool or information from the application environment.
+		/// Provide a tool or information from the enterprise environment.
 		/// </summary>
 		/// <param name="name">
 		/// An identifier for the needed object.

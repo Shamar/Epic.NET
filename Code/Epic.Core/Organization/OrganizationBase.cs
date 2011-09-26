@@ -182,7 +182,7 @@ namespace Epic.Organization
 		/// derived class will be able to log the operation.
 		/// </para>
 		/// <para>
-		/// This could be usefult if you have to lock accesses to the application to specific users.
+		/// This could be usefult if you have to lock accesses to the enterprise to specific users.
 		/// </para>
 		/// </remarks>
 		/// <param name='owner'>

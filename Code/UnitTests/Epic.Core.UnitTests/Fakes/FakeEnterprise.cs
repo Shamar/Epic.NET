@@ -1,5 +1,5 @@
 //  
-//  OrganizationSerializationHelper.cs
+//  FakeEnterprise.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,21 +22,29 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Runtime.Serialization;
-namespace Epic.Organization
+using Epic.Environment;
+namespace Epic.Fakes
 {
-	/// <summary>
-	/// When deserialiing this object, return a reference to the <see cref="Enterprise.Organization"/>.
-	/// </summary>
-	[Serializable]
-	public sealed class OrganizationSerializationHelper : IObjectReference
+	public class FakeEnterprise : EnterpriseBase
 	{
-	    public Object GetRealObject(StreamingContext context) 
-	    {
-	        // When deserialiing this object, return a reference to 
-	        // the Enterprise.Organization.
-	        return Enterprise.Organization;
-	    }
+		public FakeEnterprise(string name)
+			: base(name)
+		{
+		}
+		
+		public FakeEnterprise(EnvironmentBase environment, IOrganization organization)
+			: this("Fake Enterprise")
+		{
+			_environment = environment;
+			_organization = organization;
+		}
+
+		
+		private readonly EnvironmentBase _environment;
+		protected override EnvironmentBase RetrieveEnvironmentInstance() { return _environment; }
+	
+		private readonly IOrganization _organization;
+		public override IOrganization Organization { get { return _organization; } }
 	}
 }
 

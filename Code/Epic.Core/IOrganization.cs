@@ -30,7 +30,7 @@ namespace Epic
 	/// </summary>
 	/// <remarks>
 	/// <para>
-	/// The Epic target are application modelling organization processes.
+	/// The Epic target are enterprise modelling organization processes.
 	/// Thus, this is the entry point for all the domain model boundaries.
 	/// </para>
 	/// </remarks>
@@ -60,7 +60,7 @@ namespace Epic
 		
 		/// <summary>
 		/// Acquires an existing working session. 
-		/// Used to adopt a working session between different applications/appdomain.
+		/// Used to adopt a working session between different enterprises/appdomain.
 		/// </summary>
 		/// <returns>
 		/// The working session.

@@ -38,9 +38,9 @@ namespace Epic.Linq
     public class RepositoryBaseQA : RhinoMocksFixtureBase
     {
         [SetUp]
-        public void ResetApplication()
+        public void ResetEnterprise()
         {
-            TestUtilities.ResetApplication();
+            TestUtilities.ResetEnterprise();
         }
     
         [Test]
@@ -77,8 +77,8 @@ namespace Epic.Linq
             InstanceName<IQueryProvider> instanceName = new InstanceName<IQueryProvider>(providerName);
             IQueryProvider mockProvider = GenerateStrictMock<IQueryProvider>();
             env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
-            ApplicationBase app = new FakeApplication(env, null);
-            Application.Initialize(app);
+            EnterpriseBase app = new FakeEnterprise(env, null);
+            Enterprise.Initialize(app);
             IRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
 
             // act:
@@ -105,8 +105,8 @@ namespace Epic.Linq
             mockProvider.Expect(p => p.Execute<IEnumerable<string>>(Arg<Expression>.Matches(e => e is ConstantExpression && object.ReferenceEquals(((ConstantExpression)e).Value, repository))))
                 .Return(enumerable).Repeat.Once();
             env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
-            ApplicationBase app = new FakeApplication(env, null);
-            Application.Initialize(app);
+            EnterpriseBase app = new FakeEnterprise(env, null);
+            Enterprise.Initialize(app);
 
             // act:
             IEnumerator<string> enumerator = repository.GetEnumerator();
@@ -130,8 +130,8 @@ namespace Epic.Linq
             mockProvider.Expect(p => p.Execute<IEnumerable<string>>(Arg<Expression>.Matches(e => e is ConstantExpression && object.ReferenceEquals(((ConstantExpression)e).Value, repository))))
                 .Return(enumerable).Repeat.Once();
             env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
-            ApplicationBase app = new FakeApplication(env, null);
-            Application.Initialize(app);
+            EnterpriseBase app = new FakeEnterprise(env, null);
+            Enterprise.Initialize(app);
             System.Collections.IEnumerable enumerableRepository = repository;
 
             // act:

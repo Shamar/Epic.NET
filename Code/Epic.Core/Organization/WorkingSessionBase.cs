@@ -41,7 +41,7 @@ namespace Epic.Organization
 		/// Initializes a new instance of the <see cref="Epic.Organization.WorkingSessionBase"/> class.
 		/// </summary>
 		/// <param name='identifier'>
-		/// Session identifier (must be unique in the organization application).
+		/// Session identifier (must be unique in the organization enterprise).
 		/// </param>
 		/// <param name="owner">
 		/// Working session's owner.
