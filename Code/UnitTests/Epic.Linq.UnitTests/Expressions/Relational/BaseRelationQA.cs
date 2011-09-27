@@ -25,11 +25,12 @@ using NUnit.Framework;
 using System;
 using Epic.Linq.Fakes;
 using System.Linq;
+using Rhino.Mocks;
 
 namespace Epic.Linq.Expressions.Relational
 {
     [TestFixture()]
-    public class BaseRelationQA
+    public class BaseRelationQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withoutName_throwsArgumentNullException()
@@ -126,6 +127,25 @@ namespace Epic.Linq.Expressions.Relational
 
             // assert:
             Assert.IsTrue(results.All(r => r == false));
+        }
+        
+        [Test]
+        public void Accept_withValidArguments_delegateVisitToTheRightVisitor()
+        {
+            // arrange:
+            object expectedResult = new object();
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            BaseRelation relation = new BaseRelation("test");
+            IVisitor<object, BaseRelation> baseRelationVisitor = GenerateStrictMock<IVisitor<object, BaseRelation>>();
+            baseRelationVisitor.Expect(v => v.Visit(relation, context)).Return(expectedResult).Repeat.Once();
+            IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
+            visitor.Expect(v => v.GetVisitor(relation)).Return(baseRelationVisitor).Repeat.Once ();
+
+            // act:
+            object result = relation.Accept(visitor, context);
+
+            // assert:
+            Assert.AreSame(expectedResult, result);
         }
     }
 }
