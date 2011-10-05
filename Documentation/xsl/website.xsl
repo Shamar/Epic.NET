@@ -209,7 +209,7 @@
         <ul class="menu">
           <li><a href="/index.html">Overview</a></li>
           <li><a href="/roadmap.html">Roadmap</a></li>
-          <li><a href="/blog.html">Development</a></li>
+          <li><a href="/blog.html" title="Development blog">Blog</a></li>
           <li><a href="/doc/manual.html">Documentation</a></li>
           <li><a href="http://github.com/Shamar/Epic.NET/archives/master">Download</a></li>
           <li><a href="/license.html">License</a></li>
