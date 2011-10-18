@@ -29,9 +29,15 @@ namespace Epic.Linq.Expressions.Relational
     [TestFixture()]
     public class ConstantQA
     {
-        [Test()]
-        public void TestCase ()
+        [Test]
+        public void Initialize_withoutValue_works()
         {
+            // act:
+            Constant<string> cString = new Constant<string>(null);
+            
+            // assert:
+            Assert.IsNotNull(cString);
+            Assert.IsNull(cString.Value);
         }
     }
 }
