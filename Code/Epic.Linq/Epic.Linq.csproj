@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Epic.Linq</RootNamespace>
     <AssemblyName>Epic.Linq</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,6 +52,7 @@
     <Compile Include="Expressions\Relational\Selection.cs" />
     <Compile Include="Expressions\Relational\Predicate.cs" />
     <Compile Include="Expressions\CompositeVisitorBase.cs" />
+    <Compile Include="Expressions\Relational\Constant.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\Normalization\" />
