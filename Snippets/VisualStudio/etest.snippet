@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NUnit test that expect an exception.</Title>
+      <Shortcut>etest</Shortcut>
+      <Description>
+        Code snippet for NUnit test that expect an exception.
+      </Description>
+      <Author>Giacomo Tesio</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Scenario</ID>
+          <ToolTip>A description of the scenario under test.</ToolTip>
+          <Default>Scenario</Default>
+        </Literal>
+        <Literal>
+          <ID>Message</ID>
+          <ToolTip>A message sent to the class under test.</ToolTip>
+          <Default>Message</Default>
+        </Literal>
+        <Literal>
+          <ID>Exception</ID>
+          <ToolTip>The expected exception.</ToolTip>
+          <Default>Exception</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[[Test]
+public void $Message$_$Scenario$_throws$Exception$()
+{
+    // arrange:
+    $end$
+
+    // assert:
+    Assert.Throws<$Exception$>(delegate {
+        
+    });
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

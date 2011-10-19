@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeTemplates version="3.0">
+  <CodeTemplate version="2.0">
+    <Header>
+      <_Group>C#</_Group>
+      <Version />
+      <MimeType>text/x-csharp</MimeType>
+      <Shortcut>test</Shortcut>
+      <_Description>Template for NUnit test case</_Description>
+      <TemplateType>Expansion</TemplateType>
+    </Header>
+    <Variables>
+      <Variable name="Scenario" isIdentifier="true">
+        <Default>Scenario</Default>
+        <_ToolTip>A description of the scenario under test.</_ToolTip>
+      </Variable>
+      <Variable name="Assertion" isIdentifier="true">
+        <Default>Assertion</Default>
+        <_ToolTip>A logical assertion.</_ToolTip>
+      </Variable>
+      <Variable name="Message" isIdentifier="true">
+        <Default>Message</Default>
+        <_ToolTip>A message sent to the class under test.</_ToolTip>
+      </Variable>
+    </Variables>
+    <Code><![CDATA[[Test]
+public void $Message$_$Scenario$_$Assertion$()
+{
+    // arrange:
+    $end$
+
+    // act:
+
+
+    // assert:
+
+}]]></Code>
+  </CodeTemplate>
+</CodeTemplates>

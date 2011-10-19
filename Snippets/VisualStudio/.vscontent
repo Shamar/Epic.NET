@@ -1,0 +1,22 @@
+<VSContent xmlns="http://schemas.microsoft.com/developer/vscontent/2005">
+    <Content>
+        <FileName>test.snippet</FileName>
+        <DisplayName>NUnit test case.</DisplayName>
+        <Description>Code snippet for NUnit test case.</Description>
+        <FileContentType>Code Snippet</FileContentType>
+        <ContentVersion>2.0</ContentVersion>
+        <Attributes>
+            <Attribute name="lang" value="csharp"/>
+        </Attributes>
+    </Content>
+    <Content>
+        <FileName>etest.snippet</FileName>
+        <DisplayName>NUnit test that expect an exception.</DisplayName>
+        <Description>Code snippet for NUnit test that expect an exception.</Description>
+        <FileContentType>Code Snippet</FileContentType>
+        <ContentVersion>2.0</ContentVersion>
+        <Attributes>
+            <Attribute name="lang" value="csharp"/>
+        </Attributes>
+    </Content>
+</VSContent>

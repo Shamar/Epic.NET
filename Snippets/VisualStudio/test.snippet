@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NUnit test case.</Title>
+      <Shortcut>test</Shortcut>
+      <Description>
+        Code snippet for NUnit test case.
+      </Description>
+      <Author>Giacomo Tesio</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Scenario</ID>
+          <ToolTip>A description of the scenario under test.</ToolTip>
+          <Default>Scenario</Default>
+        </Literal>
+        <Literal>
+          <ID>Message</ID>
+          <ToolTip>A message sent to the class under test.</ToolTip>
+          <Default>Message</Default>
+        </Literal>
+        <Literal>
+          <ID>Assertion</ID>
+          <ToolTip>A logical assertion.</ToolTip>
+          <Default>Assertion</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[[Test]
+public void $Message$_$Scenario$_$Assertion$()
+{
+    // arrange:
+    $end$
+
+    // act:
+
+
+    // assert:
+
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

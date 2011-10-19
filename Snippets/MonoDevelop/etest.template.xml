@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeTemplates version="3.0">
+  <CodeTemplate version="2.0">
+    <Header>
+      <_Group>C#</_Group>
+      <Version />
+      <MimeType>text/x-csharp</MimeType>
+      <Shortcut>etest</Shortcut>
+      <_Description>Template for NUnit test that expect an exception</_Description>
+      <TemplateType>Expansion</TemplateType>
+    </Header>
+    <Variables>
+      <Variable name="Scenario" isIdentifier="true">
+        <Default>Scenario</Default>
+        <_ToolTip>A description of the scenario under test.</_ToolTip>
+      </Variable>
+      <Variable name="Exception" isIdentifier="true">
+        <Default>Exception</Default>
+        <_ToolTip>The expected exception.</_ToolTip>
+      </Variable>
+      <Variable name="Message" isIdentifier="true">
+        <Default>Message</Default>
+      </Variable>
+    </Variables>
+    <Code><![CDATA[[Test]
+public void $Message$_$Scenario$_throws$Exception$()
+{
+    // arrange:
+    $end$
+
+    // assert:
+    Assert.Throws<$Exception$>(delegate {
+        
+    });
+}]]></Code>
+  </CodeTemplate>
+</CodeTemplates>
