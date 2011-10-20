@@ -53,6 +53,9 @@
     <Compile Include="Expressions\Relational\Predicate.cs" />
     <Compile Include="Expressions\CompositeVisitorBase.cs" />
     <Compile Include="Expressions\Relational\Constant.cs" />
+    <Compile Include="Expressions\Normalization\DefaultNormalizer.cs" />
+    <Compile Include="Expressions\Normalization\ExpressionForwarder.cs" />
+    <Compile Include="Expressions\Normalization\ExpressionsInspector.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\Normalization\" />

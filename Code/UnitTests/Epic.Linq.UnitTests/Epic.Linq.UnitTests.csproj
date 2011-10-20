@@ -76,5 +76,9 @@
     <Compile Include="Expressions\Relational\BaseRelationQA.cs" />
     <Compile Include="Expressions\Relational\SelectionQA.cs" />
     <Compile Include="Expressions\Relational\ConstantQA.cs" />
+    <Compile Include="Expressions\Normalization\DefaultNormalizerQA.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\Normalization\" />
   </ItemGroup>
 </Project>
