@@ -1,4 +1,4 @@
-To install these snippets in MonoDevelop copy them in the proper Data directory
+To install these templates in MonoDevelop copy them in the proper Data directory
 (see http://monodevelop.com/Developers/Articles/User_Profiles).
 
 The location is dependent on operating system and environment, but normally 

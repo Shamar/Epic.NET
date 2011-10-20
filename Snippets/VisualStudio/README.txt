@@ -1,5 +1,8 @@
-These snippets are part of the Epic.NET framework (http://epic.tesio.it).
+To install these snippets in VisualStudio you can copy them in the proper directory
+(see http://snippetlibcsharp.codeplex.com/).
 
-They are released under Affero GPL v3.0 license (as included in this archive).
+The location is dependent on the version you use  but normally 
+will have the following value:
 
-Copyright (C) 2010-2011 Giacomo Tesio
+    %HOME%\Documents\Visual Studio {version}\Code Snippets\Visual C#\My Code Snippets
+
