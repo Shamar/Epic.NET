@@ -28,7 +28,7 @@ using System.Linq.Expressions;
 namespace Epic.Linq.Expressions.Normalization
 {
     [TestFixture]
-    public class DefaultNormalizerQA : RhinoMocksFixtureBase
+    public class DefaultNormalizerQA
     {
         [Test]
         public void Initalize_withoutAName_throwsArgumentNullException()

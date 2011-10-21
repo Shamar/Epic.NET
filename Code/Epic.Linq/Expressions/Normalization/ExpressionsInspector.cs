@@ -30,7 +30,8 @@ using System.Collections.ObjectModel;
 namespace Epic.Linq.Expressions.Normalization
 {
     /// <summary>
-    /// Visit the members of System.Linq.Expressions' expressions and merge them in a new expression.
+    /// Visit the members of expressions derived from <see cref="System.Linq.Expressions.Expression"/> 
+    /// and merge them in a new expression of the same type.
     /// </summary>
     /// <exception cref='InvalidOperationException'>
     /// Is thrown when an operation cannot be performed.
@@ -54,9 +55,303 @@ namespace Epic.Linq.Expressions.Normalization
         IVisitor<Expression, ParameterExpression>,
         IVisitor<Expression, TypeBinaryExpression>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ExpressionsInspector"/> class.
+        /// </summary>
+        /// <param name='composition'>
+        /// Composition that owns this visitor.
+        /// </param>
         public ExpressionsInspector (CompositeVisitor<Expression> composition)
             : base(composition)
         {
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="UnaryExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// context.
+        /// </param>
+        public Expression Visit (UnaryExpression expression, IVisitContext context)
+        {
+            Expression newOperand = VisitExpression (expression.Operand, context);
+            if (newOperand != expression.Operand) {
+                if (expression.NodeType == ExpressionType.UnaryPlus)
+                    return Expression.UnaryPlus (newOperand, expression.Method);
+                else
+                    return Expression.MakeUnary (expression.NodeType, newOperand, expression.Type, expression.Method);
+            } else
+                return expression;
+        }
+  
+        /// <summary>
+        /// Visit the specified <see cref="BinaryExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (BinaryExpression expression, IVisitContext context)
+        {
+            Expression newLeft = VisitExpression (expression.Left, context);
+            Expression newRight = VisitExpression (expression.Right, context);
+            var newConversion = (LambdaExpression)VisitExpression (expression.Conversion, context);
+            if (newLeft != expression.Left || newRight != expression.Right || newConversion != expression.Conversion)
+                return Expression.MakeBinary (expression.NodeType, newLeft, newRight, expression.IsLiftedToNull, expression.Method, newConversion);
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="TypeBinaryExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (TypeBinaryExpression expression, IVisitContext context)
+        {
+            Expression newExpression = VisitExpression (expression.Expression, context);
+            if (newExpression != expression.Expression)
+                return Expression.TypeIs (newExpression, expression.TypeOperand);
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="ConstantExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (ConstantExpression expression, IVisitContext context)
+        {
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="ConditionalExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (ConditionalExpression expression, IVisitContext context)
+        {
+            Expression newTest = VisitExpression (expression.Test, context);
+            Expression newFalse = VisitExpression (expression.IfFalse, context);
+            Expression newTrue = VisitExpression (expression.IfTrue, context);
+            if ((newTest != expression.Test) || (newFalse != expression.IfFalse) || (newTrue != expression.IfTrue))
+                return Expression.Condition (newTest, newTrue, newFalse);
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="ParameterExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (ParameterExpression expression, IVisitContext context)
+        {
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="LambdaExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (LambdaExpression expression, IVisitContext context)
+        {
+            ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "Visit", context);
+            Expression newBody = VisitExpression (expression.Body, context);
+            if ((newBody != expression.Body) || (newParameters != expression.Parameters))
+                return Expression.Lambda (expression.Type, newBody, newParameters);
+            return expression;
+
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="MethodCallExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (MethodCallExpression expression, IVisitContext context)
+        {
+            Expression newObject = VisitExpression (expression.Object, context);
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", context);
+            if ((newObject != expression.Object) || (newArguments != expression.Arguments))
+                return Expression.Call (newObject, expression.Method, newArguments);
+            return expression;
+
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="InvocationExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (InvocationExpression expression, IVisitContext context)
+        {
+            Expression newExpression = VisitExpression (expression.Expression, context);
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", context);
+            if ((newExpression != expression.Expression) || (newArguments != expression.Arguments))
+                return Expression.Invoke (newExpression, newArguments);
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="MemberExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (MemberExpression expression, IVisitContext context)
+        {
+            Expression newExpression = VisitExpression (expression.Expression, context);
+            if (newExpression != expression.Expression)
+                return Expression.MakeMemberAccess (newExpression, expression.Member);
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="NewExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (NewExpression expression, IVisitContext context)
+        {
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", context);
+            if (newArguments != expression.Arguments) {
+                if (expression.Members == null)
+                    return Expression.New (expression.Constructor, newArguments);
+                else
+                    return Expression.New (expression.Constructor, AdjustArgumentsForNewExpression (newArguments, expression.Members), expression.Members);
+            }
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="NewArrayExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        public Expression Visit (NewArrayExpression expression, IVisitContext context)
+        {
+            ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit", context);
+            if (newExpressions != expression.Expressions) {
+                var elementType = expression.Type.GetElementType ();
+                if (expression.NodeType == ExpressionType.NewArrayInit)
+                    return Expression.NewArrayInit (elementType, newExpressions);
+                else
+                    return Expression.NewArrayBounds (elementType, newExpressions);
+            }
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="MemberInitExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <exception cref='NotSupportedException'>
+        /// Is thrown when the visit of the <see cref="MemberInitExpression.NewExpression"/> does not return a <see cref="NewExpression"/>.
+        /// </exception>
+        public Expression Visit (MemberInitExpression expression, IVisitContext context)
+        {
+            NewExpression newNewExpression = VisitExpression (expression.NewExpression, context) as NewExpression;
+            if (newNewExpression == null) {
+                throw new NotSupportedException (
+                    "MemberInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
+            }
+        
+            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (expression.Bindings, context);
+            if (newNewExpression != expression.NewExpression || newBindings != expression.Bindings)
+                return Expression.MemberInit (newNewExpression, newBindings);
+            return expression;
+        }
+    
+        /// <summary>
+        /// Visit the specified <see cref="ListInitExpression"/>.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <exception cref='NotSupportedException'>
+        /// Is thrown when the visit of the <see cref="ListInitExpressions.NewExpression"/> does not return a <see cref="NewExpression"/>.
+        /// </exception>
+        public Expression Visit (ListInitExpression expression, IVisitContext context)
+        {
+            NewExpression newNewExpression = VisitExpression (expression.NewExpression, context) as NewExpression;
+            if (newNewExpression == null)
+                throw new NotSupportedException ("ListInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
+            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (expression.Initializers, context);
+            if (newNewExpression != expression.NewExpression || newInitializers != expression.Initializers)
+                return Expression.ListInit (newNewExpression, newInitializers);
+            return expression;
+        }
+    
+        #region private methods
+        
+        /// <summary>
+        /// Require the composition to visit the specified <see cref="Expression"/>.
+        /// </summary>
+        /// <returns>
+        /// The expression to visit.
+        /// </returns>
+        /// <param name='expression'>
+        /// Expression.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        private Expression VisitExpression (Expression expression, IVisitContext context)
+        {
+            return VisitInner(expression, context);
         }
         
         /// <summary>
@@ -79,17 +374,12 @@ namespace Epic.Linq.Expressions.Normalization
             }
         }
     
-        private Expression VisitExpression (Expression expression, IVisitContext state)
-        {
-            return VisitInner(expression, state);
-        }
-    
-        private T VisitAndConvert<T> (T expression, string methodName, IVisitContext state) where T : Expression
+        private T VisitAndConvert<T> (T expression, string methodName, IVisitContext context) where T : Expression
         {
             if (expression == null)
                 return null;
     
-            T newExpression = VisitExpression (expression, state) as T;
+            T newExpression = VisitExpression (expression, context) as T;
     
             if (newExpression == null) {
                 var message = string.Format (
@@ -104,19 +394,19 @@ namespace Epic.Linq.Expressions.Normalization
             return newExpression;
         }
 
-        private ReadOnlyCollection<T> VisitAndConvert<T> (ReadOnlyCollection<T> expressions, string callerName, IVisitContext state) where T : Expression
+        private ReadOnlyCollection<T> VisitAndConvert<T> (ReadOnlyCollection<T> expressions, string callerName, IVisitContext context) where T : Expression
         {
-            return VisitList (expressions, (expression, s) => VisitAndConvert (expression, callerName, s), state);
+            return VisitList (expressions, (expression, s) => VisitAndConvert (expression, callerName, s), context);
         }
 
-        private ReadOnlyCollection<T> VisitList<T> (ReadOnlyCollection<T> list, Func<T, IVisitContext, T> visitMethod, IVisitContext state)
+        private ReadOnlyCollection<T> VisitList<T> (ReadOnlyCollection<T> list, Func<T, IVisitContext, T> visitMethod, IVisitContext context)
             where T : class
         {
             List<T> newList = null;
     
             for (int i = 0; i < list.Count; i++) {
                 T element = list [i];
-                T newElement = visitMethod (element, state);
+                T newElement = visitMethod (element, context);
                 if (newElement == null)
                     throw new NotSupportedException ("The current list only supports objects of type '" + typeof(T).Name + "' as its elements.");
     
@@ -133,198 +423,63 @@ namespace Epic.Linq.Expressions.Normalization
             else
                 return list;
         }
-    
-        public Expression Visit (UnaryExpression expression, IVisitContext state)
-        {
-            Expression newOperand = VisitExpression (expression.Operand, state);
-            if (newOperand != expression.Operand) {
-                if (expression.NodeType == ExpressionType.UnaryPlus)
-                    return Expression.UnaryPlus (newOperand, expression.Method);
-                else
-                    return Expression.MakeUnary (expression.NodeType, newOperand, expression.Type, expression.Method);
-            } else
-                return expression;
-        }
-
-        public Expression Visit (BinaryExpression expression, IVisitContext state)
-        {
-            Expression newLeft = VisitExpression (expression.Left, state);
-            Expression newRight = VisitExpression (expression.Right, state);
-            var newConversion = (LambdaExpression)VisitExpression (expression.Conversion, state);
-            if (newLeft != expression.Left || newRight != expression.Right || newConversion != expression.Conversion)
-                return Expression.MakeBinary (expression.NodeType, newLeft, newRight, expression.IsLiftedToNull, expression.Method, newConversion);
-            return expression;
-        }
-    
-        public Expression Visit (TypeBinaryExpression expression, IVisitContext state)
-        {
-            Expression newExpression = VisitExpression (expression.Expression, state);
-            if (newExpression != expression.Expression)
-                return Expression.TypeIs (newExpression, expression.TypeOperand);
-            return expression;
-        }
-    
-        public Expression Visit (ConstantExpression expression, IVisitContext state)
-        {
-            return expression;
-        }
-    
-        public Expression Visit (ConditionalExpression expression, IVisitContext state)
-        {
-            Expression newTest = VisitExpression (expression.Test, state);
-            Expression newFalse = VisitExpression (expression.IfFalse, state);
-            Expression newTrue = VisitExpression (expression.IfTrue, state);
-            if ((newTest != expression.Test) || (newFalse != expression.IfFalse) || (newTrue != expression.IfTrue))
-                return Expression.Condition (newTest, newTrue, newFalse);
-            return expression;
-        }
-    
-        public Expression Visit (ParameterExpression expression, IVisitContext state)
-        {
-            return expression;
-        }
-    
-        public Expression Visit (LambdaExpression expression, IVisitContext state)
-        {
-            ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "Visit", state);
-            Expression newBody = VisitExpression (expression.Body, state);
-            if ((newBody != expression.Body) || (newParameters != expression.Parameters))
-                return Expression.Lambda (expression.Type, newBody, newParameters);
-            return expression;
-
-        }
-    
-        public Expression Visit (MethodCallExpression expression, IVisitContext state)
-        {
-            Expression newObject = VisitExpression (expression.Object, state);
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
-            if ((newObject != expression.Object) || (newArguments != expression.Arguments))
-                return Expression.Call (newObject, expression.Method, newArguments);
-            return expression;
-
-        }
-    
-        public Expression Visit (InvocationExpression expression, IVisitContext state)
-        {
-            Expression newExpression = VisitExpression (expression.Expression, state);
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
-            if ((newExpression != expression.Expression) || (newArguments != expression.Arguments))
-                return Expression.Invoke (newExpression, newArguments);
-            return expression;
-        }
-    
-        public Expression Visit (MemberExpression expression, IVisitContext state)
-        {
-            Expression newExpression = VisitExpression (expression.Expression, state);
-            if (newExpression != expression.Expression)
-                return Expression.MakeMemberAccess (newExpression, expression.Member);
-            return expression;
-        }
-    
-        public Expression Visit (NewExpression expression, IVisitContext state)
-        {
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", state);
-            if (newArguments != expression.Arguments) {
-                if (expression.Members == null)
-                    return Expression.New (expression.Constructor, newArguments);
-                else
-                    return Expression.New (expression.Constructor, AdjustArgumentsForNewExpression (newArguments, expression.Members), expression.Members);
-            }
-            return expression;
-        }
-    
-        public Expression Visit (NewArrayExpression expression, IVisitContext state)
-        {
-            ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit", state);
-            if (newExpressions != expression.Expressions) {
-                var elementType = expression.Type.GetElementType ();
-                if (expression.NodeType == ExpressionType.NewArrayInit)
-                    return Expression.NewArrayInit (elementType, newExpressions);
-                else
-                    return Expression.NewArrayBounds (elementType, newExpressions);
-            }
-            return expression;
-        }
-    
-        public Expression Visit (MemberInitExpression expression, IVisitContext state)
-        {
-            NewExpression newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
-            if (newNewExpression == null) {
-                throw new NotSupportedException (
-                    "MemberInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
-            }
         
-            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (expression.Bindings, state);
-            if (newNewExpression != expression.NewExpression || newBindings != expression.Bindings)
-                return Expression.MemberInit (newNewExpression, newBindings);
-            return expression;
-        }
-    
-        public Expression Visit (ListInitExpression expression, IVisitContext state)
+        private ElementInit VisitElementInit (ElementInit elementInit, IVisitContext context)
         {
-            var newNewExpression = VisitExpression (expression.NewExpression, state) as NewExpression;
-            if (newNewExpression == null)
-                throw new NotSupportedException ("ListInitExpressions only support non-null instances of type 'NewExpression' as their NewExpression member.");
-            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (expression.Initializers, state);
-            if (newNewExpression != expression.NewExpression || newInitializers != expression.Initializers)
-                return Expression.ListInit (newNewExpression, newInitializers);
-            return expression;
-        }
-    
-        private ElementInit VisitElementInit (ElementInit elementInit, IVisitContext state)
-        {
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (elementInit.Arguments, "VisitElementInit", state);
+            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (elementInit.Arguments, "VisitElementInit", context);
             if (newArguments != elementInit.Arguments)
                 return Expression.ElementInit (elementInit.AddMethod, newArguments);
             return elementInit;
         }
     
-        private MemberBinding VisitMemberBinding (MemberBinding memberBinding, IVisitContext state)
+        private MemberBinding VisitMemberBinding (MemberBinding memberBinding, IVisitContext context)
         {
             switch (memberBinding.BindingType) {
             case MemberBindingType.Assignment:
-                return VisitMemberAssignment ((MemberAssignment)memberBinding, state);
+                return VisitMemberAssignment ((MemberAssignment)memberBinding, context);
             case MemberBindingType.MemberBinding:
-                return VisitMemberMemberBinding ((MemberMemberBinding)memberBinding, state);
+                return VisitMemberMemberBinding ((MemberMemberBinding)memberBinding, context);
             default:
-                return VisitMemberListBinding ((MemberListBinding)memberBinding, state);
+                return VisitMemberListBinding ((MemberListBinding)memberBinding, context);
             }
         }
     
-        private MemberBinding VisitMemberAssignment (MemberAssignment memberAssigment, IVisitContext state)
+        private MemberBinding VisitMemberAssignment (MemberAssignment memberAssigment, IVisitContext context)
         {
-            Expression expression = VisitExpression (memberAssigment.Expression, state);
+            Expression expression = VisitExpression (memberAssigment.Expression, context);
             if (expression != memberAssigment.Expression)
                 return Expression.Bind (memberAssigment.Member, expression);
             return memberAssigment;
         }
     
-        private MemberBinding VisitMemberMemberBinding (MemberMemberBinding binding, IVisitContext state)
+        private MemberBinding VisitMemberMemberBinding (MemberMemberBinding binding, IVisitContext context)
         {
-            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (binding.Bindings, state);
+            ReadOnlyCollection<MemberBinding> newBindings = VisitMemberBindingList (binding.Bindings, context);
             if (newBindings != binding.Bindings)
                 return Expression.MemberBind (binding.Member, newBindings);
             return binding;
         }
     
-        private MemberBinding VisitMemberListBinding (MemberListBinding listBinding, IVisitContext state)
+        private MemberBinding VisitMemberListBinding (MemberListBinding listBinding, IVisitContext context)
         {
-            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (listBinding.Initializers, state);
+            ReadOnlyCollection<ElementInit> newInitializers = VisitElementInitList (listBinding.Initializers, context);
     
             if (newInitializers != listBinding.Initializers)
                 return Expression.ListBind (listBinding.Member, newInitializers);
             return listBinding;
         }
     
-        private ReadOnlyCollection<MemberBinding> VisitMemberBindingList (ReadOnlyCollection<MemberBinding> expressions, IVisitContext state)
+        private ReadOnlyCollection<MemberBinding> VisitMemberBindingList (ReadOnlyCollection<MemberBinding> expressions, IVisitContext context)
         {
-            return VisitList (expressions, VisitMemberBinding, state);
+            return VisitList (expressions, VisitMemberBinding, context);
         }
     
-        private ReadOnlyCollection<ElementInit> VisitElementInitList (ReadOnlyCollection<ElementInit> expressions, IVisitContext state)
+        private ReadOnlyCollection<ElementInit> VisitElementInitList (ReadOnlyCollection<ElementInit> expressions, IVisitContext context)
         {
-            return VisitList (expressions, VisitElementInit, state);
+            return VisitList (expressions, VisitElementInit, context);
         }
+        
+        #endregion private methods
     }
 }
 

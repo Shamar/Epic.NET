@@ -26,14 +26,40 @@ using System.Linq.Expressions;
 
 namespace Epic.Linq.Expressions.Normalization
 {
+    /// <summary>
+    /// Visitor that forward to the composition the visit of each 
+    /// <see cref="System.Expression"/> according to its type.
+    /// </summary>
+    /// <exception cref='ArgumentException'>
+    /// Is thrown when the expression provided is not known.
+    /// </exception>
     internal sealed class ExpressionForwarder : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, Expression>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ExpressionForwarder"/> class.
+        /// </summary>
+        /// <param name='composition'>
+        /// Composition that owns this visitor.
+        /// </param>
         public ExpressionForwarder (CompositeVisitor<Expression> composition)
             : base(composition)
         {
         }
         
         #region IVisitor[Expression,Expression] implementation
+        
+        /// <summary>
+        /// Forward the visit of <paramref name="target"/>, accordint to its NodeType.
+        /// </summary>
+        /// <param name='target'>
+        /// Expression to visit.
+        /// </param>
+        /// <param name='context'>
+        /// Context of the visit.
+        /// </param>
+        /// <exception cref='ArgumentException'>
+        /// Is thrown when the expression provided is not known.
+        /// </exception>
         public Expression Visit (Expression target, IVisitContext context)
         {
             if (target == null)

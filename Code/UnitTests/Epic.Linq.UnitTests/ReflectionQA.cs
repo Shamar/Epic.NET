@@ -26,6 +26,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 
 namespace Epic.Linq
 {
@@ -37,9 +38,33 @@ namespace Epic.Linq
     {
     }
     
+    public sealed class DummyClassWithDifferentMembers
+    {
+        public DummyClassWithDifferentMembers() { this.SampleEvent += delegate { }; }
+        public int IntProperty { get; set; }
+        public string StringProperty { get; set; }
+        public int IntField = 0;
+        public string StringField = string.Empty;
+        public int IntMethod() { return IntField; }
+        public string StringMethod() { return StringField; }
+        public event EventHandler<EventArgs> SampleEvent;
+    }
+    
     [TestFixture()]
     public class ReflectionQA
     {
+        static ReflectionQA()
+        {
+            DummyClassWithDifferentMembers dummy = new DummyClassWithDifferentMembers();
+            var v1 = dummy.IntProperty;
+            dummy.IntProperty = v1;
+            var v2 = dummy.StringProperty;
+            dummy.StringProperty = v2;
+            v1 = dummy.IntMethod();
+            v2 = dummy.StringMethod();
+            
+        }
+        
         [Test]
         public void TryGetItemTypeOfEnumerable_withoutEnumerableType_throwsArgumentNullException()
         {
@@ -88,6 +113,88 @@ namespace Epic.Linq
             // assert:
             Assert.IsFalse(found);
             Assert.IsNull(itemType);
+        }
+        
+        [Test]
+        public void GetMemberReturnType_withoutMember_throwsArgumentNullException()
+        {
+            // arrange:
+            Type result = null;         
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                result = Reflection.GetMemberReturnType(null);
+            });
+            Assert.IsNull(result);
+        }
+        
+        [TestCase("StringProperty", "dummyValue")]
+        [TestCase("IntProperty", 0)]
+        public void GetMemberReturnType_ofAProperty_returnTheRightType<T>(string name, T dummyValue)
+        {
+            // arrange:
+            PropertyInfo property = typeof(DummyClassWithDifferentMembers).GetProperty(name);
+
+            // act:
+            Type propertyType = Reflection.GetMemberReturnType(property);
+
+            // assert:
+            Assert.AreSame(typeof(T), propertyType);
+        }
+        
+        [TestCase("StringField", "dummyValue")]
+        [TestCase("IntField", 0)]
+        public void GetMemberReturnType_ofAField_returnTheRightType<T>(string name, T dummyValue)
+        {
+            // arrange:
+            FieldInfo property = typeof(DummyClassWithDifferentMembers).GetField(name);
+
+            // act:
+            Type fieldType = Reflection.GetMemberReturnType(property);
+
+            // assert:
+            Assert.AreSame(typeof(T), fieldType);
+        }
+        
+        [TestCase("StringMethod", "dummyValue")]
+        [TestCase("IntMethod", 0)]
+        public void GetMemberReturnType_ofAMethod_returnTheRightType<T>(string name, T dummyValue)
+        {
+            // arrange:
+            MethodInfo property = typeof(DummyClassWithDifferentMembers).GetMethod(name);
+
+            // act:
+            Type methodType = Reflection.GetMemberReturnType(property);
+
+            // assert:
+            Assert.AreSame(typeof(T), methodType);
+        }
+        
+        [Test]
+        public void GetMemberReturnType_ofAType_throwsArgumentException()
+        {
+            // arrange:
+            Type result = null;
+
+            // assert:
+            Assert.Throws<ArgumentException>(delegate {
+                result = Reflection.GetMemberReturnType(typeof(DummyClassWithDifferentMembers));
+            });
+            Assert.IsNull(result);
+        }
+        
+        [Test]
+        public void GetMemberReturnType_ofAnEvent_throwsArgumentException()
+        {
+            // arrange:
+            EventInfo eventInfo = typeof(DummyClassWithDifferentMembers).GetEvent("SampleEvent");
+            Type result = null;
+
+            // assert:
+            Assert.Throws<ArgumentException>(delegate {
+                result = Reflection.GetMemberReturnType(eventInfo);
+            });
+            Assert.IsNull(result);
         }
     }
 }
