@@ -47,6 +47,20 @@ namespace Epic.Linq.Expressions.Normalization
     {
     }
     
+    public sealed class ClassWithFieldAndProperty
+    {
+        public int Field;
+        public string Property { get; set; }
+    }
+    
+    public sealed class UnknownExpression : Expression
+    {
+        public UnknownExpression()
+            : base((ExpressionType)int.MaxValue, typeof(string))
+        {
+        }
+    }
+    
     [TestFixture()]
     public class ExpressionForwarderQA : RhinoMocksFixtureBase
     {
@@ -58,6 +72,7 @@ namespace Epic.Linq.Expressions.Normalization
             mockableInterceptor = mockable as IDerivedExpressionsVisitor;
             return composition;
         }
+
         
         [Test]
         public void Initialize_withoutComposition_throwsArgumentNullException()
@@ -66,6 +81,20 @@ namespace Epic.Linq.Expressions.Normalization
             Assert.Throws<ArgumentNullException>(delegate {
                 new ExpressionForwarder(null);
             });
+        }
+        
+        [Test]
+        public void Visit_aNullExpression_returnsNull()
+        {
+            // arrange:
+            FakeCompositeVisitor<Expression, Expression> composition = new FakeCompositeVisitor<Expression, Expression>("TEST");
+            IVisitor<Expression, Expression> visitor = new ExpressionForwarder(composition);
+
+            // act:
+            Expression result = visitor.Visit(null, VisitContext.New);
+
+            // assert:
+            Assert.IsNull(result);
         }
         
         [Test, TestCaseSource("UnaryExpressions")]
@@ -101,9 +130,292 @@ namespace Epic.Linq.Expressions.Normalization
             // assert:
             Assert.AreSame(expression, visitResult);
         }
+  
+        [Test]
+        public void Visit_aConditionalExpression_callTheRightVisitor()
+        {
+            // arrange:
+            Expression<Func<int, int>> dumbExp = i => i > 0 ? 1 : -1;
+            ConditionalExpression typedExpression = dumbExp.Body as ConditionalExpression;
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
 
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.IsNotNull(typedExpression);
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_aConstantExpression_callTheRightVisitor()
+        {
+            // arrange:
+            ConstantExpression typedExpression = Expression.Constant(1);
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_anInvocationExpression_callTheRightVisitor()
+        {
+            // arrange:
+            Expression<Func<int, int>> dumbExp = i => i > 0 ? 1 : -1;
+            InvocationExpression typedExpression = Expression.Invoke(dumbExp, new Expression[] { Expression.Constant(1) });
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_aLambdaExpression_callTheRightVisitor()
+        {
+            // arrange:
+            Expression<Func<int, int>> dumbExp = i => i > 0 ? 1 : -1;
+            LambdaExpression typedExpression = dumbExp;
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        
+        [Test]
+        public void Visit_aMemberExpression_callTheRightVisitor()
+        {
+            // arrange:
+            Expression<Func<string, int>> dumbExp = s => s.Length;
+            MemberExpression typedExpression = dumbExp.Body as MemberExpression;
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.IsNotNull(typedExpression);
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_aMethodCallExpression_callTheRightVisitor()
+        {
+            // arrange:
+            Expression<Func<string, string>> dumbExp = s => s.Substring(1);
+            MethodCallExpression typedExpression = dumbExp.Body as MethodCallExpression;
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.IsNotNull(typedExpression);
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_aNewExpression_callTheRightVisitor()
+        {
+            // arrange:
+            Expression<Func<object>> dumbExp = () => new object();
+            NewExpression typedExpression = dumbExp.Body as NewExpression;
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.IsNotNull(typedExpression);
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_aNewArrayExpression_callTheRightVisitor()
+        {
+            // arrange:
+            Expression<Func<object[]>> dumbExp = () => new object[0] { };
+            NewArrayExpression typedExpression = dumbExp.Body as NewArrayExpression;
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.IsNotNull(typedExpression);
+            Assert.AreSame(expression, visitResult);
+        }
+         
+        [Test]
+        public void Visit_aMemberInitExpression_callTheRightVisitor()
+        {
+            // arrange:
+            Expression<Func<object>> dumbExp = () => new ClassWithFieldAndProperty { Field = 1, Property = "test" };
+            MemberInitExpression typedExpression = dumbExp.Body as MemberInitExpression;
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.IsNotNull(typedExpression);
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_aListInitExpression_callTheRightVisitor()
+        {
+            // arrange:
+            ListInitExpression typedExpression = GetNewListInitExpression();
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.IsNotNull(typedExpression);
+            Assert.AreSame(expression, visitResult);
+        }
+       
+                
+        [Test]
+        public void Visit_aParameterExpression_callTheRightVisitor()
+        {
+            // arrange:
+            ParameterExpression typedExpression = Expression.Parameter(typeof(int), "i");
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_aTypeBinaryExpression_callTheRightVisitor()
+        {
+            // arrange:
+            TypeBinaryExpression typedExpression = GetNewTypeBinaryExpression();
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            mockableInterceptor.Expect(v => v.Visit(typedExpression, context)).Return(typedExpression).Repeat.Once();
+            
+            // act:
+            Expression visitResult = visitor.Visit(expression, context);
+
+            // assert:
+            Assert.AreSame(expression, visitResult);
+        }
+        
+        [Test]
+        public void Visit_aNewExpression_throwsArgumentException()
+        {
+            // arrange:
+            UnknownExpression typedExpression = new UnknownExpression();
+            Expression expression = typedExpression;
+            IVisitContext context = VisitContext.New;
+            IDerivedExpressionsVisitor mockableInterceptor = null;
+            IVisitor<Expression, Expression> visitor = BuildCompositionWithMockableInterceptor(out mockableInterceptor);
+            Expression visitResult = null;
+
+            // assert:
+            Assert.Throws<ArgumentException>(delegate {
+                visitResult = visitor.Visit(expression, context);
+            });
+            Assert.IsNull(visitResult);
+        }
         
         #region data sources
+
+        public static TypeBinaryExpression GetNewTypeBinaryExpression()
+        {
+            return Expression.TypeIs(Expression.Constant("spruce"), typeof(int));
+        }
+        
+        public static ListInitExpression GetNewListInitExpression()
+        {
+            // from http://msdn.microsoft.com/it-it/library/system.linq.expressions.listinitexpression(v=VS.90).aspx
+            string tree1 = "maple";
+            string tree2 = "oak";
+            
+            System.Reflection.MethodInfo addMethod = typeof(Dictionary<int, string>).GetMethod("Add");
+            
+            ElementInit elementInit1 = Expression.ElementInit(addMethod, Expression.Constant(tree1.Length), Expression.Constant(tree1));
+            ElementInit elementInit2 = Expression.ElementInit(addMethod, Expression.Constant(tree2.Length), Expression.Constant(tree2));
+            
+            NewExpression newDictionaryExpression = Expression.New(typeof(Dictionary<int, string>));
+            
+            
+            return Expression.ListInit(newDictionaryExpression, elementInit1, elementInit2);
+        }
         
         public static IEnumerable<Expression> BinaryExpressions
         {

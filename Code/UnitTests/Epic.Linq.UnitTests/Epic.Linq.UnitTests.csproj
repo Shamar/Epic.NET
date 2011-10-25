@@ -78,5 +78,6 @@
     <Compile Include="Expressions\Relational\ConstantQA.cs" />
     <Compile Include="Expressions\Normalization\DefaultNormalizerQA.cs" />
     <Compile Include="Expressions\Normalization\ExpressionForwarderQA.cs" />
+    <Compile Include="Expressions\Normalization\ExpressionsInspectorQA.cs" />
   </ItemGroup>
 </Project>
