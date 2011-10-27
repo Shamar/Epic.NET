@@ -34,10 +34,63 @@ namespace Epic.Linq.Expressions.Relational
         {
             // act:
             Constant<string> cString = new Constant<string>(null);
-            
+                        
             // assert:
             Assert.IsNotNull(cString);
             Assert.IsNull(cString.Value);
+        }
+        
+        [Test]
+        public void Initialize_withIntegerValue_works()
+        {
+            // arrange:
+            int value = 10;
+            Constant<int> cInt = new Constant<int>(value);
+
+            // assert:
+            Assert.IsNotNull (cInt);
+            Assert.AreEqual (cInt.Value, value);
+        }
+        
+        [Test]
+        public void InitializeTwoConstants_withIntegerValue_sameHash()
+        {
+            // arrange:
+            int value = 10;
+            Constant<int> cInt = new Constant<int>(value);     
+            Constant<int> cInt2 = new Constant<int>(value);
+            Object obj = cInt2;
+            
+            // assert:
+            Assert.AreEqual(cInt.GetHashCode(), value.GetHashCode());
+            Assert.IsTrue(cInt.Equals(cInt2));
+            Assert.IsTrue (cInt.Equals (obj));
+            Assert.IsTrue (obj.Equals (cInt));
+        }
+        
+        [Test]
+        public void Compare_withNullObject_returnsFalse()
+        {
+            // arrange:
+            Constant<string> cString = new Constant<string>("test");
+            Constant<string> cNull = null;
+            
+            // assert:
+            Assert.IsFalse (cString.Equals (cNull));
+        }
+        
+        [Test]
+        public void Compare_withOtherTypeConstant_returnsFalse()
+        {
+            // arrange:
+            Constant<string> cString = new Constant<string>("test");
+            Constant<int> cInt = new Constant<int>(10);
+            Object obj = cInt;
+
+            // assert:
+            Assert.IsFalse (cString.Equals(cInt));
+            Assert.IsFalse (cString.Equals (obj));
+            Assert.IsFalse (obj.Equals (cString));
         }
     }
 }
