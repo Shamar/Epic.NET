@@ -30,37 +30,6 @@ using Epic.Linq.Fakes;
 
 namespace Epic.Linq.Expressions.Normalization
 {
-    public interface IDerivedExpressionsVisitor : IVisitor<Expression, UnaryExpression>, 
-        IVisitor<Expression, BinaryExpression>, 
-        IVisitor<Expression, ConditionalExpression>,
-        IVisitor<Expression, ConstantExpression>,
-        IVisitor<Expression, InvocationExpression>,
-        IVisitor<Expression, LambdaExpression>,
-        IVisitor<Expression, MemberExpression>,
-        IVisitor<Expression, MethodCallExpression>,
-        IVisitor<Expression, NewExpression>,
-        IVisitor<Expression, NewArrayExpression>,
-        IVisitor<Expression, MemberInitExpression>,
-        IVisitor<Expression, ListInitExpression>,
-        IVisitor<Expression, ParameterExpression>,
-        IVisitor<Expression, TypeBinaryExpression>
-    {
-    }
-    
-    public sealed class ClassWithFieldAndProperty
-    {
-        public int Field;
-        public string Property { get; set; }
-    }
-    
-    public sealed class UnknownExpression : Expression
-    {
-        public UnknownExpression()
-            : base((ExpressionType)int.MaxValue, typeof(string))
-        {
-        }
-    }
-    
     [TestFixture()]
     public class ExpressionForwarderQA : RhinoMocksFixtureBase
     {
@@ -97,7 +66,7 @@ namespace Epic.Linq.Expressions.Normalization
             Assert.IsNull(result);
         }
         
-        [Test, TestCaseSource("UnaryExpressions")]
+        [Test, TestCaseSource(typeof(Samples), "UnaryExpressions")]
         public void Visit_anUnaryExpression_callTheRightVisitor(Expression expression)
         {
             // arrange:
@@ -114,7 +83,7 @@ namespace Epic.Linq.Expressions.Normalization
             Assert.AreSame(expression, visitResult);
         }
   
-        [Test, TestCaseSource("BinaryExpressions")]
+        [Test, TestCaseSource(typeof(Samples), "BinaryExpressions")]
         public void Visit_anBinaryExpression_callTheRightVisitor(Expression expression)
         {
             // arrange:
@@ -321,7 +290,7 @@ namespace Epic.Linq.Expressions.Normalization
         public void Visit_aListInitExpression_callTheRightVisitor()
         {
             // arrange:
-            ListInitExpression typedExpression = GetNewListInitExpression();
+            ListInitExpression typedExpression = Samples.GetNewListInitExpression();
             Expression expression = typedExpression;
             IVisitContext context = VisitContext.New;
             IDerivedExpressionsVisitor mockableInterceptor = null;
@@ -361,7 +330,7 @@ namespace Epic.Linq.Expressions.Normalization
         public void Visit_aTypeBinaryExpression_callTheRightVisitor()
         {
             // arrange:
-            TypeBinaryExpression typedExpression = GetNewTypeBinaryExpression();
+            TypeBinaryExpression typedExpression = Samples.GetNewTypeBinaryExpression<int>(1);
             Expression expression = typedExpression;
             IVisitContext context = VisitContext.New;
             IDerivedExpressionsVisitor mockableInterceptor = null;
@@ -376,7 +345,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
         
         [Test]
-        public void Visit_aNewExpression_throwsArgumentException()
+        public void Visit_anUnknownExpression_throwsArgumentException()
         {
             // arrange:
             UnknownExpression typedExpression = new UnknownExpression();
@@ -392,80 +361,6 @@ namespace Epic.Linq.Expressions.Normalization
             });
             Assert.IsNull(visitResult);
         }
-        
-        #region data sources
-
-        public static TypeBinaryExpression GetNewTypeBinaryExpression()
-        {
-            return Expression.TypeIs(Expression.Constant("spruce"), typeof(int));
-        }
-        
-        public static ListInitExpression GetNewListInitExpression()
-        {
-            // from http://msdn.microsoft.com/it-it/library/system.linq.expressions.listinitexpression(v=VS.90).aspx
-            string tree1 = "maple";
-            string tree2 = "oak";
-            
-            System.Reflection.MethodInfo addMethod = typeof(Dictionary<int, string>).GetMethod("Add");
-            
-            ElementInit elementInit1 = Expression.ElementInit(addMethod, Expression.Constant(tree1.Length), Expression.Constant(tree1));
-            ElementInit elementInit2 = Expression.ElementInit(addMethod, Expression.Constant(tree2.Length), Expression.Constant(tree2));
-            
-            NewExpression newDictionaryExpression = Expression.New(typeof(Dictionary<int, string>));
-            
-            
-            return Expression.ListInit(newDictionaryExpression, elementInit1, elementInit2);
-        }
-        
-        public static IEnumerable<Expression> BinaryExpressions
-        {
-            get
-            {
-                yield return Expression.Add(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.AddChecked(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.Divide(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.Modulo(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.Multiply(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.MultiplyChecked(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.Power(Expression.Constant(2.0), Expression.Constant(2.0));
-                yield return Expression.Subtract(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.SubtractChecked(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.And(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.Or(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.ExclusiveOr(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.LeftShift(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.RightShift(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.AndAlso(Expression.Constant(true), Expression.Constant(false));
-                yield return Expression.OrElse(Expression.Constant(true), Expression.Constant(false));
-                yield return Expression.Equal(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.NotEqual(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.GreaterThanOrEqual(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.GreaterThan(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.LessThan(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.LessThanOrEqual(Expression.Constant(1), Expression.Constant(2));
-                yield return Expression.Coalesce(Expression.Parameter(typeof(string), "p"), Expression.Constant("test"));
-                yield return Expression.ArrayIndex(Expression.Constant(new int[1]), Expression.Constant(0));
-            }
-        }
-        
-        public static IEnumerable<Expression> UnaryExpressions
-        {
-            get
-            {
-                yield return Expression.ArrayLength(Expression.Constant(new int[0])); 
-                yield return Expression.Convert(Expression.Constant(1), typeof(uint));
-                yield return Expression.ConvertChecked(Expression.Constant(1), typeof(uint));
-                yield return Expression.Negate(Expression.Constant(1));
-                yield return Expression.NegateChecked(Expression.Constant(1));
-                yield return Expression.Not(Expression.Constant(true));
-                Expression<Func<int, bool>> toQuote = i => i > 0;
-                yield return Expression.Quote(toQuote);
-                yield return Expression.TypeAs(Expression.Constant(new object()), typeof(string));
-                yield return Expression.UnaryPlus(Expression.Constant(1));
-            }
-        }
-        
-        #endregion data sources
     }
 }
 

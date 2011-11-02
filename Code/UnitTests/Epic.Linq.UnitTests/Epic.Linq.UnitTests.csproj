@@ -79,5 +79,10 @@
     <Compile Include="Expressions\Normalization\DefaultNormalizerQA.cs" />
     <Compile Include="Expressions\Normalization\ExpressionForwarderQA.cs" />
     <Compile Include="Expressions\Normalization\ExpressionsInspectorQA.cs" />
+    <Compile Include="Expressions\Samples.cs" />
+    <Compile Include="Fakes\IDerivedExpressionsVisitor.cs" />
+    <Compile Include="Fakes\UnknownExpression.cs" />
+    <Compile Include="Fakes\ClassWithFieldAndProperty.cs" />
+    <Compile Include="Fakes\DummyResultExpression.cs" />
   </ItemGroup>
 </Project>
