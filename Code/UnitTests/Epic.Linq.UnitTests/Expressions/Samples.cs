@@ -24,6 +24,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace Epic.Linq.Expressions
 {
@@ -57,6 +58,55 @@ namespace Epic.Linq.Expressions
                 yield return Expression.LessThanOrEqual(Expression.Constant(1), Expression.Constant(2));
                 yield return Expression.Coalesce(Expression.Parameter(typeof(string), "p"), Expression.Constant("test"));
                 yield return Expression.ArrayIndex(Expression.Constant(new int[1]), Expression.Constant(0));
+            }
+        }
+        
+        public static IEnumerable<TestCaseData> DifferentBinaryExpressionsFromTheSameFactory
+        {
+            get
+            {
+                yield return new TestCaseData( Expression.Add(Expression.Constant(1), Expression.Constant(2)), Expression.Add(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.AddChecked(Expression.Constant(1), Expression.Constant(2)), Expression.AddChecked(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.Divide(Expression.Constant(1), Expression.Constant(2)), Expression.Divide(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.Modulo(Expression.Constant(1), Expression.Constant(2)), Expression.Modulo(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.Multiply(Expression.Constant(1), Expression.Constant(2)), Expression.Multiply(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.MultiplyChecked(Expression.Constant(1), Expression.Constant(2)), Expression.MultiplyChecked(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.Power(Expression.Constant(2.0), Expression.Constant(2.0)), Expression.Power(Expression.Constant(3.0), Expression.Constant(3.0)) );
+                yield return new TestCaseData( Expression.Subtract(Expression.Constant(1), Expression.Constant(2)), Expression.Subtract(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.SubtractChecked(Expression.Constant(1), Expression.Constant(2)), Expression.SubtractChecked(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.And(Expression.Constant(1), Expression.Constant(2)), Expression.And(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.Or(Expression.Constant(1), Expression.Constant(2)), Expression.Or(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.ExclusiveOr(Expression.Constant(1), Expression.Constant(2)), Expression.ExclusiveOr(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.LeftShift(Expression.Constant(1), Expression.Constant(2)), Expression.LeftShift(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.RightShift(Expression.Constant(1), Expression.Constant(2)), Expression.RightShift(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.AndAlso(Expression.Constant(true), Expression.Constant(false)), Expression.AndAlso(Expression.Constant(false), Expression.Constant(true)) );
+                yield return new TestCaseData( Expression.OrElse(Expression.Constant(true), Expression.Constant(false)), Expression.OrElse(Expression.Constant(false), Expression.Constant(true)) );
+                yield return new TestCaseData( Expression.Equal(Expression.Constant(1), Expression.Constant(2)), Expression.Equal(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.NotEqual(Expression.Constant(1), Expression.Constant(2)), Expression.NotEqual(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.GreaterThanOrEqual(Expression.Constant(1), Expression.Constant(2)), Expression.GreaterThanOrEqual(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.GreaterThan(Expression.Constant(1), Expression.Constant(2)), Expression.GreaterThan(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.LessThan(Expression.Constant(1), Expression.Constant(2)), Expression.LessThan(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.LessThanOrEqual(Expression.Constant(1), Expression.Constant(2)), Expression.LessThanOrEqual(Expression.Constant(3), Expression.Constant(4)) );
+                yield return new TestCaseData( Expression.Coalesce(Expression.Parameter(typeof(string), "p"), Expression.Constant("test")), Expression.Coalesce(Expression.Parameter(typeof(object), "o"), Expression.Constant("object")) );
+                yield return new TestCaseData( Expression.ArrayIndex(Expression.Constant(new int[1]), Expression.Constant(0)), Expression.ArrayIndex(Expression.Constant(new int[2]), Expression.Constant(1)) );
+            }
+        }
+        
+        public static IEnumerable<TestCaseData> DifferentUnaryExpressionsFromTheSameFactory
+        {
+            get
+            {
+                yield return new TestCaseData( Expression.ArrayLength(Expression.Constant(new int[0])), Expression.ArrayLength(Expression.Constant(new int[1] {0})) ); 
+                yield return new TestCaseData( Expression.Convert(Expression.Constant(1), typeof(uint)), Expression.Convert(Expression.Constant(2), typeof(uint)) ); 
+                yield return new TestCaseData( Expression.ConvertChecked(Expression.Constant(1), typeof(uint)), Expression.ConvertChecked(Expression.Constant(2), typeof(uint)) );
+                yield return new TestCaseData( Expression.Negate(Expression.Constant(1)), Expression.Negate(Expression.Constant(2)) );
+                yield return new TestCaseData( Expression.NegateChecked(Expression.Constant(1)), Expression.NegateChecked(Expression.Constant(2)) );
+                yield return new TestCaseData( Expression.Not(Expression.Constant(true)), Expression.Not(Expression.Constant(false)) );
+                Expression<Func<int, bool>> toQuote1 = i => i > 0;
+                Expression<Func<int, bool>> toQuote2 = i => i < 10;
+                yield return new TestCaseData( Expression.Quote(toQuote1), Expression.Quote(toQuote2) );
+                yield return new TestCaseData( Expression.TypeAs(Expression.Constant(new object()), typeof(string)), Expression.TypeAs(Expression.Constant(new object()), typeof(Type)) );
+                yield return new TestCaseData( Expression.UnaryPlus(Expression.Constant(1)), Expression.UnaryPlus(Expression.Constant(2)) );
             }
         }
         

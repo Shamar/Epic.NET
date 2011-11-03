@@ -90,29 +90,73 @@ namespace Epic.Linq.Expressions.Normalization
             interceptor.Expect(v => v.Visit(expressionToVisit.Operand, context)).Return(expressionToVisit.Operand).Repeat.Once();
 
             // act:
-            Expression result = inspector.Visit(expressionToVisit, VisitContext.New);
+            Expression result = inspector.Visit(expressionToVisit, context);
 
             // assert:
             Assert.AreSame(expressionToVisit, result);
         }
         
-        [Test, TestCaseSource(typeof(Samples), "UnaryExpressions")]
-        public void Visit_anUnaryExpression_returnAnUnaryExpressionWithTheOperandObtainedFromTheComposition(UnaryExpression expressionToVisit)
+        [Test, TestCaseSource(typeof(Samples), "DifferentUnaryExpressionsFromTheSameFactory")]
+        public void Visit_anUnaryExpression_returnANewUnaryExpressionWithTheOperandObtainedFromTheComposition(UnaryExpression expressionToVisit, UnaryExpression differentExpression)
         {
             // arrange:
             IVisitor<Expression, Expression> interceptor = null;
             IVisitContext context = VisitContext.New;
-            DummyResultExpression dummyOperandVisitResult = new DummyResultExpression();
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
-            interceptor.Expect(v => v.Visit(expressionToVisit.Operand, context)).Return(dummyOperandVisitResult).Repeat.Once();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Operand, context)).Return(differentExpression.Operand).Repeat.Once();
 
             // act:
-            Expression result = inspector.Visit(expressionToVisit, VisitContext.New);
+            Expression result = inspector.Visit(expressionToVisit, context);
 
             // assert:
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<UnaryExpression>(result);
-            Assert.AreSame(dummyOperandVisitResult, ((UnaryExpression)result).Operand);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            Assert.AreSame(differentExpression.Operand, ((UnaryExpression)result).Operand);
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test, TestCaseSource(typeof(Samples), "BinaryExpressions")]
+        public void Visit_aBinaryExpression_askTheCompositionToVisitTheOperands(BinaryExpression expressionToVisit)
+        {
+            // arrange:
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Left, context)).Return(expressionToVisit.Left).Repeat.Once();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Right, context)).Return(expressionToVisit.Right).Repeat.Once();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Conversion, context)).Return(expressionToVisit.Conversion).Repeat.Once();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test, TestCaseSource(typeof(Samples), "DifferentBinaryExpressionsFromTheSameFactory")]
+        public void Visit_aBinaryExpression_returnANewBinaryExpressionWithTheOperandsObtainedFromTheComposition(BinaryExpression expressionToVisit, BinaryExpression differentExpression)
+        {
+            // arrange:
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Left, context)).Return(differentExpression.Left).Repeat.Once();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Right, context)).Return(differentExpression.Right).Repeat.Once();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Conversion, context)).Return(differentExpression.Conversion).Repeat.Once();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<BinaryExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            Assert.AreSame(differentExpression.Left, ((BinaryExpression)result).Left);
+            Assert.AreSame(differentExpression.Right, ((BinaryExpression)result).Right);
+            Assert.AreSame(differentExpression.Conversion, ((BinaryExpression)result).Conversion);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
         }
     }
