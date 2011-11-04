@@ -84,5 +84,6 @@
     <Compile Include="Fakes\UnknownExpression.cs" />
     <Compile Include="Fakes\ClassWithFieldAndProperty.cs" />
     <Compile Include="Fakes\DummyResultExpression.cs" />
+    <Compile Include="Expressions\Relational\RelationAttributeQA.cs" />
   </ItemGroup>
 </Project>
