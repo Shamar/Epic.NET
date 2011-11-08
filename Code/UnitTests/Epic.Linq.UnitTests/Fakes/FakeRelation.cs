@@ -37,7 +37,7 @@ namespace Epic.Linq.Fakes
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Relation
         public override bool Equals (Relation other)
         {
-            throw new NotImplementedException ();
+            return this.Type == other.Type && this.Name == other.Name;
         }
         #endregion
         

@@ -4,7 +4,7 @@
 //  Author:
 //       Marco Veglio <m.veglio@gmail.com>
 // 
-//  Copyright (c) 2010-2011 Marco Veglio
+//  Copyright (c) 2010-2011 Giacomo Tesio
 // 
 //  This file is part of Epic.NET.
 // 
@@ -25,12 +25,21 @@ using System;
 using Epic.Linq.Expressions.Relational;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Epic.Linq.Fakes;
 
 namespace Epic.Linq.Expressions.Relational
 {
     [TestFixture()]
     public class RelationAttributeQA : RhinoMocksFixtureBase
     {
+        private Relation generateRelation(string name)
+        {
+            Relation relation = GeneratePartialMock<Relation>(RelationType.BaseRelation, name);
+            relation.Expect ( r => r.Equals (relation)).Return (true).Repeat.Any ();
+            relation.Expect (r => r.Equals (Arg<Relation>.Is.Anything)).Return(false).Repeat.Any ();
+            return relation;
+        }
+        
         [Test]
         public void Initialize_withoutName_throwsArgumentNullException()
         {
@@ -49,21 +58,20 @@ namespace Epic.Linq.Expressions.Relational
         public void Initialize_wihtNameAndRelation_Works(string attrName, string relationName)
         {
             // act:
-            BaseRelation relation = new BaseRelation(relationName);
+            Relation relation = generateRelation (relationName);
             RelationAttribute attribute = new RelationAttribute(attrName, relation);
 
             // assert:
             Assert.AreEqual (attribute.Name, attrName);
             Assert.AreEqual (attribute.Relation.Name, relationName);
             Assert.IsTrue (attribute.Relation.Equals(relation));
-            
         }
         
         [TestCase("testAttribute", "testRelation")]
         public void Equals_toAttributeWithSameNameAndRelation_isTrue(string attrName, string relationName)
         {
             // arrange:
-            BaseRelation relation = new BaseRelation(relationName);
+            Relation relation = generateRelation (relationName);
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName, relation);
 
@@ -78,7 +86,7 @@ namespace Epic.Linq.Expressions.Relational
         public void Equals_toAttributeWithDifferentName_isFalse(string attrName, string attrName2, string relationName)
         {
             // arrange:
-            BaseRelation relation = new BaseRelation(relationName);
+            Relation relation = generateRelation (relationName);
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName2, relation);
 
@@ -93,8 +101,8 @@ namespace Epic.Linq.Expressions.Relational
         public void Equals_toAttributeWithDifferentRelation_isFalse(string attrName, string relationName, string relationName2)
         {
             // arrange:
-            BaseRelation relation = new BaseRelation(relationName);
-            BaseRelation relation2 = new BaseRelation(relationName2);
+            Relation relation = generateRelation (relationName);
+            Relation relation2 = generateRelation (relationName2);
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName, relation2);
 
@@ -110,7 +118,7 @@ namespace Epic.Linq.Expressions.Relational
         {
             // arrange:
             // arrange:
-            BaseRelation relation = new BaseRelation(relationName);
+            Relation relation = generateRelation (relationName);
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = null;            
 
@@ -123,29 +131,53 @@ namespace Epic.Linq.Expressions.Relational
         }
         
         [Test]
-        [Ignore]
         public void Accept_withValidArguments_delegateVisitToTheRightVisitor()
         {
             // arrange:
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            BaseRelation relation = new BaseRelation("test");
+            Relation relation = generateRelation ("test");
             RelationAttribute attribute = new RelationAttribute("testName", relation);
             IVisitor<object, RelationAttribute> baseAttributeVisitor = GenerateStrictMock<IVisitor<object, RelationAttribute>>();
             baseAttributeVisitor.Expect(v => v.Visit(attribute, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(attribute)).Return(baseAttributeVisitor).Repeat.Once ();
+            visitor.Expect(v => v.GetVisitor<RelationAttribute>(attribute)).Return(baseAttributeVisitor).Repeat.Any ();
+            
+            // act:
+            object result = attribute.Accept(visitor, context);
+            // assert:
+            Assert.AreSame(expectedResult, result);
+        }
+        
+        [TestCase("testAttribute", "testRelation")]
+        public void Serialize_Works(string attributeName, string relationName)
+        {
+            // arrange:
+            Relation relation = new FakeRelation (RelationType.BaseRelation, relationName);
+            RelationAttribute attribute = new RelationAttribute(attributeName, relation);
 
             // act:
-            try
-            {
-                object result = attribute.Accept(visitor, context);
-                // assert:
-                Assert.AreSame(expectedResult, result);
-            }
-            catch (Exception ex) { System.Console.Out.WriteLine (ex);throw;}
-        }
+            System.IO.Stream stream = TestUtilities.Serialize (attribute);
+            
+            // assert:
+            Assert.IsNotNull (stream);
 
+        }
+        
+        [TestCase("testAttribute", "testRelation")]
+        public void Deserialize_Works(string attributeName, string relationName)
+        {
+            // arrange:
+            Relation relation = new FakeRelation (RelationType.BaseRelation, relationName);
+            RelationAttribute attribute = new RelationAttribute(attributeName, relation);
+
+            // act:
+            System.IO.Stream stream = TestUtilities.Serialize (attribute);
+            RelationAttribute deserialized = TestUtilities.Deserialize<RelationAttribute>(stream);
+            // assert:
+   
+            Assert.IsTrue (deserialized.Equals (attribute));
+        }
     }
 }
 
