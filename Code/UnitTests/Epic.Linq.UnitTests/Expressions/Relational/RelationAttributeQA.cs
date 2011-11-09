@@ -141,7 +141,7 @@ namespace Epic.Linq.Expressions.Relational
             IVisitor<object, RelationAttribute> baseAttributeVisitor = GenerateStrictMock<IVisitor<object, RelationAttribute>>();
             baseAttributeVisitor.Expect(v => v.Visit(attribute, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor<RelationAttribute>(attribute)).Return(baseAttributeVisitor).Repeat.Any ();
+            visitor.Expect(v => v.GetVisitor<RelationAttribute>(attribute)).Return(baseAttributeVisitor).Repeat.Once ();
             
             // act:
             object result = attribute.Accept(visitor, context);
