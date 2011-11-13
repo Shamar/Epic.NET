@@ -130,6 +130,68 @@ namespace Epic.Linq.Expressions.Relational
 
         }
         
+        [TestCase("testAttribute", "testRelation")]
+        public void Equals_ToRelationAttributeObject_Works(string attrName, string relationName)
+        {
+            // arrange:
+            Relation relation = generateRelation (relationName);
+            RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
+            object testObj = new RelationAttribute(attrName, relation);
+
+            // act:
+            bool isTrue = attribute1.Equals(testObj);
+
+            // assert:
+            Assert.IsTrue (isTrue);
+        }
+        
+        [TestCase("testAttribute", "testRelation")]
+        public void Equals_ToAnyObject_IsFalse(string attrName, string relationName)
+        {
+            // arrange:
+            Relation relation = generateRelation (relationName);
+            RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
+            Object testObj = new Object();
+
+            // act:
+            bool isTrue = attribute1.Equals (testObj);
+            
+            // assert:
+            Assert.IsFalse (isTrue);
+
+        }
+        
+        [TestCase("testAttribute", "testRelation")]
+        public void GetHashCode_toAttributeWithSameNameAndRelation_AreEqual(string attrName, string relationName)
+        {
+            // arrange:
+            Relation relation = generateRelation (relationName);
+            RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
+            RelationAttribute attribute2 = new RelationAttribute(attrName, relation);
+
+            // act:
+            int hash1 = attribute1.GetHashCode ();
+            int hash2 = attribute2.GetHashCode ();
+            // assert:
+            Assert.AreEqual(hash1, hash2);                
+        }
+        
+        [TestCase("testAttribute", "toastAttribute", "testRelation")]
+        public void GetHashCode_toAttributeWithDifferentName_areNotEqual(string attrName, string attrName2, string relationName)
+        {
+            // arrange:
+            Relation relation = generateRelation (relationName);
+            RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
+            RelationAttribute attribute2 = new RelationAttribute(attrName2, relation);
+
+            // act:
+            int hash1 = attribute1.GetHashCode ();
+            int hash2 = attribute2.GetHashCode ();
+            // assert:
+            Assert.AreNotEqual(hash1, hash2);                
+        }        
+
+        
         [Test]
         public void Accept_withValidArguments_delegateVisitToTheRightVisitor()
         {
@@ -138,10 +200,11 @@ namespace Epic.Linq.Expressions.Relational
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             Relation relation = generateRelation ("test");
             RelationAttribute attribute = new RelationAttribute("testName", relation);
-            IVisitor<object, RelationAttribute> baseAttributeVisitor = GenerateStrictMock<IVisitor<object, RelationAttribute>>();
-            baseAttributeVisitor.Expect(v => v.Visit(attribute, context)).Return(expectedResult).Repeat.Once();
+            IVisitor<object, RelationAttribute> relationAttributeVisitor = GenerateStrictMock<IVisitor<object, RelationAttribute>>();
+            relationAttributeVisitor.Expect(v => v.Visit(attribute, context)).Return(expectedResult).Repeat.Once();
+            
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor<RelationAttribute>(attribute)).Return(baseAttributeVisitor).Repeat.Once ();
+            visitor.Expect (v => v.GetVisitor(attribute)).Return(relationAttributeVisitor).Repeat.Once();
             
             // act:
             object result = attribute.Accept(visitor, context);

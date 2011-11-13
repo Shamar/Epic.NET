@@ -115,7 +115,7 @@ namespace Epic.Linq.Expressions.Relational
         /// </returns>
         public override bool Equals (object obj)
         {
-            Attribute attribute = obj as Attribute;
+            RelationAttribute attribute = obj as RelationAttribute;
             if (null != attribute)
                 return this.Equals (attribute);
             return false;
