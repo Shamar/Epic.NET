@@ -34,8 +34,8 @@ namespace Epic.Linq.Expressions.Relational
     [Serializable]
     public sealed class RelationAttribute: VisitableBase, IEquatable<RelationAttribute>
     {
-        private readonly string name;
-        private readonly Relation relation;
+        private readonly string _name;
+        private readonly Relation _relation;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/> class.
@@ -55,8 +55,8 @@ namespace Epic.Linq.Expressions.Relational
                 throw new ArgumentNullException("name");
             if (null == relation)
                 throw new ArgumentNullException("relation");
-            this.name = name;
-            this.relation = relation;
+            this._name = name;
+            this._relation = relation;
         }
         
         /// <summary>
@@ -65,7 +65,7 @@ namespace Epic.Linq.Expressions.Relational
         /// <value>
         /// The name.
         /// </value>
-        public string Name { get { return this.name; } }
+        public string Name { get { return this._name; } }
         
         /// <summary>
         /// Gets the relation the attribute is tied to.
@@ -73,7 +73,7 @@ namespace Epic.Linq.Expressions.Relational
         /// <value>
         /// The relation.
         /// </value>
-        public Relation Relation { get { return this.relation; } }
+        public Relation Relation { get { return this._relation; } }
         
         /// <summary>
         /// Serves as a hash function for a <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/> object.
@@ -84,7 +84,7 @@ namespace Epic.Linq.Expressions.Relational
         /// </returns>
         public override int GetHashCode ()
         {
-            return GetType().GetHashCode() ^ this.name.GetHashCode() ^ this.Relation.GetHashCode ();
+            return GetType().GetHashCode() ^ this._name.GetHashCode() ^ this.Relation.GetHashCode ();
         }
         
         /// <summary>
