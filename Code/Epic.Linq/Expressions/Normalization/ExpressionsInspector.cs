@@ -181,7 +181,7 @@ namespace Epic.Linq.Expressions.Normalization
         /// </param>
         public Expression Visit (LambdaExpression expression, IVisitContext context)
         {
-            ReadOnlyCollection<ParameterExpression> newParameters = VisitAndConvert (expression.Parameters, "Visit", context);
+            ReadOnlyCollection<ParameterExpression> newParameters = VisitChecked (expression.Parameters, "LambdaExpression", context);
             Expression newBody = VisitExpression (expression.Body, context);
             if ((newBody != expression.Body) || (newParameters != expression.Parameters))
                 return Expression.Lambda (expression.Type, newBody, newParameters);
@@ -201,7 +201,7 @@ namespace Epic.Linq.Expressions.Normalization
         public Expression Visit (MethodCallExpression expression, IVisitContext context)
         {
             Expression newObject = VisitExpression (expression.Object, context);
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", context);
+            ReadOnlyCollection<Expression> newArguments = VisitChecked (expression.Arguments, "MethodCallExpression", context);
             if ((newObject != expression.Object) || (newArguments != expression.Arguments))
                 return Expression.Call (newObject, expression.Method, newArguments);
             return expression;
@@ -220,7 +220,7 @@ namespace Epic.Linq.Expressions.Normalization
         public Expression Visit (InvocationExpression expression, IVisitContext context)
         {
             Expression newExpression = VisitExpression (expression.Expression, context);
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", context);
+            ReadOnlyCollection<Expression> newArguments = VisitChecked (expression.Arguments, "InvocationExpression", context);
             if ((newExpression != expression.Expression) || (newArguments != expression.Arguments))
                 return Expression.Invoke (newExpression, newArguments);
             return expression;
@@ -254,7 +254,7 @@ namespace Epic.Linq.Expressions.Normalization
         /// </param>
         public Expression Visit (NewExpression expression, IVisitContext context)
         {
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (expression.Arguments, "Visit", context);
+            ReadOnlyCollection<Expression> newArguments = VisitChecked (expression.Arguments, "NewExpression", context);
             if (newArguments != expression.Arguments) {
                 if (expression.Members == null)
                     return Expression.New (expression.Constructor, newArguments);
@@ -275,7 +275,7 @@ namespace Epic.Linq.Expressions.Normalization
         /// </param>
         public Expression Visit (NewArrayExpression expression, IVisitContext context)
         {
-            ReadOnlyCollection<Expression> newExpressions = VisitAndConvert (expression.Expressions, "Visit", context);
+            ReadOnlyCollection<Expression> newExpressions = VisitChecked (expression.Expressions, "NewArrayExpression", context);
             if (newExpressions != expression.Expressions) {
                 var elementType = expression.Type.GetElementType ();
                 if (expression.NodeType == ExpressionType.NewArrayInit)
@@ -374,7 +374,7 @@ namespace Epic.Linq.Expressions.Normalization
             }
         }
     
-        private T VisitAndConvert<T> (T expression, string methodName, IVisitContext context) where T : Expression
+        private T VisitChecked<T> (T expression, string outerExpression, IVisitContext context) where T : Expression
         {
             if (expression == null)
                 return null;
@@ -383,8 +383,8 @@ namespace Epic.Linq.Expressions.Normalization
     
             if (newExpression == null) {
                 var message = string.Format (
-                "When called from '{0}', expressions of type '{1}' can only be replaced with other non-null expressions of type '{2}'.",
-                methodName,
+                "While visiting a '{0}', expressions of type '{1}' can only be replaced with other non-null expressions of type '{2}'.",
+                outerExpression,
                 typeof(T).Name,
                 typeof(T).Name);
     
@@ -394,9 +394,9 @@ namespace Epic.Linq.Expressions.Normalization
             return newExpression;
         }
 
-        private ReadOnlyCollection<T> VisitAndConvert<T> (ReadOnlyCollection<T> expressions, string callerName, IVisitContext context) where T : Expression
+        private ReadOnlyCollection<T> VisitChecked<T> (ReadOnlyCollection<T> expressions, string callerName, IVisitContext context) where T : Expression
         {
-            return VisitList (expressions, (expression, s) => VisitAndConvert (expression, callerName, s), context);
+            return VisitList (expressions, (expression, s) => VisitChecked (expression, callerName, s), context);
         }
 
         private ReadOnlyCollection<T> VisitList<T> (ReadOnlyCollection<T> list, Func<T, IVisitContext, T> visitMethod, IVisitContext context)
@@ -426,7 +426,7 @@ namespace Epic.Linq.Expressions.Normalization
         
         private ElementInit VisitElementInit (ElementInit elementInit, IVisitContext context)
         {
-            ReadOnlyCollection<Expression> newArguments = VisitAndConvert (elementInit.Arguments, "VisitElementInit", context);
+            ReadOnlyCollection<Expression> newArguments = VisitChecked (elementInit.Arguments, typeof(ElementInit).Name, context);
             if (newArguments != elementInit.Arguments)
                 return Expression.ElementInit (elementInit.AddMethod, newArguments);
             return elementInit;
