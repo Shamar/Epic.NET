@@ -159,6 +159,27 @@ namespace Epic.Linq.Expressions.Normalization
             Assert.AreSame(differentExpression.Conversion, ((BinaryExpression)result).Conversion);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
         }
+        
+        [Test]
+        public void Visit_aConditionalExpression_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            Expression<Func<int, int>> dummy = i => i > 1 ? 0 : 1;
+            ConditionalExpression expressionToVisit = (ConditionalExpression)dummy.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Test, context)).Return(expressionToVisit.Test).Repeat.Once();
+            interceptor.Expect(v => v.Visit(expressionToVisit.IfTrue, context)).Return(expressionToVisit.IfTrue).Repeat.Once();
+            interceptor.Expect(v => v.Visit(expressionToVisit.IfFalse, context)).Return(expressionToVisit.IfFalse).Repeat.Once();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+
     }
 }
 
