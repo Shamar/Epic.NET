@@ -394,12 +394,12 @@ namespace Epic.Linq.Expressions.Normalization
             return newExpression;
         }
 
-        private ReadOnlyCollection<T> VisitChecked<T> (ReadOnlyCollection<T> expressions, string callerName, IVisitContext context) where T : Expression
+        private ReadOnlyCollection<T> VisitChecked<T> (ReadOnlyCollection<T> expressions, string outerExpression, IVisitContext context) where T : Expression
         {
-            return VisitList (expressions, (expression, s) => VisitChecked (expression, callerName, s), context);
+            return VisitReadOnlyCollection (expressions, (expression, s) => VisitChecked (expression, outerExpression, s), context);
         }
 
-        private ReadOnlyCollection<T> VisitList<T> (ReadOnlyCollection<T> list, Func<T, IVisitContext, T> visitMethod, IVisitContext context)
+        private ReadOnlyCollection<T> VisitReadOnlyCollection<T> (ReadOnlyCollection<T> list, Func<T, IVisitContext, T> visitMethod, IVisitContext context)
             where T : class
         {
             List<T> newList = null;
@@ -407,8 +407,6 @@ namespace Epic.Linq.Expressions.Normalization
             for (int i = 0; i < list.Count; i++) {
                 T element = list [i];
                 T newElement = visitMethod (element, context);
-                if (newElement == null)
-                    throw new NotSupportedException ("The current list only supports objects of type '" + typeof(T).Name + "' as its elements.");
     
                 if (element != newElement) {
                     if (newList == null)
@@ -426,7 +424,7 @@ namespace Epic.Linq.Expressions.Normalization
         
         private ElementInit VisitElementInit (ElementInit elementInit, IVisitContext context)
         {
-            ReadOnlyCollection<Expression> newArguments = VisitChecked (elementInit.Arguments, typeof(ElementInit).Name, context);
+            ReadOnlyCollection<Expression> newArguments = VisitChecked (elementInit.Arguments, "ElementInit", context);
             if (newArguments != elementInit.Arguments)
                 return Expression.ElementInit (elementInit.AddMethod, newArguments);
             return elementInit;
@@ -471,12 +469,12 @@ namespace Epic.Linq.Expressions.Normalization
     
         private ReadOnlyCollection<MemberBinding> VisitMemberBindingList (ReadOnlyCollection<MemberBinding> expressions, IVisitContext context)
         {
-            return VisitList (expressions, VisitMemberBinding, context);
+            return VisitReadOnlyCollection (expressions, VisitMemberBinding, context);
         }
     
         private ReadOnlyCollection<ElementInit> VisitElementInitList (ReadOnlyCollection<ElementInit> expressions, IVisitContext context)
         {
-            return VisitList (expressions, VisitElementInit, context);
+            return VisitReadOnlyCollection (expressions, VisitElementInit, context);
         }
         
         #endregion private methods

@@ -26,6 +26,7 @@ using System;
 using System.Linq.Expressions;
 using Epic.Linq.Fakes;
 using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Normalization
 {
@@ -421,6 +422,512 @@ namespace Epic.Linq.Expressions.Normalization
             Assert.AreSame(expressionToVisit.Body, ((LambdaExpression)result).Body);
             Assert.AreSame(differentExpression.Parameters[0], ((LambdaExpression)result).Parameters[0]);
             Assert.AreSame(differentExpression.Parameters[1], ((LambdaExpression)result).Parameters[1]);
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aLambdaExpressionWithAVisitorReplacingTheArgumentType_throwsInvalidOperationException()
+        {
+            Expression<Func<int, int, int>> dummy = (i, j) => i > j ? 1 : 2;
+            Expression<Func<int, int, int>> differentExpression = (a, b) => a == b ? 3 : 4;
+            LambdaExpression expressionToVisit = dummy;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Body, context)).Return(expressionToVisit.Body).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Parameters[0], context)).Return(dummy.Parameters[0]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Parameters[1], context)).Return(Expression.Constant(1)).Repeat.Once();
+
+            // assert:
+            Assert.Throws<InvalidOperationException>(delegate {
+                Expression result = inspector.Visit(expressionToVisit, context);
+            });
+        }
+        
+        [Test]
+        public void Visit_aListInitExpression_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            ListInitExpression expressionToVisit = Samples.GetNewListInitExpression();
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.NewExpression, context)).Return(expressionToVisit.NewExpression).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[0].Arguments[0], context)).Return(expressionToVisit.Initializers[0].Arguments[0]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[0].Arguments[1], context)).Return(expressionToVisit.Initializers[0].Arguments[1]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[1].Arguments[0], context)).Return(expressionToVisit.Initializers[1].Arguments[0]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[1].Arguments[1], context)).Return(expressionToVisit.Initializers[1].Arguments[1]).Repeat.Any();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test]
+        public void Visit_aListInitExpressionWithAVisitorReturningANull_NewExpression_throwsNotSupportedException()
+        {
+            // arrange:
+            ListInitExpression expressionToVisit = Samples.GetNewListInitExpression();
+IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.NewExpression, context)).Return(null).Repeat.Any();
+
+            // assert:
+            Assert.Throws<NotSupportedException>(delegate {
+                Expression result = inspector.Visit(expressionToVisit, context);
+            });
+        }
+
+        
+        [Test]
+        public void Visit_aListInitExpression_returnANewListInitExpressionWithThe_NewExpression_ObtainedFromTheComposition()
+        {
+            // arrange:
+            ListInitExpression[] exprs = Samples.GetTwoDifferentListInitExpressions();
+            ListInitExpression expressionToVisit = exprs[0];
+            ListInitExpression differentExpression = exprs[1];
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.NewExpression, context)).Return(differentExpression.NewExpression).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[0].Arguments[0], context)).Return(expressionToVisit.Initializers[0].Arguments[0]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[0].Arguments[1], context)).Return(expressionToVisit.Initializers[0].Arguments[1]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[1].Arguments[0], context)).Return(expressionToVisit.Initializers[1].Arguments[0]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[1].Arguments[1], context)).Return(expressionToVisit.Initializers[1].Arguments[1]).Repeat.Any();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ListInitExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            Assert.AreSame(differentExpression.NewExpression, ((ListInitExpression)result).NewExpression);
+            int i = 0;
+            foreach(ElementInit init in expressionToVisit.Initializers)
+            {
+                Assert.AreSame(init, ((ListInitExpression)result).Initializers[i]);
+                ++i;
+            }
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aListInitExpression_returnANewListInitExpressionWithThe_Initializers_ObtainedFromTheComposition()
+        {
+            // arrange:
+            ListInitExpression[] exprs = Samples.GetTwoDifferentListInitExpressions();
+            ListInitExpression expressionToVisit = exprs[0];
+            ListInitExpression differentExpression = exprs[1];
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.NewExpression, context)).Return(expressionToVisit.NewExpression).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[0].Arguments[0], context)).Return(differentExpression.Initializers[0].Arguments[0]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[0].Arguments[1], context)).Return(differentExpression.Initializers[0].Arguments[1]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[1].Arguments[0], context)).Return(differentExpression.Initializers[1].Arguments[0]).Repeat.Any();
+            interceptor.Expect(v => v.Visit(expressionToVisit.Initializers[1].Arguments[1], context)).Return(differentExpression.Initializers[1].Arguments[1]).Repeat.Any();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ListInitExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            Assert.AreSame(expressionToVisit.NewExpression, ((ListInitExpression)result).NewExpression);
+            int i = 0;
+            foreach(ElementInit init in differentExpression.Initializers)
+            {
+                Assert.AreSame(expressionToVisit.Initializers[i].AddMethod, ((ListInitExpression)result).Initializers[i].AddMethod);
+                int j = 0;
+                foreach(Expression argument in init.Arguments)
+                {
+                    Assert.AreSame(argument, ((ListInitExpression)result).Initializers[i].Arguments[j]);
+                    ++j;
+                }
+                ++i;
+            }
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aMemberExpression_askTheCompositionToVisitTheOperands()
+        {
+            Expression<Func<string, int>> dummy = s => s.Length;
+            MemberExpression expressionToVisit = (MemberExpression)dummy.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Expression, context)).Return(expressionToVisit.Expression).Repeat.Once();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test]
+        public void Visit_aMemberExpression_returnANewListInitExpressionWithThe_Expression_ObtainedFromTheComposition()
+        {
+            // arrange:
+            Expression<Func<string, int>> dummy = s => s.Length;
+            MemberExpression expressionToVisit = (MemberExpression)dummy.Body;
+            Expression newExpression = Expression.Constant("test");
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Expression, context)).Return(newExpression).Repeat.Once();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<MemberExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreSame(newExpression, ((MemberExpression)result).Expression);
+            Assert.AreSame(expressionToVisit.Member, ((MemberExpression)result).Member);
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aMemberInitExpression_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
+            MemberInitExpression expressionToVisit = (MemberInitExpression)dummy.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.NewExpression, context)).Return(expressionToVisit.NewExpression).Repeat.Once();
+            foreach(MemberBinding binding in expressionToVisit.Bindings)
+            {
+                switch(binding.BindingType)
+                {
+                    case MemberBindingType.Assignment:
+                        interceptor.Expect(v => v.Visit(((MemberAssignment)binding).Expression, context)).Return(((MemberAssignment)binding).Expression).Repeat.Once();
+                    break;
+                    case MemberBindingType.ListBinding:
+                        foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
+                        {
+                            foreach(Expression argument in init.Arguments)
+                            {
+                                interceptor.Expect(v => v.Visit(argument, context)).Return(argument).Repeat.Once();
+                            }
+                        }
+                    break;
+                    case MemberBindingType.MemberBinding:
+                        MemberMemberBinding memberBinding = (MemberMemberBinding)binding;
+                        foreach(MemberAssignment assignment in memberBinding.Bindings) // test only assignment now...
+                        {
+                            interceptor.Expect(v => v.Visit(assignment.Expression, context)).Return(assignment.Expression).Repeat.Once();
+                        }
+                    break;
+                }
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test]
+        public void Visit_aMemberInitExpression_returnANewMemberInitExpressionWithThe_NewExpression_ObtainedFromTheComposition()
+        {
+            // arrange:
+            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
+            Expression<Func<string, ClassToTestMemberBindings>> dummy2 = s => new ClassToTestMemberBindings(s) { Name = "NewName", Father = { Name = "NewFather" }, Children = { new ClassToTestMemberBindings(s + "1"), new ClassToTestMemberBindings(s + "2") } };
+            MemberInitExpression expressionToVisit = (MemberInitExpression)dummy.Body;
+            MemberInitExpression differentExpression = (MemberInitExpression)dummy2.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.NewExpression, context)).Return(differentExpression.NewExpression).Repeat.Once();
+            foreach(MemberBinding binding in expressionToVisit.Bindings)
+            {
+                switch(binding.BindingType)
+                {
+                    case MemberBindingType.Assignment:
+                        interceptor.Expect(v => v.Visit(((MemberAssignment)binding).Expression, context)).Return(((MemberAssignment)binding).Expression).Repeat.Once();
+                    break;
+                    case MemberBindingType.ListBinding:
+                        foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
+                        {
+                            foreach(Expression argument in init.Arguments)
+                            {
+                                interceptor.Expect(v => v.Visit(argument, context)).Return(argument).Repeat.Once();
+                            }
+                        }
+                    break;
+                    case MemberBindingType.MemberBinding:
+                        MemberMemberBinding memberBinding = (MemberMemberBinding)binding;
+                        foreach(MemberAssignment assignment in memberBinding.Bindings) // test only assignment now...
+                        {
+                            interceptor.Expect(v => v.Visit(assignment.Expression, context)).Return(assignment.Expression).Repeat.Once();
+                        }
+                    break;
+                }
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<MemberInitExpression>(result);
+            MemberInitExpression typedResult = (MemberInitExpression)result;
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            Assert.AreSame(differentExpression.NewExpression, typedResult.NewExpression);
+            int b = 0;
+            foreach(MemberBinding binding in expressionToVisit.Bindings)
+            {
+                switch(binding.BindingType)
+                {
+                    case MemberBindingType.Assignment:
+                        Assert.AreSame(((MemberAssignment)binding).Expression, ((MemberAssignment)typedResult.Bindings[b]).Expression);
+                    break;
+                    case MemberBindingType.ListBinding:
+                        int initI = 0;
+                        foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
+                        {
+                            int a = 0;
+                            foreach(Expression argument in init.Arguments)
+                            {
+                                Assert.AreSame(argument, ((MemberListBinding)typedResult.Bindings[b]).Initializers[initI].Arguments[a]);
+                                ++a;
+                            }
+                            ++initI;
+                        }
+                    break;
+                    case MemberBindingType.MemberBinding:
+                        MemberMemberBinding memberBinding = (MemberMemberBinding)binding;
+                        int mb = 0;
+                        foreach(MemberAssignment assignment in memberBinding.Bindings) // test only assignment now...
+                        {
+                            Assert.AreSame(assignment.Expression, ((MemberAssignment)((MemberMemberBinding)typedResult.Bindings[b]).Bindings[mb]).Expression);
+                            ++mb;
+                        }
+                    break;
+                }
+                ++b;
+            }
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aMemberInitExpression_returnANewMemberInitExpressionWithThe_Bindings_ObtainedFromTheComposition()
+        {
+            // arrange:
+            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
+            Expression<Func<string, ClassToTestMemberBindings>> dummy2 = s => new ClassToTestMemberBindings(s) { Name = "NewName", Father = { Name = "NewFather" }, Children = { new ClassToTestMemberBindings(s + "1"), new ClassToTestMemberBindings(s + "2") } };
+            MemberInitExpression expressionToVisit = (MemberInitExpression)dummy.Body;
+            MemberInitExpression differentExpression = (MemberInitExpression)dummy2.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.NewExpression, context)).Return(expressionToVisit.NewExpression).Repeat.Once();
+            int b = 0;
+            foreach(MemberBinding binding in expressionToVisit.Bindings)
+            {
+                switch(binding.BindingType)
+                {
+                    case MemberBindingType.Assignment:
+                        MemberAssignment differentAssignent = (MemberAssignment)differentExpression.Bindings[b];
+                        interceptor.Expect(v => v.Visit(((MemberAssignment)binding).Expression, context)).Return(differentAssignent.Expression).Repeat.Once();
+                    break;
+                    case MemberBindingType.ListBinding:
+                        int initI = 0;
+                        foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
+                        {
+                            int a = 0;
+                            foreach(Expression argument in init.Arguments)
+                            {
+                                Expression differentArgument = ((MemberListBinding)differentExpression.Bindings[b]).Initializers[initI].Arguments[a];
+                                interceptor.Expect(v => v.Visit(argument, context)).Return(differentArgument).Repeat.Once();
+                                ++a;
+                            }
+                            ++initI;
+                        }
+                    break;
+                    case MemberBindingType.MemberBinding:
+                        MemberMemberBinding memberBinding = (MemberMemberBinding)binding;
+                        int memberAssignmentIndex = 0;
+                        foreach(MemberAssignment assignment in memberBinding.Bindings) // test only assignment now...
+                        {
+                            MemberAssignment differentAssignment = (MemberAssignment)((MemberMemberBinding)differentExpression.Bindings[b]).Bindings[memberAssignmentIndex];
+                            interceptor.Expect(v => v.Visit(assignment.Expression, context)).Return(differentAssignment.Expression).Repeat.Once();
+                            ++memberAssignmentIndex;
+                        }
+                    break;
+                }
+                ++b;
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<MemberInitExpression>(result);
+            MemberInitExpression typedResult = (MemberInitExpression)result;
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            Assert.AreSame(expressionToVisit.NewExpression, typedResult.NewExpression);
+            b = 0;
+            foreach(MemberBinding binding in differentExpression.Bindings)
+            {
+                switch(binding.BindingType)
+                {
+                    case MemberBindingType.Assignment:
+                        Assert.AreSame(((MemberAssignment)binding).Expression, ((MemberAssignment)typedResult.Bindings[b]).Expression);
+                    break;
+                    case MemberBindingType.ListBinding:
+                        int initI = 0;
+                        foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
+                        {
+                            int a = 0;
+                            foreach(Expression argument in init.Arguments)
+                            {
+                                Assert.AreSame(argument, ((MemberListBinding)typedResult.Bindings[b]).Initializers[initI].Arguments[a]);
+                                ++a;
+                            }
+                            ++initI;
+                        }
+                    break;
+                    case MemberBindingType.MemberBinding:
+                        MemberMemberBinding memberBinding = (MemberMemberBinding)binding;
+                        int mb = 0;
+                        foreach(MemberAssignment assignment in memberBinding.Bindings) // test only assignment now...
+                        {
+                            Assert.AreSame(assignment.Expression, ((MemberAssignment)((MemberMemberBinding)typedResult.Bindings[b]).Bindings[mb]).Expression);
+                            ++mb;
+                        }
+                    break;
+                }
+                ++b;
+            }
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+  
+        [Test]
+        public void Visit_aMemberInitExpressionWithAVisitorReplacingTheArgumentType_throwsNotSupportedException()
+        {
+            // arrange:
+            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
+            MemberInitExpression expressionToVisit = (MemberInitExpression)dummy.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.NewExpression, context)).Return(null).Repeat.Once();
+
+            // assert:
+            Assert.Throws<NotSupportedException>(delegate {
+                Expression result = inspector.Visit(expressionToVisit, context);
+            });
+        }
+        
+        [Test]
+        public void Visit_aMethodCallExpression_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            Expression<Func<string, string>> dummy = s => s.Substring(1);
+            MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Object, context)).Return(expressionToVisit.Object).Repeat.Once();
+            foreach(Expression argument in expressionToVisit.Arguments)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(argument).Repeat.Once();
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test]
+        public void Visit_aMethodCallExpression_returnANewMethodCallExpressionWithThe_Object_ObtainedFromTheComposition()
+        {
+            // arrange:
+            Expression<Func<string, string>> dummy = s => s.Substring(1);
+            Expression<Func<int, string>> dummy2 = i => i.ToString().Substring(3);
+            MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
+            MethodCallExpression differentExpression = (MethodCallExpression)dummy2.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Object, context)).Return(differentExpression.Object).Repeat.Once();
+            foreach(Expression argument in expressionToVisit.Arguments)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(argument).Repeat.Once();
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<MethodCallExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            Assert.AreSame(differentExpression.Object, ((MethodCallExpression)result).Object);
+            int j = 0;
+            foreach(Expression argument in expressionToVisit.Arguments)
+            {
+                Assert.AreSame(argument, ((MethodCallExpression)result).Arguments[j]);
+                ++j;
+            }
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        
+        [Test]
+        public void Visit_aMethodCallExpression_returnANewMethodCallExpressionWithThe_Arguments_ObtainedFromTheComposition()
+        {
+            // arrange:
+            Expression<Func<string, string>> dummy = s => s.Substring(1);
+            Expression<Func<int, string>> dummy2 = i => i.ToString().Substring(3);
+            MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
+            MethodCallExpression differentExpression = (MethodCallExpression)dummy2.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Object, context)).Return(expressionToVisit.Object).Repeat.Once();
+            int j = 0;
+            foreach(Expression argument in expressionToVisit.Arguments)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(differentExpression.Arguments[j]).Repeat.Once();
+                ++j;
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<MethodCallExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            Assert.AreSame(expressionToVisit.Object, ((MethodCallExpression)result).Object);
+            j = 0;
+            foreach(Expression argument in differentExpression.Arguments)
+            {
+                Assert.AreSame(argument, ((MethodCallExpression)result).Arguments[j]);
+                ++j;
+            }
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
         }
     }

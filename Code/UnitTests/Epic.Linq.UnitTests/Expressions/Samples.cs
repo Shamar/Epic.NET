@@ -149,7 +149,39 @@ namespace Epic.Linq.Expressions
             return Expression.ListInit(newDictionaryExpression, elementInit1, elementInit2);
         }
         
-
+        public static ListInitExpression[] GetTwoDifferentListInitExpressions()
+        {
+            // from http://msdn.microsoft.com/it-it/library/system.linq.expressions.listinitexpression(v=VS.90).aspx
+            string tree1 = "lemon";
+            string tree2 = "orange";
+            
+            ListInitExpression first = GetNewListInitExpression();
+            
+            System.Reflection.MethodInfo addMethod = typeof(DummyDictionary<int, string>).GetMethod("Add");
+            ElementInit elementInit1 = Expression.ElementInit(addMethod, Expression.Constant(tree1.Length), Expression.Constant(tree1));
+            ElementInit elementInit2 = Expression.ElementInit(addMethod, Expression.Constant(tree2.Length), Expression.Constant(tree2));
+            
+            NewExpression newDictionaryExpression = Expression.New(typeof(DummyDictionary<int, string>));
+            ListInitExpression second = Expression.ListInit(newDictionaryExpression, elementInit1, elementInit2);
+            
+            
+            return new ListInitExpression[] { first, second } ;
+        }
+        
+        #region dummy types
+        class DummyDictionary<TKey, TValue> : Dictionary<TKey, TValue>
+        {
+            static DummyDictionary()
+            {
+                DummyDictionary<int, string> dict = new DummyDictionary<int, string>();
+                dict.Add(1, "test");
+            }
+            public new void Add (TKey key, TValue value)
+            {
+                base.Add(key, value);
+            }
+        }
+        #endregion dummy types
     }
 }
 
