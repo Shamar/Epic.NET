@@ -27,6 +27,7 @@ using System.Linq.Expressions;
 using Epic.Linq.Fakes;
 using Rhino.Mocks;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Epic.Linq.Expressions.Normalization
 {
@@ -98,7 +99,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
         
         [Test, TestCaseSource(typeof(Samples), "DifferentUnaryExpressionsFromTheSameFactory")]
-        public void Visit_anUnaryExpression_returnANewUnaryExpressionWithTheOperandObtainedFromTheComposition(UnaryExpression expressionToVisit, UnaryExpression differentExpression)
+        public void Visit_anUnaryExpression_returnsAnotherUnaryExpressionWithTheOperandObtainedFromTheComposition(UnaryExpression expressionToVisit, UnaryExpression differentExpression)
         {
             // arrange:
             IVisitor<Expression, Expression> interceptor = null;
@@ -137,7 +138,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
         
         [Test, TestCaseSource(typeof(Samples), "DifferentBinaryExpressionsFromTheSameFactory")]
-        public void Visit_aBinaryExpression_returnANewBinaryExpressionWithTheOperandsObtainedFromTheComposition(BinaryExpression expressionToVisit, BinaryExpression differentExpression)
+        public void Visit_aBinaryExpression_returnsAnotherBinaryExpressionWithTheOperandsObtainedFromTheComposition(BinaryExpression expressionToVisit, BinaryExpression differentExpression)
         {
             // arrange:
             IVisitor<Expression, Expression> interceptor = null;
@@ -182,7 +183,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
   
         [Test]
-        public void Visit_aConditionalExpression_returnANewConditionalExpressionWithThe_Test_ObtainedFromTheComposition()
+        public void Visit_aConditionalExpression_returnsAnotherConditionalExpressionWithThe_Test_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<int, int>> dummy = i => i > 0 ? 1 : 2;
@@ -211,7 +212,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
         
         [Test]
-        public void Visit_aConditionalExpression_returnANewConditionalExpressionWithThe_IfTrue_ObtainedFromTheComposition()
+        public void Visit_aConditionalExpression_returnsAnotherConditionalExpressionWithThe_IfTrue_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<int, int>> dummy = i => i > 0 ? 1 : 2;
@@ -241,7 +242,7 @@ namespace Epic.Linq.Expressions.Normalization
         
   
         [Test]
-        public void Visit_aConditionalExpression_returnANewConditionalExpressionWithThe_IfFalse_ObtainedFromTheComposition()
+        public void Visit_aConditionalExpression_returnsAnotherConditionalExpressionWithThe_IfFalse_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<int, int>> dummy = i => i > 0 ? 1 : 2;
@@ -291,7 +292,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
         
         [Test]
-        public void Visit_anInvocationExpression_returnANewInvocationExpressionWithThe_Expression_ObtainedFromTheComposition()
+        public void Visit_anInvocationExpression_returnsAnotherInvocationExpressionWithThe_Expression_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<int, int, int>> dummy = (i, j) => i > j ? 1 : 2;
@@ -321,7 +322,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
         
         [Test]
-        public void Visit_anInvocationExpression_returnANewInvocationExpressionWithThe_Arguments_ObtainedFromTheComposition()
+        public void Visit_anInvocationExpression_returnsAnotherInvocationExpressionWithThe_Arguments_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<int, int, int>> dummy = (i, j) => i > j ? 1 : 2;
@@ -372,7 +373,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
         
         [Test]
-        public void Visit_aLambdaExpression_returnANewLambdaExpressionWithThe_Body_ObtainedFromTheComposition()
+        public void Visit_aLambdaExpression_returnsAnotherLambdaExpressionWithThe_Body_ObtainedFromTheComposition()
         {
             Expression<Func<int, int, int>> dummy = (i, j) => i > j ? 1 : 2;
             Expression<Func<int, int, int>> differentExpression = (a, b) => a == b ? 3 : 4;
@@ -399,7 +400,7 @@ namespace Epic.Linq.Expressions.Normalization
         }
         
         [Test]
-        public void Visit_aLambdaExpression_returnANewLambdaExpressionWithThe_Parameters_ObtainedFromTheComposition()
+        public void Visit_aLambdaExpression_returnsAnotherLambdaExpressionWithThe_Parameters_ObtainedFromTheComposition()
         {
             Expression<Func<int, int, int>> dummy = (i, j) => i > j ? 1 : 2;
             Expression<Func<int, int, int>> differentExpression = (a, b) => a == b ? 3 : 4;
@@ -483,7 +484,7 @@ IVisitor<Expression, Expression> interceptor = null;
 
         
         [Test]
-        public void Visit_aListInitExpression_returnANewListInitExpressionWithThe_NewExpression_ObtainedFromTheComposition()
+        public void Visit_aListInitExpression_returnsAnotherListInitExpressionWithThe_NewExpression_ObtainedFromTheComposition()
         {
             // arrange:
             ListInitExpression[] exprs = Samples.GetTwoDifferentListInitExpressions();
@@ -517,7 +518,7 @@ IVisitor<Expression, Expression> interceptor = null;
         }
         
         [Test]
-        public void Visit_aListInitExpression_returnANewListInitExpressionWithThe_Initializers_ObtainedFromTheComposition()
+        public void Visit_aListInitExpression_returnsAnotherListInitExpressionWithThe_Initializers_ObtainedFromTheComposition()
         {
             // arrange:
             ListInitExpression[] exprs = Samples.GetTwoDifferentListInitExpressions();
@@ -574,7 +575,7 @@ IVisitor<Expression, Expression> interceptor = null;
         }
         
         [Test]
-        public void Visit_aMemberExpression_returnANewListInitExpressionWithThe_Expression_ObtainedFromTheComposition()
+        public void Visit_aMemberExpression_returnsAnotherListInitExpressionWithThe_Expression_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<string, int>> dummy = s => s.Length;
@@ -641,7 +642,7 @@ IVisitor<Expression, Expression> interceptor = null;
         }
         
         [Test]
-        public void Visit_aMemberInitExpression_returnANewMemberInitExpressionWithThe_NewExpression_ObtainedFromTheComposition()
+        public void Visit_aMemberInitExpression_returnsAnotherMemberInitExpressionWithThe_NewExpression_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
@@ -725,7 +726,7 @@ IVisitor<Expression, Expression> interceptor = null;
         }
         
         [Test]
-        public void Visit_aMemberInitExpression_returnANewMemberInitExpressionWithThe_Bindings_ObtainedFromTheComposition()
+        public void Visit_aMemberInitExpression_returnsAnotherMemberInitExpressionWithThe_Bindings_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
@@ -859,7 +860,7 @@ IVisitor<Expression, Expression> interceptor = null;
         }
         
         [Test]
-        public void Visit_aMethodCallExpression_returnANewMethodCallExpressionWithThe_Object_ObtainedFromTheComposition()
+        public void Visit_aMethodCallExpression_returnsAnotherMethodCallExpressionWithThe_Object_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<string, string>> dummy = s => s.Substring(1);
@@ -895,7 +896,7 @@ IVisitor<Expression, Expression> interceptor = null;
         
         
         [Test]
-        public void Visit_aMethodCallExpression_returnANewMethodCallExpressionWithThe_Arguments_ObtainedFromTheComposition()
+        public void Visit_aMethodCallExpression_returnsAnotherMethodCallExpressionWithThe_Arguments_ObtainedFromTheComposition()
         {
             // arrange:
             Expression<Func<string, string>> dummy = s => s.Substring(1);
@@ -928,6 +929,322 @@ IVisitor<Expression, Expression> interceptor = null;
                 Assert.AreSame(argument, ((MethodCallExpression)result).Arguments[j]);
                 ++j;
             }
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aNewExpressionWithoutMembers_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            NewExpression expressionToVisit = Samples.GetNewExpressionWithMembers(1, "test");
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            foreach(Expression argument in expressionToVisit.Arguments)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(argument).Repeat.Once();
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test]
+        public void Visit_aNewExpressionWithoutMembers_returnsAnotherNewExpressionWithThe_Arguments_ObtainedFromTheComposition()
+        {
+            // arrange:
+            NewExpression expressionToVisit = Samples.GetNewExpressionWithoutMembers(1, "test1");
+            NewExpression differentExpression = Samples.GetNewExpressionWithoutMembers(2, "test2");
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            int i = 0;
+            foreach(Expression argument in expressionToVisit.Arguments)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(differentExpression.Arguments[i]).Repeat.Once();
+                ++i;
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<NewExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            i = 0;
+            foreach(Expression argument in differentExpression.Arguments)
+            {
+                Assert.AreSame(argument, ((NewExpression)result).Arguments[i]);
+                ++i;
+            }
+            Assert.AreSame(expressionToVisit.Type, result.Type);
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        
+        [Test]
+        public void Visit_aNewExpressionWithMembers_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            NewExpression expressionToVisit = Samples.GetNewExpressionWithMembers(1, "test");
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            foreach(Expression argument in expressionToVisit.Arguments)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(argument).Repeat.Once();
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+
+        [Test]
+        public void Visit_aNewExpressionWithMembers_returnsAnotherNewExpressionWithThe_Arguments_ObtainedFromTheComposition()
+        {
+            // arrange:
+            NewExpression expressionToVisit = Samples.GetNewExpressionWithMembers(1, "test1");
+            NewExpression differentExpression = Samples.GetNewExpressionWithMembers(2, "test2");
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            int i = 0;
+            foreach (Expression argument in expressionToVisit.Arguments)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(differentExpression.Arguments[i]).Repeat.Once();
+                ++i;
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<NewExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            i = 0;
+            foreach (Expression argument in differentExpression.Arguments)
+            {
+                Assert.AreSame(argument, ((NewExpression)result).Arguments[i]);
+                ++i;
+            }
+            i = 0;
+            foreach (MemberInfo member in expressionToVisit.Members)
+            {
+                Assert.AreSame(member, ((NewExpression)result).Members[i]);
+                ++i;
+            }
+            Assert.AreSame(expressionToVisit.Type, result.Type);
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aNewExpressionWithMembersOfDifferentTypes_returnsAnotherNewExpressionWithThe_Arguments_ObtainedFromTheComposition()
+        {
+            // arrange:
+            NewExpression expressionToVisit = Samples.GetNewExpressionWithMembers<int, object>(1, new object());
+            NewExpression differentExpression = Samples.GetNewExpressionWithMembers<int, string>(2, "test2");
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            int i = 0;
+            foreach (Expression argument in expressionToVisit.Arguments)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(differentExpression.Arguments[i]).Repeat.Once();
+                ++i;
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<NewExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            i = 0;
+            foreach (Expression argument in differentExpression.Arguments)
+            {
+                if(((NewExpression)result).Arguments[i].NodeType == ExpressionType.Convert)
+                {
+                    Assert.AreSame(argument, ((UnaryExpression)((NewExpression)result).Arguments[i]).Operand);
+                }
+                else
+                {
+                    Assert.AreSame(argument, ((NewExpression)result).Arguments[i]);
+                }
+                ++i;
+            }
+            i = 0;
+            foreach (MemberInfo member in expressionToVisit.Members)
+            {
+                Assert.AreSame(member, ((NewExpression)result).Members[i]);
+                ++i;
+            }
+            Assert.AreSame(expressionToVisit.Type, result.Type);
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aTypeBinaryExpression_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            TypeBinaryExpression expressionToVisit = Samples.GetNewTypeBinaryExpression("test");
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Expression, context)).Return(expressionToVisit.Expression).Repeat.Once();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test]
+        public void Visit_aTypeBinaryExpression_returnsAnotherTypeBinaryExpressionWithThe_Expression_ObtainedFromTheComposition()
+        {
+            // arrange:
+            TypeBinaryExpression expressionToVisit = Samples.GetNewTypeBinaryExpression("test");
+            Expression newOperand = new UnknownExpression();
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            interceptor.Expect(v => v.Visit(expressionToVisit.Expression, context)).Return(newOperand).Repeat.Once();
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<TypeBinaryExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreSame(expressionToVisit.TypeOperand, ((TypeBinaryExpression)result).TypeOperand);
+            Assert.AreSame(expressionToVisit.Type, result.Type);
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aNewArrayExpression_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            Expression<Func<object[]>> dummy = () => new object[] { new object(), "test" };
+            NewArrayExpression expressionToVisit = (NewArrayExpression)dummy.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            foreach(Expression argument in expressionToVisit.Expressions)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(argument).Repeat.Once();
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test]
+        public void Visit_aNewArrayExpression_returnsAnotherNewArrayExpressionWithThe_Expressions_ObtainedFromTheComposition()
+        {
+            // arrange:
+            Expression<Func<object[]>> dummy = () => new object[] { new object(), "test" };
+            Expression<Func<object[]>> dummy2 = () => new object[] { new ClassWithFieldAndProperty(), "test2" };
+            NewArrayExpression expressionToVisit = (NewArrayExpression)dummy.Body;
+            NewArrayExpression differentExpression = (NewArrayExpression)dummy2.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            int i = 0;
+            foreach(Expression argument in expressionToVisit.Expressions)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(differentExpression.Expressions[i]).Repeat.Once();
+                ++i;
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<NewArrayExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            i = 0;
+            foreach(Expression argument in differentExpression.Expressions)
+            {
+                Assert.AreSame(argument, ((NewArrayExpression)result).Expressions[i]);
+                ++i;
+            }
+            Assert.AreSame(expressionToVisit.Type, result.Type);
+            Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+        }
+        
+        [Test]
+        public void Visit_aNewArrayExpressionWithArrayBounds_askTheCompositionToVisitTheOperands()
+        {
+            // arrange:
+            Expression<Func<object>> dummy = () => new string[1,2];
+            NewArrayExpression expressionToVisit = (NewArrayExpression)dummy.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            foreach(Expression argument in expressionToVisit.Expressions)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(argument).Repeat.Once();
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.AreSame(expressionToVisit, result);
+        }
+        
+        [Test]
+        public void Visit_aNewArrayExpressionWithArrayBounds_returnsAnotherNewArrayExpressionWithThe_Expressions_ObtainedFromTheComposition()
+        {
+            // arrange:
+            Expression<Func<object>> dummy = () => new string[1,2];
+            Expression<Func<object>> dummy2 = () => new string[3,4];
+            NewArrayExpression expressionToVisit = (NewArrayExpression)dummy.Body;
+            NewArrayExpression differentExpression = (NewArrayExpression)dummy2.Body;
+            IVisitor<Expression, Expression> interceptor = null;
+            IVisitContext context = VisitContext.New;
+            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
+            int i = 0;
+            foreach(Expression argument in expressionToVisit.Expressions)
+            {
+                interceptor.Expect(v => v.Visit(argument, context)).Return(differentExpression.Expressions[i]).Repeat.Once();
+                ++i;
+            }
+
+            // act:
+            Expression result = inspector.Visit(expressionToVisit, context);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<NewArrayExpression>(result);
+            Assert.AreNotSame(expressionToVisit, result);
+            Assert.AreNotSame(differentExpression, result);
+            i = 0;
+            foreach(Expression argument in differentExpression.Expressions)
+            {
+                Assert.AreSame(argument, ((NewArrayExpression)result).Expressions[i]);
+                ++i;
+            }
+            Assert.AreSame(expressionToVisit.Type, result.Type);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
         }
     }

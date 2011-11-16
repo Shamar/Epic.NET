@@ -168,6 +168,23 @@ namespace Epic.Linq.Expressions
             return new ListInitExpression[] { first, second } ;
         }
         
+        public static NewExpression GetNewExpressionWithMembers<KVKey, KVValue>(KVKey key, KVValue value)
+        {
+            NewExpression expression = Expression.New (
+              typeof (KeyValuePair<KVKey, KVValue>).GetConstructor (new[] { typeof (KVKey), typeof (KVValue) }),
+              new Expression[] { Expression.Constant (key), Expression.Constant (value) },
+              typeof (KeyValuePair<KVKey, KVValue>).GetProperty ("Key"), typeof (KeyValuePair<KVKey, KVValue>).GetProperty ("Value"));
+            return expression;
+        }
+        
+        public static NewExpression GetNewExpressionWithoutMembers<KVKey, KVValue>(KVKey key, KVValue value)
+        {
+            NewExpression expression = Expression.New (
+              typeof (KeyValuePair<KVKey, KVValue>).GetConstructor (new[] { typeof (KVKey), typeof (KVValue) }),
+              new Expression[] { Expression.Constant (key), Expression.Constant (value) });
+            return expression;
+        }
+        
         #region dummy types
         class DummyDictionary<TKey, TValue> : Dictionary<TKey, TValue>
         {
