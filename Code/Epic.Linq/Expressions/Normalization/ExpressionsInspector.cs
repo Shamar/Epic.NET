@@ -376,9 +376,6 @@ namespace Epic.Linq.Expressions.Normalization
     
         private T VisitChecked<T> (T expression, string outerExpression, IVisitContext context) where T : Expression
         {
-            if (expression == null)
-                return null;
-    
             T newExpression = VisitExpression (expression, context) as T;
     
             if (newExpression == null) {
