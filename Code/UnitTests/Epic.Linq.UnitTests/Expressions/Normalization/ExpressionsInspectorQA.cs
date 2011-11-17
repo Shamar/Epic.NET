@@ -426,7 +426,6 @@ namespace Epic.Linq.Expressions.Normalization
         public void Visit_aLambdaExpressionWithAVisitorReplacingTheArgumentType_throwsInvalidOperationException()
         {
             Expression<Func<int, int, int>> dummy = (i, j) => i > j ? 1 : 2;
-            Expression<Func<int, int, int>> differentExpression = (a, b) => a == b ? 3 : 4;
             LambdaExpression expressionToVisit = dummy;
             IVisitor<Expression, Expression> interceptor = null;
             IVisitContext context = VisitContext.New;
