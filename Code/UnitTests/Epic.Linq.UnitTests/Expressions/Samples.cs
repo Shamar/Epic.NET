@@ -25,6 +25,7 @@ using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace Epic.Linq.Expressions
 {
@@ -185,6 +186,78 @@ namespace Epic.Linq.Expressions
             return expression;
         }
         
+        public static MemberInitExpression GetNewMemberInitExpression()
+        {
+            /*
+             * The commented lines don't compile with Mono
+             * see https://bugzilla.novell.com/show_bug.cgi?id=730565
+             * 
+            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
+            MemberInitExpression expression = (MemberInitExpression)dummy.Body;
+             */
+            Type collectionType = typeof(ICollection<ClassToTestMemberBindings>);
+            MethodInfo getCollectionAdd = collectionType.GetMethod("Add");
+            Type type = typeof(ClassToTestMemberBindings);
+            ConstructorInfo typeConstructor = type.GetConstructor(new Type[0]);
+            MethodInfo setName = type.GetProperty("Name").GetSetMethod();
+            MethodInfo getFather = type.GetProperty("Father").GetGetMethod();
+            MethodInfo getChildren = type.GetProperty("Children").GetGetMethod();
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(string), "s");
+            MemberInitExpression expression = Expression.MemberInit(
+                Expression.New(typeConstructor, new Expression[0]),
+                new MemberBinding[] { 
+                    Expression.Bind(setName, parameterExpression),
+                    Expression.MemberBind(getFather, 
+                        new MemberBinding[] {
+                            Expression.Bind(setName, Expression.Constant("Father", typeof(string)))
+                        }),
+                        Expression.ListBind(getChildren, new ElementInit[] {
+                            Expression.ElementInit(getCollectionAdd, 
+                                new Expression[]{ Expression.New(typeConstructor, new Expression[0]) }
+                            ),
+                            Expression.ElementInit(getCollectionAdd, 
+                                new Expression[]{ Expression.New(typeConstructor, new Expression[0]) }
+                            )
+                        })
+                    });
+            return expression;
+        }
+        
+        public static MemberInitExpression[] GetTwoDifferentMemberInitExpression()
+        {
+            MemberInitExpression expression1 = GetNewMemberInitExpression();
+            Type collectionType = typeof(ICollection<ClassToTestMemberBindings>);
+            MethodInfo getCollectionAdd = collectionType.GetMethod("Add");
+            Type type = typeof(ClassToTestMemberBindings);
+            ConstructorInfo typeConstructor = type.GetConstructor(new Type[]{typeof(string)});
+            MethodInfo setName = type.GetProperty("Name").GetSetMethod();
+            MethodInfo getFather = type.GetProperty("Father").GetGetMethod();
+            MethodInfo getChildren = type.GetProperty("Children").GetGetMethod();
+            ParameterExpression parameterExpression = Expression.Parameter(typeof(string), "s");
+            MemberInitExpression expression2 = Expression.MemberInit(
+                Expression.New(typeConstructor, new Expression[] { parameterExpression }),
+                new MemberBinding[] { 
+                    Expression.Bind(setName, parameterExpression),
+                    Expression.MemberBind(getFather, 
+                        new MemberBinding[] {
+                            Expression.Bind(setName, Expression.Constant("NewName", typeof(string)))
+                        }),
+                        Expression.ListBind(getChildren, new ElementInit[] {
+                            Expression.ElementInit(getCollectionAdd, 
+                                new Expression[]{ Expression.New(typeConstructor, new Expression[] {
+                                    Expression.Add(parameterExpression, Expression.Constant("1", typeof(string)), typeof(string).GetMethod("Concat", new Type[] { typeof(string), typeof(string) }))
+                                }) 
+                            }),
+                            Expression.ElementInit(getCollectionAdd, 
+                                new Expression[]{ Expression.New(typeConstructor, new Expression[] {
+                                    Expression.Add(parameterExpression, Expression.Constant("2", typeof(string)), typeof(string).GetMethod("Concat", new Type[] { typeof(string), typeof(string) }))
+                                }) 
+                            })
+                        })
+                    });
+            return new MemberInitExpression[] { expression1, expression2 };
+        }
+        
         #region dummy types
         class DummyDictionary<TKey, TValue> : Dictionary<TKey, TValue>
         {
@@ -197,6 +270,26 @@ namespace Epic.Linq.Expressions
             {
                 base.Add(key, value);
             }
+        }
+        
+        class ClassToTestMemberBindings
+        {
+            public ClassToTestMemberBindings()
+            {
+            }
+            public ClassToTestMemberBindings(string name)
+                : this()
+            {
+                Name = name;
+            }
+            
+            public string Name { get; set; }
+            
+            private ClassToTestMemberBindings _father = new ClassToTestMemberBindings();
+            public ClassToTestMemberBindings Father { get { return _father; } set { _father = value; } }
+            
+            private IList<ClassToTestMemberBindings> _children = new List<ClassToTestMemberBindings>();
+            public IList<ClassToTestMemberBindings> Children { get { return _children; } set { _children = value; } }
         }
         #endregion dummy types
     }

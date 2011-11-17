@@ -28,7 +28,8 @@ using System.Reflection;
 namespace Epic.Linq.Expressions.Normalization
 {
     /// <summary>
-    /// Closure expander. Replace a "closure" with its value. Closures are defined _here_ as accesses to fields or properties of a <seealso cref="ConstantExpression"/>.
+    /// Closure expander. Replace a "closure" with its value. 
+    /// Closures are defined _here_ as accesses to fields or properties of a <seealso cref="ConstantExpression"/>.
     /// </summary>
     /// <seealso cref="http://stackoverflow.com/questions/4722562/heuristic-for-this-and-closures-ok-expression-trees"/>
     public sealed class ClosureExpander : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, MemberExpression>
@@ -38,6 +39,20 @@ namespace Epic.Linq.Expressions.Normalization
         {
         }
         
+        /// <summary>
+        /// Return itself as a visitor for <paramref name="target"/> if it is 
+        /// a <see cref="MemberExpression"/> related to a field or property 
+        /// of a <see cref="ConstantExpression"/>.
+        /// </summary>
+        /// <returns>
+        /// This visitor.
+        /// </returns>
+        /// <param name='target'>
+        /// The expression that should be visited.
+        /// </param>
+        /// <typeparam name='TExpression'>
+        /// The 1st type parameter.
+        /// </typeparam>
         internal protected override IVisitor<Expression, TExpression> AsVisitor<TExpression> (TExpression target)
         {
             IVisitor<Expression, TExpression> visitor = base.AsVisitor (target);
@@ -63,7 +78,7 @@ namespace Epic.Linq.Expressions.Normalization
                 LambdaExpression lambda = Expression.Lambda(typeof(Func<>).MakeGenericType(target.Type), target);
                 ConstantExpression constant = Expression.Constant(lambda.Compile().DynamicInvoke(), target.Type);
                 
-                return constant;
+                return VisitInner(constant, context);
             }
             catch
             {

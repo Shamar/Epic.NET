@@ -112,11 +112,11 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<UnaryExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(differentExpression.Operand, ((UnaryExpression)result).Operand);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<UnaryExpression>()
+                .WithA(unary => unary.Operand, that => Is.SameAs(differentExpression.Operand));
         }
         
         [Test, TestCaseSource(typeof(Samples), "BinaryExpressions")]
@@ -153,13 +153,13 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<BinaryExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(differentExpression.Left, ((BinaryExpression)result).Left);
-            Assert.AreSame(differentExpression.Right, ((BinaryExpression)result).Right);
-            Assert.AreSame(differentExpression.Conversion, ((BinaryExpression)result).Conversion);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<BinaryExpression>()
+                .WithA(e => e.Left, that => Is.SameAs(differentExpression.Left))
+                .WithA(e => e.Right, that => Is.SameAs(differentExpression.Right))
+                .WithA(e => e.Conversion, that => Is.SameAs(differentExpression.Conversion));
         }
         
         [Test]
@@ -202,13 +202,13 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ConditionalExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(differentExpression.Test, ((ConditionalExpression)result).Test);
-            Assert.AreSame(expressionToVisit.IfTrue, ((ConditionalExpression)result).IfTrue);
-            Assert.AreSame(expressionToVisit.IfFalse, ((ConditionalExpression)result).IfFalse);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<ConditionalExpression>()
+                .WithA(e => e.Test, that => Is.SameAs(differentExpression.Test))
+                .WithA(e => e.IfTrue, that => Is.SameAs(expressionToVisit.IfTrue))
+                .WithA(e => e.IfFalse, that => Is.SameAs(expressionToVisit.IfFalse));
         }
         
         [Test]
@@ -231,13 +231,13 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ConditionalExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(expressionToVisit.Test, ((ConditionalExpression)result).Test);
-            Assert.AreSame(differentExpression.IfTrue, ((ConditionalExpression)result).IfTrue);
-            Assert.AreSame(expressionToVisit.IfFalse, ((ConditionalExpression)result).IfFalse);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<ConditionalExpression>()
+                .WithA(e => e.Test, that => Is.SameAs(expressionToVisit.Test))
+                .WithA(e => e.IfTrue, that => Is.SameAs(differentExpression.IfTrue))
+                .WithA(e => e.IfFalse, that => Is.SameAs(expressionToVisit.IfFalse));
         }
         
   
@@ -261,13 +261,13 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ConditionalExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(expressionToVisit.Test, ((ConditionalExpression)result).Test);
-            Assert.AreSame(expressionToVisit.IfTrue, ((ConditionalExpression)result).IfTrue);
-            Assert.AreSame(differentExpression.IfFalse, ((ConditionalExpression)result).IfFalse);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<ConditionalExpression>()
+                .WithA(e => e.Test, that => Is.SameAs(expressionToVisit.Test))
+                .WithA(e => e.IfTrue, that => Is.SameAs(expressionToVisit.IfTrue))
+                .WithA(e => e.IfFalse, that => Is.SameAs(differentExpression.IfFalse));
         }
         
         [Test]
@@ -312,13 +312,12 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<InvocationExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(differentExpression.Expression, ((InvocationExpression)result).Expression);
-            Assert.AreSame(expressionToVisit.Arguments[0], ((InvocationExpression)result).Arguments[0]);
-            Assert.AreSame(expressionToVisit.Arguments[1], ((InvocationExpression)result).Arguments[1]);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<InvocationExpression>()
+                .WithA(e => e.Expression, that => Is.SameAs(differentExpression.Expression))
+                .WithEach(e => e.Arguments, (that, atIndex) => Is.SameAs(expressionToVisit.Arguments[atIndex]));
         }
         
         [Test]
@@ -343,14 +342,13 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<InvocationExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(expressionToVisit.Expression, ((InvocationExpression)result).Expression);
-            Assert.AreSame(differentExpression.Arguments[0], ((InvocationExpression)result).Arguments[0]);
-            Assert.AreSame(differentExpression.Arguments[1], ((InvocationExpression)result).Arguments[1]);
-            Assert.AreSame(expressionToVisit.Arguments[1], ((InvocationExpression)result).Arguments[1]);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<InvocationExpression>()
+                .WithA(e => e.Expression, that => Is.SameAs(expressionToVisit.Expression))
+                .WithEach(e => e.Arguments, (that, atIndex) => Is.SameAs(differentExpression.Arguments[atIndex]))
+                .WithA(e => e.Arguments[1], that => Is.SameAs(expressionToVisit.Arguments[1]));
         }
         
         [Test]
@@ -390,13 +388,12 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<LambdaExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(differentExpression.Body, ((LambdaExpression)result).Body);
-            Assert.AreSame(expressionToVisit.Parameters[0], ((LambdaExpression)result).Parameters[0]);
-            Assert.AreSame(expressionToVisit.Parameters[1], ((LambdaExpression)result).Parameters[1]);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<LambdaExpression>()
+                .WithA(e => e.Body, that => Is.SameAs(differentExpression.Body))
+                .WithEach(e => e.Parameters, (that, atIndex) => Is.SameAs(expressionToVisit.Parameters[atIndex]));
         }
         
         [Test]
@@ -417,13 +414,12 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<LambdaExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(expressionToVisit.Body, ((LambdaExpression)result).Body);
-            Assert.AreSame(differentExpression.Parameters[0], ((LambdaExpression)result).Parameters[0]);
-            Assert.AreSame(differentExpression.Parameters[1], ((LambdaExpression)result).Parameters[1]);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<LambdaExpression>()
+                .WithA(e => e.Body, that => Is.SameAs(expressionToVisit.Body))
+                .WithEach(e => e.Parameters, (that, atIndex) => Is.SameAs(differentExpression.Parameters[atIndex]));
         }
         
         [Test]
@@ -504,17 +500,12 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ListInitExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(differentExpression.NewExpression, ((ListInitExpression)result).NewExpression);
-            int i = 0;
-            foreach(ElementInit init in expressionToVisit.Initializers)
-            {
-                Assert.AreSame(init, ((ListInitExpression)result).Initializers[i]);
-                ++i;
-            }
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<ListInitExpression>()
+                .WithA(e => e.NewExpression, that => Is.SameAs(differentExpression.NewExpression))
+                .WithEach(e => e.Initializers, (that, atIndex) => Is.SameAs(expressionToVisit.Initializers[atIndex]));
         }
         
         [Test]
@@ -538,23 +529,16 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ListInitExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(expressionToVisit.NewExpression, ((ListInitExpression)result).NewExpression);
-            int i = 0;
-            foreach(ElementInit init in differentExpression.Initializers)
-            {
-                Assert.AreSame(expressionToVisit.Initializers[i].AddMethod, ((ListInitExpression)result).Initializers[i].AddMethod);
-                int j = 0;
-                foreach(Expression argument in init.Arguments)
-                {
-                    Assert.AreSame(argument, ((ListInitExpression)result).Initializers[i].Arguments[j]);
-                    ++j;
-                }
-                ++i;
-            }
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<ListInitExpression>()
+                .WithA(e => e.NewExpression, that => Is.SameAs(expressionToVisit.NewExpression))
+                .WithEach(e => e.Initializers, (that, atIndex) => Assert.AreSame(expressionToVisit.Initializers[atIndex].AddMethod, that.AddMethod))
+                .WithEach(e => e.Initializers, (initializer, initializerIndex) =>
+                    Verify.That(initializer).IsA<ElementInit>()
+                            .WithEach(e2 => e2.Arguments, (argument, argumentIndex) => Is.SameAs(differentExpression.Initializers[initializerIndex].Arguments[argumentIndex]))
+                        );
         }
         
         [Test]
@@ -591,19 +575,18 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<MemberExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
-            Assert.AreSame(newExpression, ((MemberExpression)result).Expression);
-            Assert.AreSame(expressionToVisit.Member, ((MemberExpression)result).Member);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<MemberExpression>()
+                .WithA(e => e.Expression, that => Is.SameAs(newExpression))
+                .WithA(e => e.Member, that => Is.SameAs(expressionToVisit.Member));
         }
         
         [Test]
         public void Visit_aMemberInitExpression_askTheCompositionToVisitTheOperands()
         {
             // arrange:
-            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
-            MemberInitExpression expressionToVisit = (MemberInitExpression)dummy.Body;
+            MemberInitExpression expressionToVisit = Samples.GetNewMemberInitExpression();
             IVisitor<Expression, Expression> interceptor = null;
             IVisitContext context = VisitContext.New;
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
@@ -645,10 +628,9 @@ IVisitor<Expression, Expression> interceptor = null;
         public void Visit_aMemberInitExpression_returnsAnotherMemberInitExpressionWithThe_NewExpression_ObtainedFromTheComposition()
         {
             // arrange:
-            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
-            Expression<Func<string, ClassToTestMemberBindings>> dummy2 = s => new ClassToTestMemberBindings(s) { Name = "NewName", Father = { Name = "NewFather" }, Children = { new ClassToTestMemberBindings(s + "1"), new ClassToTestMemberBindings(s + "2") } };
-            MemberInitExpression expressionToVisit = (MemberInitExpression)dummy.Body;
-            MemberInitExpression differentExpression = (MemberInitExpression)dummy2.Body;
+            MemberInitExpression[] exps = Samples.GetTwoDifferentMemberInitExpression();
+            MemberInitExpression expressionToVisit = exps[0];
+            MemberInitExpression differentExpression = exps[1];
             IVisitor<Expression, Expression> interceptor = null;
             IVisitContext context = VisitContext.New;
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
@@ -661,7 +643,7 @@ IVisitor<Expression, Expression> interceptor = null;
                         interceptor.Expect(v => v.Visit(((MemberAssignment)binding).Expression, context)).Return(((MemberAssignment)binding).Expression).Repeat.Once();
                     break;
                     case MemberBindingType.ListBinding:
-                        foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
+                            foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
                         {
                             foreach(Expression argument in init.Arguments)
                             {
@@ -684,55 +666,40 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<MemberInitExpression>(result);
-            MemberInitExpression typedResult = (MemberInitExpression)result;
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(differentExpression.NewExpression, typedResult.NewExpression);
-            int b = 0;
-            foreach(MemberBinding binding in expressionToVisit.Bindings)
-            {
-                switch(binding.BindingType)
-                {
-                    case MemberBindingType.Assignment:
-                        Assert.AreSame(((MemberAssignment)binding).Expression, ((MemberAssignment)typedResult.Bindings[b]).Expression);
-                    break;
-                    case MemberBindingType.ListBinding:
-                        int initI = 0;
-                        foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
-                        {
-                            int a = 0;
-                            foreach(Expression argument in init.Arguments)
-                            {
-                                Assert.AreSame(argument, ((MemberListBinding)typedResult.Bindings[b]).Initializers[initI].Arguments[a]);
-                                ++a;
-                            }
-                            ++initI;
-                        }
-                    break;
-                    case MemberBindingType.MemberBinding:
-                        MemberMemberBinding memberBinding = (MemberMemberBinding)binding;
-                        int mb = 0;
-                        foreach(MemberAssignment assignment in memberBinding.Bindings) // test only assignment now...
-                        {
-                            Assert.AreSame(assignment.Expression, ((MemberAssignment)((MemberMemberBinding)typedResult.Bindings[b]).Bindings[mb]).Expression);
-                            ++mb;
-                        }
-                    break;
-                }
-                ++b;
-            }
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<MemberInitExpression>()
+                .WithA(e => e.NewExpression, that => Is.SameAs(differentExpression.NewExpression))
+                .WithEach(e => e.Bindings, 
+                          when => when.BindingType == MemberBindingType.Assignment, 
+                          (binding, bindingIndex) => Verify.That(binding).IsA<MemberAssignment>()
+                                                           .WithA(assignment => assignment.Expression, 
+                                                                  that => Is.SameAs(((MemberAssignment)expressionToVisit.Bindings[bindingIndex]).Expression)))
+                .WithEach(e => e.Bindings, 
+                          when => when.BindingType == MemberBindingType.ListBinding, 
+                          (binding, bindingIndex) => Verify.That(binding).IsA<MemberListBinding>()
+                                                           .WithEach(list => list.Initializers, 
+                                                                     (initializer, intializerIndex) => 
+                                                                          Verify.That(initializer).WithEach(i => i.Arguments, 
+                                                                                      (argument, a) => Is.SameAs(((MemberListBinding)expressionToVisit.Bindings[bindingIndex]).Initializers[intializerIndex].Arguments[a]) )))
+                .WithEach(e => e.Bindings,
+                          when => when.BindingType == MemberBindingType.MemberBinding,
+                          (binding, bindingIndex) => Verify.That(binding).IsA<MemberMemberBinding>()
+                              .WithEach(e2 => e2.Bindings, (assignment, a1) => 
+                                  Verify.That(assignment).IsA<MemberAssignment>()
+                                    .WithA(a => a.Expression, 
+                                           that => Is.SameAs(((MemberAssignment)((MemberMemberBinding)expressionToVisit.Bindings[bindingIndex]).Bindings[a1]).Expression))
+                                 ));
         }
         
         [Test]
         public void Visit_aMemberInitExpression_returnsAnotherMemberInitExpressionWithThe_Bindings_ObtainedFromTheComposition()
         {
             // arrange:
-            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
-            Expression<Func<string, ClassToTestMemberBindings>> dummy2 = s => new ClassToTestMemberBindings(s) { Name = "NewName", Father = { Name = "NewFather" }, Children = { new ClassToTestMemberBindings(s + "1"), new ClassToTestMemberBindings(s + "2") } };
-            MemberInitExpression expressionToVisit = (MemberInitExpression)dummy.Body;
-            MemberInitExpression differentExpression = (MemberInitExpression)dummy2.Body;
+            MemberInitExpression[] exps = Samples.GetTwoDifferentMemberInitExpression();
+            MemberInitExpression expressionToVisit = exps[0];
+            MemberInitExpression differentExpression = exps[1];
             IVisitor<Expression, Expression> interceptor = null;
             IVisitContext context = VisitContext.New;
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
@@ -779,53 +746,38 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<MemberInitExpression>(result);
-            MemberInitExpression typedResult = (MemberInitExpression)result;
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(expressionToVisit.NewExpression, typedResult.NewExpression);
-            b = 0;
-            foreach(MemberBinding binding in differentExpression.Bindings)
-            {
-                switch(binding.BindingType)
-                {
-                    case MemberBindingType.Assignment:
-                        Assert.AreSame(((MemberAssignment)binding).Expression, ((MemberAssignment)typedResult.Bindings[b]).Expression);
-                    break;
-                    case MemberBindingType.ListBinding:
-                        int initI = 0;
-                        foreach(ElementInit init in ((MemberListBinding)binding).Initializers)
-                        {
-                            int a = 0;
-                            foreach(Expression argument in init.Arguments)
-                            {
-                                Assert.AreSame(argument, ((MemberListBinding)typedResult.Bindings[b]).Initializers[initI].Arguments[a]);
-                                ++a;
-                            }
-                            ++initI;
-                        }
-                    break;
-                    case MemberBindingType.MemberBinding:
-                        MemberMemberBinding memberBinding = (MemberMemberBinding)binding;
-                        int mb = 0;
-                        foreach(MemberAssignment assignment in memberBinding.Bindings) // test only assignment now...
-                        {
-                            Assert.AreSame(assignment.Expression, ((MemberAssignment)((MemberMemberBinding)typedResult.Bindings[b]).Bindings[mb]).Expression);
-                            ++mb;
-                        }
-                    break;
-                }
-                ++b;
-            }
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<MemberInitExpression>()
+                .WithA(e => e.NewExpression, that => Is.SameAs(expressionToVisit.NewExpression))
+                .WithEach(e => e.Bindings,
+                          when => when.BindingType == MemberBindingType.Assignment,
+                          (binding, bindingIndex) => Verify.That(binding).IsA<MemberAssignment>()
+                                                           .WithA(assignment => assignment.Expression,
+                                                                  that => Is.SameAs(((MemberAssignment)differentExpression.Bindings[bindingIndex]).Expression)))
+                .WithEach(e => e.Bindings,
+                          when => when.BindingType == MemberBindingType.ListBinding,
+                          (binding, bindingIndex) => Verify.That(binding).IsA<MemberListBinding>()
+                                                           .WithEach(list => list.Initializers,
+                                                                     (initializer, intializerIndex) =>
+                                                                          Verify.That(initializer).WithEach(i => i.Arguments,
+                                                                                      (argument, a) => Is.SameAs(((MemberListBinding)differentExpression.Bindings[bindingIndex]).Initializers[intializerIndex].Arguments[a]))))
+                .WithEach(e => e.Bindings,
+                          when => when.BindingType == MemberBindingType.MemberBinding,
+                          (binding, bindingIndex) => Verify.That(binding).IsA<MemberMemberBinding>()
+                              .WithEach(e2 => e2.Bindings, (assignment, a1) =>
+                                  Verify.That(assignment).IsA<MemberAssignment>()
+                                    .WithA(a => a.Expression,
+                                           that => Is.SameAs(((MemberAssignment)((MemberMemberBinding)differentExpression.Bindings[bindingIndex]).Bindings[a1]).Expression))
+                                 ));
         }
   
         [Test]
         public void Visit_aMemberInitExpressionWithAVisitorReplacingTheArgumentType_throwsNotSupportedException()
         {
             // arrange:
-            Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
-            MemberInitExpression expressionToVisit = (MemberInitExpression)dummy.Body;
+            MemberInitExpression expressionToVisit = Samples.GetNewMemberInitExpression();
             IVisitor<Expression, Expression> interceptor = null;
             IVisitContext context = VisitContext.New;
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
@@ -881,17 +833,12 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<MethodCallExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(differentExpression.Object, ((MethodCallExpression)result).Object);
-            int j = 0;
-            foreach(Expression argument in expressionToVisit.Arguments)
-            {
-                Assert.AreSame(argument, ((MethodCallExpression)result).Arguments[j]);
-                ++j;
-            }
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<MethodCallExpression>()
+                .WithA(e => e.Object, that => Is.SameAs(differentExpression.Object))
+                .WithEach(e => e.Arguments, (that, atIndex) => Is.SameAs(expressionToVisit.Arguments[atIndex]));
         }
         
         
@@ -919,17 +866,12 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<MethodCallExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            Assert.AreSame(expressionToVisit.Object, ((MethodCallExpression)result).Object);
-            j = 0;
-            foreach(Expression argument in differentExpression.Arguments)
-            {
-                Assert.AreSame(argument, ((MethodCallExpression)result).Arguments[j]);
-                ++j;
-            }
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<MethodCallExpression>()
+                .WithA(e => e.Object, that => Is.SameAs(expressionToVisit.Object))
+                .WithEach(e => e.Arguments, (that, atIndex) => Is.SameAs(differentExpression.Arguments[atIndex]));
         }
         
         [Test]
@@ -973,17 +915,12 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<NewExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            i = 0;
-            foreach(Expression argument in differentExpression.Arguments)
-            {
-                Assert.AreSame(argument, ((NewExpression)result).Arguments[i]);
-                ++i;
-            }
             Assert.AreSame(expressionToVisit.Type, result.Type);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<NewExpression>()
+                .WithEach(e => e.Arguments, (that, atIndex) => Is.SameAs(differentExpression.Arguments[atIndex]));
         }
         
         
@@ -1028,23 +965,14 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<NewExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            i = 0;
-            foreach (Expression argument in differentExpression.Arguments)
-            {
-                Assert.AreSame(argument, ((NewExpression)result).Arguments[i]);
-                ++i;
-            }
-            i = 0;
-            foreach (MemberInfo member in expressionToVisit.Members)
-            {
-                Assert.AreSame(member, ((NewExpression)result).Members[i]);
-                ++i;
-            }
             Assert.AreSame(expressionToVisit.Type, result.Type);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+
+            Verify.That(result).IsA<NewExpression>()
+                .WithEach(e => e.Arguments, (that, atIndex) => Is.SameAs(differentExpression.Arguments[atIndex]))
+                .WithEach(e => e.Members, (that, atIndex) => Is.SameAs(expressionToVisit.Members[atIndex]));
         }
         
         [Test]
@@ -1068,30 +996,17 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<NewExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            i = 0;
-            foreach (Expression argument in differentExpression.Arguments)
-            {
-                if(((NewExpression)result).Arguments[i].NodeType == ExpressionType.Convert)
-                {
-                    Assert.AreSame(argument, ((UnaryExpression)((NewExpression)result).Arguments[i]).Operand);
-                }
-                else
-                {
-                    Assert.AreSame(argument, ((NewExpression)result).Arguments[i]);
-                }
-                ++i;
-            }
-            i = 0;
-            foreach (MemberInfo member in expressionToVisit.Members)
-            {
-                Assert.AreSame(member, ((NewExpression)result).Members[i]);
-                ++i;
-            }
             Assert.AreSame(expressionToVisit.Type, result.Type);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<NewExpression>()
+                .WithEach(e => e.Members, (that, atIndex) => Is.SameAs(expressionToVisit.Members[atIndex]))
+                .WithEach(e => e.Arguments, when => when.NodeType == ExpressionType.Convert,
+                          (argument, atIndex) => Verify.That(argument).IsA<UnaryExpression>()
+                                                       .WithA(u => u.Operand, that => Is.SameAs(differentExpression.Arguments[atIndex])))
+                .WithEach(e => e.Arguments, when => when.NodeType != ExpressionType.Convert,
+                          (argument, atIndex) => Is.SameAs(differentExpression.Arguments[atIndex]));
         }
         
         [Test]
@@ -1127,11 +1042,12 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<TypeBinaryExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
-            Assert.AreSame(expressionToVisit.TypeOperand, ((TypeBinaryExpression)result).TypeOperand);
             Assert.AreSame(expressionToVisit.Type, result.Type);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<TypeBinaryExpression>()
+                .WithA(e => e.TypeOperand, that => Is.SameAs(expressionToVisit.TypeOperand))
+                .WithA(e => e.Expression, that => Is.SameAs(newOperand));
         }
         
         [Test]
@@ -1178,17 +1094,12 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<NewArrayExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            i = 0;
-            foreach(Expression argument in differentExpression.Expressions)
-            {
-                Assert.AreSame(argument, ((NewArrayExpression)result).Expressions[i]);
-                ++i;
-            }
             Assert.AreSame(expressionToVisit.Type, result.Type);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<NewArrayExpression>()
+                .WithEach(e => e.Expressions, (that, atIndex) => Is.SameAs(differentExpression.Expressions[atIndex]));
         }
         
         [Test]
@@ -1235,17 +1146,12 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<NewArrayExpression>(result);
             Assert.AreNotSame(expressionToVisit, result);
             Assert.AreNotSame(differentExpression, result);
-            i = 0;
-            foreach(Expression argument in differentExpression.Expressions)
-            {
-                Assert.AreSame(argument, ((NewArrayExpression)result).Expressions[i]);
-                ++i;
-            }
             Assert.AreSame(expressionToVisit.Type, result.Type);
             Assert.AreEqual(expressionToVisit.NodeType, result.NodeType);
+            Verify.That(result).IsA<NewArrayExpression>()
+                .WithEach(e => e.Expressions, (that, atIndex) => Is.SameAs(differentExpression.Expressions[atIndex]));
         }
     }
 }

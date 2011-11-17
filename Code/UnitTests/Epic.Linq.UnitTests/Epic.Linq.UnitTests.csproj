@@ -88,5 +88,6 @@
     <Compile Include="Expressions\Normalization\ExpressionNormalizerBaseQA.cs" />
     <Compile Include="Fakes\FakeNormalizer.cs" />
     <Compile Include="Expressions\Verify.cs" />
+    <Compile Include="Expressions\Normalization\ClosureExpanderQA.cs" />
   </ItemGroup>
 </Project>

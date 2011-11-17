@@ -25,6 +25,7 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using NUnit.Framework.Constraints;
 
 namespace Epic.Linq.Expressions
 {
@@ -62,17 +63,55 @@ namespace Epic.Linq.Expressions
             check(property(_exp));
             return this;
         }
+
+        public Verifier<TExpression> WithA<TProperty>(Func<TExpression, TProperty> property, Func<TProperty, IResolveConstraint> check)
+        {
+            TProperty val = property(_exp);
+            Assert.That(val, check(val));
+            return this;
+        }
         
         public Verifier<TExpression> WithEach<TProperty>(Expression<Func<TExpression, IEnumerable<TProperty>>> properties, Action<TProperty, int> check)
         {
             Func<TExpression, IEnumerable<TProperty>> accessor = properties.Compile();
             IEnumerable<TProperty> toCheck = accessor(_exp);
             if(null == toCheck)
-            Assert.Fail("Got a null IEnumerable<{0}> while accessing to {1} in the expression:\r\n{2}.", typeof(TProperty), properties.ToString(), _exp.ToString());
+                Assert.Fail("Got a null IEnumerable<{0}> while accessing to {1} in the expression:\r\n{2}.", typeof(TProperty), properties.ToString(), _exp.ToString());
             int i = 0;
             foreach(TProperty p in toCheck)
             {
                 check(p, i);
+                i++;
+            }
+            return this;
+        }
+
+        public Verifier<TExpression> WithEach<TProperty>(Expression<Func<TExpression, IEnumerable<TProperty>>> properties, Func<TProperty, bool> when, Action<TProperty, int> check)
+        {
+            Func<TExpression, IEnumerable<TProperty>> accessor = properties.Compile();
+            IEnumerable<TProperty> toCheck = accessor(_exp);
+            if(null == toCheck)
+                Assert.Fail("Got a null IEnumerable<{0}> while accessing to {1} in the expression:\r\n{2}.", typeof(TProperty), properties.ToString(), _exp.ToString());
+            int i = 0;
+            foreach (TProperty p in toCheck)
+            {
+                if(when(p))
+                    check(p, i);
+                i++;
+            }
+            return this;
+        }
+        
+        public Verifier<TExpression> WithEach<TProperty>(Expression<Func<TExpression, IEnumerable<TProperty>>> properties, Func<TProperty, int, IResolveConstraint> check)
+        {
+            Func<TExpression, IEnumerable<TProperty>> accessor = properties.Compile();
+            IEnumerable<TProperty> toCheck = accessor(_exp);
+            if(null == toCheck)
+                Assert.Fail("Got a null IEnumerable<{0}> while accessing to {1} in the expression:\r\n{2}.", typeof(TProperty), properties.ToString(), _exp.ToString());
+            int i = 0;
+            foreach(TProperty p in toCheck)
+            {
+                Assert.That(p, check(p, i));
                 i++;
             }
             return this;
