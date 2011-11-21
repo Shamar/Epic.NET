@@ -60,8 +60,7 @@ namespace Epic.Linq.Expressions.Normalization
             if(null != visitor)
             {
                 MemberExpression expression = target as MemberExpression;
-                if( expression.Expression.NodeType != System.Linq.Expressions.ExpressionType.Constant 
-                    || (expression.Member.MemberType != MemberTypes.Field && expression.Member.MemberType != MemberTypes.Property))
+                if( expression.Expression.NodeType != System.Linq.Expressions.ExpressionType.Constant )
                 {
                     return null;
                 }

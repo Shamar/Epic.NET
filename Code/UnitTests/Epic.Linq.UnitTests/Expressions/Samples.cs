@@ -191,7 +191,7 @@ namespace Epic.Linq.Expressions
             /*
              * The commented lines don't compile with Mono
              * see https://bugzilla.novell.com/show_bug.cgi?id=730565
-             * 
+             *
             Expression<Func<string, ClassToTestMemberBindings>> dummy = s => new ClassToTestMemberBindings() { Name = s, Father = { Name = "Father" }, Children = { new ClassToTestMemberBindings(), new ClassToTestMemberBindings() } };
             MemberInitExpression expression = (MemberInitExpression)dummy.Body;
              */
