@@ -1,0 +1,120 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
+
+namespace Epic.Linq.Expressions.Normalization
+{
+    /// <summary>
+    /// Replace tree branches that can be evaluated with their value (in a <see cref="ConstantExpression"/>).
+    /// </summary>
+    public sealed class PartialEvaluator : CompositeVisitor<Expression>.VisitorBase, 
+        IVisitor<Expression, MemberExpression>,
+        IVisitor<Expression, MethodCallExpression>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ExpressionForwarder"/> class.
+        /// </summary>
+        /// <param name='composition'>
+        /// Composition that will own this visitor.
+        /// </param>
+        public PartialEvaluator (CompositeVisitor<Expression> composition)
+            : base(composition)
+        {
+        }
+
+        #region IVisitor[Expression,MemberExpression] implementation
+        /// <summary>
+        /// Visits a <see cref="MemberExpression"/> and returns a <see cref="ConstantExpression"/> containing the corresponding value,
+        /// or the <paramref name="target"/> itself when it can not be reduced.
+        /// </summary>
+        /// <param name="target">Expression to visit.</param>
+        /// <param name="context">Context of the visit.</param>
+        /// <returns>The reduced expression or <paramref name="target"/>, as appropriate.</returns>
+        public Expression Visit (MemberExpression target, IVisitContext context)
+        {
+            Expression owner = VisitInner(target.Expression, context);
+            if (owner.NodeType == System.Linq.Expressions.ExpressionType.Constant)
+            {
+                ConstantExpression constantOwner = owner as ConstantExpression;
+                switch (target.Member.MemberType)
+                {
+                    case MemberTypes.Property:
+                        PropertyInfo property = target.Member as PropertyInfo;
+                        return Expression.Constant(property.GetValue(constantOwner.Value, new object[0]), target.Type);
+                    case MemberTypes.Field:
+                        FieldInfo field = target.Member as FieldInfo;
+                        return Expression.Constant(field.GetValue(constantOwner.Value), target.Type);
+                }
+            }
+            if(owner != target.Expression)
+                return Expression.MakeMemberAccess(owner, target.Member);
+            return target;
+        }
+        #endregion IVisitor[Expression,MemberExpression] implementation
+
+        #region IVisitor[Expression,MethodCallExpression] implementation
+        /// <summary>
+        /// Visits a <see cref="MethodCallExpression"/> and returns a <see cref="ConstantExpression"/> containing the corresponding value,
+        /// or the <paramref name="target"/> itself when it can not be reduced.
+        /// </summary>
+        /// <param name="target">Expression to visit.</param>
+        /// <param name="context">Context of the visit.</param>
+        /// <returns>The reduced expression or <paramref name="target"/>, as appropriate.</returns>
+        public Expression Visit (MethodCallExpression target, IVisitContext context)
+        {
+            Expression owner = null;
+            List<Expression> arguments = null;
+
+            if(null != target.Object)
+                owner = VisitInner(target.Object, context);
+
+            bool canBeCompiled = null == owner || owner.NodeType == System.Linq.Expressions.ExpressionType.Constant;
+            bool canReturnTarget = owner == target.Object;
+
+            if(target.Arguments.Count > 0)
+            {
+                arguments = new List<Expression>();
+                for(int i = 0; i < target.Arguments.Count; ++i)
+                {
+                    Expression arg = VisitInner(target.Arguments[i], context);
+                    canReturnTarget &= arg == target.Arguments[i];
+                    if(arg.NodeType != System.Linq.Expressions.ExpressionType.Constant)
+                    {
+                        canBeCompiled = false;
+                    }
+                    arguments.Add(arg);
+                }
+            }
+
+            if(canBeCompiled)
+            {
+                if(null != arguments)
+                {
+                    object[] args = new object[arguments.Count];
+                    
+                    for(int i = 0; i < arguments.Count; ++i)
+                    {
+                        args[i] = (arguments[i] as ConstantExpression).Value;
+                    }
+                    return Expression.Constant(target.Method.Invoke((owner as ConstantExpression).Value, args), target.Type);
+                }
+                else
+                {
+                    return Expression.Constant(target.Method.Invoke((owner as ConstantExpression).Value, new object[0]), target.Type);
+                }
+            }
+            else
+            {
+                if (canReturnTarget)
+                    return target;
+                if(null == arguments)
+                {
+                    return Expression.Call(owner, target.Method);
+                }
+                return Expression.Call(owner, target.Method, arguments);
+            }
+        }
+        #endregion IVisitor[Expression,MemberExpression] implementation
+    }
+}

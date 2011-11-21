@@ -39,7 +39,7 @@ namespace Epic.Linq.Expressions.Normalization
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ExpressionForwarder"/> class.
         /// </summary>
         /// <param name='composition'>
-        /// Composition that owns this visitor.
+        /// Composition that will own this visitor.
         /// </param>
         public ExpressionForwarder (CompositeVisitor<Expression> composition)
             : base(composition)
