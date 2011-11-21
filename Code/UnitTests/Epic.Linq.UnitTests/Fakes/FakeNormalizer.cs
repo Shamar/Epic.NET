@@ -28,6 +28,11 @@ namespace Epic.Linq.Fakes
 {
     public class FakeNormalizer : ExpressionNormalizerBase
     {
+        public FakeNormalizer()
+            : this("test")
+        {
+        }
+        
         public FakeNormalizer (string name)
             : base(name)
         {

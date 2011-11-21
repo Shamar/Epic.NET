@@ -40,6 +40,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -57,6 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Expressions\Normalization\PartialEvaluatorQA.cs" />
     <Compile Include="QueryableQA.cs" />
     <Compile Include="ReflectionQA.cs" />
     <Compile Include="QueryProviderQA.cs" />
