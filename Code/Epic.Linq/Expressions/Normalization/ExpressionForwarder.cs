@@ -57,6 +57,9 @@ namespace Epic.Linq.Expressions.Normalization
         /// <param name='context'>
         /// Context of the visit.
         /// </param>
+        /// <returns>
+        /// The result of the visit.
+        /// </returns>
         /// <exception cref='ArgumentException'>
         /// Is thrown when the expression provided is not known.
         /// </exception>

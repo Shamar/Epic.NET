@@ -34,6 +34,12 @@ namespace Epic.Linq.Expressions.Normalization
     /// <seealso cref="http://stackoverflow.com/questions/4722562/heuristic-for-this-and-closures-ok-expression-trees"/>
     public sealed class ClosureExpander : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, MemberExpression>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ClosureExpander"/> class.
+        /// </summary>
+        /// <param name='composition'>
+        /// Composition that will own this visitor.
+        /// </param>
         public ClosureExpander  (CompositeVisitor<Expression> composition)
             : base(composition)
         {
@@ -60,7 +66,7 @@ namespace Epic.Linq.Expressions.Normalization
             if(null != visitor)
             {
                 MemberExpression expression = target as MemberExpression;
-                if( expression.Expression.NodeType != System.Linq.Expressions.ExpressionType.Constant )
+                if( null == expression.Expression || expression.Expression.NodeType != System.Linq.Expressions.ExpressionType.Constant )
                 {
                     return null;
                 }
@@ -70,6 +76,13 @@ namespace Epic.Linq.Expressions.Normalization
         }
 
         #region IVisitor[Expression,MemberExpression] implementation
+        /// <summary>
+        /// Return a <see cref="ConstantExpression"/> containing the value of <paramref name="target"/> (or anything given from the composition, on exception).
+        /// </summary>
+        /// <param name="target">Expression to visit.</param>
+        /// <param name="context">Context of the visit.</param>
+        /// <returns>A <see cref="ConstantExpression"/> containing the value of <paramref name="target"/> 
+        /// (or anything given from the composition, on exception).</returns>
         public Expression Visit (MemberExpression target, IVisitContext context)
         {
             try

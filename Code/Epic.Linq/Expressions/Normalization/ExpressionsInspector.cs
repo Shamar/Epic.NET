@@ -1,5 +1,5 @@
 //  
-//  ExpressionInspector.cs
+//  ExpressionsInspector.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>

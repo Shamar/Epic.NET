@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Expressions\Normalization\PartialEvaluatorQA.cs" />
+    <Compile Include="Expressions\Normalization\QueryableConstantResolverQA.cs" />
     <Compile Include="QueryableQA.cs" />
     <Compile Include="ReflectionQA.cs" />
     <Compile Include="QueryProviderQA.cs" />
