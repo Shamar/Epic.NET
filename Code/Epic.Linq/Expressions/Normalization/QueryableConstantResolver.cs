@@ -50,31 +50,33 @@ namespace Epic.Linq.Expressions.Normalization
 
         /// <summary>
         /// Visits a <see cref="ConstantExpression"/> containing an <see cref="IQueryable"/> and returns 
-        /// its Expression or the result of the execution.
+        /// its Expression or the result of the execution. 
+        /// Requires a <see cref="IQueryProvider"/> in the <paramref name="context"/>.
         /// </summary>
         /// <param name="target">Expression to visit.</param>
         /// <param name="context">Context of the visit.</param>
         /// <returns>The query's expression or its execution result, as appropriate.</returns>
         public Expression Visit(ConstantExpression target, IVisitContext context)
         {
-            IQueryProvider currentProvider = null;
-            if (!context.TryGet<IQueryProvider>(out currentProvider))
-                throw new InvalidOperationException("Missing the IQueryProvider in the state.");
+            IQueryProvider currentProvider = context.Get<IQueryProvider>();
             IQueryable query = target.Value as IQueryable;
 
-            if (object.ReferenceEquals(currentProvider, query.Provider))
+            IQueryProvider provider = query.Provider;
+            Expression expression = query.Expression;
+
+            if (object.ReferenceEquals(currentProvider, provider))
             {
-                if (query.Expression.NodeType == System.Linq.Expressions.ExpressionType.Constant)
+                if (expression.NodeType == System.Linq.Expressions.ExpressionType.Constant)
                 {
-                    // it is a repository
-                    ConstantExpression constantExpression = query.Expression as ConstantExpression;
-                    return ContinueVisit(constantExpression, context);
+                    // this ConstantExpression contains a queryable whose expression contains a ConstantExpression: its a repository!
+                    return target;
                 }
-                return VisitInner(query.Expression, context);
+                return VisitInner(expression, context);
             }
             else
             {
-                return Expression.Constant(query.Provider.Execute(query.Expression), target.Type);
+                Type newType = typeof(IEnumerable<>).MakeGenericType(query.ElementType);
+                return Expression.Constant(provider.Execute(expression), newType);
             }
         }
 
