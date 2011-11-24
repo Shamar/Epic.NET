@@ -40,7 +40,7 @@ namespace Epic.Linq.Expressions.Normalization
         {
             IVisitor<Expression, TExpression> visitor = base.AsVisitor (target);
 
-            if(null == visitor)
+            if(null != visitor)
             {
                 MethodCallExpression callExp = target as MethodCallExpression;
                 if(null != callExp.Object  || !callExp.Method.DeclaringType.Equals(typeof(System.Linq.Queryable)))

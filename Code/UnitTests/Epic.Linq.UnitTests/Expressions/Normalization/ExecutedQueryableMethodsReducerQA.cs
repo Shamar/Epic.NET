@@ -23,6 +23,8 @@
 //  
 using System;
 using NUnit.Framework;
+using System.Linq.Expressions;
+using Epic.Linq.Fakes;
 
 namespace Epic.Linq.Expressions.Normalization
 {
@@ -38,6 +40,21 @@ namespace Epic.Linq.Expressions.Normalization
             });
         }
 
+        [Test]
+        public void AsVisitor_forAMethodThatDontBelongToQueryable_returnsNull()
+        {
+            // arrange:
+            Expression<Func<int, string>> dummy = i => i.ToString();
+            MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
+            FakeNormalizer composition = new FakeNormalizer();
+            ExecutedQueryableMethodsReducer reducer = new ExecutedQueryableMethodsReducer(composition);
+
+            // act:
+            IVisitor<Expression, MethodCallExpression> result = reducer.AsVisitor(expressionToVisit);
+
+            // assert:
+            Assert.IsNull(result);
+        }
     }
 }
 
