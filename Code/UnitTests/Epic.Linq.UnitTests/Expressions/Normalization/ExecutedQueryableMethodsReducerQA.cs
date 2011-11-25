@@ -22,8 +22,9 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using NUnit.Framework;
+using System.Linq;
 using System.Linq.Expressions;
+using NUnit.Framework;
 using Epic.Linq.Fakes;
 
 namespace Epic.Linq.Expressions.Normalization
@@ -54,6 +55,23 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNull(result);
+        }
+
+        [Test]
+        public void AsVisitor_forAMethodThatBelongToQueryable_returnsItself()
+        {
+            // arrange:
+            IQueryable<int> queryable = Enumerable.Empty<int>().AsQueryable();
+            Expression<Func<int, bool>> dummy = i => queryable.Contains(i);
+            MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
+            FakeNormalizer composition = new FakeNormalizer();
+            ExecutedQueryableMethodsReducer reducer = new ExecutedQueryableMethodsReducer(composition);
+
+            // act:
+            IVisitor<Expression, MethodCallExpression> result = reducer.AsVisitor(expressionToVisit);
+
+            // assert:
+            Assert.AreSame(reducer, result);
         }
     }
 }
