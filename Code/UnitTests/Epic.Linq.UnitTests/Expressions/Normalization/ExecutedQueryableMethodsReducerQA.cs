@@ -25,11 +25,15 @@ using System;
 using NUnit.Framework;
 using System.Linq.Expressions;
 using Epic.Linq.Fakes;
+using Challenge00.DDDSample.Cargo;
+using System.Linq;
+using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Normalization
 {
     [TestFixture]
-    public class ExecutedQueryableMethodsReducerQA
+    public class ExecutedQueryableMethodsReducerQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withoutComposition_throwsArgumentNullException()
@@ -54,6 +58,32 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.IsNull(result);
+        }
+
+        [Test, TestCaseSource(typeof(Samples), "ReduceableMethodCallExpressions")]
+        public void Visit_aQueryableMethodOverAnExecutedQueryable_returnsAConstantExpressionContainingTheResultingEnumerable(MethodCallExpression expressionToVisit, IEnumerable<ICargo> originalEnumerable, IEnumerable<ICargo> finalEnumerable)
+        {
+            // arrange:
+            IQueryProvider queryable = GenerateStrictMock<IQueryProvider>();
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            context.Expect(c => c.Get<IQueryProvider>()).Return(queryable).Repeat.Once();
+            FakeNormalizer composition = new FakeNormalizer();
+            ExecutedQueryableMethodsReducer reducer = new ExecutedQueryableMethodsReducer(composition);
+            FakeVisitor<Expression, ConstantExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, ConstantExpression>>(composition);
+            mockVisitor.Expect(v => v.CallAsVisitor((ConstantExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            mockVisitor.Expect(v => v.Visit((ConstantExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
+            mockVisitor.Expect(v => v.CallAsVisitor<ConstantExpression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+
+            // act:
+            Expression result = composition.Visit(expressionToVisit, context);
+
+            // assert:
+            Verify.That(result).IsA<ConstantExpression>()
+                  .WithA(e => e.Value, 
+                         value => Verify.That(value).IsA<IEnumerable<ICargo>>()
+                                        .WithEach<ICargo>(e => e, (c, i) => Assert.AreSame(finalEnumerable.ElementAt(i), c)));
         }
     }
 }

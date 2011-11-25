@@ -26,6 +26,8 @@ using System.Linq.Expressions;
 using System.Collections.Generic;
 using NUnit.Framework;
 using System.Reflection;
+using System.Linq;
+using System.Collections;
 
 namespace Epic.Linq.Expressions
 {
