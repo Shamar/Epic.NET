@@ -22,12 +22,15 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using NUnit.Framework;
+using Epic.Linq.Expressions.Relational;
 using System;
+using Rhino.Mocks;
+using Epic.Linq.Fakes;
 
 namespace Epic.Linq.Expressions.Relational
 {
     [TestFixture()]
-    public class ConstantQA
+    public class ConstantQA: RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withoutValue_works()
@@ -92,6 +95,39 @@ namespace Epic.Linq.Expressions.Relational
             Assert.IsFalse (cString.Equals (obj));
             Assert.IsFalse (obj.Equals (cString));
         }
+        
+        [Test]
+        public void GetHashCode_fromNullConstant_returnsZero()
+        {
+            // arrange:
+            Constant<string> cString = new Constant<string>(null);
+
+            // act:
+            int hash = cString.GetHashCode ();
+            
+            // assert:
+            Assert.AreEqual (hash, 0);
+        }
+        
+        [Test]
+        public void Accept_withValidArguments_delegateVisitToTheRightVisitor()
+        {
+            // arrange:
+            object expectedResult = new object();
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            Constant<string> testConstant = new Constant<string> ("test");
+            IVisitor<object, Constant<string>> constantVisitor = GenerateStrictMock<IVisitor<object, Constant<string>>>();
+            constantVisitor.Expect(v => v.Visit(testConstant, context)).Return(expectedResult).Repeat.Once();
+            
+            IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
+            visitor.Expect (v => v.GetVisitor(testConstant)).Return(constantVisitor).Repeat.Once();
+
+            // act:
+            object result = testConstant.Accept(visitor, context);
+            // assert:
+            Assert.AreSame(expectedResult, result);
+        }
+
     }
 }
 
