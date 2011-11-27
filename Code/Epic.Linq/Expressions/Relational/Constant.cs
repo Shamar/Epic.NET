@@ -119,7 +119,7 @@ namespace Epic.Linq.Expressions.Relational
         public override int GetHashCode ()
         {
             if(null == (object)_value)
-                return int.MaxValue;
+                return 0;
             return _value.GetHashCode();
         }
     }
