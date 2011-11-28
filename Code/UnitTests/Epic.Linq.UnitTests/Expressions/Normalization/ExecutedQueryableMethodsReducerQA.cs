@@ -77,7 +77,7 @@ namespace Epic.Linq.Expressions.Normalization
             Assert.AreSame(reducer, result);
         }
 
-        [Test, TestCaseSource(typeof(Samples), "ReduceableMethodCallExpressions")]
+        //[Test, TestCaseSource(typeof(Samples), "ReduceableMethodCallExpressions")]
         public void Visit_aQueryableMethodOverAnExecutedQueryable_returnsAConstantExpressionContainingTheResultingEnumerable(MethodCallExpression expressionToVisit, IEnumerable<ICargo> originalEnumerable, IEnumerable<ICargo> finalEnumerable)
         {
             // arrange:
