@@ -26,6 +26,7 @@ using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Linq;
 
 namespace Epic.Linq
 {
@@ -141,6 +142,14 @@ namespace Epic.Linq
             }
         }
 
+        private static MethodInfo GetGenericMethodInfoFromExpressionBody<T>(Expression<Func<T>> expression)
+        {
+            MethodInfo method = ((MethodCallExpression)expression.Body).Method;
+            if(method.IsGenericMethod)
+                return method.GetGenericMethodDefinition();
+            return method;
+        }
+
         /// <summary>
         /// Queryable related utilities.
         /// </summary>
@@ -153,20 +162,310 @@ namespace Epic.Linq
             static Queryable()
             {
                 _methodsTranslations = new Dictionary<MethodInfo, MethodInfo>();
+                IQueryable<int> q = null;
+                IEnumerable<int> e = null;
+                IQueryable<decimal?> qDecimalN = null;
+                IEnumerable<decimal?> eDecimalN = null;
+                IQueryable<decimal> qDecimal = null;
+                IEnumerable<decimal> eDecimal = null;
+                IQueryable<int> qInt = null;
+                IEnumerable<int> eInt = null;
+                IQueryable<int?> qIntN = null;
+                IEnumerable<int?> eIntN = null;
+                IQueryable<long> qLong = null;
+                IEnumerable<long> eLong = null;
+                IQueryable<long?> qLongN = null;
+                IEnumerable<long?> eLongN = null;
+                IQueryable<double> qDouble = null;
+                IEnumerable<double> eDouble = null;
+                IQueryable<double?> qDoubleN = null;
+                IEnumerable<double?> eDoubleN = null;
+                IQueryable<float> qFloat = null;
+                IEnumerable<float> eFloat = null;
+                IQueryable<float?> qFloatN = null;
+                IEnumerable<float?> eFloatN = null;
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Aggregate(0, (i, acc) => i + acc)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Aggregate(0, (i, acc) => i + acc))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Aggregate((i, acc) => i + acc)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Aggregate((i, acc) => i + acc))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Aggregate(0, (i, acc) => i + acc, acc => acc)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Aggregate(0, (i, acc) => i + acc, acc => acc))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.All(i => i > 0)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.All(i => i > 0))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Any()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Any())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Any(i => i > 0)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Any(i => i > 0))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qInt.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eInt.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qIntN.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eIntN.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qDecimal.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eDecimal.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qDecimalN.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eDecimalN.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qLong.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eLong.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qLongN.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eLongN.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qDouble.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eDouble.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qDoubleN.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eDoubleN.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qFloat.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eFloat.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => qFloatN.Average()),
+                    GetGenericMethodInfoFromExpressionBody(() => eFloatN.Average())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => Convert.ToDecimal(i))),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => Convert.ToDecimal(i)))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => i > 0 ? new Nullable<decimal>(Convert.ToDecimal(i)) : null)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => i > 0 ? new Nullable<decimal>(Convert.ToDecimal(i)) : null))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => i)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => i))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => i > 0 ? new Nullable<int>(i) : null)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => i > 0 ? new Nullable<int>(i) : null))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => Convert.ToInt64(i))),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => Convert.ToInt64(i)))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => i > 0 ? new Nullable<long>(Convert.ToInt64(i)) : null)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => i > 0 ? new Nullable<long>(Convert.ToInt64(i)) : null))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => Convert.ToDouble(i))),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => Convert.ToDouble(i)))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => i > 0 ? new Nullable<double>(Convert.ToDouble(i)) : null)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => i > 0 ? new Nullable<double>(Convert.ToDouble(i)) : null))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => (float)i)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => (float)i))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Average(i => i > 0 ? new Nullable<float>((float)i) : null)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Average(i => i > 0 ? new Nullable<float>((float)i) : null))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Cast<decimal>()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Cast<decimal>())
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Concat(null)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Concat(null))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Contains(1)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Contains(1))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Contains(1, EqualityComparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Contains(1, EqualityComparer<int>.Default))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Count()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Count())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Count(i => i > 0)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Count(i => i > 0))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.DefaultIfEmpty()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.DefaultIfEmpty())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.DefaultIfEmpty(5)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.DefaultIfEmpty(5))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Distinct()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Distinct())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Distinct(EqualityComparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Distinct(EqualityComparer<int>.Default))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.ElementAt(1)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.ElementAt(1))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.ElementAtOrDefault(1)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.ElementAtOrDefault(1))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Except(new int[0])),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Except(new int[0]))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Except(new int[0], EqualityComparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Except(new int[0], EqualityComparer<int>.Default))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.First()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.First())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.First(i => i > 0)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.First(i => i > 0))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.FirstOrDefault()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.FirstOrDefault())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.FirstOrDefault(i => i > 0)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.FirstOrDefault(i => i > 0))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i % 2)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i % 2))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i % 2, i => i.ToString())),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i % 2, i => i.ToString()))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i % 2, i => i.ToString(), (k, g) => g.Count())),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i % 2, i => i.ToString(), (k, g) => g.Count()))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i % 2, i => i.ToString(), (k, g) => g.Count(), EqualityComparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i % 2, i => i.ToString(), (k, g) => g.Count(), EqualityComparer<int>.Default))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(new int[0], i => i, j => j, (k, g) => g.Count())),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(new int[0], i => i, j => j, (k, g) => g.Count()))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(new int[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(new int[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<int>.Default))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(new int[0])),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(new int[0]))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(new int[0], EqualityComparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(new int[0], EqualityComparer<int>.Default))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Join(new int[0], i => i, j => j, (k, g) => k + g)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Join(new int[0], i => i, j => j, (k, g) => k + g))
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Join(new int[0], i => i, j => j, (k, g) => k + g, EqualityComparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Join(new int[0], i => i, j => j, (k, g) => k + g, EqualityComparer<int>.Default))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Last()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Last())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Last(i => i > 0)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Last(i => i > 0))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.LastOrDefault()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.LastOrDefault())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.LastOrDefault(i => i > 0)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.LastOrDefault(i => i > 0))
+                    );
+
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.LongCount()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.LongCount())
+                    );
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.LongCount(i => i > 0)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.LongCount(i => i > 0))
+                    );
+
+                // TODO: how to handle Max? There exists more signatures in Enumerable (for int, float etc) and less
+                //       for Queryable (just TSource), but also Enumerable Have a TSource version.
+                _methodsTranslations.Add(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Max()),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Max())
+                    );
+
+                /*
                 Type enumerableType = typeof(System.Linq.Enumerable);
                 Type queryableType = typeof(System.Linq.Queryable);
 
                 MethodInfo[] enumerablePublicMethods = enumerableType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
                 MethodInfo[] queryablePublicMethods = queryableType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
 
-                Type funcType = typeof(Func<>);
+                Type[] funcTypes = new Type[] { typeof(Func<,>), typeof(Func<,,>), typeof(Func<,,,>) };
 
                 for (int i = 0; i < queryablePublicMethods.Length; ++i)
                 {
-                    MethodInfo enumerableMethod = queryablePublicMethods[i];
+                    MethodInfo queryableMethod= queryablePublicMethods[i];
                     for (int j = 0; j < enumerablePublicMethods.Length; ++j)
                     {
-                        MethodInfo queryableMethod = enumerablePublicMethods[j];
+                        MethodInfo enumerableMethod = enumerablePublicMethods[j];
                         ParameterInfo[] enumerableParameters = enumerableMethod.GetParameters();
                         ParameterInfo[] queryableParameters = queryableMethod.GetParameters();
                         if (enumerableParameters.Length == queryableParameters.Length && enumerableMethod.Name.Equals(queryableMethod.Name))
@@ -177,7 +476,7 @@ namespace Epic.Linq
                                 Type ePType = enumerableParameters[p].ParameterType;
                                 Type qPType = queryableParameters[p].ParameterType;
                                 Type expectedQPType = ePType;
-                                if (ePType.IsGenericType && funcType.Equals(ePType.GetGenericTypeDefinition()))
+                                if (ePType.IsGenericType && funcTypes.Contains(ePType.GetGenericTypeDefinition()))
                                 {
                                     expectedQPType = typeof(Expression<>).MakeGenericType(ePType);
                                 }
@@ -194,7 +493,7 @@ namespace Epic.Linq
                             }
                         }
                     }
-                }
+                }*/
             }
 
             /// <summary>
@@ -205,10 +504,11 @@ namespace Epic.Linq
             /// <exception cref="KeyNotFoundException">The <paramref name="queryableMethod"/> has no equivalent in <see cref="Enumerable"/>.</exception>
             public static MethodInfo GetEnumerableEquivalent(MethodInfo queryableMethod)
             {
+                MethodInfo genericQueryableMethodDefinition = queryableMethod.GetGenericMethodDefinition();
                 MethodInfo method = null;
                 try
                 {
-                    method = _methodsTranslations[queryableMethod.GetGenericMethodDefinition()];
+                    method = _methodsTranslations[genericQueryableMethodDefinition];
                 }
                 catch (KeyNotFoundException e)
                 {

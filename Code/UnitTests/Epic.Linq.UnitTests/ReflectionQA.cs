@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using System.Reflection;
+using System.Linq.Expressions;
 
 namespace Epic.Linq
 {
@@ -196,6 +197,46 @@ namespace Epic.Linq
             });
             Assert.IsNull(result);
         }
+
+        public static IEnumerable<TestCaseData> QueryableEnumerableEquivantMethods
+        {
+            get
+            {
+                IQueryable<int> dummyQueryable = null;
+                IEnumerable<int> dummyEnumerable = null;
+                yield return new TestCaseData( 
+                    GetMethodInfo(() => dummyQueryable.Aggregate(0, (i,acc) => i + acc)), 
+                    GetMethodInfo(() => dummyEnumerable.Aggregate(0, (i,acc) => i + acc))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => dummyQueryable.Aggregate((i, acc) => i + acc)),
+                    GetMethodInfo(() => dummyEnumerable.Aggregate((i, acc) => i + acc))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => dummyQueryable.Aggregate(0, (i, acc) => i + acc, acc => acc )),
+                    GetMethodInfo(() => dummyEnumerable.Aggregate(0, (i, acc) => i + acc, acc => acc))
+                    );
+            }
+        }
+
+        private static MethodInfo GetMethodInfo<T>(Expression<Func<T>> expression)
+        {
+            return ((MethodCallExpression)expression.Body).Method;
+        }
+
+        #region Queryable
+
+        [Test, TestCaseSource("QueryableEnumerableEquivantMethods")]
+        public void GetEnumerableEquivalent_ofAQueryableMethod_returnsTheRightMethod(MethodInfo queryableMethod, MethodInfo enumerableMethod)
+        {
+            // act:
+            MethodInfo enumerableEquivalent = Reflection.Queryable.GetEnumerableEquivalent(queryableMethod);
+
+            // assert:
+            Assert.AreSame(enumerableMethod, enumerableEquivalent);
+        }
+
+        #endregion Queryable
     }
 }
 
