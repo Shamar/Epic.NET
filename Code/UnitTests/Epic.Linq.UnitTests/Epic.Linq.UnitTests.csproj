@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Expressions\Normalization\PartialEvaluatorQA.cs" />
     <Compile Include="Expressions\Normalization\QueryableConstantResolverQA.cs" />
+    <Compile Include="Fakes\UnknownExpression.cs" />
     <Compile Include="QueryableQA.cs" />
     <Compile Include="ReflectionQA.cs" />
     <Compile Include="QueryProviderQA.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Expressions\Normalization\ExpressionsInspectorQA.cs" />
     <Compile Include="Expressions\Samples.cs" />
     <Compile Include="Fakes\IDerivedExpressionsVisitor.cs" />
-    <Compile Include="Fakes\UnknownExpression.cs" />
     <Compile Include="Fakes\ClassWithFieldAndProperty.cs" />
     <Compile Include="Fakes\DummyResultExpression.cs" />
     <Compile Include="Expressions\Relational\RelationAttributeQA.cs" />
