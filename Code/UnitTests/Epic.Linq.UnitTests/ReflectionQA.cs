@@ -202,19 +202,475 @@ namespace Epic.Linq
         {
             get
             {
-                IQueryable<int> dummyQueryable = null;
-                IEnumerable<int> dummyEnumerable = null;
-                yield return new TestCaseData( 
-                    GetMethodInfo(() => dummyQueryable.Aggregate(0, (i,acc) => i + acc)), 
-                    GetMethodInfo(() => dummyEnumerable.Aggregate(0, (i,acc) => i + acc))
+                IQueryable<object> q = null;
+                IEnumerable<object> e = null;
+                IQueryable<decimal?> qDecimalN = null;
+                IEnumerable<decimal?> eDecimalN = null;
+                IQueryable<decimal> qDecimal = null;
+                IEnumerable<decimal> eDecimal = null;
+                IQueryable<int> qInt = null;
+                IEnumerable<int> eInt = null;
+                IQueryable<int?> qIntN = null;
+                IEnumerable<int?> eIntN = null;
+                IQueryable<long> qLong = null;
+                IEnumerable<long> eLong = null;
+                IQueryable<long?> qLongN = null;
+                IEnumerable<long?> eLongN = null;
+                IQueryable<double> qDouble = null;
+                IEnumerable<double> eDouble = null;
+                IQueryable<double?> qDoubleN = null;
+                IEnumerable<double?> eDoubleN = null;
+                IQueryable<float> qFloat = null;
+                IEnumerable<float> eFloat = null;
+                IQueryable<float?> qFloatN = null;
+                IEnumerable<float?> eFloatN = null;
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Aggregate(0, (i, acc) => i.GetHashCode() + acc.GetHashCode())),
+                    GetMethodInfo(() => e.Aggregate(0, (i, acc) => i.GetHashCode() + acc.GetHashCode()))
                     );
                 yield return new TestCaseData(
-                    GetMethodInfo(() => dummyQueryable.Aggregate((i, acc) => i + acc)),
-                    GetMethodInfo(() => dummyEnumerable.Aggregate((i, acc) => i + acc))
+                    GetMethodInfo(() => q.Aggregate((i, acc) => i.GetHashCode() + acc.GetHashCode())),
+                    GetMethodInfo(() => e.Aggregate((i, acc) => i.GetHashCode() + acc.GetHashCode()))
                     );
                 yield return new TestCaseData(
-                    GetMethodInfo(() => dummyQueryable.Aggregate(0, (i, acc) => i + acc, acc => acc )),
-                    GetMethodInfo(() => dummyEnumerable.Aggregate(0, (i, acc) => i + acc, acc => acc))
+                    GetMethodInfo(() => q.Aggregate(0, (i, acc) => i.GetHashCode() + acc.GetHashCode(), acc => acc.GetHashCode())),
+                    GetMethodInfo(() => e.Aggregate(0, (i, acc) => i.GetHashCode() + acc.GetHashCode(), acc => acc.GetHashCode()))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.All(i => i.GetHashCode() > 0)),
+                    GetMethodInfo(() => e.All(i => i.GetHashCode() > 0))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Any()),
+                    GetMethodInfo(() => e.Any())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Any(i => i.GetHashCode() > 0)),
+                    GetMethodInfo(() => e.Any(i => i.GetHashCode() > 0))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qInt.Average()),
+                    GetMethodInfo(() => eInt.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qIntN.Average()),
+                    GetMethodInfo(() => eIntN.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qDecimal.Average()),
+                    GetMethodInfo(() => eDecimal.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qDecimalN.Average()),
+                    GetMethodInfo(() => eDecimalN.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qLong.Average()),
+                    GetMethodInfo(() => eLong.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qLongN.Average()),
+                    GetMethodInfo(() => eLongN.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qDouble.Average()),
+                    GetMethodInfo(() => eDouble.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qDoubleN.Average()),
+                    GetMethodInfo(() => eDoubleN.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qFloat.Average()),
+                    GetMethodInfo(() => eFloat.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => qFloatN.Average()),
+                    GetMethodInfo(() => eFloatN.Average())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => Convert.ToDecimal(i))),
+                    GetMethodInfo(() => e.Average(i => Convert.ToDecimal(i)))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => i.GetHashCode() > 0 ? new Nullable<decimal>(Convert.ToDecimal(i)) : null)),
+                    GetMethodInfo(() => e.Average(i => i.GetHashCode() > 0 ? new Nullable<decimal>(Convert.ToDecimal(i)) : null))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => i.GetHashCode())),
+                    GetMethodInfo(() => e.Average(i => i.GetHashCode()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => i.GetHashCode() > 0 ? new Nullable<int>(i.GetHashCode()) : null)),
+                    GetMethodInfo(() => e.Average(i => i.GetHashCode() > 0 ? new Nullable<int>(i.GetHashCode()) : null))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => Convert.ToInt64(i))),
+                    GetMethodInfo(() => e.Average(i => Convert.ToInt64(i)))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => i.GetHashCode() > 0 ? new Nullable<long>(Convert.ToInt64(i)) : null)),
+                    GetMethodInfo(() => e.Average(i => i.GetHashCode() > 0 ? new Nullable<long>(Convert.ToInt64(i)) : null))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => Convert.ToDouble(i))),
+                    GetMethodInfo(() => e.Average(i => Convert.ToDouble(i)))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => i.GetHashCode() > 0 ? new Nullable<double>(Convert.ToDouble(i)) : null)),
+                    GetMethodInfo(() => e.Average(i => i.GetHashCode() > 0 ? new Nullable<double>(Convert.ToDouble(i)) : null))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => (float)i)),
+                    GetMethodInfo(() => e.Average(i => (float)i))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Average(i => i.GetHashCode() > 0 ? new Nullable<float>((float)i) : null)),
+                    GetMethodInfo(() => e.Average(i => i.GetHashCode() > 0 ? new Nullable<float>((float)i) : null))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Cast<decimal>()),
+                    GetMethodInfo(() => e.Cast<decimal>())
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Concat(null)),
+                    GetMethodInfo(() => e.Concat(null))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Contains(1)),
+                    GetMethodInfo(() => e.Contains(1))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Contains(1, EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Contains(1, EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Count()),
+                    GetMethodInfo(() => e.Count())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Count(i => true)),
+                    GetMethodInfo(() => e.Count(i => true))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.DefaultIfEmpty()),
+                    GetMethodInfo(() => e.DefaultIfEmpty())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.DefaultIfEmpty(5)),
+                    GetMethodInfo(() => e.DefaultIfEmpty(5))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Distinct()),
+                    GetMethodInfo(() => e.Distinct())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Distinct(EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Distinct(EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.ElementAt(1)),
+                    GetMethodInfo(() => e.ElementAt(1))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.ElementAtOrDefault(1)),
+                    GetMethodInfo(() => e.ElementAtOrDefault(1))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Except(new object[0])),
+                    GetMethodInfo(() => e.Except(new object[0]))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Except(new object[0], EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Except(new object[0], EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.First()),
+                    GetMethodInfo(() => e.First())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.First(i => true)),
+                    GetMethodInfo(() => e.First(i => true))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.FirstOrDefault()),
+                    GetMethodInfo(() => e.FirstOrDefault())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.FirstOrDefault(i => false)),
+                    GetMethodInfo(() => e.FirstOrDefault(i => false))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupBy(i => i.GetType())),
+                    GetMethodInfo(() => e.GroupBy(i => i.GetType()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupBy(i => i.GetType(), i => i.ToString())),
+                    GetMethodInfo(() => e.GroupBy(i => i.GetType(), i => i.ToString()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count())),
+                    GetMethodInfo(() => e.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count(), EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count(), EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count())),
+                    GetMethodInfo(() => e.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Intersect(new object[0])),
+                    GetMethodInfo(() => e.Intersect(new object[0]))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Intersect(new object[0], EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Intersect(new object[0], EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode())),
+                    GetMethodInfo(() => e.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Last()),
+                    GetMethodInfo(() => e.Last())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Last(i => true)),
+                    GetMethodInfo(() => e.Last(i => true))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.LastOrDefault()),
+                    GetMethodInfo(() => e.LastOrDefault())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.LastOrDefault(i => false)),
+                    GetMethodInfo(() => e.LastOrDefault(i => false))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.LongCount()),
+                    GetMethodInfo(() => e.LongCount())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.LongCount(i => true)),
+                    GetMethodInfo(() => e.LongCount(i => true))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Max()),
+                    GetMethodInfo(() => e.Max())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Max(i => i.GetHashCode())),
+                    GetMethodInfo(() => System.Linq.Enumerable.Max<object, int>(e, i => i.GetHashCode()))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Min()),
+                    GetMethodInfo(() => e.Min())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Min(i => i.GetHashCode())),
+                    GetMethodInfo(() => System.Linq.Enumerable.Min<object, int>(e, i => i.GetHashCode()))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OfType<string>()),
+                    GetMethodInfo(() => e.OfType<string>())
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OrderBy(i => i.GetHashCode())),
+                    GetMethodInfo(() => e.OrderBy(i => i.GetHashCode()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OrderBy(i => i.GetHashCode(), Comparer<int>.Default)),
+                    GetMethodInfo(() => e.OrderBy(i => i.GetHashCode(), Comparer<int>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OrderByDescending(i => i.GetHashCode())),
+                    GetMethodInfo(() => e.OrderByDescending(i => i.GetHashCode()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OrderByDescending(i => i.GetHashCode(), Comparer<int>.Default)),
+                    GetMethodInfo(() => e.OrderByDescending(i => i.GetHashCode(), Comparer<int>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Reverse()),
+                    GetMethodInfo(() => e.Reverse())
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Select(i => i.GetType())),
+                    GetMethodInfo(() => e.Select(i => i.GetType()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Select((i, p) => i.GetHashCode() % p)),
+                    GetMethodInfo(() => e.Select((i, p) => i.GetHashCode() % p))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SelectMany(i => new int[] { i.GetHashCode() })),
+                    GetMethodInfo(() => e.SelectMany(i => new int[] { i.GetHashCode() }))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SelectMany((i, p) => new int[] { i.GetHashCode(), p })),
+                    GetMethodInfo(() => e.SelectMany((i, p) => new int[] { i.GetHashCode(), p }))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SelectMany(i => new int[] { i.GetHashCode() }, (i, c) => i.GetHashCode() + c)),
+                    GetMethodInfo(() => e.SelectMany(i => new int[] { i.GetHashCode() }, (i, c) => i.GetHashCode() + c))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SelectMany((i, p) => new int[] { i.GetHashCode(), p }, (i, c) => i.GetHashCode() + c)),
+                    GetMethodInfo(() => e.SelectMany((i, p) => new int[] { i.GetHashCode(), p }, (i, c) => i.GetHashCode() + c))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SequenceEqual(new object[0])),
+                    GetMethodInfo(() => e.SequenceEqual(new object[0]))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SequenceEqual(new object[0], EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.SequenceEqual(new object[0], EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Single()),
+                    GetMethodInfo(() => e.Single())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Single(i => true)),
+                    GetMethodInfo(() => e.Single(i => true))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SingleOrDefault()),
+                    GetMethodInfo(() => e.SingleOrDefault())
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SingleOrDefault(i => true)),
+                    GetMethodInfo(() => e.SingleOrDefault(i => true))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Skip(1)),
+                    GetMethodInfo(() => e.Skip(1))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SkipWhile(i => false)),
+                    GetMethodInfo(() => e.SkipWhile(i => false))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.SkipWhile((i, p) => false)),
+                    GetMethodInfo(() => e.SkipWhile((i, p) => false))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => Convert.ToDecimal(i))),
+                    GetMethodInfo(() => e.Sum(i => Convert.ToDecimal(i)))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => i.GetHashCode() > 0 ? new Nullable<decimal>(Convert.ToDecimal(i)) : null)),
+                    GetMethodInfo(() => e.Sum(i => i.GetHashCode() > 0 ? new Nullable<decimal>(Convert.ToDecimal(i)) : null))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => i.GetHashCode())),
+                    GetMethodInfo(() => e.Sum(i => i.GetHashCode()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => i.GetHashCode() > 0 ? new Nullable<int>(i.GetHashCode()) : null)),
+                    GetMethodInfo(() => e.Sum(i => i.GetHashCode() > 0 ? new Nullable<int>(i.GetHashCode()) : null))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => Convert.ToInt64(i))),
+                    GetMethodInfo(() => e.Sum(i => Convert.ToInt64(i)))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => i.GetHashCode() > 0 ? new Nullable<long>(Convert.ToInt64(i)) : null)),
+                    GetMethodInfo(() => e.Sum(i => i.GetHashCode() > 0 ? new Nullable<long>(Convert.ToInt64(i)) : null))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => Convert.ToDouble(i))),
+                    GetMethodInfo(() => e.Sum(i => Convert.ToDouble(i)))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => i.GetHashCode() > 0 ? new Nullable<double>(Convert.ToDouble(i)) : null)),
+                    GetMethodInfo(() => e.Sum(i => i.GetHashCode() > 0 ? new Nullable<double>(Convert.ToDouble(i)) : null))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => (float)i)),
+                    GetMethodInfo(() => e.Sum(i => (float)i))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Sum(i => i.GetHashCode() > 0 ? new Nullable<float>((float)i) : null)),
+                    GetMethodInfo(() => e.Sum(i => i.GetHashCode() > 0 ? new Nullable<float>((float)i) : null))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Take(1)),
+                    GetMethodInfo(() => e.Take(1))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.TakeWhile(i => true)),
+                    GetMethodInfo(() => e.TakeWhile(i => true))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.TakeWhile((i, p) => true)),
+                    GetMethodInfo(() => e.TakeWhile((i, p) => true))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Union(new object[0])),
+                    GetMethodInfo(() => e.Union(new object[0]))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Union(new object[0], EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Union(new object[0], EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Where(i => true)),
+                    GetMethodInfo(() => e.Where(i => true))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Where((i, p) => true)),
+                    GetMethodInfo(() => e.Where((i, p) => true))
                     );
             }
         }

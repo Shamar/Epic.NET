@@ -470,7 +470,7 @@ namespace Epic.Linq
                     );
                 AddTranslation(
                     GetGenericMethodInfoFromExpressionBody(() => q.Max(i => i.GetHashCode())),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Max(i => i.GetHashCode()))
+                    GetGenericMethodInfoFromExpressionBody(() => System.Linq.Enumerable.Max<object, int>(e, i => i.GetHashCode()))
                     );
 
                 AddTranslation(
@@ -479,7 +479,7 @@ namespace Epic.Linq
                     );
                 AddTranslation(
                     GetGenericMethodInfoFromExpressionBody(() => q.Min(i => i.GetHashCode())),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Min(i => i.GetHashCode()))
+                    GetGenericMethodInfoFromExpressionBody(() => System.Linq.Enumerable.Min<object, int>(e, i => i.GetHashCode()))
                     );
 
                 AddTranslation(
@@ -659,17 +659,18 @@ namespace Epic.Linq
             /// <exception cref="KeyNotFoundException">The <paramref name="queryableMethod"/> has no equivalent in <see cref="Enumerable"/>.</exception>
             public static MethodInfo GetEnumerableEquivalent(MethodInfo queryableMethod)
             {
-                MethodInfo genericQueryableMethodDefinition = queryableMethod.GetGenericMethodDefinition();
+                if (null == queryableMethod)
+                    throw new ArgumentNullException("queryableMethod");
+                if (!queryableMethod.DeclaringType.Equals(typeof(System.Linq.Queryable)))
+                    throw new ArgumentException("The queryableMethod must belong to System.Linq.Queryable.", "queryableMethod");
+
                 MethodInfo method = null;
-                try
+                if (queryableMethod.IsGenericMethod)
                 {
-                    method = _methodsTranslations[genericQueryableMethodDefinition];
+                    method = _methodsTranslations[queryableMethod.GetGenericMethodDefinition()];
+                    return method.MakeGenericMethod(queryableMethod.GetGenericArguments());
                 }
-                catch (KeyNotFoundException e)
-                {
-                    throw new KeyNotFoundException(string.Format("Can not find the Queryable equivalent of the Enumerable's {0} method.", queryableMethod.Name), e);
-                }
-                return method.MakeGenericMethod(queryableMethod.GetGenericArguments());
+                return _methodsTranslations[queryableMethod];
             }
         }
 
