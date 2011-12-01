@@ -692,7 +692,59 @@ namespace Epic.Linq
             Assert.AreSame(enumerableMethod, enumerableEquivalent);
         }
 
+        [Test]
+        public void GetEnumerableEquivalent_ofNull_throwsArgumentNullException()
+        {
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                Reflection.Queryable.GetEnumerableEquivalent(null);
+            });
+        }
+
+        [Test]
+        public void GetEnumerableEquivalent_ofAMethodThatDontBelongToQueryable_throwsArgumentException()
+        {
+            // arrange:
+            MethodInfo[] sampleMethods = new MethodInfo[]
+            {
+                GetMethodInfo(() => int.Parse("1")),
+                GetMethodInfo(() => string.Join(",", new string[0]))
+            };
+
+            // assert:
+            foreach (MethodInfo method in sampleMethods)
+            {
+                Assert.Throws<ArgumentException>(delegate {
+                    Reflection.Queryable.GetEnumerableEquivalent(method);
+                });
+            }
+        }
+
+        [Test, TestCaseSource("QueryableEnumerableEquivantMethods")]
+        public void GetEnumerableEquivalent_ofAMethodThatBelongToEnumerable_throwsArgumentException(object dummyVar, MethodInfo enumerableMethod)
+        {
+            // assert:
+            Assert.Throws<ArgumentException>(delegate
+            {
+                Reflection.Queryable.GetEnumerableEquivalent(enumerableMethod);
+            });
+        }
+
         #endregion Queryable
+
+        #region Enumerable
+
+        [Test, TestCaseSource("QueryableEnumerableEquivantMethods")]
+        public void GetQueryableEquivalent_ofAEnumerableMethod_returnsTheRightMethod(MethodInfo queryableMethod, MethodInfo enumerableMethod)
+        {
+            // act:
+            MethodInfo queryableEquivalent = Reflection.Enumerable.GetQueryableEquivalent(enumerableMethod);
+
+            // assert:
+            Assert.AreSame(queryableMethod, queryableEquivalent);
+        }
+
+        #endregion Enumerable
     }
 }
 
