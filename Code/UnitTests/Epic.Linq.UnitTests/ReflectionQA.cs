@@ -202,6 +202,7 @@ namespace Epic.Linq
         {
             get
             {
+                IEnumerable<object> dummyEnumerable = null;
                 IQueryable<object> q = null;
                 IEnumerable<object> e = null;
                 IQueryable<decimal?> qDecimalN = null;
@@ -390,12 +391,12 @@ namespace Epic.Linq
                     );
 
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.Except(new object[0])),
-                    GetMethodInfo(() => e.Except(new object[0]))
+                    GetMethodInfo(() => q.Except(dummyEnumerable)),
+                    GetMethodInfo(() => e.Except(dummyEnumerable))
                     );
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.Except(new object[0], EqualityComparer<object>.Default)),
-                    GetMethodInfo(() => e.Except(new object[0], EqualityComparer<object>.Default))
+                    GetMethodInfo(() => q.Except(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Except(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 yield return new TestCaseData(
@@ -434,30 +435,30 @@ namespace Epic.Linq
                     );
 
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count())),
-                    GetMethodInfo(() => e.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count()))
+                    GetMethodInfo(() => q.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count())),
+                    GetMethodInfo(() => e.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count()))
                     );
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default)),
-                    GetMethodInfo(() => e.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default))
-                    );
-
-                yield return new TestCaseData(
-                    GetMethodInfo(() => q.Intersect(new object[0])),
-                    GetMethodInfo(() => e.Intersect(new object[0]))
-                    );
-                yield return new TestCaseData(
-                    GetMethodInfo(() => q.Intersect(new object[0], EqualityComparer<object>.Default)),
-                    GetMethodInfo(() => e.Intersect(new object[0], EqualityComparer<object>.Default))
+                    GetMethodInfo(() => q.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default))
                     );
 
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode())),
-                    GetMethodInfo(() => e.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode()))
+                    GetMethodInfo(() => q.Intersect(dummyEnumerable)),
+                    GetMethodInfo(() => e.Intersect(dummyEnumerable))
                     );
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default)),
-                    GetMethodInfo(() => e.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default))
+                    GetMethodInfo(() => q.Intersect(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Intersect(dummyEnumerable, EqualityComparer<object>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode())),
+                    GetMethodInfo(() => e.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default))
                     );
 
                 yield return new TestCaseData(
@@ -560,12 +561,12 @@ namespace Epic.Linq
                     );
 
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.SequenceEqual(new object[0])),
-                    GetMethodInfo(() => e.SequenceEqual(new object[0]))
+                    GetMethodInfo(() => q.SequenceEqual(dummyEnumerable)),
+                    GetMethodInfo(() => e.SequenceEqual(dummyEnumerable))
                     );
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.SequenceEqual(new object[0], EqualityComparer<object>.Default)),
-                    GetMethodInfo(() => e.SequenceEqual(new object[0], EqualityComparer<object>.Default))
+                    GetMethodInfo(() => q.SequenceEqual(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.SequenceEqual(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 yield return new TestCaseData(
@@ -656,12 +657,12 @@ namespace Epic.Linq
                     );
 
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.Union(new object[0])),
-                    GetMethodInfo(() => e.Union(new object[0]))
+                    GetMethodInfo(() => q.Union(dummyEnumerable)),
+                    GetMethodInfo(() => e.Union(dummyEnumerable))
                     );
                 yield return new TestCaseData(
-                    GetMethodInfo(() => q.Union(new object[0], EqualityComparer<object>.Default)),
-                    GetMethodInfo(() => e.Union(new object[0], EqualityComparer<object>.Default))
+                    GetMethodInfo(() => q.Union(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.Union(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 yield return new TestCaseData(

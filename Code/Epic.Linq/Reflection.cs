@@ -179,6 +179,7 @@ namespace Epic.Linq
             static Queryable()
             {
                 _methodsTranslations = new Dictionary<MethodInfo, MethodInfo>();
+                IEnumerable<object> dummyEnumerable = null;
                 IQueryable<object> q = null;
                 IEnumerable<object> e = null;
                 IQueryable<decimal?> qDecimalN = null;
@@ -367,12 +368,12 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.Except(new object[0])),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Except(new object[0]))
+                    GetGenericMethodInfoFromExpressionBody(() => q.Except(dummyEnumerable)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Except(dummyEnumerable))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.Except(new object[0], EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Except(new object[0], EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => q.Except(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Except(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
@@ -411,30 +412,30 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count())),
-                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count()))
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count())),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count()))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default))
-                    );
-
-                AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(new object[0])),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(new object[0]))
-                    );
-                AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(new object[0], EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(new object[0], EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode())),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode()))
+                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(dummyEnumerable)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(dummyEnumerable))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(dummyEnumerable, EqualityComparer<object>.Default))
+                    );
+
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode())),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode()))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
@@ -537,12 +538,12 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.SequenceEqual(new object[0])),
-                    GetGenericMethodInfoFromExpressionBody(() => e.SequenceEqual(new object[0]))
+                    GetGenericMethodInfoFromExpressionBody(() => q.SequenceEqual(dummyEnumerable)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.SequenceEqual(dummyEnumerable))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.SequenceEqual(new object[0], EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => e.SequenceEqual(new object[0], EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => q.SequenceEqual(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.SequenceEqual(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
@@ -633,12 +634,12 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.Union(new object[0])),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Union(new object[0]))
+                    GetGenericMethodInfoFromExpressionBody(() => q.Union(dummyEnumerable)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Union(dummyEnumerable))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => q.Union(new object[0], EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => e.Union(new object[0], EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => q.Union(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Union(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
@@ -656,6 +657,8 @@ namespace Epic.Linq
             /// </summary>
             /// <param name="queryableMethod">Queryable method to translate.</param>
             /// <returns>The Enumerable's equivalent of <paramref name="queryableMethod"/>.</returns>
+            /// <exception cref="ArgumentNullException">Thrown when <paramref name="queryableMethod"/> is null.</exception>
+            /// <exception cref="ArgumentException">Thrown when <paramref name="queryableMethod"/> doesn't belong to <see cref="System.Linq.Queryable"/>.</exception>
             /// <exception cref="KeyNotFoundException">The <paramref name="queryableMethod"/> has no equivalent in <see cref="Enumerable"/>.</exception>
             public static MethodInfo GetEnumerableEquivalent(MethodInfo queryableMethod)
             {
@@ -710,6 +713,7 @@ namespace Epic.Linq
             static Enumerable()
             {
                 _methodsTranslations = new Dictionary<MethodInfo, MethodInfo>();
+                IEnumerable<object> dummyEnumerable = null;
                 IEnumerable<object> e = null;
                 IQueryable<object> q = null;
                 IEnumerable<decimal?> eDecimalN = null;
@@ -898,12 +902,12 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.Except(new object[0])),
-                    GetGenericMethodInfoFromExpressionBody(() => q.Except(new object[0]))
+                    GetGenericMethodInfoFromExpressionBody(() => e.Except(dummyEnumerable)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Except(dummyEnumerable))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.Except(new object[0], EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => q.Except(new object[0], EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => e.Except(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Except(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
@@ -942,30 +946,30 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count())),
-                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count()))
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count())),
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count()))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(new object[0], i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default))
-                    );
-
-                AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(new object[0])),
-                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(new object[0]))
-                    );
-                AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(new object[0], EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(new object[0], EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupJoin(dummyEnumerable, i => i, j => j, (k, g) => g.Count(), EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode())),
-                    GetGenericMethodInfoFromExpressionBody(() => q.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode()))
+                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(dummyEnumerable)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(dummyEnumerable))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => q.Join(new object[0], i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => e.Intersect(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Intersect(dummyEnumerable, EqualityComparer<object>.Default))
+                    );
+
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode())),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode()))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Join(dummyEnumerable, i => i, j => j, (k, g) => k.GetHashCode() + g.GetHashCode(), EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
@@ -1229,12 +1233,12 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.SequenceEqual(new object[0])),
-                    GetGenericMethodInfoFromExpressionBody(() => q.SequenceEqual(new object[0]))
+                    GetGenericMethodInfoFromExpressionBody(() => e.SequenceEqual(dummyEnumerable)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.SequenceEqual(dummyEnumerable))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.SequenceEqual(new object[0], EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => q.SequenceEqual(new object[0], EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => e.SequenceEqual(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.SequenceEqual(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
@@ -1365,12 +1369,12 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.Union(new object[0])),
-                    GetGenericMethodInfoFromExpressionBody(() => q.Union(new object[0]))
+                    GetGenericMethodInfoFromExpressionBody(() => e.Union(dummyEnumerable)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Union(dummyEnumerable))
                     );
                 AddTranslation(
-                    GetGenericMethodInfoFromExpressionBody(() => e.Union(new object[0], EqualityComparer<object>.Default)),
-                    GetGenericMethodInfoFromExpressionBody(() => q.Union(new object[0], EqualityComparer<object>.Default))
+                    GetGenericMethodInfoFromExpressionBody(() => e.Union(dummyEnumerable, EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Union(dummyEnumerable, EqualityComparer<object>.Default))
                     );
 
                 AddTranslation(
@@ -1388,19 +1392,23 @@ namespace Epic.Linq
             /// </summary>
             /// <param name="queryableMethod">Enumerable method to translate.</param>
             /// <returns>The Queryable's equivalent of <paramref name="queryableMethod"/>.</returns>
-            /// <exception cref="KeyNotFoundException">The <paramref name="enumerableMethod"/> has no equivalent in <see cref="Queryable"/>.</exception>
+            /// <exception cref="ArgumentNullException">Thrown when <paramref name="enumerableMethod"/> is null.</exception>
+            /// <exception cref="ArgumentException">Thrown when <paramref name="enumerableMethod"/> doesn't belong to <see cref="System.Linq.Enumerable"/>.</exception>
+            /// <exception cref="KeyNotFoundException">The <paramref name="enumerableMethod"/> has no equivalent in <see cref="System.Linq.Queryable"/>.</exception>
             public static MethodInfo GetQueryableEquivalent(MethodInfo enumerableMethod)
             {
+                if (null == enumerableMethod)
+                    throw new ArgumentNullException("enumerableMethod");
+                if (!enumerableMethod.DeclaringType.Equals(typeof(System.Linq.Enumerable)))
+                    throw new ArgumentException("The queryableMethod must belong to System.Linq.Enumerable.", "enumerableMethod");
+
                 MethodInfo method = null;
-                try
+                if (enumerableMethod.IsGenericMethod)
                 {
                     method = _methodsTranslations[enumerableMethod.GetGenericMethodDefinition()];
+                    return method.MakeGenericMethod(enumerableMethod.GetGenericArguments());
                 }
-                catch (KeyNotFoundException e)
-                {
-                    throw new KeyNotFoundException(string.Format("Can not find the Queryable equivalent of the Enumerable's {0} method.", enumerableMethod.Name), e);
-                }
-                return method.MakeGenericMethod(enumerableMethod.GetGenericArguments());
+                return _methodsTranslations[enumerableMethod];
             }
         }
 	}
