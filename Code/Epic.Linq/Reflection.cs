@@ -690,20 +690,13 @@ namespace Epic.Linq
             private static void AddTranslation(MethodInfo enumerableMethod, MethodInfo queryableEquivalent)
             {
                 /* In case of addition, run once.
-                 * 
+                 *
                 if (enumerableMethod.DeclaringType != typeof(System.Linq.Enumerable))
                     throw new ArgumentException("enumerableMethod");
                 if (queryableEquivalent.DeclaringType != typeof(System.Linq.Queryable))
                     throw new ArgumentException("queryableEquivalent");
                  */
-                try
-                {
-                    _methodsTranslations.Add(enumerableMethod, queryableEquivalent);
-                }
-                catch (ArgumentException argEx)
-                {
-                    throw argEx;
-                }
+                _methodsTranslations.Add(enumerableMethod, queryableEquivalent);
             }
 
             /// <summary>
@@ -1405,8 +1398,14 @@ namespace Epic.Linq
                 MethodInfo method = null;
                 if (enumerableMethod.IsGenericMethod)
                 {
+                    Type[] enumerableTypeArgs = enumerableMethod.GetGenericArguments();
                     method = _methodsTranslations[enumerableMethod.GetGenericMethodDefinition()];
-                    return method.MakeGenericMethod(enumerableMethod.GetGenericArguments());
+                    if (enumerableTypeArgs.Length == method.GetGenericArguments().Length)
+                        return method.MakeGenericMethod(enumerableMethod.GetGenericArguments());
+                    else
+                    {
+                        // Handle translations to Min<T,Q>, Max<T,Q>, Sum<T> and Average<T>
+                    }
                 }
                 return _methodsTranslations[enumerableMethod];
             }

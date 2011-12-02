@@ -735,14 +735,93 @@ namespace Epic.Linq
 
         #region Enumerable
 
+        private static IEnumerable<MethodInfo> AllEnumerableMethods
+        {
+            get
+            {
+                List<MethodInfo> methodsToTest = new List<MethodInfo>();
+                foreach (MethodInfo method in typeof(Enumerable).GetMethods())
+                {
+                    if (method.IsGenericMethodDefinition)
+                    {
+                        List<Type> args = new List<Type>();
+                        for (int i = 0; i < method.GetGenericArguments().Length; ++i)
+                        {
+                            switch (i)
+                            {
+                                case 0: 
+                                    args.Add(typeof(string)); 
+                                    break;
+                                case 1: 
+                                    args.Add(typeof(Type)); 
+                                    break;
+                                case 2: 
+                                    args.Add(typeof(object)); 
+                                    break;
+                                case 3:
+                                    args.Add(typeof(int));
+                                    break;
+                            }
+                        }
+                        methodsToTest.Add(method.MakeGenericMethod(args.ToArray()));
+                    }
+                    else
+                    {
+                        methodsToTest.Add(method);
+                    }
+                }
+                return methodsToTest;
+            }
+        }
+
+        [Test, TestCaseSource("AllEnumerableMethods")]
+        public void GetQueryableEquivalent_forAnyEnumerableMethod_returnsAMethod(MethodInfo method)
+        {
+            // act:
+            MethodInfo result = Reflection.Enumerable.GetQueryableEquivalent(method);
+
+            // assert:
+            Assert.IsNotNull(result);
+        }
+
         [Test, TestCaseSource("QueryableEnumerableEquivantMethods")]
-        public void GetQueryableEquivalent_ofAEnumerableMethod_returnsTheRightMethod(MethodInfo queryableMethod, MethodInfo enumerableMethod)
+        public void GetQueryableEquivalent_ofAQueryableMethod_returnsTheRightMethod(MethodInfo queryableMethod, MethodInfo enumerableMethod)
         {
             // act:
             MethodInfo queryableEquivalent = Reflection.Enumerable.GetQueryableEquivalent(enumerableMethod);
 
             // assert:
             Assert.AreSame(queryableMethod, queryableEquivalent);
+        }
+
+        [Test]
+        public void GetQueryableEquivalent_ofNull_throwsArgumentNullException()
+        {
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate
+            {
+                Reflection.Enumerable.GetQueryableEquivalent(null);
+            });
+        }
+
+        [Test]
+        public void GetQueryableEquivalent_ofAMethodThatDontBelongToEnumerable_throwsArgumentException()
+        {
+            // arrange:
+            MethodInfo[] sampleMethods = new MethodInfo[]
+            {
+                GetMethodInfo(() => int.Parse("1")),
+                GetMethodInfo(() => string.Join(",", new string[0]))
+            };
+
+            // assert:
+            foreach (MethodInfo method in sampleMethods)
+            {
+                Assert.Throws<ArgumentException>(delegate
+                {
+                    Reflection.Enumerable.GetQueryableEquivalent(method);
+                });
+            }
         }
 
         #endregion Enumerable
