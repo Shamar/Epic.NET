@@ -403,6 +403,22 @@ namespace Epic.Linq
                     GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), i => i.ToString()))
                     );
                 AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), (i, g) => g.Count())),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), (i, g) => g.Count()))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), (i, g) => g.Count(), EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), (i, g) => g.Count(), EqualityComparer<object>.Default))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), EqualityComparer<Type>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), EqualityComparer<Type>.Default))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), i => i.ToString(), EqualityComparer<Type>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), i => i.ToString(), EqualityComparer<Type>.Default))
+                    );
+                AddTranslation(
                     GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count())),
                     GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count()))
                     );
@@ -504,6 +520,24 @@ namespace Epic.Linq
                 AddTranslation(
                     GetGenericMethodInfoFromExpressionBody(() => q.OrderByDescending(i => i.GetHashCode(), Comparer<int>.Default)),
                     GetGenericMethodInfoFromExpressionBody(() => e.OrderByDescending(i => i.GetHashCode(), Comparer<int>.Default))
+                    );
+
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode())),
+                    GetGenericMethodInfoFromExpressionBody(() => e.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode()))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode(), Comparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode(), Comparer<int>.Default))
+                    );
+
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode())),
+                    GetGenericMethodInfoFromExpressionBody(() => e.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode()))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode(), Comparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode(), Comparer<int>.Default))
                     );
 
                 AddTranslation(
@@ -930,6 +964,22 @@ namespace Epic.Linq
                     GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), i => i.ToString()))
                     );
                 AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), (i, g) => g.Count())),
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), (i, g) => g.Count()))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), (i, g) => g.Count(), EqualityComparer<object>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), (i, g) => g.Count(), EqualityComparer<object>.Default))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), EqualityComparer<Type>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), EqualityComparer<Type>.Default))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), i => i.ToString(), EqualityComparer<Type>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), i => i.ToString(), EqualityComparer<Type>.Default))
+                    );
+                AddTranslation(
                     GetGenericMethodInfoFromExpressionBody(() => e.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count())),
                     GetGenericMethodInfoFromExpressionBody(() => q.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count()))
                     );
@@ -1195,6 +1245,24 @@ namespace Epic.Linq
                     );
 
                 AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode())),
+                    GetGenericMethodInfoFromExpressionBody(() => q.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode()))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode(), Comparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode(), Comparer<int>.Default))
+                    );
+
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode())),
+                    GetGenericMethodInfoFromExpressionBody(() => q.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode()))
+                    );
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode(), Comparer<int>.Default)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode(), Comparer<int>.Default))
+                    );
+
+                AddTranslation(
                     GetGenericMethodInfoFromExpressionBody(() => e.Reverse()),
                     GetGenericMethodInfoFromExpressionBody(() => q.Reverse())
                     );
@@ -1396,18 +1464,39 @@ namespace Epic.Linq
                     throw new ArgumentException("The queryableMethod must belong to System.Linq.Enumerable.", "enumerableMethod");
 
                 MethodInfo method = null;
+
                 if (enumerableMethod.IsGenericMethod)
                 {
                     Type[] enumerableTypeArgs = enumerableMethod.GetGenericArguments();
-                    method = _methodsTranslations[enumerableMethod.GetGenericMethodDefinition()];
-                    if (enumerableTypeArgs.Length == method.GetGenericArguments().Length)
-                        return method.MakeGenericMethod(enumerableMethod.GetGenericArguments());
-                    else
+                    MethodInfo gerericEnumerableMethod = enumerableMethod.GetGenericMethodDefinition();
+                    if(_methodsTranslations.TryGetValue(gerericEnumerableMethod, out method))
                     {
-                        // Handle translations to Min<T,Q>, Max<T,Q>, Sum<T> and Average<T>
+                        Type[] queryableTypeArgs = method.GetGenericArguments();
+
+                        if(enumerableTypeArgs.Length == queryableTypeArgs.Length)
+                        {
+                            return method.MakeGenericMethod(enumerableTypeArgs);
+                        }
+                        else
+                        {
+                            // Some Enumerable's method (Max and Min) have no direct equivalent in Queryable.
+                            // Queryable only has generic version with different type arguments, where Enumerable
+                            // has also vertical versions for common numerical structs (int, double, decimal...)
+                            // and their nullable fashion.
+                            List<Type> adjustedArguments = new List<Type>(enumerableTypeArgs);
+                            adjustedArguments.Add(enumerableMethod.ReturnType);
+                            return method.MakeGenericMethod(adjustedArguments.ToArray());
+                        }
                     }
                 }
-                return _methodsTranslations[enumerableMethod];
+                else if(_methodsTranslations.TryGetValue(enumerableMethod, out method))
+                {
+                    if(method.IsGenericMethodDefinition)
+                        return method.MakeGenericMethod(enumerableMethod.ReturnType);
+                    return method;
+                }
+
+                throw new KeyNotFoundException(string.Format("No equivalent of {0} is available in {1}.", method.ToString(), typeof(Queryable).FullName));
             }
         }
 	}

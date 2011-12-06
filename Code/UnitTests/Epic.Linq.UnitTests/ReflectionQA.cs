@@ -426,6 +426,22 @@ namespace Epic.Linq
                     GetMethodInfo(() => e.GroupBy(i => i.GetType(), i => i.ToString()))
                     );
                 yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupBy(i => i.GetType(), (i, g) => g.Count())),
+                    GetMethodInfo(() => e.GroupBy(i => i.GetType(), (i, g) => g.Count()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupBy(i => i.GetType(), (i, g) => g.Count(), EqualityComparer<object>.Default)),
+                    GetMethodInfo(() => e.GroupBy(i => i.GetType(), (i, g) => g.Count(), EqualityComparer<object>.Default))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupBy(i => i.GetType(), EqualityComparer<Type>.Default)),
+                    GetMethodInfo(() => e.GroupBy(i => i.GetType(), EqualityComparer<Type>.Default))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.GroupBy(i => i.GetType(), i => i.ToString(), EqualityComparer<Type>.Default)),
+                    GetMethodInfo(() => e.GroupBy(i => i.GetType(), i => i.ToString(), EqualityComparer<Type>.Default))
+                    );
+                yield return new TestCaseData(
                     GetMethodInfo(() => q.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count())),
                     GetMethodInfo(() => e.GroupBy(i => i.GetType(), i => i.ToString(), (k, g) => g.Count()))
                     );
@@ -527,6 +543,24 @@ namespace Epic.Linq
                 yield return new TestCaseData(
                     GetMethodInfo(() => q.OrderByDescending(i => i.GetHashCode(), Comparer<int>.Default)),
                     GetMethodInfo(() => e.OrderByDescending(i => i.GetHashCode(), Comparer<int>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode())),
+                    GetMethodInfo(() => e.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode(), Comparer<int>.Default)),
+                    GetMethodInfo(() => e.OrderBy(i => i.GetHashCode()).ThenBy(i => i.GetHashCode(), Comparer<int>.Default))
+                    );
+
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode())),
+                    GetMethodInfo(() => e.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode()))
+                    );
+                yield return new TestCaseData(
+                    GetMethodInfo(() => q.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode(), Comparer<int>.Default)),
+                    GetMethodInfo(() => e.OrderBy(i => i.GetHashCode()).ThenByDescending(i => i.GetHashCode(), Comparer<int>.Default))
                     );
 
                 yield return new TestCaseData(
@@ -735,53 +769,69 @@ namespace Epic.Linq
 
         #region Enumerable
 
-        private static IEnumerable<MethodInfo> AllEnumerableMethods
+        private static IEnumerable<MethodInfo> AllEnumerableMethodsThatHaveEquivalentInQueryable
         {
             get
             {
+                IEnumerable<MethodInfo> queryableMethods = typeof(Queryable).GetMethods();
                 List<MethodInfo> methodsToTest = new List<MethodInfo>();
                 foreach (MethodInfo method in typeof(Enumerable).GetMethods())
                 {
-                    if (method.IsGenericMethodDefinition)
+                    if (method.DeclaringType.Equals(typeof(Enumerable)) &&
+                        method.GetParameters().Length > 0 &&
+                        typeof(IEnumerable).IsAssignableFrom(method.GetParameters()[0].ParameterType) &&
+                        queryableMethods.Any(qm => qm.Name == method.Name))
                     {
-                        List<Type> args = new List<Type>();
-                        for (int i = 0; i < method.GetGenericArguments().Length; ++i)
+                        if (method.IsGenericMethodDefinition)
                         {
-                            switch (i)
+                            List<Type> args = new List<Type>();
+                            for (int i = 0; i < method.GetGenericArguments().Length; ++i)
                             {
-                                case 0: 
-                                    args.Add(typeof(string)); 
-                                    break;
-                                case 1: 
-                                    args.Add(typeof(Type)); 
-                                    break;
-                                case 2: 
-                                    args.Add(typeof(object)); 
-                                    break;
-                                case 3:
-                                    args.Add(typeof(int));
-                                    break;
+                                switch (i)
+                                {
+                                    case 0:
+                                        args.Add(typeof(string)); 
+                                        break;
+                                    case 1: 
+                                        args.Add(typeof(Type)); 
+                                        break;
+                                    case 2: 
+                                        args.Add(typeof(object)); 
+                                        break;
+                                    case 3:
+                                        args.Add(typeof(int));
+                                        break;
+                                }
                             }
+                            methodsToTest.Add(method.MakeGenericMethod(args.ToArray()));
                         }
-                        methodsToTest.Add(method.MakeGenericMethod(args.ToArray()));
-                    }
-                    else
-                    {
-                        methodsToTest.Add(method);
+                        else
+                        {
+                            methodsToTest.Add(method);
+                        }
                     }
                 }
                 return methodsToTest;
             }
         }
 
-        [Test, TestCaseSource("AllEnumerableMethods")]
-        public void GetQueryableEquivalent_forAnyEnumerableMethod_returnsAMethod(MethodInfo method)
+        [Test, TestCaseSource("AllEnumerableMethodsThatHaveEquivalentInQueryable")]
+        public void GetQueryableEquivalent_forAnyEnumerableExtensionMethod_returnsAMethod(MethodInfo method)
         {
+            // arrange:
+            Type expectedQueryableType = typeof(IQueryable);
+            if(method.GetParameters()[0].ParameterType.IsGenericType)
+            {
+                expectedQueryableType = typeof(IQueryable<>).MakeGenericType(method.GetParameters()[0].ParameterType.GetGenericArguments());
+            }
+
             // act:
             MethodInfo result = Reflection.Enumerable.GetQueryableEquivalent(method);
 
             // assert:
             Assert.IsNotNull(result);
+            Assert.AreEqual(typeof(Queryable), result.DeclaringType);
+            Assert.IsTrue(expectedQueryableType.IsAssignableFrom(result.GetParameters()[0].ParameterType));
         }
 
         [Test, TestCaseSource("QueryableEnumerableEquivantMethods")]
