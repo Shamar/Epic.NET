@@ -67,7 +67,7 @@ namespace Epic.Linq.Expressions.Normalization
                         Expression arg = VisitInner(target.Arguments[i], state);
                         arguments.Add(arg);
                     }
-                    return null; //Expression.Call(Reflection.Queryable.GetEnumerableEquivalent(target.Method), arguments.ToArray());
+                    return Expression.Call(Reflection.Queryable.GetEnumerableEquivalent(target.Method), arguments.ToArray());
                 }
             }
             arguments.Add(methodSource);

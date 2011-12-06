@@ -33,6 +33,29 @@ namespace Epic.Linq.Expressions
 {
     public static class Samples
     {
+        private static MethodCallExpression GetMethodCallExpression(IQueryable<string> queryable)
+        {
+            return (System.Linq.Expressions.MethodCallExpression)queryable.Expression;
+        }
+
+        public static IEnumerable<TestCaseData> ReduceableQueryableMethodCallExpressions
+        {
+            get
+            {
+                IEnumerable<string> originalStrings = new string[] {
+                    "test-A.1", "test-B.1", "test-B.2",
+                    "sample-A.2", "sample-B.1", "sample-C.3"
+                };
+                IQueryable<string> queryableString = originalStrings.AsQueryable();
+
+                yield return new TestCaseData(
+                    GetMethodCallExpression(queryableString.Where(s => s.StartsWith("test"))),
+                    originalStrings,
+                    originalStrings.Where(s => s.StartsWith("test"))
+                    );
+            }
+        }
+
         public static IEnumerable<Expression> BinaryExpressions
         {
             get

@@ -63,7 +63,14 @@ namespace Epic.Linq
             dummy.StringProperty = v2;
             v1 = dummy.IntMethod();
             v2 = dummy.StringMethod();
-            
+        }
+
+        [TestFixtureSetUp]
+        public void VerifyKnownMethods()
+        {
+            Assert.AreEqual(14, ReflectionQA.AllEnumerableMethodsThatHaveNoEquivalentInQueryable.Count());
+            Assert.AreEqual(160, ReflectionQA.AllEnumerableMethodsThatHaveEquivalentInQueryable.Count());
+            Assert.AreEqual(110, ReflectionQA.QueryableEnumerableEquivantMethods.Count());
         }
         
         [Test]
@@ -77,11 +84,13 @@ namespace Epic.Linq
         }
         
         [TestCase(typeof(IEnumerable<string>), typeof(string))]
+        [TestCase(typeof(IOrderedEnumerable<string>), typeof(string))]
         [TestCase(typeof(IEnumerable<int>), typeof(int))]
         [TestCase(typeof(IEnumerable<IEnumerable<string>>), typeof(IEnumerable<string>))]
         [TestCase(typeof(IEnumerable), typeof(object))]
         [TestCase(typeof(int[]), typeof(int))]
         [TestCase(typeof(IQueryable<string>), typeof(string))]
+        [TestCase(typeof(IOrderedQueryable<string>), typeof(string))]
         [TestCase(typeof(IQueryable<int>), typeof(int))]
         [TestCase(typeof(IQueryable<IEnumerable<string>>), typeof(IEnumerable<string>))]
         [TestCase(typeof(IQueryable<IQueryable<string>>), typeof(IQueryable<string>))]
@@ -815,6 +824,50 @@ namespace Epic.Linq
             }
         }
 
+        private static IEnumerable<MethodInfo> AllEnumerableMethodsThatHaveNoEquivalentInQueryable
+        {
+            get
+            {
+                IEnumerable<MethodInfo> queryableMethods = typeof(Queryable).GetMethods();
+                List<MethodInfo> methodsToTest = new List<MethodInfo>();
+                foreach (MethodInfo method in typeof(Enumerable).GetMethods())
+                {
+                    if (method.DeclaringType.Equals(typeof(Enumerable)) &&
+                        !queryableMethods.Any(qm => qm.Name == method.Name))
+                    {
+                        if (method.IsGenericMethodDefinition)
+                        {
+                            List<Type> args = new List<Type>();
+                            for (int i = 0; i < method.GetGenericArguments().Length; ++i)
+                            {
+                                switch (i)
+                                {
+                                    case 0:
+                                        args.Add(typeof(string)); 
+                                        break;
+                                    case 1: 
+                                        args.Add(typeof(Type)); 
+                                        break;
+                                    case 2: 
+                                        args.Add(typeof(object)); 
+                                        break;
+                                    case 3:
+                                        args.Add(typeof(int));
+                                        break;
+                                }
+                            }
+                            methodsToTest.Add(method.MakeGenericMethod(args.ToArray()));
+                        }
+                        else
+                        {
+                            methodsToTest.Add(method);
+                        }
+                    }
+                }
+                return methodsToTest;
+            }
+        }
+
         [Test, TestCaseSource("AllEnumerableMethodsThatHaveEquivalentInQueryable")]
         public void GetQueryableEquivalent_forAnyEnumerableExtensionMethod_returnsAMethod(MethodInfo method)
         {
@@ -832,6 +885,15 @@ namespace Epic.Linq
             Assert.IsNotNull(result);
             Assert.AreEqual(typeof(Queryable), result.DeclaringType);
             Assert.IsTrue(expectedQueryableType.IsAssignableFrom(result.GetParameters()[0].ParameterType));
+        }
+
+        [Test, TestCaseSource("AllEnumerableMethodsThatHaveNoEquivalentInQueryable")]
+        public void GetQueryableEquivalent_forAnyEnumerableMethodThatHaveNoEquivalentInQueryable_throwsKeyNotFoundException(MethodInfo method)
+        {
+            // assert:
+            Assert.Throws<KeyNotFoundException>(delegate {
+                Reflection.Enumerable.GetQueryableEquivalent(method);
+            });
         }
 
         [Test, TestCaseSource("QueryableEnumerableEquivantMethods")]

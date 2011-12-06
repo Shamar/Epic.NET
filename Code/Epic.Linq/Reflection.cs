@@ -1496,7 +1496,7 @@ namespace Epic.Linq
                     return method;
                 }
 
-                throw new KeyNotFoundException(string.Format("No equivalent of {0} is available in {1}.", method.ToString(), typeof(Queryable).FullName));
+                throw new KeyNotFoundException(string.Format("No equivalent of {0} is available in {1}.", enumerableMethod.ToString(), typeof(Queryable).FullName));
             }
         }
 	}
