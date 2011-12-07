@@ -78,10 +78,6 @@ namespace Epic.Linq.Expressions.Normalization
         #region IVisitor[Expression,MethodCallExpression] implementation
         public Expression Visit (MethodCallExpression target, IVisitContext state)
         {
-            Console.WriteLine();
-            Console.WriteLine(target.Arguments[0].GetType());
-            Console.WriteLine(target.Arguments[0].ToString());
-            Console.WriteLine();
             Expression methodSource = VisitInner(target.Arguments[0], state);
             if(methodSource.NodeType == System.Linq.Expressions.ExpressionType.Constant)
             {
