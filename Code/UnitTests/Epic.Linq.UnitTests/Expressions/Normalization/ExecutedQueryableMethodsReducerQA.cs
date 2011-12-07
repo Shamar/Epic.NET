@@ -81,17 +81,19 @@ namespace Epic.Linq.Expressions.Normalization
         public void Visit_aQueryableMethodOverAnExecutedQueryable_returnsAConstantExpressionContainingTheResultingEnumerable(MethodCallExpression expressionToVisit, IEnumerable<string> originalEnumerable, IEnumerable<string> finalEnumerable)
         {
             // arrange:
-            IQueryProvider queryable = GenerateStrictMock<IQueryProvider>();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            context.Expect(c => c.Get<IQueryProvider>()).Return(queryable).Repeat.Once();
             FakeNormalizer composition = new FakeNormalizer();
             ExecutedQueryableMethodsReducer reducer = new ExecutedQueryableMethodsReducer(composition);
-            FakeVisitor<Expression, ConstantExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, ConstantExpression>>(composition);
-            mockVisitor.Expect(v => v.CallAsVisitor((ConstantExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
-            mockVisitor.Expect(v => v.Visit((ConstantExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
-            mockVisitor.Expect(v => v.CallAsVisitor<ConstantExpression>(null)).IgnoreArguments().Return(null).Repeat.Any();
-            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            FakeVisitor<Expression, MethodCallExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MethodCallExpression>>(composition);
+            mockVisitor.Expect(v => v.CallAsVisitor((MethodCallExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            mockVisitor.Expect(v => v.Visit((MethodCallExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
+            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
             mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            FakeVisitor<Expression, UnaryExpression> mockEchoVisitor = GeneratePartialMock<FakeVisitor<Expression, UnaryExpression>>(composition);
+            mockEchoVisitor.Expect(v => v.CallAsVisitor<UnaryExpression>((UnaryExpression)expressionToVisit.Arguments[1])).Return(mockEchoVisitor).Repeat.Once();
+            mockEchoVisitor.Expect(v => v.Visit ((UnaryExpression)expressionToVisit.Arguments[1], context)).Return(expressionToVisit.Arguments[1]).Repeat.Once();
+            mockEchoVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockEchoVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
 
             // act:
             Expression result = composition.Visit(expressionToVisit, context);
@@ -99,8 +101,8 @@ namespace Epic.Linq.Expressions.Normalization
             // assert:
             Verify.That(result).IsA<ConstantExpression>()
                   .WithA(e => e.Value, 
-                         value => Verify.That(value).IsA<IEnumerable<ICargo>>()
-                                        .WithEach<ICargo>(e => e, (c, i) => Assert.AreSame(finalEnumerable.ElementAt(i), c)));
+                         value => Verify.That(value).IsA<IEnumerable<string>>()
+                                        .WithEach<string>(e => e, (c, i) => Assert.AreSame(finalEnumerable.ElementAt(i), c)));
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Epic.Linq.Expressions
                     "test-A.1", "test-B.1", "test-B.2",
                     "sample-A.2", "sample-B.1", "sample-C.3"
                 };
-                IQueryable<string> queryableString = originalStrings.AsQueryable();
+                IQueryable<string> queryableString = originalStrings.AsQueryable().Where(s => false); // this where simulate a deeper tree
 
                 yield return new TestCaseData(
                     GetMethodCallExpression(queryableString.Where(s => s.StartsWith("test"))),
