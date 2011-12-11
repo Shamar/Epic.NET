@@ -1,5 +1,5 @@
 //  
-//  FakeFunction.cs
+//  FakeRelationFunction.cs
 //  
 //  Author:
 //       Marco Veglio <m.veglio@gmail.com>
