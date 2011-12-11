@@ -59,7 +59,12 @@ namespace Epic.Linq.Expressions.Relational
         /// <summary>
         /// Grouped relation (in SQL, it's the effect of a group by)
         /// </summary>
-        Grouped
+        Grouped,
+
+        /// <summary>
+        /// Relation originated by a function.
+        /// </summary>
+        Function
     }
 }
 

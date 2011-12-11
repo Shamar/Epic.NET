@@ -80,19 +80,46 @@ namespace Epic.Linq.Expressions.Relational
         }
 
         #region IEquatable[Relation] implementation
-        
+
+        /// <summary>
+        /// Determines whether the specified <see cref="Relation"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Relation"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Relation"/> is equal to the current
+        /// <see cref="Epic.Linq.Expressions.Relational.Relation"/>; otherwise, <c>false</c>.
+        /// </returns>
         public abstract bool Equals (Relation other);
         
         #endregion
-        
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// </summary>
+        /// <param name='obj'>
+        /// The <see cref="System.Object"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="Epic.Linq.Expressions.Relational.Relation"/>; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals (object obj)
         {
             return Equals (obj as Relation);
         }
-        
+
+        /// <summary>
+        /// Serves as a hash function for a <see cref="Epic.Linq.Expressions.Relational.Relation"/> object.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
+        /// hash table.
+        /// </returns>
         public override int GetHashCode ()
         {
-            return GetType().GetHashCode() ^ _name.GetHashCode();
+            return GetType().GetHashCode() ^ _name.GetHashCode() ;
         }
     }
 }
