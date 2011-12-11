@@ -2,7 +2,7 @@
 //  FakeFunction.cs
 //  
 //  Author:
-//       Marco <${AuthorEmail}>
+//       Marco Veglio <m.veglio@gmail.com>
 // 
 //  Copyright (c) 2010-2011 Giacomo Tesio
 // 
@@ -27,13 +27,13 @@ using Epic.Linq.Expressions.Relational;
 namespace Epic.Linq.Fakes
 {
     [Serializable]
-    public class FakeFunction: Function
+    public class FakeRelationFunction: RelationFunction
     {
-        public FakeFunction (string name): base(name)
+        public FakeRelationFunction (string name): base(name)
         {
         }
 
-        public override bool Equals (Function other)
+        public override bool Equals (RelationFunction other)
         {
             if (null == other) return false;
             return this.Name == other.Name;

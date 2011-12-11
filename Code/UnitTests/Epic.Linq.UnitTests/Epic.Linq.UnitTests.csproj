@@ -97,7 +97,7 @@
     <Compile Include="Expressions\Verify.cs" />
     <Compile Include="Expressions\Normalization\ClosureExpanderQA.cs" />
     <Compile Include="Expressions\Normalization\ExecutedQueryableMethodsReducerQA.cs" />
-    <Compile Include="Fakes\FakeFunction.cs" />
     <Compile Include="Expressions\Relational\RelationFunctionQA.cs" />
+    <Compile Include="Fakes\FakeFunction.cs" />
   </ItemGroup>
 </Project>

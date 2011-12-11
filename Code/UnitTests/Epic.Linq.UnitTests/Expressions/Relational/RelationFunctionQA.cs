@@ -2,7 +2,7 @@
 //  FunctionQA.cs
 //  
 //  Author:
-//       Marco <${AuthorEmail}>
+//       Marco Veglio <m.veglio@gmail.com>
 // 
 //  Copyright (c) 2010-2011 Giacomo Tesio
 // 
@@ -36,10 +36,10 @@ namespace Epic.Linq.Expressions.Relational
         {
             // assert:
            Assert.Throws<ArgumentNullException>(delegate {
-                new FakeFunction(null);
+                new FakeRelationFunction(null);
             });
             Assert.Throws<ArgumentNullException>(delegate {
-                new FakeFunction(string.Empty);
+                new FakeRelationFunction(string.Empty);
             });
         }
 
@@ -50,7 +50,7 @@ namespace Epic.Linq.Expressions.Relational
             string name = "test";
 
             // assert:
-            Function relation = new FakeFunction(name);
+            RelationFunction relation = new FakeRelationFunction(name);
 
             Assert.AreEqual(name, relation.Name);
             Assert.IsTrue(RelationType.Function.Equals(relation.Type));
@@ -62,8 +62,8 @@ namespace Epic.Linq.Expressions.Relational
         public void GetHashCode_areEqualForEqualNames(string name)
         {
             // arrange:
-            Function rel1 = new FakeFunction(name);
-            Function rel2 = new FakeFunction(name);
+            RelationFunction rel1 = new FakeRelationFunction(name);
+            RelationFunction rel2 = new FakeRelationFunction(name);
 
             // act:
             int hash1 = rel1.GetHashCode();
@@ -79,8 +79,8 @@ namespace Epic.Linq.Expressions.Relational
         {
             // arrange:
             string name = "test";
-            Function mockArgument = GeneratePartialMock<Function>(name);
-            FakeFunction relation = GeneratePartialMock<FakeFunction>(name);
+            RelationFunction mockArgument = GeneratePartialMock<RelationFunction>(name);
+            FakeRelationFunction relation = GeneratePartialMock<FakeRelationFunction>(name);
             relation.Expect(r => r.Equals(mockArgument)).Return(expectedResult).Repeat.Once();
 
             // act:
@@ -94,7 +94,7 @@ namespace Epic.Linq.Expressions.Relational
         public void FunctionEquals_withDifferentTypeRelation_returnsFalse(string name)
         {
             // arrange:
-            Function function = new FakeFunction(name);
+            RelationFunction function = new FakeRelationFunction(name);
             Relation relation = new FakeRelation(RelationType.BaseRelation, name);
 
             // act:
@@ -114,7 +114,7 @@ namespace Epic.Linq.Expressions.Relational
             string name = "test";
 
             // assert:
-            Function relation = new FakeFunction (name);
+            RelationFunction relation = new FakeRelationFunction (name);
 
             System.IO.Stream stream = TestUtilities.Serialize (relation);
             Assert.IsNotNull (stream);
@@ -127,10 +127,10 @@ namespace Epic.Linq.Expressions.Relational
             string name = "test";
 
             // assert:
-            Function relation = new FakeFunction (name);
+            RelationFunction relation = new FakeRelationFunction (name);
 
             System.IO.Stream stream = TestUtilities.Serialize (relation);
-            Function deserialized = TestUtilities.Deserialize<Function> (stream);
+            RelationFunction deserialized = TestUtilities.Deserialize<RelationFunction> (stream);
 
             Assert.AreEqual(relation.Name, deserialized.Name);
             Assert.AreEqual(relation.Type, deserialized.Type);
