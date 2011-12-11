@@ -1479,7 +1479,7 @@ namespace Epic.Linq
                         }
                         else
                         {
-                            // Some Enumerable's method (Max and Min) have no direct equivalent in Queryable.
+                            // Some Enumerable's method (non generic Max and Min) have no direct equivalent in Queryable.
                             // Queryable only has generic version with different type arguments, where Enumerable
                             // has also vertical versions for common numerical structs (int, double, decimal...)
                             // and their nullable fashion.

@@ -53,6 +53,21 @@ namespace Epic.Linq.Expressions
                     originalStrings,
                     originalStrings.Where(s => s.StartsWith("test"))
                     );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(queryableString.Take(3)),
+                    originalStrings,
+                    originalStrings.Take(3)
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(queryableString.Skip(2)),
+                    originalStrings,
+                    originalStrings.Skip(2)
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(queryableString.SkipWhile(s => s.Contains("1"))),
+                    originalStrings,
+                    originalStrings.SkipWhile(s => s.Contains("1"))
+                    );
             }
         }
 

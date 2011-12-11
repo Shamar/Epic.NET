@@ -77,23 +77,40 @@ namespace Epic.Linq.Expressions.Normalization
             Assert.AreSame(reducer, result);
         }
 
+        private void RegisterEchoVisitorFor<TArgument>(CompositeVisitor<Expression> composition, IVisitContext context, MethodCallExpression callExression, int argumentIndex)
+            where TArgument : Expression
+        {
+            FakeVisitor<Expression, TArgument> mockEchoVisitor = GeneratePartialMock<FakeVisitor<Expression, TArgument>>(composition);
+            mockEchoVisitor.Expect(v => v.CallAsVisitor<TArgument>((TArgument)callExression.Arguments[argumentIndex])).Return(mockEchoVisitor).Repeat.Once();
+            mockEchoVisitor.Expect(v => v.Visit ((TArgument)callExression.Arguments[argumentIndex], context)).Return(callExression.Arguments[argumentIndex]).Repeat.Once();
+            mockEchoVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockEchoVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+        }
+
         [Test, TestCaseSource(typeof(Samples), "ReduceableQueryableMethodCallExpressions")]
         public void Visit_aQueryableMethodOverAnExecutedQueryable_returnsAConstantExpressionContainingTheResultingEnumerable(MethodCallExpression expressionToVisit, IEnumerable<string> originalEnumerable, IEnumerable<string> finalEnumerable)
         {
             // arrange:
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeNormalizer composition = new FakeNormalizer();
-            ExecutedQueryableMethodsReducer reducer = new ExecutedQueryableMethodsReducer(composition);
+            new ExecutedQueryableMethodsReducer(composition);
             FakeVisitor<Expression, MethodCallExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MethodCallExpression>>(composition);
             mockVisitor.Expect(v => v.CallAsVisitor((MethodCallExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MethodCallExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
             mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
             mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
-            FakeVisitor<Expression, UnaryExpression> mockEchoVisitor = GeneratePartialMock<FakeVisitor<Expression, UnaryExpression>>(composition);
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<UnaryExpression>((UnaryExpression)expressionToVisit.Arguments[1])).Return(mockEchoVisitor).Repeat.Once();
-            mockEchoVisitor.Expect(v => v.Visit ((UnaryExpression)expressionToVisit.Arguments[1], context)).Return(expressionToVisit.Arguments[1]).Repeat.Once();
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(null)).IgnoreArguments().Return(null).Repeat.Any();
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            for(int i = 1; i < expressionToVisit.Arguments.Count; ++i)
+            {
+                switch(expressionToVisit.Arguments[i].NodeType)
+                {
+                    case ExpressionType.Quote:
+                        RegisterEchoVisitorFor<UnaryExpression>(composition,context,expressionToVisit,i);
+                        break;
+                    case ExpressionType.Constant:
+                        RegisterEchoVisitorFor<ConstantExpression>(composition,context,expressionToVisit,i);
+                    break;
+                }
+            }
 
             // act:
             Expression result = composition.Visit(expressionToVisit, context);
@@ -102,6 +119,7 @@ namespace Epic.Linq.Expressions.Normalization
             Verify.That(result).IsA<ConstantExpression>()
                   .WithA(e => e.Value, 
                          value => Verify.That(value).IsA<IEnumerable<string>>()
+                                        .WithA(e => e.Count(), that => Is.EqualTo(finalEnumerable.Count()))
                                         .WithEach<string>(e => e, (c, i) => Assert.AreSame(finalEnumerable.ElementAt(i), c)));
         }
     }
