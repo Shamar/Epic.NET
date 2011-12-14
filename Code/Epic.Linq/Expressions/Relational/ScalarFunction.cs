@@ -51,8 +51,21 @@ namespace Epic.Linq.Expressions.Relational
             this._name = name;
         }
 
+        /// <summary>
+        /// Gets the function name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name { get { return this._name; } }
 
+        /// <summary>
+        /// Serves as a hash function for a <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/> object.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
+        /// hash table.
+        /// </returns>
         public abstract override int GetHashCode ();
 
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Scalar

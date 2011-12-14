@@ -103,6 +103,16 @@ namespace Epic.Linq.Expressions.Relational
             return other.Name == this.Name && other.Relation.Equals (this.Relation);
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="Scalar"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Scalar"/> is equal to the current
+        /// <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(Scalar other)
         {
             return Equals (other as RelationAttribute);
