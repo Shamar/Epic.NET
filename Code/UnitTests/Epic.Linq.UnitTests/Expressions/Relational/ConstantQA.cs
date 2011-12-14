@@ -41,6 +41,7 @@ namespace Epic.Linq.Expressions.Relational
             // assert:
             Assert.IsNotNull(cString);
             Assert.IsNull(cString.Value);
+            Assert.AreEqual (cString.Type, ScalarType.Constant);
         }
         
         [Test]
@@ -53,6 +54,7 @@ namespace Epic.Linq.Expressions.Relational
             // assert:
             Assert.IsNotNull (cInt);
             Assert.AreEqual (cInt.Value, value);
+            Assert.AreEqual (cInt.Type, ScalarType.Constant);
         }
         
         [Test]
@@ -95,7 +97,38 @@ namespace Epic.Linq.Expressions.Relational
             Assert.IsFalse (cString.Equals (obj));
             Assert.IsFalse (obj.Equals (cString));
         }
-        
+
+        [Test]
+        public void Compare_throughScalarPointer_returnsTrue()
+        {
+            // arrange:
+            Constant<string> cString = new Constant<string>("test");
+            Scalar cScalar = new Constant<string>("test");
+            Object obj = cScalar;
+
+            // assert:
+            Assert.IsTrue (cString.Equals(cScalar));
+            Assert.IsTrue (cScalar.Equals(cString));
+            Assert.IsTrue (cString.Equals (obj));
+            Assert.IsTrue (obj.Equals (cString));
+        }
+
+        [Test]
+        public void Compare_withOtherTypeConstantThroughScalarPointer_returnsFalse()
+        {
+            // arrange:
+            Constant<string> cString = new Constant<string>("test");
+            Scalar scalar = new Constant<int>(10);
+            Object obj = cString;
+
+            // assert:
+            Assert.IsFalse (cString.Equals(scalar));
+            Assert.IsFalse (scalar.Equals (cString));
+            Assert.IsFalse (scalar.Equals (obj));
+            Assert.IsTrue (obj.Equals (cString));
+            Assert.IsTrue (cString.Equals (obj));
+        }
+
         [Test]
         public void GetHashCode_fromNullConstant_returnsZero()
         {

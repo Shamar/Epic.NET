@@ -65,6 +65,9 @@
     <Compile Include="Expressions\Normalization\ClosureExpander.cs" />
     <Compile Include="Expressions\Normalization\ExecutedQueryableMethodsReducer.cs" />
     <Compile Include="Expressions\Relational\RelationFunction.cs" />
+    <Compile Include="Expressions\Relational\Scalar.cs" />
+    <Compile Include="Expressions\Relational\ScalarType.cs" />
+    <Compile Include="Expressions\Relational\ScalarFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\Relational\Visitors\" />
