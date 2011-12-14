@@ -41,9 +41,9 @@ namespace Epic.Linq.Expressions.Relational
         Function,
 
         /// <summary>
-        /// The referenced <see cref="Scalar"/> object is a <see cref="Relation"/>.
+        /// The referenced <see cref="Scalar"/> object is a <see cref="RelationAttribute"/>.
         /// </summary>
-        Relation
+        Attribute
     }
 }
 

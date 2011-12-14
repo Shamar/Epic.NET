@@ -32,7 +32,7 @@ namespace Epic.Linq.Expressions.Relational
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
     [Serializable]
-    public sealed class RelationAttribute: VisitableBase, IEquatable<RelationAttribute>
+    public sealed class RelationAttribute: Scalar, IEquatable<RelationAttribute>
     {
         private readonly string _name;
         private readonly Relation _relation;
@@ -49,7 +49,7 @@ namespace Epic.Linq.Expressions.Relational
         /// <exception cref='ArgumentNullException'>
         /// Is thrown when either arguments are null.
         /// </exception>
-        public RelationAttribute (string name, Relation relation)
+        public RelationAttribute (string name, Relation relation):base(ScalarType.Attribute)
         {
             if (null == name)
                 throw new ArgumentNullException("name");
@@ -102,7 +102,12 @@ namespace Epic.Linq.Expressions.Relational
             if (other == null) return false;
             return other.Name == this.Name && other.Relation.Equals (this.Relation);
         }
-        
+
+        public override bool Equals(Scalar other)
+        {
+            return Equals (other as RelationAttribute);
+        }
+
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
         /// </summary>
