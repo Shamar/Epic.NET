@@ -30,9 +30,9 @@ namespace Epic.Linq.Expressions.Relational
     /// Constant value in a relational predicate.
     /// </summary>
     [Serializable]
-    public abstract class Constant : VisitableBase, IEquatable<Constant>
+    public abstract class Constant : Scalar, IEquatable<Constant>
     {
-        internal Constant()
+        internal Constant(): base(ScalarType.Constant)
         {
         }
 
@@ -44,8 +44,11 @@ namespace Epic.Linq.Expressions.Relational
         {
             return Equals(other as Constant);
         }
-        
-        public abstract override int GetHashCode ();
+
+        public override bool Equals (Scalar other)
+        {
+            return Equals (other as Constant);
+        }
     }
     
     /// <summary>

@@ -64,6 +64,7 @@ namespace Epic.Linq.Expressions.Relational
             // assert:
             Assert.AreEqual (attribute.Name, attrName);
             Assert.AreEqual (attribute.Relation.Name, relationName);
+            Assert.AreEqual (attribute.Type, ScalarType.Attribute);
             Assert.IsTrue (attribute.Relation.Equals(relation));
         }
         
@@ -74,12 +75,14 @@ namespace Epic.Linq.Expressions.Relational
             Relation relation = generateRelation (relationName);
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName, relation);
-
+            Scalar scalar = attribute2;
             // act:
-            bool isTrue = attribute1.Equals(attribute2);
+            bool isTrueAttribute = attribute1.Equals(attribute2);
+            bool isTrueScalar = attribute1.Equals (scalar);
 
             // assert:
-            Assert.IsTrue (isTrue);
+            Assert.IsTrue (isTrueAttribute);
+            Assert.IsTrue (isTrueScalar);
         }
         
         [TestCase("testAttribute", "toastAttribute", "testRelation")]
@@ -89,12 +92,14 @@ namespace Epic.Linq.Expressions.Relational
             Relation relation = generateRelation (relationName);
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName2, relation);
+            Scalar scalar = attribute2;
 
             // act:
-            bool isFalse = attribute1.Equals(attribute2);
-
+            bool isFalseAttribute = attribute1.Equals(attribute2);
+            bool isFalseScalar = attribute1.Equals (scalar);
             // assert:
-            Assert.IsFalse (isFalse);
+            Assert.IsFalse (isFalseAttribute);
+            Assert.IsFalse (isFalseScalar);
         }        
 
         [TestCase("testAttribute", "testRelation", "toastRelation")]
