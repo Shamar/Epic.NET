@@ -82,14 +82,59 @@ namespace Epic.Linq.Expressions.Relational
         {
             // arrange:
             ScalarFunction func1 = new FakeScalarFunction(name);
-            Scalar scalar = GenerateStrictMock<Scalar>(ScalarType.Constant);
-            
+            Scalar scalar = new FakeScalar(ScalarType.Constant);
             // act:
-            bool result = func1.Equals(scalar);
-
+            bool result1 = func1.Equals(scalar);
             // assert:
             // here the FakeScalarFunction.Equals is called, so the result depends on the implementation
-            Assert.IsFalse(result);
+            Assert.IsFalse(result1);
+        }
+
+        [TestCase("test")]
+        public void FunctionEquals_FromObjectReferenceToEqualInstance_isTrue(string name)
+        {
+            // arrange:
+            ScalarFunction func1 = new FakeScalarFunction(name);
+            ScalarFunction func2 = new FakeScalarFunction(name);
+            Scalar scalar = func2;
+            object obj = func2;
+
+            // act:
+            bool result1 = func1.Equals (func2);
+            bool result2 = func1.Equals (scalar);
+            bool result3 = func1.Equals (obj);
+            bool result4 = scalar.Equals(func1);
+            bool result5 = obj.Equals (func1);
+
+            // assert:
+            Assert.IsTrue (result1);
+            Assert.IsTrue (result2);
+            Assert.IsTrue (result3);
+            Assert.IsTrue (result4);
+            Assert.IsTrue (result5);
+
+
+        }
+
+        [TestCase("test")]
+        public void FunctionEquals_withOtherReference_isFalse(string name)
+        {
+            // arrange:
+            ScalarFunction func1 = new FakeScalarFunction(name);
+            Scalar scalar = new FakeScalar(ScalarType.Function);
+            object obj = scalar;
+
+            // act:
+            bool result1 = func1.Equals(scalar);
+            bool result2 = func1.Equals(obj);
+            bool result3 = obj.Equals (func1);
+            bool result4 = scalar.Equals(func1);
+
+            // assert:
+            Assert.IsFalse (result1);
+            Assert.IsFalse (result2);
+            Assert.IsFalse (result3);
+            Assert.IsFalse (result4);
         }
 
     }

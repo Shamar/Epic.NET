@@ -42,7 +42,7 @@ namespace Epic.Linq.Expressions.Relational
         /// <param name='type'>
         /// The scalar <see cref="ScalarType"/>.
         /// </param>
-        public Scalar (ScalarType type)
+        internal Scalar (ScalarType type)
         {
             this._type = type;
         }
@@ -54,6 +54,13 @@ namespace Epic.Linq.Expressions.Relational
         /// The <see cref="Type"/>.
         /// </value>
         public ScalarType Type { get { return this._type; } }
+
+        public abstract override int GetHashCode ();
+
+        public override bool Equals (object obj)
+        {
+            return Equals (obj as Scalar);
+        }
 
         #region IEquatable[Scalar] implementation
         /// <summary>
