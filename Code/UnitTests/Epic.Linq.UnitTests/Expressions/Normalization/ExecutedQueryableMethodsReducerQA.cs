@@ -29,6 +29,7 @@ using Epic.Linq.Fakes;
 using Challenge00.DDDSample.Cargo;
 using Rhino.Mocks;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Epic.Linq.Expressions.Normalization
 {
@@ -80,11 +81,11 @@ namespace Epic.Linq.Expressions.Normalization
         private void RegisterEchoVisitorFor<TArgument>(CompositeVisitor<Expression> composition, IVisitContext context, MethodCallExpression callExression, int argumentIndex)
             where TArgument : Expression
         {
+            TArgument argumentToReturn = (TArgument)callExression.Arguments[argumentIndex];
             FakeVisitor<Expression, TArgument> mockEchoVisitor = GeneratePartialMock<FakeVisitor<Expression, TArgument>>(composition);
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<TArgument>((TArgument)callExression.Arguments[argumentIndex])).Return(mockEchoVisitor).Repeat.Once();
-            mockEchoVisitor.Expect(v => v.Visit ((TArgument)callExression.Arguments[argumentIndex], context)).Return(callExression.Arguments[argumentIndex]).Repeat.Once();
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(null)).IgnoreArguments().Return(null).Repeat.Any();
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            Func<TArgument, IVisitor<Expression, TArgument>> impl = a => object.ReferenceEquals(a, argumentToReturn) ? mockEchoVisitor : null;// .Return(mockEchoVisitor);
+            mockEchoVisitor.Expect(v => v.CallAsVisitor<TArgument>(argumentToReturn)).IgnoreArguments().Do(impl).Repeat.Once();
+            mockEchoVisitor.Expect(v => v.Visit(argumentToReturn, context)).Return(argumentToReturn).Repeat.Once();
         }
 
         [Test, TestCaseSource(typeof(Samples), "ReduceableQueryableMethodCallExpressions")]
@@ -121,6 +122,49 @@ namespace Epic.Linq.Expressions.Normalization
                          value => Verify.That(value).IsA<IEnumerable<string>>()
                                         .WithA(e => e.Count(), that => Is.EqualTo(finalEnumerable.Count()))
                                         .WithEach<string>(e => e, (c, i) => Assert.AreSame(finalEnumerable.ElementAt(i), c)));
+        }
+
+        [Test, TestCaseSource(typeof(Samples), "NotReduceableQueryableMethodCallExpressions")]
+        public void Visit_aQueryableMethodOverAnExecutedQueryableThatCanNotBeReduced_returnsAMethodCallExpression(MethodCallExpression expressionToVisit, MethodInfo expectedEnumerableMethod)
+        {
+            // arrange:
+            IEnumerable<string> enumerableToReturn = Enumerable.Empty<string>();
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            FakeNormalizer composition = new FakeNormalizer();
+            new ExecutedQueryableMethodsReducer(composition);
+            FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
+            mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(enumerableToReturn)).Repeat.Once();
+            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
+            {
+                switch (expressionToVisit.Arguments[i].NodeType)
+                {
+                    case ExpressionType.Parameter:
+                        RegisterEchoVisitorFor<ParameterExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Call:
+                        RegisterEchoVisitorFor<MethodCallExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Quote:
+                        RegisterEchoVisitorFor<UnaryExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Constant:
+                        RegisterEchoVisitorFor<ConstantExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    default:
+                        Assert.Fail("TEST TO FIX: Unexpected expression of nodeType {0}, as the argument at {1} in the expression: {2}.", expressionToVisit.Arguments[i].NodeType, i, expressionToVisit.ToString());
+                        break;
+                }
+            }
+
+            // act:
+            Expression result = composition.Visit(expressionToVisit, context);
+
+            // assert:
+            Verify.That(result).IsA<MethodCallExpression>()
+                .WithA(e => e.Method, that => Is.SameAs(expectedEnumerableMethod))
+                .WithA(e => e.Arguments[0], that => Verify.That(that).IsA<ConstantExpression>().WithA(e => e.Value, value => Is.SameAs(enumerableToReturn)));
         }
     }
 }

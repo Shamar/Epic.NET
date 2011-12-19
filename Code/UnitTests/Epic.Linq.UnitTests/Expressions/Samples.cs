@@ -33,7 +33,7 @@ namespace Epic.Linq.Expressions
 {
     public static class Samples
     {
-        private static MethodCallExpression GetMethodCallExpression(IQueryable<string> queryable)
+        private static MethodCallExpression GetMethodCallExpression<T>(IQueryable<T> queryable)
         {
             return (System.Linq.Expressions.MethodCallExpression)queryable.Expression;
         }
@@ -44,7 +44,7 @@ namespace Epic.Linq.Expressions
             {
                 IEnumerable<string> originalStrings = new string[] {
                     "test-A.1", "test-B.1", "test-B.2",
-                    "sample-A.2", "sample-B.1", "sample-C.3"
+                    "sample-A.2", "sample-B.1", "sample-C.32"
                 };
                 IQueryable<string> queryableString = originalStrings.AsQueryable().Where(s => false); // this where simulate a deeper tree
 
@@ -67,6 +67,44 @@ namespace Epic.Linq.Expressions
                     GetMethodCallExpression(queryableString.SkipWhile(s => s.Contains("1"))),
                     originalStrings,
                     originalStrings.SkipWhile(s => s.Contains("1"))
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(queryableString.Cast<object>()),
+                    originalStrings,
+                    originalStrings.Cast<object>()
+                    );
+            }
+        }
+
+        public static IEnumerable<TestCaseData> NotReduceableQueryableMethodCallExpressions
+        {
+            get
+            {
+                IEnumerable<string> originalStrings = new string[] {
+                    "test-A.1", "test-B.1", "test-B.2",
+                    "sample-A.2", "sample-B.1", "sample-C.3"
+                };
+                IQueryable<string> queryableString = originalStrings.AsQueryable().Where(s => true); // this where simulate a deeper tree
+
+                Expression<Func<int, IQueryable<string>>> func = i => queryableString.Where(s => s.Length > i);
+                Expression<Func<int, IEnumerable<string>>> func2 = i => originalStrings.Where(s => s.Length > i);
+                yield return new TestCaseData(
+                    (MethodCallExpression)func.Body,
+                    ((MethodCallExpression)func2.Body).Method
+                    );
+
+                func = i => queryableString.Skip(i);
+                func2 = i => originalStrings.Skip(i);
+                yield return new TestCaseData(
+                    (MethodCallExpression)func.Body,
+                    ((MethodCallExpression)func2.Body).Method
+                    );
+
+                func = i => queryableString.GroupBy(s => s + i.ToString(), (s, e) => e.Count().ToString());
+                func2 = i => originalStrings.GroupBy(s => s + i.ToString(), (s, e) => e.Count().ToString());
+                yield return new TestCaseData(
+                    (MethodCallExpression)func.Body,
+                    ((MethodCallExpression)func2.Body).Method
                     );
             }
         }

@@ -78,45 +78,76 @@ namespace Epic.Linq.Expressions.Normalization
         #region IVisitor[Expression,MethodCallExpression] implementation
         public Expression Visit (MethodCallExpression target, IVisitContext state)
         {
+            MethodInfo targetMethod = target.Method;
             Expression methodSource = VisitInner(target.Arguments[0], state);
+            List<Expression> fallbackArgs = new List<Expression>();
+            fallbackArgs.Add(methodSource);
+            int i = 1;
             if(methodSource.NodeType == System.Linq.Expressions.ExpressionType.Constant)
             {
                 ConstantExpression constantSource = methodSource as ConstantExpression;
-                Type queryableType = null;
-                if(!(constantSource.Value is IQueryable) && Reflection.TryGetItemTypeOfEnumerable(constantSource.Type, out queryableType))
+                if(!(constantSource.Value is IQueryable))
                 {
+                    targetMethod = Reflection.Queryable.GetEnumerableEquivalent(targetMethod);
+
                     List<object> invokeArgs = new List<object>();
                     invokeArgs.Add(constantSource.Value);
-                    for(int i = 1; i < target.Arguments.Count; ++i)
+                    for(; i < target.Arguments.Count; ++i)
                     {
                         Expression arg = VisitInner(target.Arguments[i], state);
-                        switch(arg.NodeType)
+                        fallbackArgs.Add(AdaptArgumentToEnumerableMethod(arg));
+                        switch (arg.NodeType)
                         {
                             case ExpressionType.Quote:
-                                invokeArgs.Add(((LambdaExpression)((UnaryExpression)arg).Operand).Compile());
+                                try
+                                {
+                                    invokeArgs.Add(((LambdaExpression)((UnaryExpression)arg).Operand).Compile());
+                                }
+                                catch(InvalidOperationException)
+                                {
+                                    goto fallback;
+                                }
                             break;
                             case ExpressionType.Constant:
                                 invokeArgs.Add(((ConstantExpression)arg).Value);
                             break;
-                            default:
-                                throw new NotImplementedException("TODO");
+                            case ExpressionType.Parameter:
+                                goto fallback;
                         }
                     }
-
-                    MethodInfo enumerableEquivalent = Reflection.Queryable.GetEnumerableEquivalent(target.Method);
-                    return Expression.Constant(enumerableEquivalent.Invoke(null, invokeArgs.ToArray()), enumerableEquivalent.ReturnType);
+                    
+                    return Expression.Constant(targetMethod.Invoke(null, invokeArgs.ToArray()), targetMethod.ReturnType);
                 }
             }
-            List<Expression> arguments = new List<Expression>();
-            arguments.Add(methodSource);
-            for(int i = 1; i < target.Arguments.Count; ++i)
+
+            // Yes, I know. Goto is harmful. Feel free to refactor, but without reducing neither readability nor performance.
+            fallback:
+            for(++i; i < target.Arguments.Count; ++i)
             {
                 Expression arg = VisitInner(target.Arguments[i], state);
-                arguments.Add(arg);
+                fallbackArgs.Add(AdaptArgumentToEnumerableMethod(arg));
             }
-            return Expression.Call(target.Method, arguments.ToArray());
+            return Expression.Call(targetMethod, fallbackArgs.ToArray());
+
+
         }
         #endregion
+
+        /// <summary>
+        /// Adapt an argument produced for a <see cref="System.Linq.Queryable"/> method, 
+        /// to an argument valid for a <see cref="System.Linq.Enumerable"/> one.
+        /// </summary>
+        /// <param name="argument">An argument for a Queryable method call.</param>
+        /// <returns>An argument for an Enumerable method call.</returns>
+        /// <remarks>
+        /// Actually, it replace quotes with their operand.
+        /// </remarks>
+        private static Expression AdaptArgumentToEnumerableMethod(Expression argument)
+        {
+            if (null == argument || argument.NodeType != ExpressionType.Quote)
+                return argument;
+            return ((UnaryExpression)argument).Operand;
+        }
     }
 }
 

@@ -25,6 +25,8 @@ using System;
 using NUnit.Framework;
 using System.Linq.Expressions;
 using Epic.Linq.Fakes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Epic.Linq.Expressions.Normalization
 {
@@ -58,6 +60,52 @@ namespace Epic.Linq.Expressions.Normalization
 
             // assert:
             Assert.AreSame(constant, result);
+        }
+
+        private static Expression GetExpression<T>(IQueryable<T> queryable)
+        {
+            return queryable.Expression;
+        }
+
+        public static IEnumerable<TestCaseData> ComplexExpressions
+        {
+            get
+            {
+                IEnumerable<string> originalStrings = new string[] {
+                    "test-A.1", "test-B.1", "test-B.2",
+                    "sample-A.2", "sample-B.1", "sample-C.3"
+                };
+                IQueryable<string> queryableString = originalStrings.AsQueryable().Where(s => true); // this where simulate a deeper tree
+
+                yield return new TestCaseData(
+                    GetExpression(queryableString.Where(s => s.StartsWith("test")).OrderBy(s => s.ToCharArray()[s.Length - 1]))
+                    );
+                yield return new TestCaseData(
+                    GetExpression(queryableString.Where(s => s.StartsWith("test")).SelectMany(s => s.ToCharArray()))
+                    );
+                yield return new TestCaseData(
+                    GetExpression(queryableString.Where(s => s.StartsWith("test")).Take(2))
+                    );
+                yield return new TestCaseData(
+                    GetExpression(from s1 in queryableString.Where(s => s.StartsWith("test"))
+                                  join s2 in queryableString.Where(s => s.StartsWith("sample")) 
+                                    on s1.ToCharArray()[s1.Length - 1] equals s2.ToCharArray()[s2.Length - 1]
+                                  select new { Val = s1 + " - " + s2 })
+                    );
+            }
+        }
+
+        [Test, TestCaseSource("ComplexExpressions")]
+        public void Visit_aComplexExpression_returnTheComplexExpression(Expression complexExpression)
+        {
+            // arrange:
+            IVisitor<Expression, Expression> visitor = new FakeNormalizer("TEST");
+
+            // act:
+            Expression result = visitor.Visit(complexExpression, VisitContext.New);
+
+            // assert:
+            Assert.AreSame(complexExpression, result);
         }
     }
 }
