@@ -76,11 +76,24 @@ namespace Epic.Linq.Expressions.Normalization
         }
 
         #region IVisitor[Expression,MethodCallExpression] implementation
-        public Expression Visit (MethodCallExpression target, IVisitContext state)
+        /// <summary>
+        /// Visit <paramref name="target"/> and return its evaluation in a <see cref="ConstantExpression"/>
+        /// when its source has been evaluated.
+        /// </summary>
+        /// <param name='target'>
+        /// Call to a method of <see cref="System.Linq.Queryable"/>.
+        /// </param>
+        /// <param name='context'>
+        /// Visit context.
+        /// </param>
+        public Expression Visit (MethodCallExpression target, IVisitContext context)
         {
             MethodInfo targetMethod = target.Method;
-            Expression methodSource = VisitInner(target.Arguments[0], state);
+            Expression methodSource = VisitInner(target.Arguments[0], context);
+
+            // TODO: evaluate if a new List<Expression>(target.Arguments.Count) or an array can improve performances.
             List<Expression> fallbackArgs = new List<Expression>();
+
             fallbackArgs.Add(methodSource);
             int i = 1;
             if(methodSource.NodeType == System.Linq.Expressions.ExpressionType.Constant)
@@ -94,7 +107,7 @@ namespace Epic.Linq.Expressions.Normalization
                     invokeArgs.Add(constantSource.Value);
                     for(; i < target.Arguments.Count; ++i)
                     {
-                        Expression arg = VisitInner(target.Arguments[i], state);
+                        Expression arg = VisitInner(target.Arguments[i], context);
                         fallbackArgs.Add(AdaptArgumentToEnumerableMethod(arg));
                         switch (arg.NodeType)
                         {
@@ -124,7 +137,7 @@ namespace Epic.Linq.Expressions.Normalization
             fallback:
             for(++i; i < target.Arguments.Count; ++i)
             {
-                Expression arg = VisitInner(target.Arguments[i], state);
+                Expression arg = VisitInner(target.Arguments[i], context);
                 fallbackArgs.Add(AdaptArgumentToEnumerableMethod(arg));
             }
             return Expression.Call(targetMethod, fallbackArgs.ToArray());
