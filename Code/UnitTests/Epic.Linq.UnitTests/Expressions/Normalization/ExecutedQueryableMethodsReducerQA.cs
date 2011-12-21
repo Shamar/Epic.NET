@@ -110,6 +110,9 @@ namespace Epic.Linq.Expressions.Normalization
                     case ExpressionType.Constant:
                         RegisterEchoVisitorFor<ConstantExpression>(composition,context,expressionToVisit,i);
                     break;
+                    case ExpressionType.MemberAccess:
+                        RegisterEchoVisitorFor<MemberExpression>(composition, context, expressionToVisit, i);
+                    break;
                 }
             }
 
@@ -152,6 +155,9 @@ namespace Epic.Linq.Expressions.Normalization
                     case ExpressionType.Constant:
                         RegisterEchoVisitorFor<ConstantExpression>(composition, context, expressionToVisit, i);
                         break;
+                    case ExpressionType.MemberAccess:
+                        RegisterEchoVisitorFor<MemberExpression>(composition, context, expressionToVisit, i);
+                        break;
                     default:
                         Assert.Fail("TEST TO FIX: Unexpected expression of nodeType {0}, as the argument at {1} in the expression: {2}.", expressionToVisit.Arguments[i].NodeType, i, expressionToVisit.ToString());
                         break;
@@ -165,6 +171,48 @@ namespace Epic.Linq.Expressions.Normalization
             Verify.That(result).IsA<MethodCallExpression>()
                 .WithA(e => e.Method, that => Is.SameAs(expectedEnumerableMethod))
                 .WithA(e => e.Arguments[0], that => Verify.That(that).IsA<ConstantExpression>().WithA(e => e.Value, value => Is.SameAs(enumerableToReturn)));
+        }
+
+        [Test, TestCaseSource(typeof(Samples), "ReduceableQueryableMethodCallExpressions")]
+        public void Visit_aQueryableMethodOverAnNotExecutedQueryable_returnsAMethodCallToTheSameMethod(MethodCallExpression expressionToVisit, object dummy1, object dummy2)
+        {
+            // arrange:
+            IEnumerable<string> enumerableToReturn = Enumerable.Empty<string>();
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            FakeNormalizer composition = new FakeNormalizer();
+            new ExecutedQueryableMethodsReducer(composition);
+            for (int i = 0; i < expressionToVisit.Arguments.Count; ++i)
+            {
+                switch (expressionToVisit.Arguments[i].NodeType)
+                {
+                    case ExpressionType.Parameter:
+                        RegisterEchoVisitorFor<ParameterExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Call:
+                        RegisterEchoVisitorFor<MethodCallExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Quote:
+                        RegisterEchoVisitorFor<UnaryExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Constant:
+                        RegisterEchoVisitorFor<ConstantExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.MemberAccess:
+                        RegisterEchoVisitorFor<MemberExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    default:
+                        Assert.Fail("TEST TO FIX: Unexpected expression of nodeType {0}, as the argument at {1} in the expression: {2}.", expressionToVisit.Arguments[i].NodeType, i, expressionToVisit.ToString());
+                        break;
+                }
+            }
+
+            // act:
+            Expression result = composition.Visit(expressionToVisit, context);
+
+            // assert:
+            Verify.That(result).IsA<MethodCallExpression>()
+                .WithA(e => e.Method, that => Is.SameAs(expressionToVisit.Method))
+                .WithEach(e => e.Arguments, (that, atIndex) => Assert.AreSame(that, expressionToVisit.Arguments[atIndex]));
         }
     }
 }

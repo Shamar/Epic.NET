@@ -124,7 +124,7 @@ namespace Epic.Linq.Expressions.Normalization
                             case ExpressionType.Constant:
                                 invokeArgs.Add(((ConstantExpression)arg).Value);
                             break;
-                            case ExpressionType.Parameter:
+                            default:
                                 goto fallback;
                         }
                     }

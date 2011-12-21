@@ -38,6 +38,59 @@ namespace Epic.Linq.Expressions
             return (System.Linq.Expressions.MethodCallExpression)queryable.Expression;
         }
 
+        private static MethodCallExpression GetMethodCallExpression<T>(Expression<Func<string, T>> expression)
+        {
+            return (System.Linq.Expressions.MethodCallExpression)expression.Body;
+        }
+
+        public static IEnumerable<TestCaseData> ReduceableEnumerableMethodCallExpressions
+        {
+            get
+            {
+                IEnumerable<string> originalStrings = new string[] {
+                    "test-A.1", "test-B.1", "test-B.2",
+                    "sample-A.2", "sample-B.1", "sample-C.32"
+                };
+                string closure = "test";
+
+                yield return new TestCaseData(
+                    GetMethodCallExpression(p => originalStrings.Where(s => s.StartsWith("test"))),
+                    originalStrings,
+                    originalStrings.Where(s => s.StartsWith("test"))
+                    );/*
+                yield return new TestCaseData(
+                    GetMethodCallExpression(p => originalStrings.Where(s => s.StartsWith(closure))),
+                    originalStrings,
+                    originalStrings.Where(s => s.StartsWith(closure))
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(p => originalStrings.Take(closure.Length)),
+                    originalStrings,
+                    originalStrings.Take(closure.Length)
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(p => originalStrings.Take(3)),
+                    originalStrings,
+                    originalStrings.Take(3)
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(p => originalStrings.Skip(2)),
+                    originalStrings,
+                    originalStrings.Skip(2)
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(p => originalStrings.SkipWhile(s => s.Contains("1"))),
+                    originalStrings,
+                    originalStrings.SkipWhile(s => s.Contains("1"))
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(p => originalStrings.Cast<object>()),
+                    originalStrings,
+                    originalStrings.Cast<object>()
+                    );*/
+            }
+        }
+
         public static IEnumerable<TestCaseData> ReduceableQueryableMethodCallExpressions
         {
             get
@@ -46,12 +99,23 @@ namespace Epic.Linq.Expressions
                     "test-A.1", "test-B.1", "test-B.2",
                     "sample-A.2", "sample-B.1", "sample-C.32"
                 };
+                string closure = "test";
                 IQueryable<string> queryableString = originalStrings.AsQueryable().Where(s => false); // this where simulate a deeper tree
 
                 yield return new TestCaseData(
                     GetMethodCallExpression(queryableString.Where(s => s.StartsWith("test"))),
                     originalStrings,
                     originalStrings.Where(s => s.StartsWith("test"))
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(queryableString.Where(s => s.StartsWith(closure))),
+                    originalStrings,
+                    originalStrings.Where(s => s.StartsWith(closure))
+                    );
+                yield return new TestCaseData(
+                    GetMethodCallExpression(queryableString.Take(closure.Length)),
+                    originalStrings,
+                    originalStrings.Take(closure.Length)
                     );
                 yield return new TestCaseData(
                     GetMethodCallExpression(queryableString.Take(3)),
@@ -106,6 +170,14 @@ namespace Epic.Linq.Expressions
                     (MethodCallExpression)func.Body,
                     ((MethodCallExpression)func2.Body).Method
                     );
+
+                Expression<Func<string, IQueryable<string>>> funcS = s => queryableString.Skip(s.Length);
+                Expression<Func<string, IEnumerable<string>>> funcS2 = s => originalStrings.Skip(s.Length);
+                yield return new TestCaseData(
+                    (MethodCallExpression)funcS.Body,
+                    ((MethodCallExpression)funcS2.Body).Method
+                    );
+
             }
         }
 
