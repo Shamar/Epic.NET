@@ -108,13 +108,15 @@ namespace Epic.Linq.Expressions.Normalization
                     for (; i < target.Arguments.Count; ++i)
                     {
                         Expression arg = VisitInner(target.Arguments[i], context);
-                        fallbackArgs.Add(AdaptArgumentToEnumerableMethod(arg));
+                        if(arg.NodeType == ExpressionType.Quote && targetMethod != target.Method)
+                            arg = ((UnaryExpression)arg).Operand;
+                        fallbackArgs.Add(arg);
                         switch (arg.NodeType)
                         {
-                            case ExpressionType.Quote:
+                            case ExpressionType.Lambda:
                                 try
                                 {
-                                    invokeArgs.Add(((LambdaExpression)((UnaryExpression)arg).Operand).Compile());
+                                    invokeArgs.Add(((LambdaExpression)arg).Compile());
                                 }
                                 catch (InvalidOperationException)
                                 {
@@ -141,29 +143,15 @@ namespace Epic.Linq.Expressions.Normalization
             for(; i < target.Arguments.Count; ++i)
             {
                 Expression arg = VisitInner(target.Arguments[i], context);
-                fallbackArgs.Add(AdaptArgumentToEnumerableMethod(arg));
+                if(arg.NodeType == ExpressionType.Quote && targetMethod != target.Method)
+                    arg = ((UnaryExpression)arg).Operand;
+                fallbackArgs.Add(arg);
             }
             return Expression.Call(targetMethod, fallbackArgs.ToArray());
 
 
         }
         #endregion
-
-        /// <summary>
-        /// Adapt an argument produced for a <see cref="System.Linq.Queryable"/> method, 
-        /// to an argument valid for a <see cref="System.Linq.Enumerable"/> one.
-        /// </summary>
-        /// <param name="argument">An argument for a Queryable method call.</param>
-        /// <returns>An argument for an Enumerable method call.</returns>
-        /// <remarks>
-        /// Actually, it replace quotes with their operand.
-        /// </remarks>
-        private static Expression AdaptArgumentToEnumerableMethod(Expression argument)
-        {
-            if (null == argument || argument.NodeType != ExpressionType.Quote)
-                return argument;
-            return ((UnaryExpression)argument).Operand;
-        }
     }
 }
 
