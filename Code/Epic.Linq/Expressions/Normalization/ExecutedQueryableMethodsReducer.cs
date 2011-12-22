@@ -96,16 +96,16 @@ namespace Epic.Linq.Expressions.Normalization
 
             fallbackArgs.Add(methodSource);
             int i = 1;
-            if(methodSource.NodeType == System.Linq.Expressions.ExpressionType.Constant)
+            if (methodSource.NodeType == System.Linq.Expressions.ExpressionType.Constant)
             {
                 ConstantExpression constantSource = methodSource as ConstantExpression;
-                if(!(constantSource.Value is IQueryable))
+                if (!(constantSource.Value is IQueryable))
                 {
                     targetMethod = Reflection.Queryable.GetEnumerableEquivalent(targetMethod);
 
                     List<object> invokeArgs = new List<object>();
                     invokeArgs.Add(constantSource.Value);
-                    for(; i < target.Arguments.Count; ++i)
+                    for (; i < target.Arguments.Count; ++i)
                     {
                         Expression arg = VisitInner(target.Arguments[i], context);
                         fallbackArgs.Add(AdaptArgumentToEnumerableMethod(arg));
@@ -116,26 +116,29 @@ namespace Epic.Linq.Expressions.Normalization
                                 {
                                     invokeArgs.Add(((LambdaExpression)((UnaryExpression)arg).Operand).Compile());
                                 }
-                                catch(InvalidOperationException)
+                                catch (InvalidOperationException)
                                 {
+                                    ++i;
                                     goto fallback;
                                 }
-                            break;
+                                break;
                             case ExpressionType.Constant:
                                 invokeArgs.Add(((ConstantExpression)arg).Value);
-                            break;
+                                break;
                             default:
+                                ++i;
                                 goto fallback;
                         }
                     }
-                    
+
                     return Expression.Constant(targetMethod.Invoke(null, invokeArgs.ToArray()), targetMethod.ReturnType);
                 }
             }
 
+
             // Yes, I know. Goto is harmful. Feel free to refactor, but without reducing neither readability nor performance.
             fallback:
-            for(++i; i < target.Arguments.Count; ++i)
+            for(; i < target.Arguments.Count; ++i)
             {
                 Expression arg = VisitInner(target.Arguments[i], context);
                 fallbackArgs.Add(AdaptArgumentToEnumerableMethod(arg));

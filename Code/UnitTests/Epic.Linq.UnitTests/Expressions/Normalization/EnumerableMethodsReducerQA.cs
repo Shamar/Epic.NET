@@ -98,18 +98,21 @@ namespace Epic.Linq.Expressions.Normalization
             mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
             mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
             mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
-            for (int i = 0; i < expressionToVisit.Arguments.Count; ++i)
+            for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
             {
                 switch(expressionToVisit.Arguments[i].NodeType)
                 {
-                    case ExpressionType.Quote:
-                        RegisterEchoVisitorFor<UnaryExpression>(composition,context,expressionToVisit,i);
+                    case ExpressionType.Lambda:
+                        RegisterEchoVisitorFor<LambdaExpression>(composition, context, expressionToVisit, i);
                         break;
                     case ExpressionType.Constant:
                         RegisterEchoVisitorFor<ConstantExpression>(composition,context,expressionToVisit,i);
                     break;
                     case ExpressionType.MemberAccess:
                         RegisterEchoVisitorFor<MemberExpression>(composition, context, expressionToVisit, i);
+                    break;
+                    default:
+                        Assert.Fail("TEST TO FIX: Unexpected expression of nodeType {0}, as the argument at {1} in the expression: {2}.", expressionToVisit.Arguments[i].NodeType, i, expressionToVisit.ToString());
                     break;
                 }
             }
@@ -123,6 +126,44 @@ namespace Epic.Linq.Expressions.Normalization
                          value => Verify.That(value).IsA<IEnumerable<string>>()
                                         .WithA(e => e.Count(), that => Is.EqualTo(finalEnumerable.Count()))
                                         .WithEach<string>(e => e, (c, i) => Assert.AreSame(finalEnumerable.ElementAt(i), c)));
+
+        }
+
+        [Test, TestCaseSource(typeof(Samples), "ReduceableEnumerableMethodCallExpressions")]
+        public void Visit_anEnumerableMethodThatCanNotBeReduced_returnsAMethodCallToTheSameMethod(MethodCallExpression expressionToVisit, IEnumerable<string> originalEnumerable, IEnumerable<string> finalEnumerable)
+        {
+            // arrange:
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            FakeNormalizer composition = new FakeNormalizer();
+            new EnumerableMethodsReducer(composition);
+            for (int i = 0; i < expressionToVisit.Arguments.Count; ++i)
+            {
+                switch (expressionToVisit.Arguments[i].NodeType)
+                {
+                    case ExpressionType.Lambda:
+                        RegisterEchoVisitorFor<LambdaExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Constant:
+                        RegisterEchoVisitorFor<ConstantExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.MemberAccess:
+                        RegisterEchoVisitorFor<MemberExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Call:
+                        RegisterEchoVisitorFor<MethodCallExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    default:
+                        Assert.Fail("TEST TO FIX: Unexpected expression of nodeType {0}, as the argument at {1} in the expression: {2}.", expressionToVisit.Arguments[i].NodeType, i, expressionToVisit.ToString());
+                        break;
+                }
+            }
+
+            // act:
+            Expression result = composition.Visit(expressionToVisit, context);
+
+            // assert:
+            Verify.That(result).IsA<MethodCallExpression>()
+                  .WithEach(e => e.Arguments, (argument, atIndex) => Assert.AreSame(expressionToVisit.Arguments[atIndex], argument));
 
         }
     }

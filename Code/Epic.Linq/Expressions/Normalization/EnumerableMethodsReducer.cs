@@ -59,7 +59,7 @@ namespace Epic.Linq.Expressions.Normalization
             // TODO: evaluate if a new List<Expression>(target.Arguments.Count) or an array can improve performances.
             List<Expression> fallbackArgs = new List<Expression>();
 
-            int i = 0; 
+            int i = 0;
             if (methodSource.NodeType == System.Linq.Expressions.ExpressionType.Constant)
             {
                 ConstantExpression constantSource = methodSource as ConstantExpression;
@@ -83,10 +83,10 @@ namespace Epic.Linq.Expressions.Normalization
                         fallbackArgs.Add(arg);
                         switch (arg.NodeType)
                         {
-                            case ExpressionType.Quote:
+                            case ExpressionType.Lambda:
                                 try
                                 {
-                                    invokeArgs.Add(((LambdaExpression)((UnaryExpression)arg).Operand).Compile());
+                                    invokeArgs.Add(((LambdaExpression)arg).Compile());
                                 }
                                 catch (InvalidOperationException)
                                 {
@@ -97,12 +97,16 @@ namespace Epic.Linq.Expressions.Normalization
                                 invokeArgs.Add(((ConstantExpression)arg).Value);
                                 break;
                             default:
-                                // after a visit, only Constants and Quote are can be compiled or evaluated.
+                                // after a visit, only Constants and LambdaExpression are can be compiled or evaluated.
                                 goto fallback;
                         }
                     }
                     return Expression.Constant(targetMethod.Invoke(null, invokeArgs.ToArray()), targetMethod.ReturnType);
                 }
+            }
+            else
+            {
+                fallbackArgs.Add(methodSource);
             }
 
             fallback:

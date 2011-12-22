@@ -212,7 +212,9 @@ namespace Epic.Linq.Expressions.Normalization
             // assert:
             Verify.That(result).IsA<MethodCallExpression>()
                 .WithA(e => e.Method, that => Is.SameAs(expressionToVisit.Method))
-                .WithEach(e => e.Arguments, (that, atIndex) => Assert.AreSame(that, expressionToVisit.Arguments[atIndex]));
+                .WithEach(e => e.Arguments, (that, atIndex) => { 
+                    Assert.AreSame(that, expressionToVisit.Arguments[atIndex]); 
+                });
         }
     }
 }

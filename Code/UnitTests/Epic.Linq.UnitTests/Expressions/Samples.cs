@@ -53,20 +53,16 @@ namespace Epic.Linq.Expressions
                 };
                 string closure = "test";
 
-                yield return new TestCaseData(
+                yield return
+                    new TestCaseData(
                     GetMethodCallExpression(p => originalStrings.Where(s => s.StartsWith("test"))),
                     originalStrings,
                     originalStrings.Where(s => s.StartsWith("test"))
-                    );/*
+                    );
                 yield return new TestCaseData(
                     GetMethodCallExpression(p => originalStrings.Where(s => s.StartsWith(closure))),
                     originalStrings,
                     originalStrings.Where(s => s.StartsWith(closure))
-                    );
-                yield return new TestCaseData(
-                    GetMethodCallExpression(p => originalStrings.Take(closure.Length)),
-                    originalStrings,
-                    originalStrings.Take(closure.Length)
                     );
                 yield return new TestCaseData(
                     GetMethodCallExpression(p => originalStrings.Take(3)),
@@ -87,7 +83,7 @@ namespace Epic.Linq.Expressions
                     GetMethodCallExpression(p => originalStrings.Cast<object>()),
                     originalStrings,
                     originalStrings.Cast<object>()
-                    );*/
+                    );
             }
         }
 
