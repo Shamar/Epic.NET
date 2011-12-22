@@ -63,12 +63,12 @@
     <Compile Include="Expressions\Relational\RelationAttribute.cs" />
     <Compile Include="Expressions\Normalization\ExpressionNormalizerBase.cs" />
     <Compile Include="Expressions\Normalization\ClosureExpander.cs" />
-    <Compile Include="Expressions\Normalization\ExecutedQueryableMethodsReducer.cs" />
     <Compile Include="Expressions\Relational\RelationFunction.cs" />
     <Compile Include="Expressions\Relational\Scalar.cs" />
     <Compile Include="Expressions\Relational\ScalarType.cs" />
     <Compile Include="Expressions\Relational\ScalarFunction.cs" />
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducer.cs" />
+    <Compile Include="Expressions\Normalization\QueryableMethodsReducer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\Relational\Visitors\" />

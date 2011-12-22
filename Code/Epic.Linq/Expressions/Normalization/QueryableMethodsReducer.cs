@@ -1,5 +1,5 @@
 //  
-//  ExecutedQueryableMethodsReducer.cs
+//  QueryableMethodsReducer.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -34,16 +34,16 @@ namespace Epic.Linq.Expressions.Normalization
     /// Reduces any <see cref="MethodCallExpression"/> that would operate over
     /// an <see cref="IQueryable"/> that has been evaluated.
     /// </summary>
-    public sealed class ExecutedQueryableMethodsReducer : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, MethodCallExpression>
+    public sealed class QueryableMethodsReducer : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, MethodCallExpression>
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="Epic.Linq.Expressions.Normalization.ExecutedQueryableMethodsReducer"/> class.
+        /// <see cref="Epic.Linq.Expressions.Normalization.QueryableMethodsReducer"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that will own this visitor.
         /// </param>
-        public ExecutedQueryableMethodsReducer (CompositeVisitor<Expression> composition)
+        public QueryableMethodsReducer (CompositeVisitor<Expression> composition)
             : base(composition)
         {
         }

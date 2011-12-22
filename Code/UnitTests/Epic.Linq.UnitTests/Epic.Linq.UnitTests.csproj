@@ -97,12 +97,12 @@
     <Compile Include="Fakes\FakeNormalizer.cs" />
     <Compile Include="Expressions\Verify.cs" />
     <Compile Include="Expressions\Normalization\ClosureExpanderQA.cs" />
-    <Compile Include="Expressions\Normalization\ExecutedQueryableMethodsReducerQA.cs" />
     <Compile Include="Expressions\Relational\RelationFunctionQA.cs" />
     <Compile Include="Fakes\FakeRelationFunction.cs" />
     <Compile Include="Expressions\Relational\ScalarFunctionQA.cs" />
     <Compile Include="Fakes\FakeScalarFunction.cs" />
     <Compile Include="Fakes\FakeScalar.cs" />
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducerQA.cs" />
+    <Compile Include="Expressions\Normalization\QueryableMethodsReducerQA.cs" />
   </ItemGroup>
 </Project>

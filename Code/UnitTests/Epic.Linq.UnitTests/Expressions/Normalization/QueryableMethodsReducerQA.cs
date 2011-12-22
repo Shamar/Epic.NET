@@ -1,5 +1,5 @@
 //  
-//  ExecutedQueryableMethodsReducerQA.cs
+//  QueryableMethodsReducerQA.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -34,14 +34,14 @@ using System.Reflection;
 namespace Epic.Linq.Expressions.Normalization
 {
     [TestFixture]
-    public class ExecutedQueryableMethodsReducerQA : RhinoMocksFixtureBase
+    public class QueryableMethodsReducerQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withoutComposition_throwsArgumentNullException()
         {
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-                new ExecutedQueryableMethodsReducer(null);
+                new QueryableMethodsReducer(null);
             });
         }
 
@@ -52,7 +52,7 @@ namespace Epic.Linq.Expressions.Normalization
             Expression<Func<int, string>> dummy = i => i.ToString();
             MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
             FakeNormalizer composition = new FakeNormalizer();
-            ExecutedQueryableMethodsReducer reducer = new ExecutedQueryableMethodsReducer(composition);
+            QueryableMethodsReducer reducer = new QueryableMethodsReducer(composition);
 
             // act:
             IVisitor<Expression, MethodCallExpression> result = reducer.AsVisitor(expressionToVisit);
@@ -69,7 +69,7 @@ namespace Epic.Linq.Expressions.Normalization
             Expression<Func<int, bool>> dummy = i => queryable.Contains(i);
             MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
             FakeNormalizer composition = new FakeNormalizer();
-            ExecutedQueryableMethodsReducer reducer = new ExecutedQueryableMethodsReducer(composition);
+            QueryableMethodsReducer reducer = new QueryableMethodsReducer(composition);
 
             // act:
             IVisitor<Expression, MethodCallExpression> result = reducer.AsVisitor(expressionToVisit);
@@ -94,7 +94,7 @@ namespace Epic.Linq.Expressions.Normalization
             // arrange:
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeNormalizer composition = new FakeNormalizer();
-            new ExecutedQueryableMethodsReducer(composition);
+            new QueryableMethodsReducer(composition);
             FakeVisitor<Expression, MethodCallExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MethodCallExpression>>(composition);
             mockVisitor.Expect(v => v.CallAsVisitor((MethodCallExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MethodCallExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
@@ -134,7 +134,7 @@ namespace Epic.Linq.Expressions.Normalization
             IEnumerable<string> enumerableToReturn = Enumerable.Empty<string>();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeNormalizer composition = new FakeNormalizer();
-            new ExecutedQueryableMethodsReducer(composition);
+            new QueryableMethodsReducer(composition);
             FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
             mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(enumerableToReturn)).Repeat.Once();
@@ -180,7 +180,7 @@ namespace Epic.Linq.Expressions.Normalization
             IEnumerable<string> enumerableToReturn = Enumerable.Empty<string>();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeNormalizer composition = new FakeNormalizer();
-            new ExecutedQueryableMethodsReducer(composition);
+            new QueryableMethodsReducer(composition);
             for (int i = 0; i < expressionToVisit.Arguments.Count; ++i)
             {
                 switch (expressionToVisit.Arguments[i].NodeType)
