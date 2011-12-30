@@ -26,6 +26,7 @@ using System;
 using Rhino.Mocks;
 using Epic.Linq.Fakes;
 using System.Linq;
+using Epic.Linq.Expressions.Relational.Predicates;
 
 namespace Epic.Linq.Expressions.Relational
 {

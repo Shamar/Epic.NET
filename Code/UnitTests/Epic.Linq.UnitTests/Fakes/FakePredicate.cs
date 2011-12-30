@@ -23,6 +23,7 @@
 //  
 using System;
 using Epic.Linq.Expressions.Relational;
+using Epic.Linq.Expressions.Relational.Predicates;
 
 namespace Epic.Linq.Fakes
 {
