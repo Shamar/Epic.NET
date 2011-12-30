@@ -55,7 +55,6 @@
     <Compile Include="Expressions\CompositeVisitor.cs" />
     <Compile Include="Expressions\IVisitor.cs" />
     <Compile Include="Expressions\Relational\Selection.cs" />
-    <Compile Include="Expressions\Relational\Predicate.cs" />
     <Compile Include="Expressions\CompositeVisitorBase.cs" />
     <Compile Include="Expressions\Relational\Constant.cs" />
     <Compile Include="Expressions\Normalization\ExpressionForwarder.cs" />
@@ -70,10 +69,22 @@
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducer.cs" />
     <Compile Include="Expressions\Normalization\QueryableMethodsReducer.cs" />
     <Compile Include="Expressions\Normalization\DefaultNormalizer.cs" />
+    <Compile Include="Expressions\Relational\Predicates\Greater.cs" />
+    <Compile Include="Expressions\Relational\Predicates\Less.cs" />
+    <Compile Include="Expressions\Relational\Predicates\Equal.cs" />
+    <Compile Include="Expressions\Relational\Predicates\ScalarPredicateBase.cs" />
+    <Compile Include="Expressions\Relational\Predicates\Predicate.cs" />
+    <Compile Include="Expressions\Relational\Predicates\BinaryPredicateBase.cs" />
+    <Compile Include="Expressions\Relational\Predicates\UnaryPredicateBase.cs" />
+    <Compile Include="Expressions\Relational\Predicates\Not.cs" />
+    <Compile Include="Expressions\Relational\Predicates\And.cs" />
+    <Compile Include="Expressions\Relational\Predicates\Or.cs" />
+    <Compile Include="Expressions\Relational\Predicates\PredicateExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\Relational\Visitors\" />
     <Folder Include="Expressions\Templates\" />
+    <Folder Include="Expressions\Relational\Predicates\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
