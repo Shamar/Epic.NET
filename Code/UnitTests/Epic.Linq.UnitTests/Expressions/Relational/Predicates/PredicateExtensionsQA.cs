@@ -1,8 +1,8 @@
 //  
-//  FakeScalar.cs
+//  PredicateExtensionsQA.cs
 //  
 //  Author:
-//       Marco Veglio <m.veglio@gmail.com>
+//       Marco <${AuthorEmail}>
 // 
 //  Copyright (c) 2010-2012 Giacomo Tesio
 // 
@@ -22,33 +22,30 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Epic.Linq.Fakes;
 using Epic.Linq.Expressions.Relational;
+using Epic.Linq.Expressions.Relational.Predicates;
+using NUnit.Framework;
 
-namespace Epic.Linq.Fakes
+namespace Epic.Linq.Expressions.Relational.Predicates
 {
-    public class FakeScalarFunction: ScalarFunction
+    [TestFixture]
+    public class PredicateExtensionsQA: RhinoMocksFixtureBase
     {
-        public FakeScalarFunction (string name):base(name)
+        [Test]
+        public void AndMethod_FromScalarObjects_ReturnsPredicate()
         {
+            // arrange:
+            FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
+            FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
-        }
-        #region implemented abstract members of Epic.Linq.Expressions.Relational.ScalarFunction
-        public override bool Equals (ScalarFunction other)
-        {
-            if (other == null) return false;
-            return this.Name == other.Name;
-        }
+            // act:
+            Greater<FakeScalar, FakeScalar> greater = scalar1.Greater(scalar2);
 
-        public override int GetHashCode ()
-        {
-            return GetType ().GetHashCode () ^ this.Name.GetHashCode ();
+            // assert:
+            Assert.IsTrue (greater.Left.Equals (scalar1));
+            Assert.IsTrue (greater.Right.Equals (scalar2));
         }
-
-        public override TResult Accept<TResult> (Epic.Linq.Expressions.IVisitor<TResult> visitor, Epic.Linq.Expressions.IVisitContext context)
-        {
-            return AcceptMe(this, visitor, context);
-        }
-        #endregion
     }
 }
 

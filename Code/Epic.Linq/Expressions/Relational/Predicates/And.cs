@@ -2,7 +2,7 @@
 //  And.cs
 //  
 //  Author:
-//       Marco <${AuthorEmail}>
+//       Marco Veglio <m.veglio@gmail.com>
 // 
 //  Copyright (c) 2010-2011 Giacomo Tesio
 // 
@@ -76,7 +76,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
         public bool Equals (And<TPredicate1, TPredicate2> other)
         {
             if (null == other) return false;
-            return this.LeftOperand.Equals (other.LeftOperand) && this.RightOperand.Equals (other.RightOperand);
+            return this.Left.Equals (other.Left) && this.Right.Equals (other.Right);
         }
 
         /// <summary>

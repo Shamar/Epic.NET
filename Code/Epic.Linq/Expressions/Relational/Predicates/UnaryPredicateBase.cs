@@ -2,7 +2,7 @@
 //  UnaryPredicateBase.cs
 //  
 //  Author:
-//       Marco <${AuthorEmail}>
+//       Marco Veglio <m.veglio@gmail.com>
 // 
 //  Copyright (c) 2010-2011 Giacomo Tesio
 // 

@@ -64,7 +64,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
         /// <value>
         /// The left operand.
         /// </value>
-        public TPredicate1 LeftOperand { get { return this._left; } }
+        public TPredicate1 Left { get { return this._left; } }
 
         /// <summary>
         /// Gets the right operand of the predicate.
@@ -72,7 +72,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
         /// <value>
         /// The right operand.
         /// </value>
-        public TPredicate2 RightOperand { get { return this._right; } }
+        public TPredicate2 Right { get { return this._right; } }
 
         /// <summary>
         /// Determines whether the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>.
