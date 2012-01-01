@@ -104,5 +104,8 @@
     <Compile Include="Fakes\FakeScalar.cs" />
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducerQA.cs" />
     <Compile Include="Expressions\Normalization\QueryableMethodsReducerQA.cs" />
+    <Compile Include="Expressions\Relational\Predicates\AndQA.cs" />
+    <Compile Include="Expressions\Relational\Predicates\GreaterQA.cs" />
+    <Compile Include="Expressions\Relational\Predicates\PredicateExtensionsQA.cs" />
   </ItemGroup>
 </Project>

@@ -30,21 +30,53 @@ namespace Epic.Linq.Fakes
     [Serializable]
     public class FakePredicate : Predicate
     {
+        private static int counter = 0;
+        private int id;
+
+        public FakePredicate ()
+        {
+         id = ++counter;
+        }
+
+        public FakePredicate(int id)
+        {
+            this.id = id;
+        }
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Predicate
         public override bool Equals (Predicate other)
         {
-            throw new NotImplementedException ();
+            return Equals (other as FakePredicate);
         }
         #endregion
+
+        public bool Equals(FakePredicate other)
+        {
+            if (other == null) return false;
+            return this.id == other.id;
+        }
         
         public override TResult Accept<TResult> (Epic.Linq.Expressions.IVisitor<TResult> visitor, Epic.Linq.Expressions.IVisitContext context)
         {
             return AcceptMe(this, visitor, context);
         }
+
+        public override int GetHashCode ()
+        {
+            return id ^ GetType ().GetHashCode ();
+        }
     }
     
     public class DerivedFakePredicate : FakePredicate
     {
+        public DerivedFakePredicate (): base()
+        {
+
+        }
+
+        public DerivedFakePredicate (int id): base(id)
+        {
+
+        }
     }
 }
 
