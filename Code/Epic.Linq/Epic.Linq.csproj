@@ -69,6 +69,7 @@
     <Compile Include="Expressions\Relational\ScalarFunction.cs" />
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducer.cs" />
     <Compile Include="Expressions\Normalization\QueryableMethodsReducer.cs" />
+    <Compile Include="Expressions\Normalization\DefaultNormalizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\Relational\Visitors\" />
