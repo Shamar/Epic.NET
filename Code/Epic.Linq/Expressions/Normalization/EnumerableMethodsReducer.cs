@@ -67,7 +67,7 @@ namespace Epic.Linq.Expressions.Normalization
 
                 if (constantSource.Value is IQueryable && Reflection.TryGetItemTypeOfEnumerable(constantSource.Type, out enumerableType))
                 {
-                    // Enumerable methods that insist over an IQueryable are translated to Queryable ones.
+                    // Enumerable methods that insist over an IQueryable constant are translated to Queryable ones.
                     fallbackArgs.Add(Expression.Constant(constantSource.Value, typeof(IQueryable<>).MakeGenericType(enumerableType)));
                     targetMethod = Reflection.Enumerable.GetQueryableEquivalent(target.Method);
                     goto fallback;
@@ -106,6 +106,11 @@ namespace Epic.Linq.Expressions.Normalization
             }
             else
             {
+                if(typeof(IQueryable).IsAssignableFrom(methodSource.Type))
+                {
+                    // Enumerable methods that insist over an IQueryable are translated to Queryable ones.
+                    targetMethod = Reflection.Enumerable.GetQueryableEquivalent(target.Method);
+                }
                 fallbackArgs.Add(methodSource);
             }
 

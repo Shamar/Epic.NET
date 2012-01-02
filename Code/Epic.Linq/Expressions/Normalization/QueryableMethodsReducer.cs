@@ -137,7 +137,6 @@ namespace Epic.Linq.Expressions.Normalization
                 }
             }
 
-
             // Yes, I know. Goto is harmful. Feel free to refactor, but without reducing neither readability nor performance.
             fallback:
             for(; i < target.Arguments.Count; ++i)
