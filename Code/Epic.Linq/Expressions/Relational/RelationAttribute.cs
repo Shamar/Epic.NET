@@ -4,7 +4,7 @@
 //  Author:
 //       Marco Veglio <m.veglio@gmail.com>
 // 
-//  Copyright (c) 2010-2011 Giacomo Tesio.
+//  Copyright (c) 2010-2012 Giacomo Tesio.
 // 
 //  This file is part of Epic.NET.
 // 
