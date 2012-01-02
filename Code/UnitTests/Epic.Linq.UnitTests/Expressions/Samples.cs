@@ -87,6 +87,29 @@ namespace Epic.Linq.Expressions
             }
         }
 
+        public static IEnumerable<MethodCallExpression> NotReduceableEnumerableMethodCallExpressions
+        {
+            get
+            {
+                IEnumerable<string> originalStrings = new string[] {
+                    "test-A.1", "test-B.1", "test-B.2",
+                    "sample-A.2", "sample-B.1", "sample-C.3"
+                };
+
+                Expression<Func<int, IEnumerable<string>>> func = i => originalStrings.Where(s => s.Length > i);
+                yield return (MethodCallExpression)func.Body;
+
+                func = i => originalStrings.Skip(i);
+                yield return (MethodCallExpression)func.Body;
+
+                func = i => originalStrings.GroupBy(s => s + i.ToString(), (s, e) => e.Count().ToString());
+                yield return (MethodCallExpression)func.Body;
+
+                Expression<Func<string, IEnumerable<string>>> funcS = s => originalStrings.Skip(s.Length);
+                yield return GetMethodCallExpression(funcS);
+            }
+        }
+
         public static IEnumerable<TestCaseData> ReduceableQueryableMethodCallExpressions
         {
             get
@@ -173,7 +196,6 @@ namespace Epic.Linq.Expressions
                     (MethodCallExpression)funcS.Body,
                     ((MethodCallExpression)funcS2.Body).Method
                     );
-
             }
         }
 
