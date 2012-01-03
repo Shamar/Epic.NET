@@ -57,10 +57,24 @@ namespace Epic.Linq.Expressions.Normalization
         public Expression Visit (MemberExpression target, IVisitContext context)
         {
             Expression owner = VisitInner(target.Expression, context);
-            if (owner.NodeType == System.Linq.Expressions.ExpressionType.Constant)
+            if(null == owner)
             {
+                // static members
+                switch(target.Member.MemberType)
+                {
+                    case MemberTypes.Property:
+                        PropertyInfo property = target.Member as PropertyInfo;
+                        return Expression.Constant(property.GetValue(null, new object[0]), target.Type);
+                    case MemberTypes.Field:
+                        FieldInfo field = target.Member as FieldInfo;
+                        return Expression.Constant(field.GetValue(null), target.Type);
+                }
+            }
+            else if (owner.NodeType == System.Linq.Expressions.ExpressionType.Constant)
+            {
+                // instance members
                 ConstantExpression constantOwner = owner as ConstantExpression;
-                switch (target.Member.MemberType)
+                switch(target.Member.MemberType)
                 {
                     case MemberTypes.Property:
                         PropertyInfo property = target.Member as PropertyInfo;
@@ -70,6 +84,7 @@ namespace Epic.Linq.Expressions.Normalization
                         return Expression.Constant(field.GetValue(constantOwner.Value), target.Type);
                 }
             }
+            
             if(owner != target.Expression)
                 return Expression.MakeMemberAccess(owner, target.Member);
             return target;

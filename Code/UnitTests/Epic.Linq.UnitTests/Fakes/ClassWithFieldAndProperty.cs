@@ -26,12 +26,15 @@ using System;
 namespace Epic.Linq.Fakes
 {
     /// <summary>
-    /// Class with a field and a property.
+    /// Class with field and property.
     /// </summary>
     public sealed class ClassWithFieldAndProperty
     {
         public int Field;
         public string Property { get; set; }
+
+        public static int StaticField;
+        public static string StaticProperty { get; set; }
     }
 }
 

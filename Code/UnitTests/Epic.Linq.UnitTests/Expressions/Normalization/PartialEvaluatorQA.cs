@@ -1,4 +1,4 @@
-﻿//
+//
 //  PartialEvaluatorQA.cs
 //
 //  Author:
@@ -40,6 +40,43 @@ namespace Epic.Linq.Expressions.Normalization
                 new PartialEvaluator(null);
             });
         }
+
+        [Test]
+        public void Visit_aClosedStaticField_returnTheConstantValue()
+        {
+            // arrange:
+            int constantValue = 10;
+            ClassWithFieldAndProperty.StaticField = constantValue;
+            Expression<Func<int>> expressionToVisit = () => ClassWithFieldAndProperty.StaticField;
+            FakeNormalizer normalizer = new FakeNormalizer();
+            new PartialEvaluator(normalizer);
+
+            // act:
+            Expression result = normalizer.Visit(expressionToVisit, VisitContext.New);
+
+            // assert:
+            Verify.That(result).IsA<Expression<Func<int>>>()
+                .WithA(e => e.Body, body => Verify.That(body).IsA<ConstantExpression>().WithA(c => c.Value, valueThat => Is.EqualTo(constantValue)));
+        }
+
+        [Test]
+        public void Visit_aClosedStaticProperty_returnTheConstantValue()
+        {
+            // arrange:
+            string constantValue = "constantValue";
+            ClassWithFieldAndProperty.StaticProperty = constantValue ;
+            Expression<Func<string>> expressionToVisit = () => ClassWithFieldAndProperty.StaticProperty;
+            FakeNormalizer normalizer = new FakeNormalizer();
+            new PartialEvaluator(normalizer);
+
+            // act:
+            Expression result = normalizer.Visit(expressionToVisit, VisitContext.New);
+
+            // assert:
+            Verify.That(result).IsA<Expression<Func<string>>>()
+                .WithA(e => e.Body, body => Verify.That(body).IsA<ConstantExpression>().WithA(c => c.Value, valueThat => Is.EqualTo(constantValue)));
+        }
+
         
         [Test]
         public void Visit_aClosedInstanceField_returnTheConstantValue()
