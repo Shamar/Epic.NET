@@ -167,8 +167,8 @@ namespace Epic.Linq.Expressions.Normalization
 
         }
 
-        [Test, TestCaseSource(typeof(Samples), "ReduceableEnumerableMethodCallExpressions")]
-        public void Visit_anEnumerableMethodThatCanBeReduced_returnsAConstantExpressionContainingTheResultingEnumerable(MethodCallExpression expressionToVisit)
+        [Test, TestCaseSource(typeof(Samples), "NotReduceableEnumerableMethodCallExpressions")]
+        public void Visit_anEnumerableMethodThatCanNotBeReducedBecouseOfItsArguments_returnsAMethodCallExpressionToTheSameMethod(MethodCallExpression expressionToVisit)
         {
             // arrange:
             IVisitContext context = GenerateStrictMock<IVisitContext>();
@@ -189,6 +189,9 @@ namespace Epic.Linq.Expressions.Normalization
                     case ExpressionType.Constant:
                         RegisterEchoVisitorFor<ConstantExpression>(composition, context, expressionToVisit, i);
                         break;
+                    case ExpressionType.Parameter:
+                        RegisterEchoVisitorFor<ParameterExpression>(composition, context, expressionToVisit, i);
+                        break;
                     case ExpressionType.MemberAccess:
                         RegisterEchoVisitorFor<MemberExpression>(composition, context, expressionToVisit, i);
                         break;
@@ -204,7 +207,7 @@ namespace Epic.Linq.Expressions.Normalization
             // assert:
             Verify.That(result).IsA<MethodCallExpression>()
                   .WithA(e => e.Method, that => Is.SameAs(expressionToVisit.Method))
-                  .WithEach(e => e.Arguments, (that, atIndex) => Assert.AreSame(expressionToVisit.Arguments[atIndex], that));
+                  .WithEach(e => e.Arguments, (that, atIndex) => { if(atIndex > 0) { Assert.AreSame(expressionToVisit.Arguments[atIndex], that); } });
                          
 
         }
