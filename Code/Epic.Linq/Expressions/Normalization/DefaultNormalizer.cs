@@ -30,11 +30,22 @@ namespace Epic.Linq.Expressions.Normalization
         public DefaultNormalizer (string name)
             : base(name)
         {
-            new ClosureExpander(this);
+            // WARNING: the order is relevant!
+
+            // Evaluate and returns the value
             new PartialEvaluator(this);
+
+            // Resolve queryable constant and returns the result
             new QueryableConstantResolver(this);
+
+            // Forward to the normalizer the arguments, and return the result of the eventual reduction
             new QueryableMethodsReducer(this);
+
+            // Forward to the normalizer the arguments, and return the result of the eventual reduction
             new EnumerableMethodsReducer(this);
+
+            // Identify closures and FORWARD to the normalizer their value
+            new ClosureExpander(this);
         }
     }
 }

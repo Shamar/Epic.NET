@@ -23,11 +23,20 @@
 //  
 using System;
 using NUnit.Framework;
+using Epic.Environment;
+using System.Linq;
+using Epic.Linq.Fakes;
+using Rhino.Mocks;
+using Challenge00.DDDSample.Cargo;
+using Challenge00.DDDSample.Location;
+using Challenge00.DDDSample.Voyage;
+using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace Epic.Linq.Expressions.Normalization
 {
     [TestFixture]
-    public class DefaultNormalizerQA
+    public class DefaultNormalizerQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initalize_withoutAName_throwsArgumentNullException()
@@ -41,6 +50,45 @@ namespace Epic.Linq.Expressions.Normalization
             });
         }
 
+        [Test]
+        public void Visit_CargoVisitLocationWithPrintingVisitor_works()
+        {
+            // arrange:
+            string providerName = "test";
+            EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
+            InstanceName<IQueryProvider> instanceName = new InstanceName<IQueryProvider>(providerName);
+            IQueryProvider mockProvider = new QueryProvider(providerName);
+            env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Any();
+            EnterpriseBase enterprise = new Epic.Fakes.FakeEnterprise(env, null);
+            Enterprise.Initialize(enterprise); // plumbing for RepositoryBase
+
+            IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
+            IQueryable<ICargo> movingCargos = from c in cargos
+                                              where c.Delivery.TransportStatus == TransportStatus.OnboardCarrier 
+                                              select c;
+            IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
+            IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
+            IEnumerable<IVoyage> movingVoyages = voyages.Where(v => v.IsMoving); // an iqueryable to unwrap from an ienumerable
+            IQueryable<ILocation> locationsTraversedFromVoyagesEndingToday = 
+                    from c in movingCargos
+                    from l in locations
+                    from v in movingVoyages
+                    where   c.Delivery.CurrentVoyage == v.Number
+                        &&  v.WillStopOverAt(l)
+                        &&  c.Itinerary.FinalArrivalDate == DateTime.Today
+                    select l;
+
+            IVisitContext context = VisitContext.New.With(mockProvider);
+            DefaultNormalizer normalizer = new DefaultNormalizer("test");
+
+            // act:
+            Expression returnedExpression = normalizer.Visit(locationsTraversedFromVoyagesEndingToday.Expression, context);
+            
+            // assert:
+            // TODO: complete the checks
+            Verify.That(returnedExpression).IsA<MethodCallExpression>()
+                .WithA (e => e.Method, that => Assert.AreEqual("Select", that.Name));
+        }
     }
 }
 
