@@ -108,5 +108,10 @@
     <Compile Include="Expressions\Relational\Predicates\AndQA.cs" />
     <Compile Include="Expressions\Relational\Predicates\GreaterQA.cs" />
     <Compile Include="Expressions\Relational\Predicates\PredicateExtensionsQA.cs" />
+    <Compile Include="Expressions\Relational\Predicates\OrQA.cs" />
+    <Compile Include="Expressions\Relational\Predicates\LessQA.cs" />
+    <Compile Include="Expressions\Relational\Predicates\EqualQA.cs" />
+    <Compile Include="Expressions\Relational\Predicates\NotQA.cs" />
+    <Compile Include="Expressions\Relational\Predicates\XorQA.cs" />
   </ItemGroup>
 </Project>

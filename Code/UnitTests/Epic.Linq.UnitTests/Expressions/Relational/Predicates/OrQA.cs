@@ -1,5 +1,5 @@
 //  
-//  AndQA.cs
+//  OrQA.cs
 //  
 //  Author:
 //       Marco Veglio <m.veglio@gmail.com>
@@ -8,7 +8,7 @@
 // 
 //  This file is part of Epic.NET.
 // 
-//  Epic.NET is free software: you can redistribute it and/or modify
+//  Epic.NET is free software: you can redistribute it or/or modify
 //  it under the terms of the GNU Affero General Public License as published by
 //  the Free Software Foundation, either version 3 of the License, or
 //  (at your option) any later version.
@@ -32,7 +32,7 @@ using Rhino.Mocks;
 namespace Epic.Linq.Expressions.Relational.Predicates
 {
     [TestFixture]
-    public class AndQA: RhinoMocksFixtureBase
+    public class OrQA: RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withEitherArgumentNull_fails()
@@ -42,8 +42,8 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             FakePredicate pred2 = null;
 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new And<FakePredicate, FakePredicate>(pred1, pred2));
-            Assert.Throws<ArgumentNullException>(() => new And<FakePredicate, FakePredicate>(pred2, pred1));
+            Assert.Throws<ArgumentNullException>(() => new Or<FakePredicate, FakePredicate>(pred1, pred2));
+            Assert.Throws<ArgumentNullException>(() => new Or<FakePredicate, FakePredicate>(pred2, pred1));
         }
 
         [Test]
@@ -54,11 +54,11 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             FakePredicate pred2 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(pred1, pred2);
+            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(pred1, pred2);
 
             // assert:
-            Assert.IsTrue(and.Left.Equals (pred1));
-            Assert.IsTrue(and.Right.Equals (pred2));
+            Assert.IsTrue(or.Left.Equals (pred1));
+            Assert.IsTrue(or.Right.Equals (pred2));
         }
 
         [Test]
@@ -69,12 +69,12 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             FakePredicate pred2 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(pred1, pred2);
-            And<Predicate, Predicate> and2 = new And<Predicate, Predicate>(pred1, pred2);
+            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(pred1, pred2);
+            Or<Predicate, Predicate> or2 = new Or<Predicate, Predicate>(pred1, pred2);
 
             // assert:
-            Assert.IsFalse(and.Equals (and2));
-            Assert.AreNotEqual (and.GetHashCode (), and2.GetHashCode ());
+            Assert.IsFalse(or.Equals (or2));
+            Assert.AreNotEqual (or.GetHashCode (), or2.GetHashCode ());
 
         }
 
@@ -86,12 +86,12 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
-            And<FakePredicate, FakePredicate> and2 = and;
+            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or<FakePredicate, FakePredicate> or2 = or;
 
             // assert:
-            Assert.IsTrue (and.Equals (and2));
-            Assert.AreEqual (and.GetHashCode (), and2.GetHashCode ());
+            Assert.IsTrue (or.Equals (or2));
+            Assert.AreEqual (or.GetHashCode (), or2.GetHashCode ());
         }
 
         [Test]
@@ -102,16 +102,16 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
-            And<FakePredicate, FakePredicate> and2 = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or<FakePredicate, FakePredicate> or2 = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // assert:
-            Assert.IsTrue (and.Equals (and2));
-            Assert.AreEqual (and.GetHashCode (), and2.GetHashCode ());
+            Assert.IsTrue (or.Equals (or2));
+            Assert.AreEqual (or.GetHashCode (), or2.GetHashCode ());
         }
 
         [Test]
-        public void Equals_WithDifferentOperands_fails()
+        public void Equals_WithDifferentOperors_fails()
         {
             // arrange:
             FakePredicate predicate1 = new FakePredicate();
@@ -119,12 +119,12 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             FakePredicate predicate3 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
-            And<FakePredicate, FakePredicate> and2 = new And<FakePredicate, FakePredicate>(predicate1, predicate3);
+            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or<FakePredicate, FakePredicate> or2 = new Or<FakePredicate, FakePredicate>(predicate1, predicate3);
 
             // assert:
-            Assert.IsFalse (and.Equals (and2));
-            Assert.AreNotEqual (and.GetHashCode (), and2.GetHashCode ());
+            Assert.IsFalse (or.Equals (or2));
+            Assert.AreNotEqual (or.GetHashCode (), or2.GetHashCode ());
         }
 
         [Test]
@@ -133,10 +133,10 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             // arrange:
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<And<FakePredicate,FakePredicate>>(and);
+            Stream stream = TestUtilities.Serialize<Or<FakePredicate,FakePredicate>>(or);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -148,15 +148,15 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             // arrange:
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<And<FakePredicate,FakePredicate>>(and);
-            And<FakePredicate, FakePredicate> deserialized = TestUtilities.Deserialize<And<FakePredicate, FakePredicate>>(stream);
+            Stream stream = TestUtilities.Serialize<Or<FakePredicate,FakePredicate>>(or);
+            Or<FakePredicate, FakePredicate> deserialized = TestUtilities.Deserialize<Or<FakePredicate, FakePredicate>>(stream);
 
             // assert:
-            // Assert.AreSame(and, deserialized);
-            Assert.IsTrue (and.Equals (deserialized));
+            // Assert.AreSame(or, deserialized);
+            Assert.IsTrue (or.Equals (deserialized));
         }
 
         [Test]
@@ -167,21 +167,20 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
 
-            IVisitor<object, And<FakePredicate, FakePredicate>> andPredicateVisitor =
-                GenerateStrictMock<IVisitor<object, And<FakePredicate, FakePredicate>>>();
-            andPredicateVisitor.Expect(v => v.Visit(and, context)).Return(expectedResult).Repeat.Once();
+            IVisitor<object, Or<FakePredicate, FakePredicate>> orPredicateVisitor =
+                GenerateStrictMock<IVisitor<object, Or<FakePredicate, FakePredicate>>>();
+            orPredicateVisitor.Expect(v => v.Visit(or, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(and)).Return(andPredicateVisitor).Repeat.Once ();
+            visitor.Expect(v => v.GetVisitor(or)).Return(orPredicateVisitor).Repeat.Once ();
 
             // act:
-            object result = and.Accept(visitor, context);
+            object result = or.Accept(visitor, context);
 
             // assert:
             Assert.AreSame(expectedResult, result);
         }
-
     }
 }
 

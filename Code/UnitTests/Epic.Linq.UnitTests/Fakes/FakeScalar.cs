@@ -49,7 +49,7 @@ namespace Epic.Linq.Fakes
         public bool Equals(FakeScalar other)
         {
             if (null == other) return false;
-            return this.id == other.id;
+            return this.id == other.id && this.Type.Equals(other.Type);
         }
 
         public override TResult Accept<TResult> (Epic.Linq.Expressions.IVisitor<TResult> visitor, Epic.Linq.Expressions.IVisitContext context)

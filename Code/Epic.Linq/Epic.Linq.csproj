@@ -80,6 +80,7 @@
     <Compile Include="Expressions\Relational\Predicates\And.cs" />
     <Compile Include="Expressions\Relational\Predicates\Or.cs" />
     <Compile Include="Expressions\Relational\Predicates\PredicateExtension.cs" />
+    <Compile Include="Expressions\Relational\Predicates\Xor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\Relational\Visitors\" />
