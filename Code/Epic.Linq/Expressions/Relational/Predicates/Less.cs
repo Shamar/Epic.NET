@@ -34,7 +34,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
         where TScalar2: Scalar
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.LessQA`2"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand.
@@ -49,14 +49,14 @@ namespace Epic.Linq.Expressions.Relational.Predicates
 
         /// <summary>
         /// Determines whether the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.LessQA`2"/>.
+        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>.
         /// </summary>
         /// <param name='other'>
         /// The <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.LessQA`2"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (ScalarPredicateBase<TScalar1, TScalar2> other)
         {
@@ -71,7 +71,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Less<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.LessQA`2"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals(Less<TScalar1, TScalar2> other)
         {

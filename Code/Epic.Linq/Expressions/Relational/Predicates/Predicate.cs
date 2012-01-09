@@ -69,4 +69,3 @@ namespace Epic.Linq.Expressions.Relational.Predicates
         public override abstract int GetHashCode ();
     }
 }
-
