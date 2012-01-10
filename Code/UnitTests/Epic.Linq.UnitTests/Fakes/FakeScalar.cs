@@ -2,7 +2,7 @@
 //  FakeScalar.cs
 //  
 //  Author:
-//       Marco <${AuthorEmail}>
+//       Marco Veglio <m.veglio@gmail.com>
 // 
 //  Copyright (c) 2010-2012 Giacomo Tesio
 // 
@@ -49,7 +49,7 @@ namespace Epic.Linq.Fakes
         public bool Equals(FakeScalar other)
         {
             if (null == other) return false;
-            return this.id == other.id;
+            return this.id == other.id && this.Type.Equals(other.Type);
         }
 
         public override TResult Accept<TResult> (Epic.Linq.Expressions.IVisitor<TResult> visitor, Epic.Linq.Expressions.IVisitContext context)

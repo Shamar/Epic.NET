@@ -25,6 +25,7 @@ using NUnit.Framework;
 using System;
 using Rhino.Mocks;
 using Epic.Linq.Fakes;
+using Epic.Linq.Expressions.Relational.Predicates;
 
 namespace Epic.Linq.Expressions.Relational
 {
@@ -38,9 +39,9 @@ namespace Epic.Linq.Expressions.Relational
         public void GetHashCode_followTheType()
         {
             // act:
-            FakePredicate p1 = new FakePredicate();
-            FakePredicate p2 = new FakePredicate();
-            FakePredicate p3 = new DerivedFakePredicate();
+            FakePredicate p1 = new FakePredicate(1);
+            FakePredicate p2 = new FakePredicate(1);
+            FakePredicate p3 = new DerivedFakePredicate(1);
 
             // assert:
             Assert.AreEqual(p1.GetHashCode(), p2.GetHashCode());
