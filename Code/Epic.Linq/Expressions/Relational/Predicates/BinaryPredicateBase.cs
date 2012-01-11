@@ -1,10 +1,10 @@
 //  
-//  Predicate.cs
+//  BinaryPredicateBase.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
 // 
-//  Copyright (c) 2010-2011 Giacomo Tesio
+//  Copyright (c) 2010-2012 Giacomo Tesio
 // 
 //  This file is part of Epic.NET.
 // 

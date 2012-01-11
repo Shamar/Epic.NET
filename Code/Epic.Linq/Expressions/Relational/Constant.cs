@@ -39,11 +39,6 @@ namespace Epic.Linq.Expressions.Relational
         #region IEquatable[Constant] implementation
         public abstract bool Equals (Constant other);
         #endregion
-        
-        public override bool Equals(object other)
-        {
-            return Equals(other as Constant);
-        }
 
         public override bool Equals (Scalar other)
         {
