@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Epic.Core")]
 [assembly: AssemblyDescription("Epic framework's core")]
-[assembly: AssemblyCopyright("Copyright (c) 2010-2011 Giacomo Tesio")]
+[assembly: AssemblyCopyright("Copyright (c) 2010-2012 Giacomo Tesio")]
 [assembly: InternalsVisibleTo("Epic.Core.UnitTests")]
 
 [assembly: System.Runtime.InteropServices.ComVisible(false)]

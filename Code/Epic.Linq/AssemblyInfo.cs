@@ -29,7 +29,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Epic.Linq")]
 [assembly: AssemblyDescription("Epic framework's Linq infrastructure")]
-[assembly: AssemblyCopyright("Copyright (c) 2010-2011 Giacomo Tesio")]
+[assembly: AssemblyCopyright("Copyright (c) 2010-2012 Giacomo Tesio")]
 [assembly: InternalsVisibleTo("Epic.Linq.UnitTests")]
 
 [assembly: System.Runtime.InteropServices.ComVisible(false)]
