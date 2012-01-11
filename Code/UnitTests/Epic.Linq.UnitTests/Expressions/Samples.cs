@@ -110,6 +110,27 @@ namespace Epic.Linq.Expressions
             }
         }
 
+        public static IEnumerable<MethodCallExpression> EnumerableMethodCallExpressionsWrappingQueryable
+        {
+            get
+            {
+                IEnumerable<string> originalStrings = new string[] {
+                    "test-A.1", "test-B.1", "test-B.2",
+                    "sample-A.2", "sample-B.1", "sample-C.32"
+                };
+                string closure = "test";
+
+                IEnumerable<string> wrappedQueryable = originalStrings.AsQueryable();
+
+                yield return GetMethodCallExpression(p => wrappedQueryable.Where(s => s.StartsWith("test")));
+                yield return GetMethodCallExpression(p => wrappedQueryable.Where(s => s.StartsWith(closure)));
+                yield return GetMethodCallExpression(p => wrappedQueryable.Take(3));
+                yield return GetMethodCallExpression(p => wrappedQueryable.Skip(2));
+                yield return GetMethodCallExpression(p => wrappedQueryable.SkipWhile(s => s.Contains("1")));
+                yield return GetMethodCallExpression(p => wrappedQueryable.Cast<object>());
+            }
+        }
+
         public static IEnumerable<TestCaseData> ReduceableQueryableMethodCallExpressions
         {
             get

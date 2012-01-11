@@ -129,6 +129,132 @@ namespace Epic.Linq.Expressions.Normalization
 
         }
 
+        [Test, TestCaseSource(typeof(Samples), "EnumerableMethodCallExpressionsWrappingQueryable")]
+        public void Visit_anEnumerableMethodThatInsistsOnAWrappedQueryable_returnsAMethodCallToQueryableMethod(MethodCallExpression expressionToVisit)
+        {
+            // arrange:
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            FakeNormalizer composition = new FakeNormalizer();
+            IQueryable<string> newSource = new FakeQueryable<string>();
+            new EnumerableMethodsReducer(composition);
+
+            FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
+            mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(newSource, typeof(IEnumerable<string>))).Repeat.Once();
+            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+
+            for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
+            {
+                switch (expressionToVisit.Arguments[i].NodeType)
+                {
+                    case ExpressionType.Lambda:
+                        RegisterEchoVisitorFor<LambdaExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Constant:
+                        RegisterEchoVisitorFor<ConstantExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.MemberAccess:
+                        RegisterEchoVisitorFor<MemberExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Call:
+                        RegisterEchoVisitorFor<MethodCallExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    default:
+                        Assert.Fail("TEST TO FIX: Unexpected expression of nodeType {0}, as the argument at {1} in the expression: {2}.", expressionToVisit.Arguments[i].NodeType, i, expressionToVisit.ToString());
+                        break;
+                }
+            }
+
+            // act:
+            Expression result = composition.Visit(expressionToVisit, context);
+
+            // assert:
+            Verify.That(result).IsA<MethodCallExpression>()
+                  .WithA(e => e.Method.Name, that => Is.EqualTo(expressionToVisit.Method.Name))
+                  .WithA(e => e.Method.DeclaringType, that => Is.EqualTo(typeof(System.Linq.Queryable)))
+                  .WithEach(e => e.Arguments, (argument, atIndex) => {
+                      if (atIndex == 0)
+                      {
+                          Verify.That(argument).IsA<ConstantExpression>()
+                              .WithA(e => e.Value, that => Is.SameAs(newSource))
+                              .WithA(e => e.Type, that => Is.SameAs(typeof(IQueryable<string>)));
+                      }
+                      else if (argument.NodeType == ExpressionType.Quote)
+                      {
+                          Assert.AreSame(expressionToVisit.Arguments[atIndex], ((UnaryExpression)argument).Operand);
+                      }
+                      else
+                      {
+                          Assert.AreSame(expressionToVisit.Arguments[atIndex], argument);
+                      }
+                  });
+        }
+
+        [Test, TestCaseSource(typeof(Samples), "EnumerableMethodCallExpressionsWrappingQueryable")]
+        public void Visit_anEnumerableMethodThatInsistsOnAQueryableMethodUnwrapped_returnsAMethodCallToQueryableMethod(MethodCallExpression expressionToVisit)
+        {
+            // arrange:
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            FakeNormalizer composition = new FakeNormalizer();
+            IQueryable<string> newSource = new FakeQueryable<string>();
+            Expression<Func<string, IQueryable<string>>> dummy = dummyPar => newSource.Where(s => s.Length > 0);
+
+            new EnumerableMethodsReducer(composition);
+
+            FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
+            mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(dummy.Body).Repeat.Once();
+            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+
+            for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
+            {
+                switch (expressionToVisit.Arguments[i].NodeType)
+                {
+                    case ExpressionType.Lambda:
+                        RegisterEchoVisitorFor<LambdaExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Constant:
+                        RegisterEchoVisitorFor<ConstantExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.MemberAccess:
+                        RegisterEchoVisitorFor<MemberExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    case ExpressionType.Call:
+                        RegisterEchoVisitorFor<MethodCallExpression>(composition, context, expressionToVisit, i);
+                        break;
+                    default:
+                        Assert.Fail("TEST TO FIX: Unexpected expression of nodeType {0}, as the argument at {1} in the expression: {2}.", expressionToVisit.Arguments[i].NodeType, i, expressionToVisit.ToString());
+                        break;
+                }
+            }
+
+            // act:
+            Expression result = composition.Visit(expressionToVisit, context);
+
+            // assert:
+            Verify.That(result).IsA<MethodCallExpression>()
+                  .WithA(e => e.Method.Name, that => Is.EqualTo(expressionToVisit.Method.Name))
+                  .WithA(e => e.Method.DeclaringType, that => Is.EqualTo(typeof(System.Linq.Queryable)))
+                  .WithEach(e => e.Arguments, (argument, atIndex) =>
+                  {
+                      if (atIndex == 0)
+                      {
+                          Assert.AreSame(dummy.Body, argument);
+                      }
+                      else if (argument.NodeType == ExpressionType.Quote)
+                      {
+                          Assert.AreSame(expressionToVisit.Arguments[atIndex], ((UnaryExpression)argument).Operand);
+                      }
+                      else
+                      {
+                          Assert.AreSame(expressionToVisit.Arguments[atIndex], argument);
+                      }
+                  });
+        }
+
+
         [Test, TestCaseSource(typeof(Samples), "ReduceableEnumerableMethodCallExpressions")]
         public void Visit_anEnumerableMethodThatCanNotBeReduced_returnsAMethodCallToTheSameMethod(MethodCallExpression expressionToVisit, IEnumerable<string> originalEnumerable, IEnumerable<string> finalEnumerable)
         {

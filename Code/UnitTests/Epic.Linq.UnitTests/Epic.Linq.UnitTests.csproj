@@ -91,6 +91,7 @@
     <Compile Include="Fakes\IDerivedExpressionsVisitor.cs" />
     <Compile Include="Fakes\ClassWithFieldAndProperty.cs" />
     <Compile Include="Fakes\DummyResultExpression.cs" />
+    <Compile Include="Fakes\FakeQueryable.cs" />
     <Compile Include="Expressions\Relational\RelationAttributeQA.cs" />
     <Compile Include="Fakes\ClassToTestMemberBindings.cs" />
     <Compile Include="Expressions\Normalization\ExpressionNormalizerBaseQA.cs" />
