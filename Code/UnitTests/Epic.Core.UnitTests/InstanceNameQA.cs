@@ -170,7 +170,7 @@ namespace Epic
 			InstanceName<T> instanceName =  new InstanceName<T>("test");
 			
 			// act:
-			Stream stream = TestUtilities.Serialize(instanceName);
+			Stream stream = SerializationUtilities.Serialize(instanceName);
 			
 			// assert:
 			Assert.IsNotNull(stream);
@@ -183,10 +183,10 @@ namespace Epic
 		{
 			// arrange:
 			InstanceName<T> instanceName =  new InstanceName<T>("test");
-			Stream stream = TestUtilities.Serialize(instanceName);
+			Stream stream = SerializationUtilities.Serialize(instanceName);
 			
 			// act:
-			InstanceName<T> deserialized = TestUtilities.Deserialize<InstanceName<T>>(stream);
+			InstanceName<T> deserialized = SerializationUtilities.Deserialize<InstanceName<T>>(stream);
 			
 			// assert:
 			Assert.IsNotNull(deserialized);

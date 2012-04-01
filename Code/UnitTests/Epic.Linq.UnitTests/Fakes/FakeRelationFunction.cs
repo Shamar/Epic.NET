@@ -39,7 +39,7 @@ namespace Epic.Linq.Fakes
             return this.Name == other.Name;
         }
 
-        public override TResult Accept<TResult> (Epic.Linq.Expressions.IVisitor<TResult> visitor, Epic.Linq.Expressions.IVisitContext context)
+        public override TResult Accept<TResult> (Epic.IVisitor<TResult> visitor, Epic.IVisitContext context)
         {
             return AcceptMe(this, visitor, context);
         }

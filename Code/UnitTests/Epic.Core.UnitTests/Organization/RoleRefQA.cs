@@ -124,7 +124,7 @@ namespace Epic.Organization
 				roleRef.Increase();
 			
 			// act:
-			Stream stream = TestUtilities.Serialize(roleRef);
+			Stream stream = SerializationUtilities.Serialize(roleRef);
 			
 			// assert:
 			Assert.IsNotNull(stream);
@@ -139,10 +139,10 @@ namespace Epic.Organization
 			int numRef = 100;
 			for(int i = 0; i < numRef; ++i)
 				roleRef.Increase();
-			Stream stream = TestUtilities.Serialize(roleRef);
+			Stream stream = SerializationUtilities.Serialize(roleRef);
 			
 			// act:
-			RoleRef deserialized = TestUtilities.Deserialize<RoleRef>(stream);
+			RoleRef deserialized = SerializationUtilities.Deserialize<RoleRef>(stream);
 			int nextRef = deserialized.Increase();
 			
 			// assert:

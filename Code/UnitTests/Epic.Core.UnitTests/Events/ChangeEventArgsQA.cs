@@ -82,7 +82,7 @@ namespace Epic.Events
 			ChangeEventArgs<T> args = new ChangeEventArgs<T>(oldValue, newValue);
 			
 			// act:
-			Stream stream = TestUtilities.Serialize(args);
+			Stream stream = SerializationUtilities.Serialize(args);
 			
 			// assert:
 			Assert.IsNotNull(stream);
@@ -96,10 +96,10 @@ namespace Epic.Events
 		{
 			// arrange:
 			ChangeEventArgs<T> args = new ChangeEventArgs<T>(oldValue, newValue);
-			Stream stream = TestUtilities.Serialize(args);
+			Stream stream = SerializationUtilities.Serialize(args);
 			
 			// act:
-			ChangeEventArgs<T> deserialized = TestUtilities.Deserialize<ChangeEventArgs<T>>(stream);
+			ChangeEventArgs<T> deserialized = SerializationUtilities.Deserialize<ChangeEventArgs<T>>(stream);
 			
 			// assert:
 			Assert.IsNotNull(deserialized);

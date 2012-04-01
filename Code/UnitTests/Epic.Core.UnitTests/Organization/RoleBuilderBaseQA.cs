@@ -101,7 +101,7 @@ namespace Epic.Organization
 			FakeRoleBuilder<IFakeRole, FakeRole> builder = new FakeRoleBuilder<IFakeRole, FakeRole>();
 			
 			// act:
-			Stream stream = TestUtilities.Serialize(builder);
+			Stream stream = SerializationUtilities.Serialize(builder);
 			
 			// assert:
 			Assert.IsNotNull(stream);
@@ -112,10 +112,10 @@ namespace Epic.Organization
 		{
 			// arrange:
 			FakeRoleBuilder<IFakeRole, FakeRole> builder = new FakeRoleBuilder<IFakeRole, FakeRole>();
-			Stream stream = TestUtilities.Serialize(builder);
+			Stream stream = SerializationUtilities.Serialize(builder);
 			
 			// act:
-			FakeRoleBuilder<IFakeRole, FakeRole> deserialized = TestUtilities.Deserialize<FakeRoleBuilder<IFakeRole, FakeRole>>(stream);
+			FakeRoleBuilder<IFakeRole, FakeRole> deserialized = SerializationUtilities.Deserialize<FakeRoleBuilder<IFakeRole, FakeRole>>(stream);
 			
 			// assert:
 			Assert.IsNotNull(deserialized);

@@ -60,7 +60,7 @@ namespace Epic.Organization
 			Enterprise.Initialize(app);
 			
 			// act:
-			Stream stream = TestUtilities.Serialize<IOrganization>(organization);
+			Stream stream = SerializationUtilities.Serialize<IOrganization>(organization);
 			
 			// assert:
 			Assert.IsNotNull(stream);
@@ -73,10 +73,10 @@ namespace Epic.Organization
 			OrganizationBase organization = CreateNewOrganizationToTestSerialization();
 			EnterpriseBase app = new Fakes.FakeEnterprise(null, organization);
 			Enterprise.Initialize(app);
-			Stream stream = TestUtilities.Serialize<IOrganization>(organization);
+			Stream stream = SerializationUtilities.Serialize<IOrganization>(organization);
 			
 			// act:
-			IOrganization deserialized = TestUtilities.Deserialize<IOrganization>(stream);
+			IOrganization deserialized = SerializationUtilities.Deserialize<IOrganization>(stream);
 			
 			// assert:
 			Assert.AreSame(organization, deserialized);

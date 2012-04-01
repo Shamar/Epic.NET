@@ -154,7 +154,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Greater<FakeScalar,FakeScalar>>(greater);
+            Stream stream = SerializationUtilities.Serialize<Greater<FakeScalar,FakeScalar>>(greater);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -169,8 +169,8 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Greater<FakeScalar,FakeScalar>>(greater);
-            Greater<FakeScalar, FakeScalar> deserialized = TestUtilities.Deserialize<Greater<FakeScalar, FakeScalar>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Greater<FakeScalar,FakeScalar>>(greater);
+            Greater<FakeScalar, FakeScalar> deserialized = SerializationUtilities.Deserialize<Greater<FakeScalar, FakeScalar>>(stream);
 
             // assert:
             // Assert.AreSame(greater, deserialized);

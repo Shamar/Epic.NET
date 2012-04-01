@@ -55,7 +55,7 @@ namespace Epic.Environment
 			Enterprise.Initialize(app);
 			
 			// act:
-			Stream stream = TestUtilities.Serialize<IEnvironment>(environment);
+			Stream stream = SerializationUtilities.Serialize<IEnvironment>(environment);
 			
 			// assert:
 			Assert.IsNotNull(stream);
@@ -68,10 +68,10 @@ namespace Epic.Environment
 			EnvironmentBase environment = CreateNewEnvironmentToTestSerialization();
 			EnterpriseBase app = new Fakes.FakeEnterprise(environment, null);
 			Enterprise.Initialize(app);
-			Stream stream = TestUtilities.Serialize<IEnvironment>(environment);
+			Stream stream = SerializationUtilities.Serialize<IEnvironment>(environment);
 			
 			// act:
-			IEnvironment deserialized = TestUtilities.Deserialize<IEnvironment>(stream);
+			IEnvironment deserialized = SerializationUtilities.Deserialize<IEnvironment>(stream);
 			
 			// assert:
 			Assert.AreSame(environment, deserialized);

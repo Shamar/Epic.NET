@@ -84,7 +84,7 @@ namespace Epic
 			Exception inner = new Exception();
 			EpicException e = new EpicException(message, inner);
 
-			System.IO.Stream stream = TestUtilities.Serialize(e);
+			System.IO.Stream stream = SerializationUtilities.Serialize(e);
 			Assert.IsNotNull(stream);
 		}
 		
@@ -96,8 +96,8 @@ namespace Epic
 			Exception inner = new Exception(innerMessage);
 			EpicException e = new EpicException(message, inner);
 
-			System.IO.Stream stream = TestUtilities.Serialize(e);
-			EpicException deserialized = TestUtilities.Deserialize<EpicException>(stream);
+			System.IO.Stream stream = SerializationUtilities.Serialize(e);
+			EpicException deserialized = SerializationUtilities.Deserialize<EpicException>(stream);
 			
 			Assert.AreEqual(message, deserialized.Message);
 			Assert.AreEqual(innerMessage, deserialized.InnerException.Message);

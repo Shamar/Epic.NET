@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Epic.Prelude.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\3rdParties\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="CompositeVisitorBaseQA.cs" />
+    <Compile Include="CompositeVisitorQA.cs" />
+    <Compile Include="VisitableBaseQA.cs" />
+    <Compile Include="VisitContextQA.cs" />
+    <Compile Include="VisitorBaseQA.cs" />
+    <Compile Include="Fakes\FakeVisitable.cs" />
+    <Compile Include="Fakes\FakeVisitor.cs" />
+    <Compile Include="RhinoMocksFixtureBase.cs" />
+    <Compile Include="Fakes\FakeCompositeVisitor.cs" />
+    <Compile Include="SerializationUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Fakes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Epic.Prelude\Epic.Prelude.csproj">
+      <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
+      <Name>Epic.Prelude</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

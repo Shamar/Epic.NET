@@ -116,7 +116,7 @@ namespace Epic.Linq.Expressions.Relational
             // assert:
             RelationFunction relation = new FakeRelationFunction (name);
 
-            System.IO.Stream stream = TestUtilities.Serialize (relation);
+            System.IO.Stream stream = SerializationUtilities.Serialize (relation);
             Assert.IsNotNull (stream);
         }
 
@@ -129,8 +129,8 @@ namespace Epic.Linq.Expressions.Relational
             // assert:
             RelationFunction relation = new FakeRelationFunction (name);
 
-            System.IO.Stream stream = TestUtilities.Serialize (relation);
-            RelationFunction deserialized = TestUtilities.Deserialize<RelationFunction> (stream);
+            System.IO.Stream stream = SerializationUtilities.Serialize (relation);
+            RelationFunction deserialized = SerializationUtilities.Deserialize<RelationFunction> (stream);
 
             Assert.AreEqual(relation.Name, deserialized.Name);
             Assert.AreEqual(relation.Type, deserialized.Type);

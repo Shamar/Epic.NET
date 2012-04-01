@@ -43,39 +43,6 @@ namespace Epic.Linq.Expressions.Normalization
             });
         }
 
-        [Test]
-        public void AsVisitor_forAMethodThatDontBelongToEnumerable_returnsNull()
-        {
-            // arrange:
-            Expression<Func<int, string>> dummy = i => i.ToString();
-            MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
-            FakeNormalizer composition = new FakeNormalizer();
-            EnumerableMethodsReducer reducer = new EnumerableMethodsReducer(composition);
-
-            // act:
-            IVisitor<Expression, MethodCallExpression> result = reducer.AsVisitor(expressionToVisit);
-
-            // assert:
-            Assert.IsNull(result);
-        }
-
-        [Test]
-        public void AsVisitor_forAMethodThatBelongToEnumerable_returnsItself()
-        {
-            // arrange:
-            IEnumerable<int> queryable = Enumerable.Empty<int>();
-            Expression<Func<int, bool>> dummy = i => queryable.Contains(i);
-            MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
-            FakeNormalizer composition = new FakeNormalizer();
-            EnumerableMethodsReducer reducer = new EnumerableMethodsReducer(composition);
-
-            // act:
-            IVisitor<Expression, MethodCallExpression> result = reducer.AsVisitor(expressionToVisit);
-
-            // assert:
-            Assert.AreSame(reducer, result);
-        }
-
         private void RegisterEchoVisitorFor<TArgument>(CompositeVisitor<Expression> composition, IVisitContext context, MethodCallExpression callExression, int argumentIndex)
             where TArgument : Expression
         {

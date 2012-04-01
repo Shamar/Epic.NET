@@ -48,37 +48,6 @@ namespace Epic.Linq.Expressions.Normalization
         }
 
         [Test]
-        public void AsVisitor_forATargetThatDontContainsAnIQueryable_returnsNull()
-        {
-            // arrange:
-            ConstantExpression constant = Expression.Constant("test");
-            FakeNormalizer normalizer = new FakeNormalizer();
-            QueryableConstantResolver visitor = new QueryableConstantResolver(normalizer);
-
-            // act:
-            IVisitor<Expression, ConstantExpression> result = visitor.AsVisitor<ConstantExpression>(constant);
-
-            // assert:
-            Assert.IsNull(result);
-        }
-
-        [Test]
-        public void AsVisit_forATargetThatContainsAnIQueryable_returnsItself()
-        {
-            // arrange:
-            IQueryable queryable = GenerateStrictMock<IQueryable>();
-            ConstantExpression constant = Expression.Constant(queryable);
-            FakeNormalizer normalizer = new FakeNormalizer();
-            QueryableConstantResolver visitor = new QueryableConstantResolver(normalizer);
-
-            // act:
-            IVisitor<Expression, ConstantExpression> result = visitor.AsVisitor<ConstantExpression>(constant);
-
-            // assert:
-            Assert.AreSame(visitor, result);
-        }
-
-        [Test]
         public void Visit_withoutTheCurrentIQueryProviderInTheContext_dontCatchTheInvalidOperationException()
         {
             // arrange:

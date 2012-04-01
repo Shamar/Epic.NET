@@ -225,7 +225,7 @@ namespace Epic.Linq.Expressions.Relational
             RelationAttribute attribute = new RelationAttribute(attributeName, relation);
 
             // act:
-            System.IO.Stream stream = TestUtilities.Serialize (attribute);
+            System.IO.Stream stream = SerializationUtilities.Serialize (attribute);
             
             // assert:
             Assert.IsNotNull (stream);
@@ -240,8 +240,8 @@ namespace Epic.Linq.Expressions.Relational
             RelationAttribute attribute = new RelationAttribute(attributeName, relation);
 
             // act:
-            System.IO.Stream stream = TestUtilities.Serialize (attribute);
-            RelationAttribute deserialized = TestUtilities.Deserialize<RelationAttribute>(stream);
+            System.IO.Stream stream = SerializationUtilities.Serialize (attribute);
+            RelationAttribute deserialized = SerializationUtilities.Deserialize<RelationAttribute>(stream);
             // assert:
    
             Assert.IsTrue (deserialized.Equals (attribute));

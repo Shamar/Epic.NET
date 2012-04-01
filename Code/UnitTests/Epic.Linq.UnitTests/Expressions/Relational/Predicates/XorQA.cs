@@ -136,7 +136,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Xor<FakePredicate, FakePredicate> or = new Xor<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Xor<FakePredicate,FakePredicate>>(or);
+            Stream stream = SerializationUtilities.Serialize<Xor<FakePredicate,FakePredicate>>(or);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -151,8 +151,8 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Xor<FakePredicate, FakePredicate> or = new Xor<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Xor<FakePredicate,FakePredicate>>(or);
-            Xor<FakePredicate, FakePredicate> deserialized = TestUtilities.Deserialize<Xor<FakePredicate, FakePredicate>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Xor<FakePredicate,FakePredicate>>(or);
+            Xor<FakePredicate, FakePredicate> deserialized = SerializationUtilities.Deserialize<Xor<FakePredicate, FakePredicate>>(stream);
 
             // assert:
             // Assert.AreSame(or, deserialized);

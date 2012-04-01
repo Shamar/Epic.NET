@@ -136,7 +136,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<And<FakePredicate,FakePredicate>>(and);
+            Stream stream = SerializationUtilities.Serialize<And<FakePredicate,FakePredicate>>(and);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -151,8 +151,8 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<And<FakePredicate,FakePredicate>>(and);
-            And<FakePredicate, FakePredicate> deserialized = TestUtilities.Deserialize<And<FakePredicate, FakePredicate>>(stream);
+            Stream stream = SerializationUtilities.Serialize<And<FakePredicate,FakePredicate>>(and);
+            And<FakePredicate, FakePredicate> deserialized = SerializationUtilities.Deserialize<And<FakePredicate, FakePredicate>>(stream);
 
             // assert:
             // Assert.AreSame(and, deserialized);

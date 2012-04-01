@@ -46,7 +46,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="TestUtilities.cs" />
     <Compile Include="Events\ChangeEventArgsQA.cs" />
     <Compile Include="Environment\EnvironmentBaseQA.cs" />
     <Compile Include="Fakes\FakeEnvironment.cs" />
@@ -55,7 +54,6 @@
     <Compile Include="Fakes\FakeRoleBuilder.cs" />
     <Compile Include="Fakes\FakeRole.cs" />
     <Compile Include="Fakes\FakeWorkingSession.cs" />
-    <Compile Include="RhinoMocksFixtureBase.cs" />
     <Compile Include="EpicExceptionQA.cs" />
     <Compile Include="ObserverBaseQA.cs" />
     <Compile Include="Fakes\FakeObserver.cs" />
@@ -67,11 +65,16 @@
     <Compile Include="EnterpriseQA.cs" />
     <Compile Include="Fakes\FakeEnterprise.cs" />
     <Compile Include="EnterpriseBaseQA.cs" />
+    <Compile Include="TestUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">
       <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
       <Name>Epic.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epic.Prelude.UnitTests\Epic.Prelude.UnitTests.csproj">
+      <Project>{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}</Project>
+      <Name>Epic.Prelude.UnitTests</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

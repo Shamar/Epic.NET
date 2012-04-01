@@ -136,7 +136,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Or<FakePredicate,FakePredicate>>(or);
+            Stream stream = SerializationUtilities.Serialize<Or<FakePredicate,FakePredicate>>(or);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -151,8 +151,8 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Or<FakePredicate,FakePredicate>>(or);
-            Or<FakePredicate, FakePredicate> deserialized = TestUtilities.Deserialize<Or<FakePredicate, FakePredicate>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Or<FakePredicate,FakePredicate>>(or);
+            Or<FakePredicate, FakePredicate> deserialized = SerializationUtilities.Deserialize<Or<FakePredicate, FakePredicate>>(stream);
 
             // assert:
             // Assert.AreSame(or, deserialized);

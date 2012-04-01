@@ -60,6 +60,14 @@
       <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
       <Name>Epic.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Epic.Prelude.UnitTests\Epic.Prelude.UnitTests.csproj">
+      <Project>{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}</Project>
+      <Name>Epic.Prelude.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Epic.Prelude\Epic.Prelude.csproj">
+      <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
+      <Name>Epic.Prelude</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Expressions\Normalization\PartialEvaluatorQA.cs" />
@@ -69,15 +77,7 @@
     <Compile Include="ReflectionQA.cs" />
     <Compile Include="QueryProviderQA.cs" />
     <Compile Include="RepositoryBaseQA.cs" />
-    <Compile Include="Expressions\VisitContextQA.cs" />
-    <Compile Include="Expressions\VisitableBaseQA.cs" />
-    <Compile Include="Fakes\FakeVisitable.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
-    <Compile Include="Expressions\CompositeVisitorQA.cs" />
-    <Compile Include="Fakes\FakeCompositeVisitor.cs" />
-    <Compile Include="Expressions\VisitorBaseQA.cs" />
-    <Compile Include="Fakes\FakeVisitor.cs" />
-    <Compile Include="Expressions\CompositeVisitorBaseQA.cs" />
     <Compile Include="Expressions\Relational\RelationQA.cs" />
     <Compile Include="Fakes\FakeRelation.cs" />
     <Compile Include="Expressions\Relational\PredicateQA.cs" />

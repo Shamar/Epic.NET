@@ -70,7 +70,7 @@ namespace Epic.Linq.Expressions.Relational
         {
             Predicate predicate = new FakePredicate ();
     
-            System.IO.Stream stream = TestUtilities.Serialize (predicate);
+            System.IO.Stream stream = SerializationUtilities.Serialize (predicate);
             Assert.IsNotNull (stream);
         }
         
@@ -79,8 +79,8 @@ namespace Epic.Linq.Expressions.Relational
         {
             Predicate predicate = new FakePredicate ();
 
-            System.IO.Stream stream = TestUtilities.Serialize (predicate);
-            Predicate deserialized = TestUtilities.Deserialize<Predicate> (stream);
+            System.IO.Stream stream = SerializationUtilities.Serialize (predicate);
+            Predicate deserialized = SerializationUtilities.Deserialize<Predicate> (stream);
          
             Assert.AreEqual(predicate.GetType(), deserialized.GetType());
         }

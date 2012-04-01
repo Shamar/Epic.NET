@@ -90,7 +90,7 @@ namespace Epic.Organization
 			IWorkingSession session = new FakeWorkingSession(identifier, owner);
 			
 			// act:
-			Stream stream = TestUtilities.Serialize(session);
+			Stream stream = SerializationUtilities.Serialize(session);
 			
 			// assert:
 			Assert.IsNotNull(stream);
@@ -106,10 +106,10 @@ namespace Epic.Organization
 			string userID = "FakeUser";
 			IPrincipal owner = new GenericPrincipal(new GenericIdentity(userID), new string[0]);
 			IWorkingSession session = new FakeWorkingSession(identifier, owner);
-			Stream stream = TestUtilities.Serialize(session);
+			Stream stream = SerializationUtilities.Serialize(session);
 			
 			// act:
-			IWorkingSession deserialized = TestUtilities.Deserialize<IWorkingSession>(stream);
+			IWorkingSession deserialized = SerializationUtilities.Deserialize<IWorkingSession>(stream);
 			
 			// assert:
 			Assert.IsNotNull(deserialized);
@@ -125,7 +125,7 @@ namespace Epic.Organization
 			session.Achieve<IFakeRole>(out achievedRole);
 
 			// act:
-			Stream stream = TestUtilities.Serialize(session);
+			Stream stream = SerializationUtilities.Serialize(session);
 
 			// assert:
 			Assert.IsNotNull(stream);
@@ -138,11 +138,11 @@ namespace Epic.Organization
 			IWorkingSession session = new FakeSerializableWorkingSession();
 			IFakeRole achievedRole = null;
 			session.Achieve<IFakeRole>(out achievedRole);
-			Stream stream = TestUtilities.Serialize(session);
+			Stream stream = SerializationUtilities.Serialize(session);
 
 			// act:
 			IFakeRole deserializedRole = null;
-			IWorkingSession deserialized = TestUtilities.Deserialize<IWorkingSession>(stream);
+			IWorkingSession deserialized = SerializationUtilities.Deserialize<IWorkingSession>(stream);
 			deserialized.Achieve<IFakeRole>(out deserializedRole);
 			
 			// assert:

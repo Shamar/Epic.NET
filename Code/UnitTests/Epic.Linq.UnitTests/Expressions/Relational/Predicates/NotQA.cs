@@ -127,7 +127,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Not<FakePredicate> not = new Not<FakePredicate>(predicate);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Not<FakePredicate>>(not);
+            Stream stream = SerializationUtilities.Serialize<Not<FakePredicate>>(not);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -142,8 +142,8 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Not<FakePredicate> not = new Not<FakePredicate>(predicate);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Not<FakePredicate>>(not);
-            Not<FakePredicate> deserialized = TestUtilities.Deserialize<Not<FakePredicate>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Not<FakePredicate>>(not);
+            Not<FakePredicate> deserialized = SerializationUtilities.Deserialize<Not<FakePredicate>>(stream);
 
             // assert:
             Assert.IsTrue (not.Equals (deserialized));

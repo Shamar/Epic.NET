@@ -154,7 +154,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Less<FakeScalar,FakeScalar>>(less);
+            Stream stream = SerializationUtilities.Serialize<Less<FakeScalar,FakeScalar>>(less);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -169,8 +169,8 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Less<FakeScalar,FakeScalar>>(less);
-            Less<FakeScalar, FakeScalar> deserialized = TestUtilities.Deserialize<Less<FakeScalar, FakeScalar>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Less<FakeScalar,FakeScalar>>(less);
+            Less<FakeScalar, FakeScalar> deserialized = SerializationUtilities.Deserialize<Less<FakeScalar, FakeScalar>>(stream);
 
             // assert:
             // Assert.AreSame(less, deserialized);

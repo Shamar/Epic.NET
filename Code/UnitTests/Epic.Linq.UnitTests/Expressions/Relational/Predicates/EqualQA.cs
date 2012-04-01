@@ -154,7 +154,7 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Equal<FakeScalar,FakeScalar>>(equal);
+            Stream stream = SerializationUtilities.Serialize<Equal<FakeScalar,FakeScalar>>(equal);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -169,8 +169,8 @@ namespace Epic.Linq.Expressions.Relational.Predicates
             Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
 
             // act:
-            Stream stream = TestUtilities.Serialize<Equal<FakeScalar,FakeScalar>>(equal);
-            Equal<FakeScalar, FakeScalar> deserialized = TestUtilities.Deserialize<Equal<FakeScalar, FakeScalar>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Equal<FakeScalar,FakeScalar>>(equal);
+            Equal<FakeScalar, FakeScalar> deserialized = SerializationUtilities.Deserialize<Equal<FakeScalar, FakeScalar>>(stream);
 
             // assert:
             // Assert.AreSame(equal, deserialized);

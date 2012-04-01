@@ -9,7 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Core.UnitTests", "Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Linq.UnitTests", "UnitTests\Epic.Linq.UnitTests\Epic.Linq.UnitTests.csproj", "{02C38623-6934-439B-ABA9-FFDEFB4D9842}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Prelude.UnitTests", "UnitTests\Epic.Prelude.UnitTests\Epic.Prelude.UnitTests.csproj", "{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Linq", "Epic.Linq\Epic.Linq.csproj", "{7B1F063C-C646-4C14-962A-28325218420F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Prelude", "Epic.Prelude\Epic.Prelude.csproj", "{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,10 @@ Global
 		{02C38623-6934-439B-ABA9-FFDEFB4D9842}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02C38623-6934-439B-ABA9-FFDEFB4D9842}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02C38623-6934-439B-ABA9-FFDEFB4D9842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,10 +41,15 @@ Global
 		{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF} = {A9C8E0D7-C788-472B-A673-CA58D5F15B1A}
 		{02C38623-6934-439B-ABA9-FFDEFB4D9842} = {A9C8E0D7-C788-472B-A673-CA58D5F15B1A}
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B} = {A9C8E0D7-C788-472B-A673-CA58D5F15B1A}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Epic.Core\Epic.Core.csproj

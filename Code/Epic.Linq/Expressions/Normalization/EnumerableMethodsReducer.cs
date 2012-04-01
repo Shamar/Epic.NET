@@ -36,7 +36,7 @@ namespace Epic.Linq.Expressions.Normalization
         {
         }
 
-        internal protected override IVisitor<Expression, TExpression> AsVisitor<TExpression>(TExpression target)
+        protected override IVisitor<Expression, TExpression> AsVisitor<TExpression>(TExpression target)
         {
             IVisitor<Expression, TExpression> visitor = base.AsVisitor (target);
 

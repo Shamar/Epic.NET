@@ -61,7 +61,7 @@ namespace Epic.Linq.Expressions.Normalization
         /// <typeparam name='TExpression'>
         /// The 1st type parameter.
         /// </typeparam>
-        internal protected override IVisitor<Expression, TExpression> AsVisitor<TExpression> (TExpression target)
+        protected override IVisitor<Expression, TExpression> AsVisitor<TExpression> (TExpression target)
         {
             IVisitor<Expression, TExpression> visitor = base.AsVisitor (target);
 

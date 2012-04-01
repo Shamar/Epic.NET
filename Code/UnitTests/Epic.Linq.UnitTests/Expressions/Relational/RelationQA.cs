@@ -108,7 +108,7 @@ namespace Epic.Linq.Expressions.Relational
             {
                 Relation relation = new FakeRelation (type, name);
                 
-                System.IO.Stream stream = TestUtilities.Serialize (relation);
+                System.IO.Stream stream = SerializationUtilities.Serialize (relation);
                 Assert.IsNotNull (stream);
             }
         }
@@ -124,8 +124,8 @@ namespace Epic.Linq.Expressions.Relational
             {
                 Relation relation = new FakeRelation (type, name);
                 
-                System.IO.Stream stream = TestUtilities.Serialize (relation);
-                Relation deserialized = TestUtilities.Deserialize<Relation> (stream);
+                System.IO.Stream stream = SerializationUtilities.Serialize (relation);
+                Relation deserialized = SerializationUtilities.Deserialize<Relation> (stream);
                 
                 Assert.AreEqual(relation.Name, deserialized.Name);
                 Assert.AreEqual(relation.Type, deserialized.Type);
