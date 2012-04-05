@@ -41,45 +41,20 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Expressions\Normalization\PartialEvaluator.cs" />
     <Compile Include="Expressions\Normalization\QueryableConstantResolver.cs" />
-    <Compile Include="IEntityLoader.cs" />
     <Compile Include="Queryable.cs" />
     <Compile Include="QueryProvider.cs" />
     <Compile Include="Reflection.cs" />
     <Compile Include="RepositoryBase.cs" />
-    <Compile Include="Expressions\Relational\Relation.cs" />
-    <Compile Include="Expressions\Relational\RelationType.cs" />
-    <Compile Include="Expressions\Relational\BaseRelation.cs" />
-    <Compile Include="Expressions\Relational\Selection.cs" />
-    <Compile Include="Expressions\Relational\Constant.cs" />
     <Compile Include="Expressions\Normalization\ExpressionForwarder.cs" />
     <Compile Include="Expressions\Normalization\ExpressionsInspector.cs" />
-    <Compile Include="Expressions\Relational\RelationAttribute.cs" />
     <Compile Include="Expressions\Normalization\ExpressionNormalizerBase.cs" />
     <Compile Include="Expressions\Normalization\ClosureExpander.cs" />
-    <Compile Include="Expressions\Relational\RelationFunction.cs" />
-    <Compile Include="Expressions\Relational\Scalar.cs" />
-    <Compile Include="Expressions\Relational\ScalarType.cs" />
-    <Compile Include="Expressions\Relational\ScalarFunction.cs" />
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducer.cs" />
     <Compile Include="Expressions\Normalization\QueryableMethodsReducer.cs" />
     <Compile Include="Expressions\Normalization\DefaultNormalizer.cs" />
-    <Compile Include="Expressions\Relational\Predicates\Greater.cs" />
-    <Compile Include="Expressions\Relational\Predicates\Less.cs" />
-    <Compile Include="Expressions\Relational\Predicates\Equal.cs" />
-    <Compile Include="Expressions\Relational\Predicates\ScalarPredicateBase.cs" />
-    <Compile Include="Expressions\Relational\Predicates\Predicate.cs" />
-    <Compile Include="Expressions\Relational\Predicates\BinaryPredicateBase.cs" />
-    <Compile Include="Expressions\Relational\Predicates\UnaryPredicateBase.cs" />
-    <Compile Include="Expressions\Relational\Predicates\Not.cs" />
-    <Compile Include="Expressions\Relational\Predicates\And.cs" />
-    <Compile Include="Expressions\Relational\Predicates\Or.cs" />
-    <Compile Include="Expressions\Relational\Predicates\PredicateExtension.cs" />
-    <Compile Include="Expressions\Relational\Predicates\Xor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Expressions\Relational\Visitors\" />
     <Folder Include="Expressions\Templates\" />
-    <Folder Include="Expressions\Relational\Predicates\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

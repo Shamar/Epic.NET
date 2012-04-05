@@ -25,6 +25,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using NUnit.Framework;
+using Epic.Fakes;
 using Epic.Linq.Fakes;
 using Challenge00.DDDSample.Cargo;
 using Rhino.Mocks;

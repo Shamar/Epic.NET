@@ -23,11 +23,11 @@
 //  
 using System;
 using NUnit.Framework;
-using Epic.Linq.Fakes;
+using Epic.Fakes;
 using System.Linq.Expressions;
 using Rhino.Mocks;
 
-namespace Epic.Linq.Expressions
+namespace Epic
 {
     [TestFixture]
     public class VisitorBaseQA : RhinoMocksFixtureBase

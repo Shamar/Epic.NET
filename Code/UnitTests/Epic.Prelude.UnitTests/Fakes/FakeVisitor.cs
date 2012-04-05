@@ -22,9 +22,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Epic.Linq.Expressions;
 
-namespace Epic.Linq.Fakes
+namespace Epic.Fakes
 {
     public class FakeVisitor<TResult, TExpression> : CompositeVisitor<TResult>.VisitorBase, IVisitor<TResult, TExpression>
     {

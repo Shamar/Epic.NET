@@ -24,7 +24,7 @@
 using NUnit.Framework;
 using System;
 
-namespace Epic.Linq.Expressions
+namespace Epic
 {
     [TestFixture()]
     public class VisitContextQA

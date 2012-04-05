@@ -24,6 +24,7 @@
 using NUnit.Framework;
 using System;
 using System.Linq.Expressions;
+using Epic.Fakes;
 using Epic.Linq.Fakes;
 using Rhino.Mocks;
 using System.Collections.Generic;

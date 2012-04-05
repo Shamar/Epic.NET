@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{148CECBF-1B45-48FF-9F15-4E5CB52EDEFD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Epic.Query.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>Epic.Query</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\build\tests\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\build\tests\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\3rdParties\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Epic.Query\Epic.Query.csproj">
+      <Project>{45E26C2D-47BD-42D7-8326-CE92777D79A4}</Project>
+      <Name>Epic.Query</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Epic.Prelude\Epic.Prelude.csproj">
+      <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
+      <Name>Epic.Prelude</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Epic.Prelude.UnitTests\Epic.Prelude.UnitTests.csproj">
+      <Project>{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}</Project>
+      <Name>Epic.Prelude.UnitTests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Relational\RelationQA.cs" />
+    <Compile Include="Relational\PredicateQA.cs" />
+    <Compile Include="Relational\BaseRelationQA.cs" />
+    <Compile Include="Relational\SelectionQA.cs" />
+    <Compile Include="Relational\ConstantQA.cs" />
+    <Compile Include="Relational\RelationAttributeQA.cs" />
+    <Compile Include="Relational\RelationFunctionQA.cs" />
+    <Compile Include="Relational\ScalarFunctionQA.cs" />
+    <Compile Include="Relational\Predicates\AndQA.cs" />
+    <Compile Include="Relational\Predicates\GreaterQA.cs" />
+    <Compile Include="Relational\Predicates\PredicateExtensionsQA.cs" />
+    <Compile Include="Relational\Predicates\OrQA.cs" />
+    <Compile Include="Relational\Predicates\LessQA.cs" />
+    <Compile Include="Relational\Predicates\EqualQA.cs" />
+    <Compile Include="Relational\Predicates\NotQA.cs" />
+    <Compile Include="Relational\Predicates\XorQA.cs" />
+    <Compile Include="Fakes\FakePredicate.cs" />
+    <Compile Include="Fakes\FakeRelation.cs" />
+    <Compile Include="Fakes\FakeRelationFunction.cs" />
+    <Compile Include="Fakes\FakeScalar.cs" />
+    <Compile Include="Fakes\FakeScalarFunction.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Fakes\" />
+  </ItemGroup>
+</Project>

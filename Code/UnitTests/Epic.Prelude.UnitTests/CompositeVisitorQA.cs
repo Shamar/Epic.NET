@@ -23,10 +23,10 @@
 //  
 using NUnit.Framework;
 using System;
-using Epic.Linq.Fakes;
+using Epic.Fakes;
 using System.Linq.Expressions;
 
-namespace Epic.Linq.Expressions
+namespace Epic
 {
     [TestFixture()]
     public class CompositeVisitorQA

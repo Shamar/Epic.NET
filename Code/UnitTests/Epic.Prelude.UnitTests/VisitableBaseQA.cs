@@ -22,11 +22,11 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Epic.Linq.Fakes;
+using Epic.Fakes;
 using Rhino.Mocks;
 using NUnit.Framework;
 
-namespace Epic.Linq.Expressions
+namespace Epic
 {
 
     

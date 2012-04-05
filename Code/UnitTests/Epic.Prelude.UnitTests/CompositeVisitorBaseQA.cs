@@ -24,10 +24,10 @@
 using NUnit.Framework;
 using System;
 using System.Linq.Expressions;
-using Epic.Linq.Fakes;
+using Epic.Fakes;
 using Rhino.Mocks;
 
-namespace Epic.Linq.Expressions
+namespace Epic
 {
     [TestFixture()]
     public class CompositeVisitorBaseQA : RhinoMocksFixtureBase

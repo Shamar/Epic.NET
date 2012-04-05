@@ -26,6 +26,7 @@ using System;
 using System.Linq.Expressions;
 using System.Collections.Generic;
 using Rhino.Mocks;
+using Epic.Fakes;
 using Epic.Linq.Fakes;
 
 namespace Epic.Linq.Expressions.Normalization

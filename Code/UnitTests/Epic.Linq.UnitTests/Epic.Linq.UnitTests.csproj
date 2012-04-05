@@ -78,13 +78,6 @@
     <Compile Include="QueryProviderQA.cs" />
     <Compile Include="RepositoryBaseQA.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
-    <Compile Include="Expressions\Relational\RelationQA.cs" />
-    <Compile Include="Fakes\FakeRelation.cs" />
-    <Compile Include="Expressions\Relational\PredicateQA.cs" />
-    <Compile Include="Fakes\FakePredicate.cs" />
-    <Compile Include="Expressions\Relational\BaseRelationQA.cs" />
-    <Compile Include="Expressions\Relational\SelectionQA.cs" />
-    <Compile Include="Expressions\Relational\ConstantQA.cs" />
     <Compile Include="Expressions\Normalization\ExpressionForwarderQA.cs" />
     <Compile Include="Expressions\Normalization\ExpressionsInspectorQA.cs" />
     <Compile Include="Expressions\Samples.cs" />
@@ -92,27 +85,13 @@
     <Compile Include="Fakes\ClassWithFieldAndProperty.cs" />
     <Compile Include="Fakes\DummyResultExpression.cs" />
     <Compile Include="Fakes\FakeQueryable.cs" />
-    <Compile Include="Expressions\Relational\RelationAttributeQA.cs" />
     <Compile Include="Fakes\ClassToTestMemberBindings.cs" />
     <Compile Include="Expressions\Normalization\ExpressionNormalizerBaseQA.cs" />
     <Compile Include="Fakes\FakeNormalizer.cs" />
     <Compile Include="Expressions\Verify.cs" />
     <Compile Include="Expressions\Normalization\ClosureExpanderQA.cs" />
-    <Compile Include="Expressions\Relational\RelationFunctionQA.cs" />
-    <Compile Include="Fakes\FakeRelationFunction.cs" />
-    <Compile Include="Expressions\Relational\ScalarFunctionQA.cs" />
-    <Compile Include="Fakes\FakeScalarFunction.cs" />
-    <Compile Include="Fakes\FakeScalar.cs" />
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducerQA.cs" />
     <Compile Include="Expressions\Normalization\QueryableMethodsReducerQA.cs" />
     <Compile Include="Expressions\Normalization\DefaultNormalizerQA.cs" />
-    <Compile Include="Expressions\Relational\Predicates\AndQA.cs" />
-    <Compile Include="Expressions\Relational\Predicates\GreaterQA.cs" />
-    <Compile Include="Expressions\Relational\Predicates\PredicateExtensionsQA.cs" />
-    <Compile Include="Expressions\Relational\Predicates\OrQA.cs" />
-    <Compile Include="Expressions\Relational\Predicates\LessQA.cs" />
-    <Compile Include="Expressions\Relational\Predicates\EqualQA.cs" />
-    <Compile Include="Expressions\Relational\Predicates\NotQA.cs" />
-    <Compile Include="Expressions\Relational\Predicates\XorQA.cs" />
   </ItemGroup>
 </Project>
