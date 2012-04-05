@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Core.UnitTests", "UnitTests\Epic.Core.UnitTests\Epic.Core.UnitTests.csproj", "{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Linq.UnitTests", "UnitTests\Epic.Linq.UnitTests\Epic.Linq.UnitTests.csproj", "{02C38623-6934-439B-ABA9-FFDEFB4D9842}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query.Linq.UnitTests", "UnitTests\Epic.Query.Linq.UnitTests\Epic.Query.Linq.UnitTests.csproj", "{02C38623-6934-439B-ABA9-FFDEFB4D9842}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Prelude.UnitTests", "UnitTests\Epic.Prelude.UnitTests\Epic.Prelude.UnitTests.csproj", "{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query.UnitTests", "UnitTests\Epic.Query.UnitTests\Epic.Query.UnitTests.csproj", "{148CECBF-1B45-48FF-9F15-4E5CB52EDEFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Linq", "Epic.Linq\Epic.Linq.csproj", "{7B1F063C-C646-4C14-962A-28325218420F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query.Linq", "Epic.Query.Linq\Epic.Query.Linq.csproj", "{7B1F063C-C646-4C14-962A-28325218420F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Prelude", "Epic.Prelude\Epic.Prelude.csproj", "{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}"
 EndProject
@@ -79,7 +79,6 @@ Global
 		$3.scope = text/x-csharp
 		$0.TextStylePolicy = $4
 		$4.FileWidth = 120
-		$4.RemoveTrailingWhitespace = True
 		$4.EolMarker = Unix
 		$4.inheritsSet = VisualStudio
 		$4.inheritsScope = text/plain
