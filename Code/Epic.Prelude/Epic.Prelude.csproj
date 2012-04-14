@@ -42,5 +42,6 @@
     <Compile Include="VisitableBase.cs" />
     <Compile Include="VisitContext.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="IVisitable.cs" />
   </ItemGroup>
 </Project>

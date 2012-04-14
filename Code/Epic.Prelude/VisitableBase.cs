@@ -32,7 +32,7 @@ namespace Epic
     /// Is thrown when an operation cannot be performed.
     /// </exception>
     [Serializable]
-    public abstract class VisitableBase
+    public abstract class VisitableBase : IVisitable
     {
         protected VisitableBase ()
         {
