@@ -62,12 +62,12 @@ namespace Epic.Query.Linq.Expressions.Normalization
             EnterpriseBase enterprise = new Epic.Fakes.FakeEnterprise(env, null);
             Enterprise.Initialize(enterprise); // plumbing for RepositoryBase
 
-            IRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
+            IQueryableRepository<ICargo, TrackingId> cargos = new FakeRepository<ICargo, TrackingId>(providerName);
             IQueryable<ICargo> movingCargos = from c in cargos
                                               where c.Delivery.TransportStatus == TransportStatus.OnboardCarrier 
                                               select c;
-            IRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
-            IRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
+            IQueryableRepository<ILocation, UnLocode> locations = new FakeRepository<ILocation, UnLocode>(providerName);
+            IQueryableRepository<IVoyage, VoyageNumber> voyages = new FakeRepository<IVoyage, VoyageNumber>(providerName);
             IEnumerable<IVoyage> movingVoyages = voyages.Where(v => v.IsMoving); // an iqueryable to unwrap from an ienumerable
             IQueryable<ILocation> locationsTraversedFromVoyagesEndingToday = 
                     from c in movingCargos

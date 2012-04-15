@@ -1,5 +1,5 @@
 //  
-//  IRepository.cs
+//  IQueryableRepository.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -24,29 +24,26 @@
 using System;
 using System.Linq;
 
-namespace Epic
+
+namespace Epic.Query.Linq
 {
-	/// <summary>
-	/// Common interface of repositories.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// This is the base interface for repositories, in Epic.
-	/// </para>
-	/// </remarks>
-	/// <typeparam name="TEntity">Accessible entity.</typeparam>
-	/// <typeparam name="TIdentity"><typeparamref name="TEntity"/>'s identifier.</typeparam>
-	public interface IRepository<TEntity, TIdentity>
-		where TEntity : class
-		where TIdentity : IEquatable<TIdentity>
-	{
-		/// <summary>
-		/// Gets the <typeparamref name="TEntity"/> identified by <paramref name="identity"/>.
-		/// </summary>
-		/// <param name='identity'>
-		/// <typeparamref name="TEntity"/>'s identifier.
-		/// </param>
-		TEntity this[TIdentity identity] { get; }
-	}
+    /// <summary>
+    /// Common interface of repositories.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This is the base interface for repositories, in Epic.Query.Linq.
+    /// </para>
+    /// <para>
+    /// It express the only feature that all repository should expose: queryability.
+    /// </para>
+    /// </remarks>
+    /// <typeparam name="TEntity">Accessible entity.</typeparam>
+    /// <typeparam name="TIdentity"><typeparamref name="TEntity"/>'s identifier.</typeparam>
+    public interface IQueryableRepository<TEntity, TIdentity> : IRepository<TEntity, TIdentity>, IQueryable<TEntity>
+        where TEntity : class
+        where TIdentity : IEquatable<TIdentity>
+    {
+    }
 }
 

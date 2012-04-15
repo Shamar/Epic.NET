@@ -59,7 +59,7 @@ namespace Epic.Query.Linq
         public void Initialize_withProviderName_works()
         {
             // act:
-            IRepository<string,int> repository = new Fakes.FakeRepository<string,int>("test");
+            IQueryableRepository<string,int> repository = new Fakes.FakeRepository<string,int>("test");
 
             // assert:
             Assert.IsNotNull(repository);
@@ -79,7 +79,7 @@ namespace Epic.Query.Linq
             env.Expect(e => e.Get<IQueryProvider>(Arg<InstanceName<IQueryProvider>>.Matches(n => n.Equals(instanceName)))).Return(mockProvider).Repeat.Once();
             EnterpriseBase app = new FakeEnterprise(env, null);
             Enterprise.Initialize(app);
-            IRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
+            IQueryableRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
 
             // act:
             IQueryProvider provider = repository.Provider;
@@ -95,7 +95,7 @@ namespace Epic.Query.Linq
         {
             // arrange:
             string providerName = "TestProvider";
-            IRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
+            IQueryableRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
             EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
             IEnumerator<string> mockEnumerator = GenerateStrictMock<IEnumerator<string>>();
             IEnumerable<string> enumerable = GenerateStrictMock<IEnumerable<string>>();
@@ -120,7 +120,7 @@ namespace Epic.Query.Linq
         {
             // arrange:
             string providerName = "TestProvider";
-            IRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
+            IQueryableRepository<string,int> repository = new Fakes.FakeRepository<string,int>(providerName);
             EnvironmentBase env = GeneratePartialMock<EnvironmentBase>();
             IEnumerator<string> mockEnumerator = GenerateStrictMock<IEnumerator<string>>();
             IEnumerable<string> enumerable = GenerateStrictMock<IEnumerable<string>>();

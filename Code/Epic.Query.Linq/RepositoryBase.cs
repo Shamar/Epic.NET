@@ -29,7 +29,7 @@ using System.Collections;
 namespace Epic.Query.Linq
 {
 	[Serializable]
-	public abstract class RepositoryBase<TEntity, TIdentity> : IRepository<TEntity, TIdentity>, IQueryable<TEntity>, IQueryable, IEnumerable<TEntity>, IEnumerable
+	public abstract class RepositoryBase<TEntity, TIdentity> : IQueryableRepository<TEntity, TIdentity>, IQueryable<TEntity>, IQueryable, IEnumerable<TEntity>, IEnumerable
 		where TEntity : class
 		where TIdentity : IEquatable<TIdentity>
 	{

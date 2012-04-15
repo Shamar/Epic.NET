@@ -52,6 +52,7 @@
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducer.cs" />
     <Compile Include="Expressions\Normalization\QueryableMethodsReducer.cs" />
     <Compile Include="Expressions\Normalization\DefaultNormalizer.cs" />
+    <Compile Include="IQueryableRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\Templates\" />
