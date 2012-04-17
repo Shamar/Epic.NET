@@ -43,5 +43,9 @@
     <Compile Include="VisitContext.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="IVisitable.cs" />
+    <Compile Include="Specifications\ISpecification.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Specifications\" />
   </ItemGroup>
 </Project>
