@@ -74,7 +74,7 @@ namespace Epic
 		/// <summary>
 		/// Leave the specified role. 
 		/// After calling this method, your role will be disposed 
-		/// and the reference to <paramref name="role"/> will be set to <value>null</value>.
+		/// and the reference to <paramref name="role"/> will be set to <c>null</c>.
 		/// </summary>
 		/// <param name='role'>
 		/// User's role to be disposed.
@@ -82,7 +82,7 @@ namespace Epic
 		/// <typeparam name='TRole'>
 		/// The type of the role to leave.
 		/// </typeparam>
-		/// <exception cref="ArgumentNullException">The <paramref name="role"/> is <value>null</value>.</exception>
+		/// <exception cref="ArgumentNullException">The <paramref name="role"/> is <c>null</c>.</exception>
 		/// <exception cref="ArgumentException">The <paramref name="role"/> is unknown to the session.</exception>
 		void Leave<TRole>(ref TRole role) where TRole : class;
 	}

@@ -48,7 +48,7 @@ namespace Epic
         /// Name of the composition.
         /// </param>
         /// <exception cref='ArgumentNullException'>
-        /// Is thrown when <paramref name="name"/> is <value>null</value> or <value>string.Empty</value>.
+        /// Is thrown when <paramref name="name"/> is <c>null</c> or <value>string.Empty</value>.
         /// </exception>
         internal CompositeVisitor (string name)
         {
@@ -143,10 +143,10 @@ namespace Epic
         
         /// <summary>
         /// Returns the current instance as <seealso cref="IVisitor{TResult, TExpression}"/> 
-        /// (or <value>null</value> when the current composition is not intended to visit <typeparamref name="TExpression"/>).
+        /// (or <c>null</c> when the current composition is not intended to visit <typeparamref name="TExpression"/>).
         /// </summary>
         /// <returns>
-        /// The current instance or <value>null</value>.
+        /// The current instance or <c>null</c>.
         /// </returns>
         /// <param name='target'>
         /// Object to visit.
@@ -177,7 +177,7 @@ namespace Epic
             /// Composition that will own the new visitor.
             /// </param>
             /// <exception cref='ArgumentNullException'>
-            /// Is thrown when the <paramref name="composition"/> is <value>null</value>.
+            /// Is thrown when the <paramref name="composition"/> is <c>null</c>.
             /// </exception>
             protected VisitorBase(CompositeVisitor<TResult> composition)
             {
@@ -257,12 +257,12 @@ namespace Epic
             
             /// <summary>
             /// Returns the current instance if and only if it's able to visit <paramref name="target"/>,
-            /// <value>null</value> otherwise.
+            /// <c>null</c> otherwise.
             /// It should be overridden whenever the type of <paramref name="target"/> is not enough 
             /// to choose whether the current instance can visit it or not.
             /// </summary>
             /// <returns>
-            /// The current instance or <value>null</value>.
+            /// The current instance or <c>null</c>.
             /// </returns>
             /// <param name='target'>
             /// Object to visit.

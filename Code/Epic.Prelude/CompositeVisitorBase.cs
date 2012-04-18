@@ -39,7 +39,7 @@ namespace Epic
         /// <param name='name'>
         /// Name of the compositions.
         /// </param>
-        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="name"/> is <value>null</value> or <value>string.Empty</value>.</exception>
+        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="name"/> is <c>null</c> or <value>string.Empty</value>.</exception>
         protected CompositeVisitorBase(string name)
             : base(name)
         {
@@ -52,10 +52,10 @@ namespace Epic
         /// The <see cref="IVisitContext"/> to be used in the current visit.
         /// </returns>
         /// <param name='target'>
-        /// Object to visit (will never be <value>null</value>).
+        /// Object to visit (will never be <c>null</c>).
         /// </param>
         /// <param name='context'>
-        /// Context recieved from the caller (will never be <value>null</value>).
+        /// Context recieved from the caller (will never be <c>null</c>).
         /// </param>
         protected abstract IVisitContext InitializeVisitContext(TExpression target, IVisitContext context);
         
@@ -71,7 +71,7 @@ namespace Epic
         /// Context of the visit.
         /// </param>
         /// <exception cref="ArgumentNullException">
-        /// Is thrown when either <paramref name="target"/> or <paramref name="context"/> are <value>null</value>.
+        /// Is thrown when either <paramref name="target"/> or <paramref name="context"/> are <c>null</c>.
         /// </exception>
         public TResult Visit (TExpression target, IVisitContext context)
         {

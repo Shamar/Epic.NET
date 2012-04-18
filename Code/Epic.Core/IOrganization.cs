@@ -53,7 +53,7 @@ namespace Epic
 		/// <param name='workingSession'>
 		/// The new working session.
 		/// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <value>null</value>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <c>null</c>.</exception>
 		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not create a 
 		/// new <see cref="IWorkingSession"/>.</exception>
 		void StartWorkingSession(IPrincipal owner, out IWorkingSession workingSession);
@@ -71,8 +71,8 @@ namespace Epic
 		/// <param name='identifier'>
 		/// The working session identifier.
 		/// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <value>null</value>.</exception>
-		/// <exception cref="ArgumentNullException"><paramref name="identifier"/> is <value>null</value> 
+		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="identifier"/> is <c>null</c> 
 		/// or empty.</exception>
 		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not acquire 
 		/// the <see cref="IWorkingSession"/> identified by <paramref name="identifier"/>.</exception>
@@ -88,7 +88,7 @@ namespace Epic
 		/// The working session to end.
 		/// </param>
 		/// <exception cref="ArgumentNullException">Either <paramref name="owner"/> or 
-		/// <paramref name="workingSession"/> are <value>null</value>.</exception>
+		/// <paramref name="workingSession"/> are <c>null</c>.</exception>
 		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not end 
 		/// <paramref name="workingSession"/>.</exception>
 		void EndWorkingSession(IPrincipal owner, IWorkingSession workingSession);
