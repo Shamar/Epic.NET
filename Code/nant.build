@@ -1,0 +1,23 @@
+<project name="Epic.NET/Code" default="build-code" xmlns="http://nant.sf.net/schemas/nant.xsd">
+
+    <property name="common.namespace" value="Epic" />
+    <property name="projects" value="Prelude,Core,Query,Query.Linq,Query.Object"/>
+
+    <property name="build.target" value="Build" overwrite="false" />
+	<property name="build.configuration" value="Debug" overwrite="false" />
+	<property name="build.verbosity" value="quiet" overwrite="false" />
+	<property name="msbuild.path" value="${path::combine(framework::get-framework-directory(framework::get-target-framework()), 'msbuild.exe')}"  overwrite="false"/>
+    
+    <target name="build-code">
+        <echo message="Building Epic.NET code in ${path::get-full-path('.')}." />
+        
+        <foreach item="String" in="${projects}" delim="," property="project">
+            <property name="project.name" value="${common.namespace + '.' + project}"/>
+            <echo message="Building ${project.name}." />
+            <property name="project.path" value="${path::combine(project.name, project.name + '.csproj')}"/>
+            <exec program="${msbuild.path}"        
+                  commandline="${project.path} /t:${build.target} /p:Configuration=${build.configuration} /v:${build.verbosity}" 
+                  workingdir="${path::get-full-path('.')}" />
+        </foreach>
+    </target>
+</project>
