@@ -1,0 +1,60 @@
+<?xml version="1.0" ?> 
+<project name="Epic.NET" default="continuous" xmlns="http://nant.sf.net/schemas/nant.xsd">
+    
+    <!-- build-wide properties -->
+	<property name="nant.settings.currentframework" value="net-3.5" />
+	<property name="repository.rootdirectory" value="${path::get-full-path('.')}" />
+	<property name="repository.builddirectory" value="${path::combine(repository.rootdirectory, 'build')}"/>
+	<property name="repository.testdirectory" value="${path::combine(repository.rootdirectory, 'tests')}"/>
+	
+	<property name="build.configuration" value="Debug" overwrite="false" />
+	<property name="build.verbosity" value="quiet" />
+	<property name="msbuild.path" value="${path::combine(framework::get-framework-directory(framework::get-target-framework()), 'msbuild.exe')}" />
+	
+	<property name="library.dir" value="${path::combine(repository.rootdirectory, '3rdParty')}" />
+
+    <target name="continuous">
+        <tstamp />
+        <call target="setup-environment" />
+        <echo message="AFV = ${assembly.file.version}" />
+    </target>
+    
+    <target name="setup-environment">
+        <if test="${not (property::exists('build.number') and (build.configuration=='Release'))}">
+            <fail message="Can not build a Release without a build numeber. Use -D:build.number=N to define one."/>
+        </if>
+        <foreach item="Line" in="${path::combine(repository.rootdirectory, 'VersionInfo.cs')}" property="line">
+            <if test="${string::starts-with(line, '[assembly: AssemblyVersion')}">
+                <property name="assembly.version" value="${string::replace(string::replace(line, '[assembly: AssemblyVersion(&quot;', ''), '&quot;)]', '')}"/>
+                <regex pattern="^(?'_major'\d+)\.(?'_minor'\d+)\.(?'_build'\d+)\.(?'_revision'\d+)$" input="${assembly.version}"/>
+                <property name="assembly.file.version" value="${_major + '.' + _minor + '.' + build.number + '.' + _revision}"/>
+            </if>
+        </foreach>
+    </target>
+    
+    <target name="update-version">
+    </target>
+    
+    <target name="build-code">
+    </target>
+    
+    <target name="build-samples">
+    </target>
+
+    <target name="test-code">
+    </target>
+
+    <target name="test-samples">
+    </target>
+    
+    <target name="documentation" depends="api,manual">
+    </target>
+    
+    <target name="api">
+    </target>
+    
+    <target name="manual">
+    </target>
+
+    
+</project>

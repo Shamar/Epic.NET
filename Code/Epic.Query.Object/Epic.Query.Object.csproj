@@ -35,6 +35,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="IQuery.cs" />
     <Compile Include="IObjectsProvider.cs" />
     <Compile Include="ISearchableRepository.cs" />
