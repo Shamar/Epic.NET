@@ -30,6 +30,8 @@ namespace Epic.Query.Object
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
         {
+            if(null == query)
+                throw new ArgumentNullException("query");
             return query.Provider.Count(query.Specification);
         }
     }

@@ -37,9 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="IEnvironment.cs" />
     <Compile Include="IWorkingSession.cs" />
     <Compile Include="Events\ChangeEventArgs.cs" />
@@ -61,6 +58,9 @@
     <Compile Include="EnterpriseBase.cs" />
     <Compile Include="Enterprise.cs" />
     <Compile Include="Organization\OrganizationSerializationHelper.cs" />
+    <Compile Include="..\EpicInfo.cs">
+      <Link>EpicInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

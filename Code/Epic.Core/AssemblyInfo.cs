@@ -29,17 +29,5 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Epic.Core")]
 [assembly: AssemblyDescription("Epic framework's core")]
-[assembly: AssemblyCopyright("Copyright (c) 2010-2012 Giacomo Tesio")]
 [assembly: InternalsVisibleTo("Epic.Core.UnitTests")]
-
-[assembly: System.Runtime.InteropServices.ComVisible(false)]
-[assembly: System.CLSCompliant(false)]
-
-
-
-// The following attributes are used to specify the signing key for the assembly, 
-// if desired. See the Mono documentation for more information about signing.
-
-//[assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile("")]
 

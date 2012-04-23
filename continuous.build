@@ -3,10 +3,11 @@
     
     <!-- build-wide properties -->
 	<property name="nant.settings.currentframework" value="net-3.5" if="${platform::is-windows()}" />
-        <property name="nant.settings.currentframework" value="mono-3.5" if="${not platform::is-windows()}" />
+    <property name="nant.settings.currentframework" value="mono-3.5" if="${not platform::is-windows()}" />
 	<property name="repository.rootdirectory" value="${path::get-full-path('.')}" />
 	<property name="repository.builddirectory" value="${path::combine(repository.rootdirectory, 'build')}"/>
 	<property name="repository.testdirectory" value="${path::combine(repository.rootdirectory, 'tests')}"/>
+	<property name="epic.infofile" value="${path::combine(path::combine(repository.rootdirectory, 'Code'), 'EpicInfo.cs')}"/>
 	
 	<property name="build.target" value="Build" overwrite="false" />
 	<property name="build.configuration" value="Debug" overwrite="false" />
@@ -40,7 +41,7 @@
             <if test="${not (property::exists('build.number'))}">
                 <fail message="Can not build a Release without a build numeber. Use -D:build.number=N to define one."/>
             </if>
-            <foreach item="Line" in="${path::combine(repository.rootdirectory, 'VersionInfo.cs')}" property="line">
+            <foreach item="Line" in="${epic.infofile}" property="line">
                 <if test="${string::contains(line, '[assembly: AssemblyVersion')}">
                     <property name="assembly.version" value="${string::replace(string::replace(line, '[assembly: AssemblyVersion(&quot;', ''), '&quot;)]', '')}"/>
                     <regex pattern="^(?'_major'\d+)\.(?'_minor'\d+)\.(?'_build'\d+)\.(?'_revision'\d+)$" input="${assembly.version}"/>
@@ -50,8 +51,8 @@
             <if test="${not (property::exists('assembly.file.version'))}">
                 <fail message="Can not build a Release: can't define the AssemblyFileVersion."/>
             </if>
-            <move file="VersionInfo.cs" tofile="VersionInfo.cs.orig" />
-            <copy file="VersionInfo.cs.orig" tofile="VersionInfo.cs">
+            <move file="${epic.infofile}" tofile="${epic.infofile}.orig" />
+            <copy file="${epic.infofile}.orig" tofile="${epic.infofile}">
                 <filterchain>
                     <replacestring from="${'[assembly: AssemblyFileVersion(&quot;'+assembly.version+'&quot;)]'}" 
                                    to="${'[assembly: AssemblyFileVersion(&quot;'+assembly.file.version+'&quot;)]'}" />
@@ -61,8 +62,8 @@
     </target>
     
     <target name="restore-version">
-        <if test="${file::exists('VersionInfo.cs.orig')}">
-            <move file="VersionInfo.cs.orig" tofile="VersionInfo.cs" overwrite="true" />
+        <if test="${file::exists(epic.infofile + '.orig')}">
+            <move file="${epic.infofile}.orig" tofile="${epic.infofile}" overwrite="true" />
         </if>
     </target>
     

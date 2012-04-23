@@ -36,9 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="Relational\Relation.cs" />
     <Compile Include="Relational\RelationType.cs" />
     <Compile Include="Relational\BaseRelation.cs" />
@@ -62,6 +59,9 @@
     <Compile Include="Relational\Predicates\PredicateExtension.cs" />
     <Compile Include="Relational\Predicates\Xor.cs" />
     <Compile Include="IEntityLoader.cs" />
+    <Compile Include="..\EpicInfo.cs">
+      <Link>EpicInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

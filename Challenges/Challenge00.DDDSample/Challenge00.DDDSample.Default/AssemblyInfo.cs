@@ -29,13 +29,3 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Challenge00.DDDSample.Default")]
 [assembly: AssemblyDescription("Sample domain model")]
-[assembly: AssemblyCopyright("Copyright (c) 2010-2011 Giacomo Tesio")]
-
-
-
-// The following attributes are used to specify the signing key for the assembly, 
-// if desired. See the Mono documentation for more information about signing.
-
-//[assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile("")]
-

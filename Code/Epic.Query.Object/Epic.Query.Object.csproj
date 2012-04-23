@@ -35,13 +35,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="..\..\VersionInfo.cs">
-      <Link>VersionInfo.cs</Link>
-    </Compile>
     <Compile Include="IQuery.cs" />
     <Compile Include="IObjectsProvider.cs" />
     <Compile Include="ISearchableRepository.cs" />
     <Compile Include="Searchable.cs" />
+    <Compile Include="..\EpicInfo.cs">
+      <Link>EpicInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

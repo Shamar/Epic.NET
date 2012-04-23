@@ -1,12 +1,12 @@
 <project name="Epic.NET/Code" default="build-code" xmlns="http://nant.sf.net/schemas/nant.xsd">
 
-    <property name="common.namespace" value="Epic" />
-    <property name="projects" value="Prelude,Core,Query,Query.Linq,Query.Object"/>
+    <property name="common.namespace" value="Challenge00" />
+    <property name="projects" value="DDDSample,DDDSample.Default,DDDSample.ACME"/>
 
 	<property name="nant.settings.currentframework" value="net-3.5" if="${platform::is-windows()}" />
     <property name="nant.settings.currentframework" value="mono-3.5" if="${not platform::is-windows()}" />
     
-	<property name="repository.rootdirectory" value="${path::get-full-path('../')}" overwrite="false" />
+	<property name="repository.rootdirectory" value="${path::get-full-path('../../')}" overwrite="false" />
 	<property name="repository.builddirectory" value="${path::combine(repository.rootdirectory, 'build')}" overwrite="false"/>
 	<property name="repository.testdirectory" value="${path::combine(repository.rootdirectory, 'tests')}" overwrite="false"/>
     
@@ -19,7 +19,7 @@
 	<property name="msbuild.path" value="${path::combine(framework::get-framework-directory(framework::get-target-framework()), msbuild.name)}" />
     
     <target name="build-code">
-        <echo message="Building Epic.NET code in ${path::get-full-path('.')}." />
+        <echo message="Building Challenge00 (DDD Sample) code in ${path::get-full-path('.')}." />
         
         <foreach item="String" in="${projects}" delim="," property="project">
             <property name="project.name" value="${common.namespace + '.' + project}"/>
@@ -32,7 +32,7 @@
     </target>
     
     <target name="build-tests" depends="build-code">
-        <echo message="Building tests for Epic.NET in ${path::get-full-path('.')}." />
+        <echo message="Building tests for Challenge00 (DDD Sample) in ${path::get-full-path('.')}." />
         
         <foreach item="String" in="${projects}" delim="," property="project">
             <property name="project.name" value="${common.namespace + '.' + project + '.UnitTests'}"/>

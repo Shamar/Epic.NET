@@ -1,5 +1,5 @@
 //  
-//  VersionInfo.cs
+//  SearchableQA.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -21,11 +21,22 @@
 //  You should have received a copy of the GNU Affero General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
+using NUnit.Framework;
+using System;
 
-// This file contains the informations about the Epic.NET version.
+namespace Epic.Query.Object.UnitTests
+{
+    [TestFixture]
+    public class SearchableQA
+    {
+        [Test]
+        public void Count_withoutAQuery_throwsArgumentNullException()
+        {
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.Count<string, int>(null);
+            });
+        }
+    }
+}
 
-using System.Reflection;
-
-[assembly: AssemblyVersion("0.3.0.0")]
-[assembly: AssemblyFileVersion("0.3.0.0")]
-[assembly: AssemblyInformationalVersion("0.3")]

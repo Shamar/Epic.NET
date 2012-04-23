@@ -34,8 +34,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="..\..\..\VersionInfo.cs">
-      <Link>VersionInfo.cs</Link>
+    <Compile Include="..\..\..\Code\EpicInfo.cs">
+      <Link>EpicInfo.cs</Link>
     </Compile>
     <Compile Include="IEmployee.cs" />
   </ItemGroup>
