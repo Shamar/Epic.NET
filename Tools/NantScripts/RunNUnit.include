@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="RunNUnit" default="run-tests" xmlns="http://nant.sf.net/schemas/nant.xsd">
-    <target name="run-tests">
+    <target name="run-nunit">
         <property name="results-file" value="${path::combine(repository.testdirectory, component.name + '.QA')}"/>
         <property name="working.dir" value="${working.dir}" overwrite="false"/>
 	    <exec workingdir="${working.dir}"

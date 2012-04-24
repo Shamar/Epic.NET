@@ -39,13 +39,12 @@
         </foreach>
     </target>
     
+    <include buildfile="${path::combine(nant.include.dir, 'RunNUnit.include')}" />
+    
 	<target name="run-tests" depends="build-tests">
-	    <nant buildfile="${path::combine(nant.include.dir, 'RunNUnit.include')}" >
-	        <properties>
-                <property name="working.dir" value="${repository.testdirectory}" />
-	            <property name="component.name" value="${path::get-file-name(path::get-full-path('.'))}"/>
-	        </properties>
-	    </nant>
+        <property name="working.dir" value="${repository.testdirectory}" />
+        <property name="component.name" value="${path::get-file-name(path::get-full-path('.'))}"/>
+        <call target="run-nunit"/>
     </target>
     
 </project>
