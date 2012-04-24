@@ -1,24 +1,14 @@
 <?xml version="1.0" ?> 
 <project name="Epic.NET" default="continuous" xmlns="http://nant.sf.net/schemas/nant.xsd">
     
-    <!-- build-wide properties -->
-	<property name="nant.settings.currentframework" value="net-3.5" if="${platform::is-windows()}" />
-    <property name="nant.settings.currentframework" value="mono-3.5" if="${not platform::is-windows()}" />
-	<property name="repository.rootdirectory" value="${path::get-full-path('.')}" />
-	<property name="repository.builddirectory" value="${path::combine(repository.rootdirectory, 'build')}"/>
-	<property name="repository.testdirectory" value="${path::combine(repository.rootdirectory, 'tests')}"/>
-	<property name="epic.infofile" value="${path::combine(path::combine(repository.rootdirectory, 'Code'), 'EpicInfo.cs')}"/>
-	
 	<property name="build.target" value="Build" overwrite="false" />
-	<property name="build.configuration" value="Debug" overwrite="false" />
-	<property name="build.verbosity" value="quiet" />
+   	<property name="build.configuration" value="Debug" overwrite="false" />
 
-	<property name="msbuild.name" value="msbuild.exe" if="${platform::is-windows()}" />
-	<property name="msbuild.name" value="xbuild.exe" if="${not platform::is-windows()}" />
-	<property name="msbuild.path" value="${path::combine(framework::get-framework-directory(framework::get-target-framework()), msbuild.name)}" />
+	<property name="repository.rootdirectory" value="${path::get-full-path('.')}" />
+	<property name="nant.include.dir" value="${path::combine(path::combine(repository.rootdirectory, 'Tools'), 'NantScripts')}" />
+
+	<include buildfile="${path::combine(nant.include.dir, 'Properties.include')}" if="${not property::exists('epic.infofile')}"/>
 	
-	<property name="library.dir" value="${path::combine(repository.rootdirectory, '3rdParty')}" />
-
     <target name="continuous">
         <tstamp />
         <call target="update-version" />
@@ -27,8 +17,8 @@
                 <call target="build-code" />
                 <call target="build-samples" />
                 
-                <call target="test-code" />
-                <call target="test-samples" />
+                <call target="test-code" cascade="false"/>
+                <call target="test-samples" cascade="false" />
             </try>
             <finally>
                 <call target="restore-version" />
@@ -72,12 +62,19 @@
     </target>
     
     <target name="build-samples">
+        <foreach item="Folder" in="${samples.dir}" property="sample">
+            <nant buildfile="${path::combine(sample, 'nant.build')}"  target="build-code"/>
+        </foreach>
     </target>
 
     <target name="test-code">
+        <nant buildfile="Code/nant.build" target="run-tests" />
     </target>
 
     <target name="test-samples">
+        <foreach item="Folder" in="${samples.dir}" property="sample">
+            <nant buildfile="${path::combine(sample, 'nant.build')}"  target="run-tests"/>
+        </foreach>
     </target>
     
     <target name="documentation" depends="api,manual">

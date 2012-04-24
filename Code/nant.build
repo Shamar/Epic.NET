@@ -3,23 +3,16 @@
     <property name="common.namespace" value="Epic" />
     <property name="projects" value="Prelude,Core,Query,Query.Linq,Query.Object"/>
 
-	<property name="nant.settings.currentframework" value="net-3.5" if="${platform::is-windows()}" />
-    <property name="nant.settings.currentframework" value="mono-3.5" if="${not platform::is-windows()}" />
+	<property name="build.target" value="Build" overwrite="false" />
+   	<property name="build.configuration" value="Debug" overwrite="false" />
+
+	<property name="repository.rootdirectory" value="${path::get-full-path('..')}" />
+	<property name="nant.include.dir" value="${path::combine(path::combine(repository.rootdirectory, 'Tools'), 'NantScripts')}" />
+
+	<include buildfile="${path::combine(nant.include.dir, 'Properties.include')}" if="${not property::exists('epic.infofile')}"/>
     
-	<property name="repository.rootdirectory" value="${path::get-full-path('../')}" overwrite="false" />
-	<property name="repository.builddirectory" value="${path::combine(repository.rootdirectory, 'build')}" overwrite="false"/>
-	<property name="repository.testdirectory" value="${path::combine(repository.rootdirectory, 'tests')}" overwrite="false"/>
-    
-    <property name="build.target" value="Build" overwrite="false" />
-	<property name="build.configuration" value="Debug" overwrite="false" />
-	<property name="build.verbosity" value="quiet" overwrite="false" />
-	
-	<property name="msbuild.name" value="msbuild.exe" if="${platform::is-windows()}" />
-	<property name="msbuild.name" value="xbuild.exe" if="${not platform::is-windows()}" />
-	<property name="msbuild.path" value="${path::combine(framework::get-framework-directory(framework::get-target-framework()), msbuild.name)}" />
-    
-    <target name="build-code">
-        <echo message="Building Epic.NET code in ${path::get-full-path('.')}." />
+    <target name="build-code" description="Build Epic.NET code.">
+        <echo message="Building Epic.NET code." />
         
         <foreach item="String" in="${projects}" delim="," property="project">
             <property name="project.name" value="${common.namespace + '.' + project}"/>
@@ -31,13 +24,15 @@
         </foreach>
     </target>
     
-    <target name="build-tests" depends="build-code">
+    <target name="build-tests">
         <echo message="Building tests for Epic.NET in ${path::get-full-path('.')}." />
         
         <foreach item="String" in="${projects}" delim="," property="project">
             <property name="project.name" value="${common.namespace + '.' + project + '.UnitTests'}"/>
-            <echo message="Building ${project.name}." />
             <property name="project.path" value="${path::combine('UnitTests', path::combine(project.name, project.name + '.csproj'))}"/>
+            <property name="tests.to.run" value="${project.name + '.dll'}" if="${not property::exists('tests.to.run')}"/>
+            <property name="tests.to.run" value="${tests.to.run +' '+project.name + '.dll'}" if="${property::exists('tests.to.run')}"/>
+            <echo message="Building ${project.name}." />
             <exec program="${msbuild.path}"        
                   commandline="${project.path} /t:${build.target} /p:Configuration=${build.configuration} /v:${build.verbosity}" 
                   workingdir="${path::get-full-path('.')}" />
@@ -45,14 +40,12 @@
     </target>
     
 	<target name="run-tests" depends="build-tests">
-        <nunit2>
-            <formatter type="Xml" usefile="true" extension=".xml" outputdir="${repository.testdirectory}" />
-            <test>
-                <assemblies>
-                    <include name="${path::combine(repository.testdirectory, '*.UnitTests.dll')}" />
-                </assemblies>
-            </test>
-        </nunit2>
-	</target>
+        <nant buildfile="${path::combine(nant.include.dir, 'RunNUnit.include')}" >
+            <properties>
+                <property name="working.dir" value="${repository.testdirectory}" />
+                <property name="component.name" value="Epic"/>
+            </properties>
+        </nant>
+    </target>
     
 </project>

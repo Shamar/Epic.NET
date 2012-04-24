@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="RunNUnit" default="run-tests" xmlns="http://nant.sf.net/schemas/nant.xsd">
+    <target name="run-tests">
+        <property name="results-file" value="${path::combine(repository.testdirectory, component.name + '.QA')}"/>
+        <property name="working.dir" value="${working.dir}" overwrite="false"/>
+	    <exec workingdir="${working.dir}"
+	          program="${nunit.path}">
+	        <arg line="${tests.to.run}" /> 
+	        <arg value="-nologo" />
+	        <arg value="-xml=${results-file}.xml" />
+        </exec>
+    </target>
+</project>
