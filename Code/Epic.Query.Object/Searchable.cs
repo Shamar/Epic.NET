@@ -22,17 +22,20 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Collections.Generic;
+using Epic.Query.Object.Expressions;
+
+
 namespace Epic.Query.Object
 {
     public static class Searchable
     {
-        public static int Count<TEntity, TIdentity>(this IQuery<TEntity, TIdentity> query)
+        public static uint Count<TEntity>(this ISearch<TEntity> search)
             where TEntity : class
-            where TIdentity : IEquatable<TIdentity>
         {
-            if(null == query)
-                throw new ArgumentNullException("query");
-            return query.Provider.Count(query.Specification);
+            if(null == search)
+                throw new ArgumentNullException("search");
+            return search.Provider.Evaluate(new Count<TEntity>(search.Query));
         }
     }
 }

@@ -24,17 +24,17 @@
 using System;
 using System.Collections.Generic;
 using Epic.Specifications;
+using Epic.Query.Object.Expressions;
 
 
 namespace Epic.Query.Object
 {
-    public interface IQuery<TEntity, TIdentity>
-        where TEntity : class
-        where TIdentity : IEquatable<TIdentity>
+    public interface ISearch<TItem> : IEnumerable<TItem>
+        where TItem : class
     {
-        ISpecification<TEntity> Specification { get; }
-
-        IObjectsProvider Provider { get; }
+        Expression<IEnumerable<TItem>> Query { get; }
+        
+        ISearchProvider Provider { get; }
     }
 }
 

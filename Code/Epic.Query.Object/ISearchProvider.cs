@@ -23,13 +23,18 @@
 //  
 using System;
 using Epic.Specifications;
+using System.Collections.Generic;
+using Epic.Query.Object.Expressions;
 
 
 namespace Epic.Query.Object
 {
-    public interface IObjectsProvider
+    public interface ISearchProvider
     {
-        int Count<TEntity>(ISpecification<TEntity> satisfyingSpecification) where TEntity : class;
+        ISearch<TItem> CreateSearch<TItem>(Expression<IEnumerable<TItem>> query)
+            where TItem : class;
+
+        TResult Evaluate<TResult>(Expression<TResult> query);
     }
 }
 

@@ -35,13 +35,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="IQuery.cs" />
-    <Compile Include="IObjectsProvider.cs" />
     <Compile Include="ISearchableRepository.cs" />
     <Compile Include="Searchable.cs" />
     <Compile Include="..\EpicInfo.cs">
       <Link>EpicInfo.cs</Link>
     </Compile>
+    <Compile Include="ISearch.cs" />
+    <Compile Include="ISearchProvider.cs" />
+    <Compile Include="Expressions\Expression.cs" />
+    <Compile Include="Expressions\Selection.cs" />
+    <Compile Include="Expressions\Count.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -53,5 +56,8 @@
       <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
       <Name>Epic.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\" />
   </ItemGroup>
 </Project>
