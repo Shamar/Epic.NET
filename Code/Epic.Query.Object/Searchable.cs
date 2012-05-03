@@ -30,8 +30,9 @@ namespace Epic.Query.Object
 {
     public static class Searchable
     {
-        public static uint Count<TEntity>(this ISearch<TEntity> search)
+        public static uint Count<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
             where TEntity : class
+            where TIdentity : IEquatable<TIdentity>
         {
             if(null == search)
                 throw new ArgumentNullException("search");

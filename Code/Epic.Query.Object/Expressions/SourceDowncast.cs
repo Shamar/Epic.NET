@@ -1,5 +1,5 @@
 //  
-//  Selection.cs
+//  SourceCast.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,36 +22,28 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Epic.Specifications;
-using System.Collections.Generic;
-
 
 namespace Epic.Query.Object.Expressions
 {
     [Serializable]
-    public sealed class Selection<TEntity> : Expression<IEnumerable<TEntity>>
-        where TEntity : class
+    public sealed class SourceDowncast<TAbstraction, TEntity> : Expression<IEnumerable<TEntity>>
+        where TAbstraction : class
+        where TEntity : class, TAbstraction
     {
-        private readonly Expression<IEnumerable<TEntity>> _source;
-        private readonly ISpecification<TEntity> _specification; 
+        private readonly Expression<IEnumerable<TAbstraction>> _source;
 
-        public Selection (Expression<IEnumerable<TEntity>> source, ISpecification<TEntity> specification)
+        public SourceDowncast (Expression<IEnumerable<TAbstraction>> source)
         {
             if (null == source)
                 throw new ArgumentNullException ("source");
-            if (null == specification)
-                throw new ArgumentNullException ("specification");
             _source = source;
-            _specification = specification;
-        }
-        
-        public Expression<IEnumerable<TEntity>> Source {
-            get { return _source; }
         }
 
-        public ISpecification<TEntity> Specification {
-            get { return _specification;}
+        public Expression<IEnumerable<TAbstraction>> Source {
+            get { return _source; }
         }
 
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
@@ -61,15 +53,20 @@ namespace Epic.Query.Object.Expressions
 
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
-            info.AddValue ("R", _source, typeof(Expression<IEnumerable<TEntity>>));
-            info.AddValue ("S", _specification, typeof(ISpecification<TEntity>));
+            info.AddValue (
+                "R",
+                _source,
+                typeof(Expression<IEnumerable<TAbstraction>>)
+            );
         }
 
-        private Selection (SerializationInfo info, StreamingContext context)
+        private SourceDowncast (SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            _source = (Expression<IEnumerable<TEntity>>)info.GetValue ("R", typeof(Expression<IEnumerable<TEntity>>));
-            _specification = (ISpecification<TEntity>)info.GetValue ("S", typeof(ISpecification<TEntity>));
+            _source = (Expression<IEnumerable<TAbstraction>>)info.GetValue (
+                "R",
+                typeof(Expression<IEnumerable<TAbstraction>>)
+            );
         }
     }
 }

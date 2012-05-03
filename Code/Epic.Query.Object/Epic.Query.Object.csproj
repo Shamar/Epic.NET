@@ -45,6 +45,10 @@
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\Selection.cs" />
     <Compile Include="Expressions\Count.cs" />
+    <Compile Include="Expressions\Source.cs" />
+    <Compile Include="Expressions\SourceDowncast.cs" />
+    <Compile Include="OrderCriterion.cs" />
+    <Compile Include="OrderCriteria.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

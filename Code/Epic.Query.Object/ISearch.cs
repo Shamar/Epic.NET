@@ -29,10 +29,11 @@ using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object
 {
-    public interface ISearch<TItem> : IEnumerable<TItem>
-        where TItem : class
+    public interface ISearch<TEntity, TIdentity> : IEnumerable<TEntity>
+        where TEntity : class
+        where TIdentity : IEquatable<TIdentity>
     {
-        Expression<IEnumerable<TItem>> Query { get; }
+        Expression<IEnumerable<TEntity>> Query { get; }
         
         ISearchProvider Provider { get; }
     }

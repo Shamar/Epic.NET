@@ -31,7 +31,8 @@ namespace Epic.Query.Object
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
-        ISearch<TEntity> Search(ISpecification<TEntity> satifyingSpecification);
+        ISearch<TSpecializedEntity, TIdentity> Search<TSpecializedEntity>(ISpecification<TSpecializedEntity> satifyingSpecification)
+            where TSpecializedEntity : class, TEntity;
     }
 }
 

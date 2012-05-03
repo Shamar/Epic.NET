@@ -31,8 +31,9 @@ namespace Epic.Query.Object
 {
     public interface ISearchProvider
     {
-        ISearch<TItem> CreateSearch<TItem>(Expression<IEnumerable<TItem>> query)
-            where TItem : class;
+        ISearch<TEntity, TIdentity> CreateSearch<TEntity, TIdentity>(Expression<IEnumerable<TEntity>> query)
+            where TEntity : class
+            where TIdentity : IEquatable<TIdentity>;
 
         TResult Evaluate<TResult>(Expression<TResult> query);
     }
