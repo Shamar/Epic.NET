@@ -54,6 +54,7 @@
     <Compile Include="ILimitedSearch.cs" />
     <Compile Include="Expressions\Order.cs" />
     <Compile Include="ReverseOrder.cs" />
+    <Compile Include="Expressions\Limits.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

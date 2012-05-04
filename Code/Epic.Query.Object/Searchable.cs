@@ -59,7 +59,7 @@ namespace Epic.Query.Object
             return search.Deferrer.Defer<IOrderedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Order<TEntity>(search.Expression, criterion));
         }
 
-    public static IOrderedSearch<TEntity, TIdentity> ThanBy<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, OrderCriterion<TEntity> criterion)
+        public static IOrderedSearch<TEntity, TIdentity> ThenBy<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, OrderCriterion<TEntity> criterion)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
         {
@@ -69,6 +69,24 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("criterion");
             return search.Deferrer.Defer<IOrderedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Order<TEntity>(search.Source, search.OrderCriterion.Chain(criterion)));
         }
+
+        public static ILimitedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
+            where TEntity : class
+            where TIdentity : IEquatable<TIdentity>
+        {
+            if(null == search)
+                throw new ArgumentNullException("search");
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Limits<TEntity>((Order<TEntity>)search.Expression, count));
+        }
+
+        public static ILimitedSearch<TEntity, TIdentity> After<TEntity, TIdentity>(this ILimitedSearch<TEntity, TIdentity> search, uint count)
+            where TEntity : class
+            where TIdentity : IEquatable<TIdentity>
+        {
+            if(null == search)
+                throw new ArgumentNullException("search");
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Limits<TEntity>((Order<TEntity>)search.Expression, search.Limit, count));
+        }    
     }
 }
 
