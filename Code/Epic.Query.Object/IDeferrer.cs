@@ -1,5 +1,5 @@
 //  
-//  IQuery.cs
+//  IObjectProvider.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,17 +22,19 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Collections.Generic;
 using Epic.Specifications;
+using System.Collections.Generic;
 using Epic.Query.Object.Expressions;
 
 
 namespace Epic.Query.Object
 {
-    public interface ISearch<TEntity, TIdentity> : IDeferred<IEnumerable<TEntity>>
-        where TEntity : class
-        where TIdentity : IEquatable<TIdentity>
+    public interface IDeferrer
     {
+        TDeferred Defer<TDeferred, TResult>(Expression<TResult> expression)
+            where TDeferred : IDeferred<TResult>;
+
+        TResult Evaluate<TResult>(Expression<TResult> query);
     }
 }
 

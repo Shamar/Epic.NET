@@ -30,7 +30,7 @@ namespace Epic.Query.Object.UnitTests
     public class SearchableQA
     {
         [Test]
-        public void Count_withoutAQuery_throwsArgumentNullException()
+        public void Count_withoutASearch_throwsArgumentNullException()
         {
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 

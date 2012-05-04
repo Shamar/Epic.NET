@@ -41,7 +41,6 @@
       <Link>EpicInfo.cs</Link>
     </Compile>
     <Compile Include="ISearch.cs" />
-    <Compile Include="ISearchProvider.cs" />
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\Selection.cs" />
     <Compile Include="Expressions\Count.cs" />
@@ -49,6 +48,12 @@
     <Compile Include="Expressions\SourceDowncast.cs" />
     <Compile Include="OrderCriterion.cs" />
     <Compile Include="OrderCriteria.cs" />
+    <Compile Include="IDeferred.cs" />
+    <Compile Include="IDeferrer.cs" />
+    <Compile Include="IOrderedSearch.cs" />
+    <Compile Include="ILimitedSearch.cs" />
+    <Compile Include="Expressions\Order.cs" />
+    <Compile Include="ReverseOrder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

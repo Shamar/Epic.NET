@@ -1,5 +1,5 @@
 //  
-//  IObjectProvider.cs
+//  IDeferred.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,20 +22,15 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Epic.Specifications;
-using System.Collections.Generic;
 using Epic.Query.Object.Expressions;
-
 
 namespace Epic.Query.Object
 {
-    public interface ISearchProvider
+    public interface IDeferred<TResult>
     {
-        ISearch<TEntity, TIdentity> CreateSearch<TEntity, TIdentity>(Expression<IEnumerable<TEntity>> query)
-            where TEntity : class
-            where TIdentity : IEquatable<TIdentity>;
-
-        TResult Evaluate<TResult>(Expression<TResult> query);
+        Expression<TResult> Expression { get; }
+        
+        IDeferrer Deferrer { get; }
     }
 }
 

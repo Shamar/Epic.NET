@@ -1,5 +1,5 @@
 //  
-//  IQuery.cs
+//  ILimitedSearch.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,17 +22,16 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Collections.Generic;
-using Epic.Specifications;
-using Epic.Query.Object.Expressions;
-
 
 namespace Epic.Query.Object
 {
-    public interface ISearch<TEntity, TIdentity> : IDeferred<IEnumerable<TEntity>>
+    public interface ILimitedSearch<TEntity, TIdentity> : IOrderedSearch<TEntity, TIdentity>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
+        uint Offset { get; }
+
+        uint Limit { get; } 
     }
 }
 

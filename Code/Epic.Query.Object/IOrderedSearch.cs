@@ -1,5 +1,5 @@
 //  
-//  IQuery.cs
+//  IOrderedSearch.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -23,16 +23,17 @@
 //  
 using System;
 using System.Collections.Generic;
-using Epic.Specifications;
 using Epic.Query.Object.Expressions;
-
 
 namespace Epic.Query.Object
 {
-    public interface ISearch<TEntity, TIdentity> : IDeferred<IEnumerable<TEntity>>
+    public interface IOrderedSearch<TEntity, TIdentity> : ISearch<TEntity, TIdentity>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
+        Expression<IEnumerable<TEntity>> Source { get; }
+
+        OrderCriterion<TEntity> OrderCriterion { get; }
     }
 }
 

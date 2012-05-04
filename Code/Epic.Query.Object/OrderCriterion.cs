@@ -41,6 +41,11 @@ namespace Epic.Query.Object
             return new OrderCriteria<TEntity>(this, other);
         }
 
+        public virtual OrderCriterion<TEntity> Reverse()
+        {
+            return new ReverseOrder<TEntity>(this);
+        }
+
         #region IComparer implementation
 
         public abstract int Compare (TEntity x, TEntity y);

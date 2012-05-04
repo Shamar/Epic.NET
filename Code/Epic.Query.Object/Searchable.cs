@@ -30,13 +30,44 @@ namespace Epic.Query.Object
 {
     public static class Searchable
     {
+        public static IEnumerable<TEntity> AsEnumerable<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
+            where TEntity : class
+            where TIdentity : IEquatable<TIdentity>
+        {
+            if(null == search)
+                throw new ArgumentNullException("search");
+            return search.Deferrer.Evaluate(search.Expression);
+        }
+
         public static uint Count<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
         {
             if(null == search)
                 throw new ArgumentNullException("search");
-            return search.Provider.Evaluate(new Count<TEntity>(search.Query));
+            return search.Deferrer.Evaluate(new Count<TEntity>(search.Expression));
+        }
+
+        public static IOrderedSearch<TEntity, TIdentity> OrderBy<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search, OrderCriterion<TEntity> criterion)
+            where TEntity : class
+            where TIdentity : IEquatable<TIdentity>
+        {
+            if(null == search)
+                throw new ArgumentNullException("search");
+            if(null == criterion)
+                throw new ArgumentNullException("criterion");
+            return search.Deferrer.Defer<IOrderedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Order<TEntity>(search.Expression, criterion));
+        }
+
+    public static IOrderedSearch<TEntity, TIdentity> ThanBy<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, OrderCriterion<TEntity> criterion)
+            where TEntity : class
+            where TIdentity : IEquatable<TIdentity>
+        {
+            if(null == search)
+                throw new ArgumentNullException("search");
+            if(null == criterion)
+                throw new ArgumentNullException("criterion");
+            return search.Deferrer.Defer<IOrderedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Order<TEntity>(search.Source, search.OrderCriterion.Chain(criterion)));
         }
     }
 }
