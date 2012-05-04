@@ -1,9 +1,10 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Default" />
-  <Config name="Default" binpathtype="Auto">
-    <assembly path="../build/tests/Debug/Epic.Prelude.UnitTests.dll" />
-    <assembly path="../build/tests/Debug/Epic.Core.UnitTests.dll" />
-    <assembly path="../build/tests/Debug/Epic.Query.UnitTests.dll" />
-    <assembly path="../build/tests/Debug/Epic.Query.Linq.UnitTests.dll" />
+  <Config name="Default" appbase="..\build\tests\Debug" binpathtype="Auto">
+    <assembly path="Epic.Prelude.UnitTests.dll" />
+    <assembly path="Epic.Core.UnitTests.dll" />
+    <assembly path="Epic.Query.UnitTests.dll" />
+    <assembly path="Epic.Query.Linq.UnitTests.dll" />
+    <assembly path="Epic.Query.Object.UnitTests.dll" />
   </Config>
 </NUnitProject>
