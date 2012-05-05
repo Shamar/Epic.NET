@@ -43,6 +43,13 @@ namespace Epic.Query.Object.Expressions
             _source = source;
             _criterion = criterion;
         }
+
+        public Order<TEntity> ThanBy(OrderCriterion<TEntity> criterion)
+        {
+            if(null == criterion)
+                throw new ArgumentNullException("criterion");
+            return new Order<TEntity>(_source, _criterion.Chain(criterion));
+        }
         
         public Expression<IEnumerable<TEntity>> Source {
             get { return _source; }

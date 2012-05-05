@@ -31,9 +31,7 @@ namespace Epic.Query.Object
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
-        Expression<IEnumerable<TEntity>> Source { get; }
-
-        OrderCriterion<TEntity> OrderCriterion { get; }
+        new Order<TEntity> Expression { get; }
     }
 }
 

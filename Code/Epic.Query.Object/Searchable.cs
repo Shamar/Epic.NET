@@ -67,7 +67,7 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("search");
             if(null == criterion)
                 throw new ArgumentNullException("criterion");
-            return search.Deferrer.Defer<IOrderedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Order<TEntity>(search.Source, search.OrderCriterion.Chain(criterion)));
+            return search.Deferrer.Defer<IOrderedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(search.Expression.ThanBy(criterion));
         }
 
         public static ILimitedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
@@ -76,7 +76,8 @@ namespace Epic.Query.Object
         {
             if(null == search)
                 throw new ArgumentNullException("search");
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Limits<TEntity>((Order<TEntity>)search.Expression, count));
+            
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Limits<TEntity>(search.Expression, count));
         }
 
         public static ILimitedSearch<TEntity, TIdentity> After<TEntity, TIdentity>(this ILimitedSearch<TEntity, TIdentity> search, uint count)
@@ -85,7 +86,9 @@ namespace Epic.Query.Object
         {
             if(null == search)
                 throw new ArgumentNullException("search");
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Limits<TEntity>((Order<TEntity>)search.Expression, search.Limit, count));
+            if(count == search.Expression.Offset)
+                return search;
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Limits<TEntity>(search.Expression.Source, search.Expression.Limit, count));
         }    
     }
 }

@@ -22,6 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object
 {
@@ -29,9 +30,7 @@ namespace Epic.Query.Object
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
-        uint Offset { get; }
-
-        uint Limit { get; } 
+        new Limits<TEntity> Expression { get; }
     }
 }
 
