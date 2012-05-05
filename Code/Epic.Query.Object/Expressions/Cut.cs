@@ -1,5 +1,5 @@
 //  
-//  Limit.cs
+//  Cut.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -28,39 +28,46 @@ using System.Collections.Generic;
 namespace Epic.Query.Object.Expressions
 {
     [Serializable]
-    public sealed class Limits<TEntity> : Expression<IEnumerable<TEntity>>
+    public sealed class Cut<TEntity> : Expression<IEnumerable<TEntity>>
         where TEntity : class
     {
         private readonly Order<TEntity> _source;
-        private readonly uint _limit;
-        private readonly uint _offset;
+        private readonly uint _toTake;
+        private readonly uint _toSkip;
 
-        public Limits (Order<TEntity> source, uint limit)
-            : this(source, limit, 0)
+        public Cut (Order<TEntity> source, uint toTake)
+            : this(source, toTake, 0)
         {
         }
 
-        public Limits (Order<TEntity> source, uint limit, uint offset)
+        public Cut (uint toSkip, Order<TEntity> source)
+            : this(source, uint.MaxValue, toSkip)
+        {
+        }
+
+        public Cut (Order<TEntity> source, uint toTake, uint toSkip)
         {
             if (null == source)
                 throw new ArgumentNullException ("source");
-            if (0 == limit)
-                throw new ArgumentOutOfRangeException ("limit", "The limit must be greater than zero.");
+            if (0 == toTake)
+                throw new ArgumentOutOfRangeException ("toTake", "The number of elements to take must be greater than zero.");
+            if (uint.MaxValue == toSkip)
+                throw new ArgumentOutOfRangeException ("toSkip", string.Format ("The number of elements to skip must be lower than zero.", uint.MaxValue));
             _source = source;
-            _limit = limit;
-            _offset = offset;
+            _toTake = toTake;
+            _toSkip = toSkip;
         }
 
         public Order<TEntity> Source {
             get { return _source; }
         }
 
-        public uint Limit {
-            get { return _limit; }
+        public uint TakingAtMost {
+            get { return _toTake; }
         }
 
-        public uint Offset {
-            get { return _offset; }
+        public uint Skipping {
+            get { return _toSkip; }
         }
 
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
@@ -71,16 +78,16 @@ namespace Epic.Query.Object.Expressions
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("S", _source, typeof(Order<TEntity>));
-            info.AddValue ("L", _limit);
-            info.AddValue ("O", _offset);
+            info.AddValue ("L", _toTake);
+            info.AddValue ("O", _toSkip);
         }
 
-        private Limits (SerializationInfo info, StreamingContext context)
+        private Cut (SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             _source = (Order<TEntity>)info.GetValue ("A", typeof(Order<TEntity>));
-            _limit = info.GetUInt32("L");
-            _offset = info.GetUInt32("O");
+            _toTake = info.GetUInt32("L");
+            _toSkip = info.GetUInt32("O");
         }
     }
 

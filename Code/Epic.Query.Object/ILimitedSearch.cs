@@ -30,7 +30,7 @@ namespace Epic.Query.Object
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
-        new Limits<TEntity> Expression { get; }
+        new Cut<TEntity> Expression { get; }
     }
 }
 
