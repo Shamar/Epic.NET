@@ -23,6 +23,10 @@
 //  
 using NUnit.Framework;
 using System;
+using Rhino.Mocks;
+using Challenge00.DDDSample.Cargo;
+using Epic.Query.Object.Expressions;
+using System.Collections.Generic;
 
 namespace Epic.Query.Object.UnitTests
 {
@@ -36,6 +40,31 @@ namespace Epic.Query.Object.UnitTests
             Assert.Throws<ArgumentNullException>(delegate { 
                 Searchable.Count<string, int>(null);
             });
+        }
+
+        [Test]
+        public void Count_withASearch_callDeferrerExecuteWithACountExpression()
+        {
+            // arrange:
+            uint countToReturn = 10;
+            object[] evaluationArguments = null;
+            Expression<IEnumerable<ICargo>> expression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
+            deferrer.Expect(d => d.Evaluate(null as Expression<uint>)).IgnoreArguments()
+                .WhenCalled(m => evaluationArguments = m.Arguments)
+                .Return(countToReturn).Repeat.Once();
+            ISearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISearch<ICargo, TrackingId>>();
+            search.Expect(s => s.Expression).Return(expression).Repeat.Once();
+            search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
+
+            // act:
+            uint result = search.Count();
+
+            // assert:
+            Assert.AreEqual(countToReturn, result);
+            Assert.AreEqual(1, evaluationArguments.Length);
+            Assert.IsInstanceOf<Count<ICargo>>(evaluationArguments[0]);
+            Assert.AreSame(expression, ((Count<ICargo>)evaluationArguments[0]).Source);
         }
     }
 }

@@ -39,6 +39,15 @@ namespace Epic.Query.Object
             return search.Deferrer.Evaluate(search.Expression);
         }
 
+        public static IEnumerable<TIdentity> Identify<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
+            where TEntity : class
+            where TIdentity : IEquatable<TIdentity>
+        {
+            if(null == search)
+                throw new ArgumentNullException("search");
+            return search.Deferrer.Evaluate(new Identification<TEntity, TIdentity>(search.Expression));
+        }
+
         public static uint Count<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
