@@ -23,6 +23,7 @@
 //  
 using System;
 using Epic.Query.Object.Expressions;
+using System.Collections.Generic;
 
 namespace Epic.Query.Object
 {

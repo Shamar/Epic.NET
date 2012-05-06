@@ -75,7 +75,15 @@ namespace Epic.Query.Object
         #region implemented abstract members of Epic.Query.Object.OrderCriterion
         protected override bool SafeEquals (OrderCriterion<TEntity> other)
         {
-            throw new System.NotImplementedException ();
+            OrderCriteria<TEntity> others = other as OrderCriteria<TEntity>;
+            if(null == others)
+                return false;
+            if(_criteria.Length != others._criteria.Length)
+                return false;
+            for(int i = 0; i < _criteria.Length; ++i)
+                if(!_criteria[i].Equals(others._criteria[i]))
+                    return false;
+            return true;
         }
         #endregion
 

@@ -68,15 +68,44 @@ namespace Epic.Query.Object
     /// </remarks>
     public static class Searchable
     {
-        public static IEnumerable<TEntity> AsEnumerable<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
-            where TEntity : class
-            where TIdentity : IEquatable<TIdentity>
+        /// <summary>
+        /// Evaluate the deferred search, returning the results.
+        /// </summary>
+        /// <returns>
+        /// An enumerable of the <typeparamref name="TItem"/> resulting from the search.
+        /// </returns>
+        /// <param name='search'>
+        /// A search for <typeparamref name="TItem"/>.
+        /// </param>
+        /// <typeparam name='TItem'>
+        /// The type of the results.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> 
+        /// is <c>null</c>.</exception>
+        public static IEnumerable<TItem> AsEnumerable<TItem>(this IDeferred<IEnumerable<TItem>> search)
         {
             if(null == search)
                 throw new ArgumentNullException("search");
             return search.Deferrer.Evaluate(search.Expression);
         }
 
+        /// <summary>
+        /// Evaluate the deferred search, returning the identities of the results.
+        /// </summary>
+        /// <returns>
+        /// An enumerable of the <typeparamref name="TIdentity"/> resulting from the search.
+        /// </returns>
+        /// <param name='search'>
+        /// A search for <typeparamref name="TEntity"/>.
+        /// </param>
+        /// <typeparam name='TEntity'>
+        /// Type of the searched entities.
+        /// </typeparam>
+        /// <typeparam name='TIdentity'>
+        /// Type of the identity of <typeparamref name="TEntity"/>s
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> 
+        /// is <c>null</c>.</exception>
         public static IEnumerable<TIdentity> Identify<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -86,13 +115,25 @@ namespace Epic.Query.Object
             return search.Deferrer.Evaluate(new Identification<TEntity, TIdentity>(search.Expression));
         }
 
-        public static uint Count<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
-            where TEntity : class
-            where TIdentity : IEquatable<TIdentity>
+        /// <summary>
+        /// Count the results of the specified search.
+        /// </summary>
+        /// <param name='search'>
+        /// A search for <typeparamref name="TItem"/>.
+        /// </param>
+        /// <typeparam name='TItem'>
+        /// The type of the results.
+        /// </typeparam>
+        /// <returns>
+        /// The number of results that the specified search will return.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> 
+        /// is <c>null</c>.</exception>
+        public static uint Count<TItem>(this IDeferred<IEnumerable<TItem>> search)
         {
             if(null == search)
                 throw new ArgumentNullException("search");
-            return search.Deferrer.Evaluate(new Count<TEntity>(search.Expression));
+            return search.Deferrer.Evaluate(new Count<TItem>(search.Expression));
         }
 
         /// <summary>

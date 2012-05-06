@@ -38,7 +38,7 @@ namespace Epic.Query.Object.UnitTests
         {
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 
-                Searchable.Count<string, int>(null);
+                Searchable.Count<ICargo>(null);
             });
         }
 
