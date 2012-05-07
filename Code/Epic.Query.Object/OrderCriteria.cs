@@ -90,7 +90,14 @@ namespace Epic.Query.Object
         #region implemented abstract members of Epic.Query.Object.OrderCriterion
         public override int Compare (TEntity x, TEntity y)
         {
-            throw new System.NotImplementedException ();
+            int comparison = 0;
+            for(int i = 0; i < _criteria.Length; ++i)
+            {
+                comparison = _criteria[i].Compare(x, y);
+                if(comparison != 0)
+                    break;
+            }
+            return comparison;
         }
         #endregion
 
