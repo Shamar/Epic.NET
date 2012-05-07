@@ -54,5 +54,9 @@
       <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
       <Name>Epic.Prelude</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Epic.Prelude.UnitTests\Epic.Prelude.UnitTests.csproj">
+      <Project>{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}</Project>
+      <Name>Epic.Prelude.UnitTests</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

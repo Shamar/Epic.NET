@@ -31,7 +31,7 @@ using System.Collections.Generic;
 namespace Epic.Query.Object.UnitTests
 {
     [TestFixture]
-    public class SearchableQA
+    public class SearchableQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Count_withoutASearch_throwsArgumentNullException()
@@ -65,6 +65,75 @@ namespace Epic.Query.Object.UnitTests
             Assert.AreEqual(1, evaluationArguments.Length);
             Assert.IsInstanceOf<Count<ICargo>>(evaluationArguments[0]);
             Assert.AreSame(expression, ((Count<ICargo>)evaluationArguments[0]).Source);
+        }
+
+        [Test]
+        public void AsEnumerable_withoutASearch_throwsArgumentNullException()
+        {
+            // arrange:
+            ILimitedSearch<ICargo, TrackingId> search = null;
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.AsEnumerable(search);
+            });
+        }
+
+
+        [Test]
+        public void AsEnumerable_withASearch_callDeferrerExecuteWithACountExpression()
+        {
+            // arrange:
+            IEnumerable<ICargo> evaluationResult = GenerateStrictMock<IEnumerable<ICargo>>();
+            Expression<IEnumerable<ICargo>> expression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
+            deferrer.Expect(d => d.Evaluate(expression)).Return(evaluationResult).Repeat.Once();
+            ISearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISearch<ICargo, TrackingId>>();
+            search.Expect(s => s.Expression).Return(expression).Repeat.Once();
+            search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
+
+            // act:
+            IEnumerable<ICargo> result = search.AsEnumerable();
+
+            // assert:
+            Assert.AreSame(evaluationResult, result);
+        }
+
+        [Test]
+        public void Identify_withoutASearch_throwsArgumentNullException()
+        {
+            // arrange:
+            IOrderedSearch<ICargo, TrackingId> search = null;
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.Identify(search);
+            });
+        }
+
+        [Test]
+        public void Identify_withASearch_callDeferrerExecuteWithACountExpression()
+        {
+            // arrange:
+            IEnumerable<TrackingId> evaluationResult = GenerateStrictMock<IEnumerable<TrackingId>>();
+            object[] evaluationArguments = null;
+            Expression<IEnumerable<ICargo>> expression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
+            deferrer.Expect(d => d.Evaluate(null as Expression<IEnumerable<TrackingId>>)).IgnoreArguments()
+                .WhenCalled(m => evaluationArguments = m.Arguments)
+                .Return(evaluationResult).Repeat.Once();
+            ISearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISearch<ICargo, TrackingId>>();
+            search.Expect(s => s.Expression).Return(expression).Repeat.Once();
+            search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
+
+            // act:
+            IEnumerable<TrackingId> result = search.Identify();
+
+            // assert:
+            Assert.AreSame(evaluationResult, result);
+            Assert.AreEqual(1, evaluationArguments.Length);
+            Assert.IsInstanceOf<Identification<ICargo, TrackingId>>(evaluationArguments[0]);
+            Assert.AreSame(expression, ((Identification<ICargo, TrackingId>)evaluationArguments[0]).Entities);
         }
     }
 }

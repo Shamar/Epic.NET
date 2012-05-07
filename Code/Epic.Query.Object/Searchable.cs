@@ -202,6 +202,27 @@ namespace Epic.Query.Object
             return search.Deferrer.Defer<IOrderedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(search.Expression.ThanBy(criterion));
         }
 
+        /// <summary>
+        /// Returns a specified number of results from a search.
+        /// </summary>
+        /// <param name='search'>
+        /// A search for <typeparamref name="TEntity"/>.
+        /// </param>
+        /// <param name='count'>
+        /// The number of results to return.
+        /// </param>
+        /// <returns>
+        /// An <see cref="ILimitedSearch{TEntity, TIdentity}"/> that returns
+        /// at most <paramref name="count"/> results.
+        /// </returns>
+        /// <typeparam name='TEntity'>
+        /// The type of the entities searched by <paramref name="search"/>.
+        /// </typeparam>
+        /// <typeparam name='TIdentity'>
+        /// The type of the identities of the entities searched by <paramref name="search"/>.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"> is <c>0</c>.</exception>
         public static ILimitedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -212,6 +233,26 @@ namespace Epic.Query.Object
             return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression, count));
         }
 
+        /// <summary>
+        /// Bypasses a specified number of results in a search and then returns the remaining elements.
+        /// </summary>
+        /// <param name='search'>
+        /// A search for <typeparamref name="TEntity"/>.
+        /// </param>
+        /// <param name='count'>
+        /// The number of elements to skip before returning the remaining results.
+        /// </param>
+        /// <returns>
+        /// An <see cref="ILimitedSearch{TEntity, TIdentity}"/> that skip
+        /// <paramref name="count"/> results.
+        /// </returns>
+        /// <typeparam name='TEntity'>
+        /// The type of the entities searched by <paramref name="search"/>.
+        /// </typeparam>
+        /// <typeparam name='TIdentity'>
+        /// The type of the identities of the entities searched by <paramref name="search"/>.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
         public static ILimitedSearch<TEntity, TIdentity> Skip<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -222,6 +263,27 @@ namespace Epic.Query.Object
             return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(count, search.Expression));
         }
 
+        /// <summary>
+        /// Returns a specified number of results from a search.
+        /// </summary>
+        /// <param name='search'>
+        /// A search for <typeparamref name="TEntity"/>.
+        /// </param>
+        /// <param name='count'>
+        /// The number of results to return.
+        /// </param>
+        /// <returns>
+        /// An <see cref="ILimitedSearch{TEntity, TIdentity}"/> that returns
+        /// at most <paramref name="count"/> results.
+        /// </returns>
+        /// <typeparam name='TEntity'>
+        /// The type of the entities searched by <paramref name="search"/>.
+        /// </typeparam>
+        /// <typeparam name='TIdentity'>
+        /// The type of the identities of the entities searched by <paramref name="search"/>.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"> is <c>0</c>.</exception>
         public static ILimitedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this ILimitedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -233,6 +295,26 @@ namespace Epic.Query.Object
             return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression.Source, count, search.Expression.Skipping));
         }    
 
+        /// <summary>
+        /// Bypasses a specified number of results in a search and then returns the remaining elements.
+        /// </summary>
+        /// <param name='search'>
+        /// A search for <typeparamref name="TEntity"/>.
+        /// </param>
+        /// <param name='count'>
+        /// The number of elements to skip before returning the remaining results.
+        /// </param>
+        /// <returns>
+        /// An <see cref="ILimitedSearch{TEntity, TIdentity}"/> that skip
+        /// <paramref name="count"/> results.
+        /// </returns>
+        /// <typeparam name='TEntity'>
+        /// The type of the entities searched by <paramref name="search"/>.
+        /// </typeparam>
+        /// <typeparam name='TIdentity'>
+        /// The type of the identities of the entities searched by <paramref name="search"/>.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
         public static ILimitedSearch<TEntity, TIdentity> Skip<TEntity, TIdentity>(this ILimitedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
