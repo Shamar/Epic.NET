@@ -67,37 +67,6 @@ namespace Epic.Query.Object.UnitTests
             Assert.AreSame(expression, ((Count<ICargo>)evaluationArguments[0]).Source);
         }
 
-        [Test]
-        public void AsEnumerable_withoutASearch_throwsArgumentNullException()
-        {
-            // arrange:
-            ILimitedSearch<ICargo, TrackingId> search = null;
-
-            // assert:
-            Assert.Throws<ArgumentNullException>(delegate { 
-                Searchable.AsEnumerable(search);
-            });
-        }
-
-
-        [Test]
-        public void AsEnumerable_withASearch_callDeferrerExecuteWithACountExpression()
-        {
-            // arrange:
-            IEnumerable<ICargo> evaluationResult = GenerateStrictMock<IEnumerable<ICargo>>();
-            Expression<IEnumerable<ICargo>> expression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
-            deferrer.Expect(d => d.Evaluate(expression)).Return(evaluationResult).Repeat.Once();
-            ISearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISearch<ICargo, TrackingId>>();
-            search.Expect(s => s.Expression).Return(expression).Repeat.Once();
-            search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
-
-            // act:
-            IEnumerable<ICargo> result = search.AsEnumerable();
-
-            // assert:
-            Assert.AreSame(evaluationResult, result);
-        }
 
         [Test]
         public void Identify_withoutASearch_throwsArgumentNullException()

@@ -26,6 +26,37 @@ using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Represents a description of a required <typeparamref name="TResult"/>.
+    /// </summary>
+    /// <typeparam name="TResult">
+    /// Type of the result required.
+    /// </typeparam>
+    /// <remarks>
+    /// <para>
+    /// A deferred can be seen as a value which has not 
+    /// been computed yet. Its <see cref="IDeferred{TResult}.Expression"/> 
+    /// declaratively describes the qualities of the 
+    /// <typeparamref name="TResult"/>. Such expression is defined by
+    /// the <see cref="IDeferrer.Defer{TResult}"/> method of the 
+    /// <see cref="IDeferred{TResult}.Deferrer"/>.
+    /// </para>
+    /// <para>
+    /// Different extension methods can be defined to produce different
+    /// kind of deferreds. For example, some common search operations are
+    /// defined in the <see cref="Searchable"/> static class. Such extentions
+    /// will create new deferreds extending <see cref="IDeferred{TResult}"/>
+    /// (like <see cref="ISearch{TEntity, TIdentity}"/>, 
+    /// <see cref="IOrderedSearch{TEntity, TIdentity}"/> and
+    /// <see cref="ILimitedSearch{TEntity, TIdentity}"/>) using specialized
+    /// <see cref="Expression{TResult}"/> for their specific purposes.
+    /// </para>
+    /// <para>
+    /// The <see cref="IDeferred{TResult}"/> can be evaluated when 
+    /// the <typeparamref name="TResult"/> is actually needed, through
+    /// the <see cref="Deferrable.As{TResult}"/> method. 
+    /// </para>
+    /// </remarks>
     public interface IDeferred<TResult>
     {
         Expression<TResult> Expression { get; }

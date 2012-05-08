@@ -62,33 +62,12 @@ namespace Epic.Query.Object
     /// <para>
     /// The actual query execution on the target data is performed when the actual value
     /// is needed. For example <see cref="Searchable.Count{TEntity, TIdentity}()"/> 
-    /// actually execute the count and <see cref="Searchable.AsEnumerable{TEntity, TIdentity}()"/> 
-    /// retrieves and returns the entities required.
+    /// actually execute the count and <see cref="Searchable.Identify{TEntity, TIdentity}()"/> 
+    /// retrieves and returns the identities of the required entities.
     /// </para>
     /// </remarks>
     public static class Searchable
     {
-        /// <summary>
-        /// Evaluate the deferred search, returning the results.
-        /// </summary>
-        /// <returns>
-        /// An enumerable of the <typeparamref name="TItem"/> resulting from the search.
-        /// </returns>
-        /// <param name='search'>
-        /// A search for <typeparamref name="TItem"/>.
-        /// </param>
-        /// <typeparam name='TItem'>
-        /// The type of the results.
-        /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="search"/> 
-        /// is <c>null</c>.</exception>
-        public static IEnumerable<TItem> AsEnumerable<TItem>(this IDeferred<IEnumerable<TItem>> search)
-        {
-            if(null == search)
-                throw new ArgumentNullException("search");
-            return search.Deferrer.Evaluate(search.Expression);
-        }
-
         /// <summary>
         /// Evaluate the deferred search, returning the identities of the results.
         /// </summary>

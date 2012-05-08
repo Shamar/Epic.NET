@@ -56,6 +56,7 @@
     <Compile Include="ReverseOrder.cs" />
     <Compile Include="Expressions\Identification.cs" />
     <Compile Include="Expressions\Cut.cs" />
+    <Compile Include="Deferrable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
