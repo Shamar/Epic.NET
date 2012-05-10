@@ -27,6 +27,7 @@ using Rhino.Mocks;
 using Challenge00.DDDSample.Cargo;
 using Epic.Query.Object.Expressions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Epic.Query.Object.UnitTests
 {
@@ -104,6 +105,127 @@ namespace Epic.Query.Object.UnitTests
             Assert.IsInstanceOf<Identification<ICargo, TrackingId>>(evaluationArguments[0]);
             Assert.AreSame(expression, ((Identification<ICargo, TrackingId>)evaluationArguments[0]).Entities);
         }
+
+        [Test]
+        public void OrderBy_withoutAnyArgument_throwsArgumentNullException()
+        {
+            // arrange:
+            ISearch<ICargo, TrackingId> search = GenerateStrictMock<ISearch<ICargo, TrackingId>>();
+            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.OrderBy<ICargo, TrackingId>(null, criterion);
+            });
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.OrderBy<ICargo, TrackingId>(search, null);
+            });
+        }
+
+        [Test]
+        public void OrderBy_withValidArguments_deferrsANewSearch()
+        {
+            // arrange:
+            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            IOrderedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
+            object[] deferArguments = null;
+            Expression<IEnumerable<ICargo>> expression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
+            deferrer.Expect(d => d.Defer<IOrderedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
+                .WhenCalled(m => deferArguments = m.Arguments)
+                .Return(deferResult).Repeat.Once();
+            ISearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISearch<ICargo, TrackingId>>();
+            search.Expect(s => s.Expression).Return(expression).Repeat.Once();
+            search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
+
+            // act:
+            IOrderedSearch<ICargo, TrackingId> result = search.OrderBy(criterion);
+
+            // assert:
+            Assert.AreSame(deferResult, result);
+            Assert.AreEqual(1, deferArguments.Length);
+            Assert.IsInstanceOf<Order<ICargo>>(deferArguments[0]);
+            Assert.AreSame(criterion, ((Order<ICargo>)deferArguments[0]).Criterion);
+        }
+
+
+        [Test]
+        public void ThenBy_withoutAnyArgument_throwsArgumentNullException()
+        {
+            // arrange:
+            IOrderedSearch<ICargo, TrackingId> search = GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
+            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.ThenBy<ICargo, TrackingId>(null, criterion);
+            });
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.ThenBy<ICargo, TrackingId>(search, null);
+            });
+        }
+
+        [Test]
+        public void ThenBy_withValidArguments_deferrsANewSearch()
+        {
+            // arrange:
+            OrderCriterion<ICargo> initialCriterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> secondCriterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            IOrderedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
+            object[] deferArguments = null;
+            Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            Order<ICargo> expression = new Order<ICargo>(sourceExpression, initialCriterion); 
+            IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
+            deferrer.Expect(d => d.Defer<IOrderedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
+                .WhenCalled(m => deferArguments = m.Arguments)
+                .Return(deferResult).Repeat.Once();
+            IOrderedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
+            search.Expect(s => s.Expression).Return(expression).Repeat.Once();
+            search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
+
+            // act:
+            IOrderedSearch<ICargo, TrackingId> result = search.ThenBy(secondCriterion);
+
+            // assert:
+            Assert.AreSame(deferResult, result);
+            Assert.AreEqual(1, deferArguments.Length);
+            Assert.IsInstanceOf<Order<ICargo>>(deferArguments[0]);
+            Assert.IsInstanceOf<OrderCriteria<ICargo>>(((Order<ICargo>)deferArguments[0]).Criterion);
+            Assert.AreSame(initialCriterion, ((OrderCriteria<ICargo>)((Order<ICargo>)deferArguments[0]).Criterion).ElementAt(0));
+            Assert.AreSame(secondCriterion, ((OrderCriteria<ICargo>)((Order<ICargo>)deferArguments[0]).Criterion).ElementAt(1));
+        }
+
+        [Test]
+        public void Skip_withoutASearch_throwsArgumentNullException()
+        {
+            // arrange:
+            IOrderedSearch<ICargo, TrackingId> orderedSearch = null;
+            ILimitedSearch<ICargo, TrackingId> limitedSearch = null;
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.Skip<ICargo, TrackingId>(orderedSearch, 1);
+            });
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.Skip<ICargo, TrackingId>(limitedSearch, 1);
+            });
+        }
+
+        [Test]
+        public void Take_withoutASearch_throwsArgumentNullException()
+        {
+            // arrange:
+            IOrderedSearch<ICargo, TrackingId> orderedSearch = null;
+            ILimitedSearch<ICargo, TrackingId> limitedSearch = null;
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.Take<ICargo, TrackingId>(orderedSearch, 1);
+            });
+            Assert.Throws<ArgumentNullException>(delegate { 
+                Searchable.Take<ICargo, TrackingId>(limitedSearch, 1);
+            });
+        }    
     }
 }
 

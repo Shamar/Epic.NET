@@ -40,6 +40,7 @@
     <Reference Include="Challenge00.DDDSample">
       <HintPath>..\..\..\build\bin\Debug\Challenge00.DDDSample.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
