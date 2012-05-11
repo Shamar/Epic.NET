@@ -85,7 +85,7 @@ namespace Epic.Query.Object.Expressions
         private Cut (SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            _source = (Order<TEntity>)info.GetValue ("A", typeof(Order<TEntity>));
+            _source = (Order<TEntity>)info.GetValue ("S", typeof(Order<TEntity>));
             _toTake = info.GetUInt32("L");
             _toSkip = info.GetUInt32("O");
         }
