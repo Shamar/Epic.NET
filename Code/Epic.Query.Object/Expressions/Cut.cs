@@ -36,23 +36,23 @@ namespace Epic.Query.Object.Expressions
         private readonly uint _toSkip;
 
         public Cut (Order<TEntity> source, uint toTake)
-            : this(source, toTake, 0)
+            : this(source, 0, toTake)
         {
         }
 
         public Cut (uint toSkip, Order<TEntity> source)
-            : this(source, uint.MaxValue, toSkip)
+            : this(source, toSkip, uint.MaxValue)
         {
         }
 
-        public Cut (Order<TEntity> source, uint toTake, uint toSkip)
+        public Cut (Order<TEntity> source, uint toSkip, uint toTake)
         {
             if (null == source)
                 throw new ArgumentNullException ("source");
-            if (0 == toTake)
-                throw new ArgumentOutOfRangeException ("toTake", "The number of elements to take must be greater than zero.");
             if (uint.MaxValue == toSkip)
-                throw new ArgumentOutOfRangeException ("toSkip", string.Format ("The number of elements to skip must be lower than zero.", uint.MaxValue));
+                throw new ArgumentOutOfRangeException ("toSkip", string.Format ("The number of elements to skip must be lower than {0}.", uint.MaxValue));
+            if (0 == toTake)
+                throw new ArgumentOutOfRangeException ("toTake", "The number of elements to take must be positive.");
             _source = source;
             _toTake = toTake;
             _toSkip = toSkip;

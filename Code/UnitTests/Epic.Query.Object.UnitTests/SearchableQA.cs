@@ -194,6 +194,7 @@ namespace Epic.Query.Object.UnitTests
             Assert.AreSame(initialCriterion, ((OrderCriteria<ICargo>)((Order<ICargo>)deferArguments[0]).Criterion).ElementAt(0));
             Assert.AreSame(secondCriterion, ((OrderCriteria<ICargo>)((Order<ICargo>)deferArguments[0]).Criterion).ElementAt(1));
         }
+
         [Test]
         public void Skip_withAOrderedSearch_deferrsANewLimitedSearch()
         {
@@ -232,7 +233,7 @@ namespace Epic.Query.Object.UnitTests
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
-            Cut<ICargo> expression = new Cut<ICargo>(orderedExpression, 5, 10);
+            Cut<ICargo> expression = new Cut<ICargo>(orderedExpression, 10, 5);
             IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
             deferrer.Expect(d => d.Defer<ILimitedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
                 .WhenCalled(m => deferArguments = m.Arguments)
@@ -262,7 +263,7 @@ namespace Epic.Query.Object.UnitTests
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
-            Cut<ICargo> expression = new Cut<ICargo>(orderedExpression, 5, 10);
+            Cut<ICargo> expression = new Cut<ICargo>(orderedExpression, 10, 5);
             ILimitedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
             search.Expect(s => s.Expression).Return(expression).Repeat.Times(2);
 
@@ -299,7 +300,7 @@ namespace Epic.Query.Object.UnitTests
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
-            Cut<ICargo> expression = new Cut<ICargo>(orderedExpression, 5, 10);
+            Cut<ICargo> expression = new Cut<ICargo>(orderedExpression, 10, 5);
             ILimitedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
             search.Expect(s => s.Expression).Return(expression).Repeat.Times(2);
 
@@ -349,7 +350,7 @@ namespace Epic.Query.Object.UnitTests
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
-            Cut<ICargo> expression = new Cut<ICargo>(orderedExpression, 5, 10);
+            Cut<ICargo> expression = new Cut<ICargo>(orderedExpression, 10, 5);
             IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
             deferrer.Expect(d => d.Defer<ILimitedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
                 .WhenCalled(m => deferArguments = m.Arguments)

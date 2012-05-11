@@ -271,7 +271,7 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("search");
             if(count == search.Expression.TakingAtMost)
                 return search;
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression.Source, count, search.Expression.Skipping));
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression.Source, search.Expression.Skipping, count));
         }    
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("search");
             if(count == search.Expression.Skipping)
                 return search;
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression.Source, search.Expression.TakingAtMost, count));
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression.Source, count, search.Expression.TakingAtMost));
         }    
     }
 }
