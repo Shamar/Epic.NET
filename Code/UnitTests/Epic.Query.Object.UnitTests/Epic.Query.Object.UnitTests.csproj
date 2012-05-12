@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="SearchableQA.cs" />
     <Compile Include="DeferrableQA.cs" />
+    <Compile Include="Expressions\CountQA.cs" />
+    <Compile Include="Fakes\FakeRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Query.Object\Epic.Query.Object.csproj">
@@ -60,5 +62,17 @@
       <Project>{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}</Project>
       <Name>Epic.Prelude.UnitTests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Epic.Query\Epic.Query.csproj">
+      <Project>{45E26C2D-47BD-42D7-8326-CE92777D79A4}</Project>
+      <Name>Epic.Query</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Epic.Core\Epic.Core.csproj">
+      <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
+      <Name>Epic.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expressions\" />
+    <Folder Include="Fakes\" />
   </ItemGroup>
 </Project>

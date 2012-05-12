@@ -28,11 +28,22 @@ using System.Collections.Generic;
 
 namespace Epic.Query.Object.Expressions
 {
+    /// <summary>
+    /// Represent a count of an <see cref="IEnumerable{TItem}"/>.
+    /// </summary>
+    /// <typeparam name="TItem">Type of the elements of the enumerable.</typeparam>
     [Serializable]
     public sealed class Count<TItem> : Expression<uint>
     {
         private readonly Expression<IEnumerable<TItem>> _source;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Count{TItem}"/> expression.
+        /// </summary>
+        /// <param name='source'>
+        /// A representation of the enumerable to count.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
         public Count (Expression<IEnumerable<TItem>> source)
         {
             if (null == source)
@@ -40,6 +51,9 @@ namespace Epic.Query.Object.Expressions
             _source = source;
         }
 
+        /// <summary>
+        /// Expression representing the elements to count.
+        /// </summary>
         public Expression<IEnumerable<TItem>> Source
         {
             get
