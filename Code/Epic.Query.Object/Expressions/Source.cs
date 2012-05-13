@@ -27,6 +27,11 @@ using System.Runtime.Serialization;
 
 namespace Epic.Query.Object.Expressions
 {
+    /// <summary>
+    /// Represent a source of <typeparamref name="TEntity"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
+    /// <typeparam name="TIdentity">Type of the identity.</typeparam>
     [Serializable]
     public sealed class Source<TEntity, TIdentity> : Expression<IEnumerable<TEntity>>
         where TEntity : class
@@ -34,6 +39,13 @@ namespace Epic.Query.Object.Expressions
     {
         private readonly IRepository<TEntity, TIdentity> _repository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Source{TEntity, TIdentity}"/>.
+        /// </summary>
+        /// <param name='repository'>
+        /// Repository of <typeparamref name="TEntity"/>.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="repository"/> is <c>null</c>.</exception>
         public Source (IRepository<TEntity, TIdentity> repository)
         {
             if (null == repository)
@@ -41,6 +53,9 @@ namespace Epic.Query.Object.Expressions
             _repository = repository;
         }
 
+        /// <summary>
+        /// The repository.
+        /// </summary>
         public IRepository<TEntity, TIdentity> Repository {
             get { return _repository; }
         }

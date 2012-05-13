@@ -48,6 +48,11 @@
     <Compile Include="DeferrableQA.cs" />
     <Compile Include="Expressions\CountQA.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
+    <Compile Include="Expressions\SourceQA.cs" />
+    <Compile Include="Expressions\SourceDowncastQA.cs" />
+    <Compile Include="Expressions\SelectionQA.cs" />
+    <Compile Include="Fakes\FakeSpecification.cs" />
+    <Compile Include="Expressions\IdentificationQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Query.Object\Epic.Query.Object.csproj">

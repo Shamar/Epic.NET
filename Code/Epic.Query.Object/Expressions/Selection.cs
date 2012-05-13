@@ -29,6 +29,10 @@ using System.Collections.Generic;
 
 namespace Epic.Query.Object.Expressions
 {
+    /// <summary>
+    /// Represent the selection of those <typeparamref name="TEntity"/> that satisfy a specification.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
     [Serializable]
     public sealed class Selection<TEntity> : Expression<IEnumerable<TEntity>>
         where TEntity : class
@@ -36,6 +40,16 @@ namespace Epic.Query.Object.Expressions
         private readonly Expression<IEnumerable<TEntity>> _source;
         private readonly ISpecification<TEntity> _specification; 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Selection{TEntity}"/>.
+        /// </summary>
+        /// <param name='source'>
+        /// Source of <typeparamref name="TEntity"/>.
+        /// </param>
+        /// <param name='specification'>
+        /// Specification to satisfy.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="specifiaction"/> is null</exception>
         public Selection (Expression<IEnumerable<TEntity>> source, ISpecification<TEntity> specification)
         {
             if (null == source)
@@ -45,11 +59,17 @@ namespace Epic.Query.Object.Expressions
             _source = source;
             _specification = specification;
         }
-        
+
+        /// <summary>
+        /// The source of <typeparamref name="TEntity"/>.
+        /// </summary>
         public Expression<IEnumerable<TEntity>> Source {
             get { return _source; }
         }
 
+        /// <summary>
+        /// The specification to satisfy.
+        /// </summary>
         public ISpecification<TEntity> Specification {
             get { return _specification;}
         }

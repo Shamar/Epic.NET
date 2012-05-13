@@ -28,6 +28,11 @@ using Epic.Specifications;
 
 namespace Epic.Query.Object.Expressions
 {
+    /// <summary>
+    /// Represent a downcast of an <see cref="IEnumerable{TAbstraction}"/> to an <see cref="IEnumerable{TEntity}"/>.
+    /// </summary>
+    /// <typeparam name="TAbstraction">Type of the abstraction to be downcasted.</typeparam>
+    /// <typeparam name="TEntity">Type of the entity to be obtained.</typeparam>
     [Serializable]
     public sealed class SourceDowncast<TAbstraction, TEntity> : Expression<IEnumerable<TEntity>>
         where TAbstraction : class
@@ -35,6 +40,13 @@ namespace Epic.Query.Object.Expressions
     {
         private readonly Expression<IEnumerable<TAbstraction>> _source;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SourceDowncast{TAbstraction, TEntity}"/> class.
+        /// </summary>
+        /// <param name='source'>
+        /// Source to downcast.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
         public SourceDowncast (Expression<IEnumerable<TAbstraction>> source)
         {
             if (null == source)
@@ -42,6 +54,9 @@ namespace Epic.Query.Object.Expressions
             _source = source;
         }
 
+        /// <summary>
+        /// The original source.
+        /// </summary>
         public Expression<IEnumerable<TAbstraction>> Source {
             get { return _source; }
         }

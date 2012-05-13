@@ -1,5 +1,5 @@
 //  
-//  CountQA.cs
+//  SelectionQA.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -28,32 +28,42 @@ using Challenge00.DDDSample.Cargo;
 using System.IO;
 using System.Collections.Generic;
 using Rhino.Mocks;
+using Epic.Specifications;
 
 namespace Epic.Query.Object.UnitTests.Expressions
 {
     [TestFixture]
-    public class CountQA : RhinoMocksFixtureBase
+    public class SelectionQA : RhinoMocksFixtureBase
     {
         [Test]
-        public void Initialize_withoutASource_throwsArgumentNullException()
+        public void Initialize_withoutAnyArgument_throwsArgumentNullException()
         {
+            // arrange:
+            ISpecification<ICargo> specification = GenerateStrictMock<ISpecification<ICargo>>();
+            Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-                new Count<ICargo>(null);
+                new Selection<ICargo>(null, specification);
+            });
+            Assert.Throws<ArgumentNullException>(delegate {
+                new Selection<ICargo>(source, null);
             });
         }
 
         [Test]
-        public void Initialize_withASource_works()
+        public void Initialize_withValidArguments_works()
         {
             // arrange:
+            ISpecification<ICargo> specification = GenerateStrictMock<ISpecification<ICargo>>();
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
 
             // act:
-            Count<ICargo> toTest = new Count<ICargo>(source);
+            Selection<ICargo> toTest = new Selection<ICargo>(source, specification);
 
             // assert:
             Assert.AreSame(source, toTest.Source);
+            Assert.AreSame(specification, toTest.Specification);
         }
 
         [Test]
@@ -62,7 +72,8 @@ namespace Epic.Query.Object.UnitTests.Expressions
             // arrange:
             IRepository<ICargo, TrackingId> repository = new Fakes.FakeRepository<ICargo, TrackingId>();
             Source<ICargo, TrackingId> source = new Source<ICargo, TrackingId>(repository);
-            Count<ICargo> toSerialize = new Count<ICargo>(source);
+            ISpecification<ICargo> specification = new Fakes.FakeSpecification<ICargo>();
+            Selection<ICargo> toSerialize = new Selection<ICargo>(source, specification);
 
             // act:
             Stream stream = SerializationUtilities.Serialize(toSerialize);
@@ -77,16 +88,19 @@ namespace Epic.Query.Object.UnitTests.Expressions
             // arrange:
             IRepository<ICargo, TrackingId> repository = new Fakes.FakeRepository<ICargo, TrackingId>();
             Source<ICargo, TrackingId> source = new Source<ICargo, TrackingId>(repository);
-            Count<ICargo> toSerialize = new Count<ICargo>(source);
+            ISpecification<ICargo> specification = new Fakes.FakeSpecification<ICargo>();
+            Selection<ICargo> toSerialize = new Selection<ICargo>(source, specification);
             Stream stream = SerializationUtilities.Serialize(toSerialize);
 
             // act:
-            Count<ICargo> deserialized = SerializationUtilities.Deserialize<Count<ICargo>>(stream);
+            Selection<ICargo> deserialized = SerializationUtilities.Deserialize<Selection<ICargo>>(stream);
 
             // assert:
             Assert.IsNotNull (deserialized);
             Assert.IsNotNull (deserialized.Source);
             Assert.IsInstanceOf<Source<ICargo, TrackingId>>(deserialized.Source);
+            Assert.IsNotNull (deserialized.Specification);
+            Assert.IsInstanceOf<Fakes.FakeSpecification<ICargo>>(deserialized.Specification);
 
         }
 
@@ -95,10 +109,11 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            Count<ICargo> toTest = new Count<ICargo>(source);
+            ISpecification<ICargo> specification = new Fakes.FakeSpecification<ICargo>();
+            Selection<ICargo> toTest = new Selection<ICargo>(source, specification);
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            IVisitor<object, Count<ICargo>> expressionVisitor = GenerateStrictMock<IVisitor<object, Count<ICargo>>>();
+            IVisitor<object, Selection<ICargo>> expressionVisitor = GenerateStrictMock<IVisitor<object, Selection<ICargo>>>();
             expressionVisitor.Expect(v => v.Visit(toTest, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(toTest)).Return(expressionVisitor).Repeat.Once ();

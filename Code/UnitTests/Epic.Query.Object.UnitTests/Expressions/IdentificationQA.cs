@@ -1,5 +1,5 @@
 //  
-//  CountQA.cs
+//  IdentificationQA.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -28,18 +28,19 @@ using Challenge00.DDDSample.Cargo;
 using System.IO;
 using System.Collections.Generic;
 using Rhino.Mocks;
+using Epic.Specifications;
 
 namespace Epic.Query.Object.UnitTests.Expressions
 {
     [TestFixture]
-    public class CountQA : RhinoMocksFixtureBase
+    public class IdentificationQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withoutASource_throwsArgumentNullException()
         {
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-                new Count<ICargo>(null);
+                new Identification<ICargo,TrackingId>(null);
             });
         }
 
@@ -50,10 +51,10 @@ namespace Epic.Query.Object.UnitTests.Expressions
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
 
             // act:
-            Count<ICargo> toTest = new Count<ICargo>(source);
+            Identification<ICargo, TrackingId> toTest = new Identification<ICargo, TrackingId>(source);
 
             // assert:
-            Assert.AreSame(source, toTest.Source);
+            Assert.AreSame(source, toTest.Entities);
         }
 
         [Test]
@@ -62,8 +63,8 @@ namespace Epic.Query.Object.UnitTests.Expressions
             // arrange:
             IRepository<ICargo, TrackingId> repository = new Fakes.FakeRepository<ICargo, TrackingId>();
             Source<ICargo, TrackingId> source = new Source<ICargo, TrackingId>(repository);
-            Count<ICargo> toSerialize = new Count<ICargo>(source);
-
+            Identification<ICargo, TrackingId> toSerialize = new Identification<ICargo, TrackingId>(source);
+ 
             // act:
             Stream stream = SerializationUtilities.Serialize(toSerialize);
 
@@ -77,16 +78,16 @@ namespace Epic.Query.Object.UnitTests.Expressions
             // arrange:
             IRepository<ICargo, TrackingId> repository = new Fakes.FakeRepository<ICargo, TrackingId>();
             Source<ICargo, TrackingId> source = new Source<ICargo, TrackingId>(repository);
-            Count<ICargo> toSerialize = new Count<ICargo>(source);
+            Identification<ICargo, TrackingId> toSerialize = new Identification<ICargo, TrackingId>(source);
             Stream stream = SerializationUtilities.Serialize(toSerialize);
 
             // act:
-            Count<ICargo> deserialized = SerializationUtilities.Deserialize<Count<ICargo>>(stream);
+            Identification<ICargo, TrackingId> deserialized = SerializationUtilities.Deserialize<Identification<ICargo, TrackingId>>(stream);
 
             // assert:
             Assert.IsNotNull (deserialized);
-            Assert.IsNotNull (deserialized.Source);
-            Assert.IsInstanceOf<Source<ICargo, TrackingId>>(deserialized.Source);
+            Assert.IsNotNull (deserialized.Entities);
+            Assert.IsInstanceOf<Source<ICargo, TrackingId>>(deserialized.Entities);
 
         }
 
@@ -94,11 +95,12 @@ namespace Epic.Query.Object.UnitTests.Expressions
         public void Accept_withValidArguments_delegateVisitToTheRightVisitor()
         {
             // arrange:
-            Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            Count<ICargo> toTest = new Count<ICargo>(source);
+            IRepository<ICargo, TrackingId> repository = new Fakes.FakeRepository<ICargo, TrackingId>();
+            Source<ICargo, TrackingId> source = new Source<ICargo, TrackingId>(repository);
+            Identification<ICargo, TrackingId> toTest = new Identification<ICargo, TrackingId>(source);
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            IVisitor<object, Count<ICargo>> expressionVisitor = GenerateStrictMock<IVisitor<object, Count<ICargo>>>();
+            IVisitor<object, Identification<ICargo, TrackingId>> expressionVisitor = GenerateStrictMock<IVisitor<object, Identification<ICargo, TrackingId>>>();
             expressionVisitor.Expect(v => v.Visit(toTest, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(toTest)).Return(expressionVisitor).Repeat.Once ();

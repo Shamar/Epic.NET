@@ -1,5 +1,5 @@
 //  
-//  CountQA.cs
+//  SourceDowncastQA.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -31,15 +31,17 @@ using Rhino.Mocks;
 
 namespace Epic.Query.Object.UnitTests.Expressions
 {
+    public interface ISpecializedCargo : ICargo {}
+
     [TestFixture]
-    public class CountQA : RhinoMocksFixtureBase
+    public class SourceDowncastQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_withoutASource_throwsArgumentNullException()
         {
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-                new Count<ICargo>(null);
+                new SourceDowncast<ICargo, ISpecializedCargo>(null);
             });
         }
 
@@ -50,7 +52,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
 
             // act:
-            Count<ICargo> toTest = new Count<ICargo>(source);
+            SourceDowncast<ICargo, ISpecializedCargo> toTest = new SourceDowncast<ICargo, ISpecializedCargo>(source);
 
             // assert:
             Assert.AreSame(source, toTest.Source);
@@ -62,7 +64,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
             // arrange:
             IRepository<ICargo, TrackingId> repository = new Fakes.FakeRepository<ICargo, TrackingId>();
             Source<ICargo, TrackingId> source = new Source<ICargo, TrackingId>(repository);
-            Count<ICargo> toSerialize = new Count<ICargo>(source);
+            SourceDowncast<ICargo, ISpecializedCargo> toSerialize = new SourceDowncast<ICargo, ISpecializedCargo>(source);
 
             // act:
             Stream stream = SerializationUtilities.Serialize(toSerialize);
@@ -77,11 +79,11 @@ namespace Epic.Query.Object.UnitTests.Expressions
             // arrange:
             IRepository<ICargo, TrackingId> repository = new Fakes.FakeRepository<ICargo, TrackingId>();
             Source<ICargo, TrackingId> source = new Source<ICargo, TrackingId>(repository);
-            Count<ICargo> toSerialize = new Count<ICargo>(source);
+            SourceDowncast<ICargo, ISpecializedCargo> toSerialize = new SourceDowncast<ICargo, ISpecializedCargo>(source);
             Stream stream = SerializationUtilities.Serialize(toSerialize);
 
             // act:
-            Count<ICargo> deserialized = SerializationUtilities.Deserialize<Count<ICargo>>(stream);
+            SourceDowncast<ICargo, ISpecializedCargo> deserialized = SerializationUtilities.Deserialize<SourceDowncast<ICargo, ISpecializedCargo>>(stream);
 
             // assert:
             Assert.IsNotNull (deserialized);
@@ -95,10 +97,10 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            Count<ICargo> toTest = new Count<ICargo>(source);
+            SourceDowncast<ICargo, ISpecializedCargo> toTest = new SourceDowncast<ICargo, ISpecializedCargo>(source);
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            IVisitor<object, Count<ICargo>> expressionVisitor = GenerateStrictMock<IVisitor<object, Count<ICargo>>>();
+            IVisitor<object, SourceDowncast<ICargo, ISpecializedCargo>> expressionVisitor = GenerateStrictMock<IVisitor<object, SourceDowncast<ICargo, ISpecializedCargo>>>();
             expressionVisitor.Expect(v => v.Visit(toTest, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(toTest)).Return(expressionVisitor).Repeat.Once ();
