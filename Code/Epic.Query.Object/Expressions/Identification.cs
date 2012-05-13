@@ -27,6 +27,12 @@ using System.Runtime.Serialization;
 
 namespace Epic.Query.Object.Expressions
 {
+    /// <summary>
+    /// Represent the map between <typeparamref name="TEntity"/> and <typeparamref name="TIdentity"/> over
+    /// an <see cref="IEnumerable{TEntity}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
+    /// <typeparam name="TIdentity">Type of the identity.</typeparam>
     [Serializable]
     public sealed class Identification<TEntity, TIdentity> : Expression<IEnumerable<TIdentity>>
         where TEntity : class
@@ -34,6 +40,13 @@ namespace Epic.Query.Object.Expressions
     {
         private readonly Expression<IEnumerable<TEntity>> _entities;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Identification{TEntity, TIdentity}"/> class.
+        /// </summary>
+        /// <param name='entities'>
+        /// Entities to map.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="entities"/> is <c>null</c>.</exception>
         public Identification (Expression<IEnumerable<TEntity>> entities)
         {
             if (null == entities)
@@ -41,6 +54,9 @@ namespace Epic.Query.Object.Expressions
             _entities = entities;
         }
 
+        /// <summary>
+        /// The entities that will be mapped to their identities.
+        /// </summary>
         public Expression<IEnumerable<TEntity>> Entities {
             get {
                 return _entities;
