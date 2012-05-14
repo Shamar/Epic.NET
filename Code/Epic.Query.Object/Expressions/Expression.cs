@@ -1,5 +1,5 @@
 //  
-//  Query.cs
+//  Expression.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -28,9 +28,18 @@ using System.Security.Permissions;
 
 namespace Epic.Query.Object.Expressions
 {
+    /// <summary>
+    /// Expression that represent a <typeparamref name="TValue"/>.
+    /// </summary>
+    /// <typeparam name="TValue">
+    /// Type of the value that the expression represent.
+    /// </typeparam>
     [Serializable]
     public abstract class Expression<TValue> : VisitableBase, ISerializable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Expression{TValue}"/> class.
+        /// </summary>
         protected Expression ()
             : base()
         {
@@ -38,6 +47,16 @@ namespace Epic.Query.Object.Expressions
 
         #region ISerializable implementation
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Expression{TValue}"/> class after a deserialization.
+        /// </summary>
+        /// <param name='info'>
+        /// Serialization informations.
+        /// </param>
+        /// <param name='context'>
+        /// Streaming context.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="info"/> is <c>null</c>.</exception>
         protected Expression (SerializationInfo info, StreamingContext context)
             : this()
         {
@@ -45,6 +64,15 @@ namespace Epic.Query.Object.Expressions
                 throw new ArgumentNullException("info");
         }
 
+        /// <summary>
+        /// Register into <paramref name="info"/> the data to be stored in the serialization.
+        /// </summary>
+        /// <param name='info'>
+        /// Serialization informations (will never be <c>null</c>).
+        /// </param>
+        /// <param name='context'>
+        /// Streaming context.
+        /// </param>
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         protected abstract void GetObjectData (SerializationInfo info, StreamingContext context);
 

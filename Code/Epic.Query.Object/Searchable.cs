@@ -209,7 +209,7 @@ namespace Epic.Query.Object
             if(null == search)
                 throw new ArgumentNullException("search");
             
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression, count));
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression, count));
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace Epic.Query.Object
             if(null == search)
                 throw new ArgumentNullException("search");
             
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(count, search.Expression));
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(count, search.Expression));
         }
 
         /// <summary>
@@ -271,7 +271,7 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("search");
             if(count == search.Expression.TakingAtMost)
                 return search;
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression.Source, search.Expression.Skipping, count));
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression.Source, search.Expression.Skipping, count));
         }    
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("search");
             if(count == search.Expression.Skipping)
                 return search;
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Cut<TEntity>(search.Expression.Source, count, search.Expression.TakingAtMost));
+            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression.Source, count, search.Expression.TakingAtMost));
         }    
     }
 }

@@ -1,5 +1,5 @@
 //  
-//  ILimitedSearch.cs
+//  FakeCriterion.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,16 +22,32 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using Epic.Query.Object.Expressions;
-using System.Collections.Generic;
-
-namespace Epic.Query.Object
+namespace Epic.Query.Object.UnitTests.Fakes
 {
-    public interface ILimitedSearch<TEntity, TIdentity> : IOrderedSearch<TEntity, TIdentity>
+    [Serializable]
+    public class FakeCriterion<TEntity> : OrderCriterion<TEntity>
         where TEntity : class
-        where TIdentity : IEquatable<TIdentity>
     {
-        new Slice<TEntity> Expression { get; }
+        public FakeCriterion ()
+        {
+        }
+
+        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
+        {
+            return AcceptMe(this, visitor, context);
+        }
+
+        #region implemented abstract members of Epic.Query.Object.OrderCriterion
+        public override int Compare(TEntity x, TEntity y)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override bool SafeEquals(OrderCriterion<TEntity> other)
+        {
+            throw new System.NotImplementedException();
+        }
+        #endregion
     }
 }
 

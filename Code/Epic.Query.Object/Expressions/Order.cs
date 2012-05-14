@@ -27,6 +27,10 @@ using System.Collections.Generic;
 
 namespace Epic.Query.Object.Expressions
 {
+    /// <summary>
+    /// Represent the application of an ordering condition to an <see cref="IEnumerable{TEntity}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
     [Serializable]
     public sealed class Order<TEntity> : Expression<IEnumerable<TEntity>>
         where TEntity : class
@@ -34,6 +38,16 @@ namespace Epic.Query.Object.Expressions
         private readonly Expression<IEnumerable<TEntity>> _source;
         private readonly OrderCriterion<TEntity> _criterion; 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Order{TEntity}"/> class.
+        /// </summary>
+        /// <param name='source'>
+        /// <see cref="IEnumerable{TEntity}"/> to sort.
+        /// </param>
+        /// <param name='criterion'>
+        /// Order criterion.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="criterion"/> is <c>null</c>.</exception>
         public Order (Expression<IEnumerable<TEntity>> source, OrderCriterion<TEntity> criterion)
         {
             if (null == source)
@@ -44,6 +58,17 @@ namespace Epic.Query.Object.Expressions
             _criterion = criterion;
         }
 
+        /// <summary>
+        /// Provide a new <see cref="Order{TEntity}"/> that represents the application of 
+        /// the current order criterion and then of <paramref name="criterion"/>.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="Order{TEntity}"/>.
+        /// </returns>
+        /// <param name='criterion'>
+        /// The order criterion to apply after the current one.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="criterion"/> is <c>null</c>.</exception>
         public Order<TEntity> ThanBy(OrderCriterion<TEntity> criterion)
         {
             if(null == criterion)
@@ -51,10 +76,16 @@ namespace Epic.Query.Object.Expressions
             return new Order<TEntity>(_source, _criterion.Chain(criterion));
         }
         
+        /// <summary>
+        /// The <see cref="IEnumerable{TEntity}"/> to sort.
+        /// </summary>
         public Expression<IEnumerable<TEntity>> Source {
             get { return _source; }
         }
 
+        /// <summary>
+        /// The order criterion.
+        /// </summary>
         public OrderCriterion<TEntity> Criterion {
             get { return _criterion; }
         }
