@@ -56,6 +56,8 @@
     <Compile Include="Fakes\FakeCriterion.cs" />
     <Compile Include="Expressions\OrderQA.cs" />
     <Compile Include="Expressions\SliceQA.cs" />
+    <Compile Include="Fakes\FakeExpression.cs" />
+    <Compile Include="Expressions\ExpressionQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Query.Object\Epic.Query.Object.csproj">

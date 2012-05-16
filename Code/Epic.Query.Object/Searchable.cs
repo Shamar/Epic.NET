@@ -191,7 +191,7 @@ namespace Epic.Query.Object
         /// The number of results to return.
         /// </param>
         /// <returns>
-        /// An <see cref="ILimitedSearch{TEntity, TIdentity}"/> that returns
+        /// An <see cref="ISlicedSearch{TEntity, TIdentity}"/> that returns
         /// at most <paramref name="count"/> results.
         /// </returns>
         /// <typeparam name='TEntity'>
@@ -202,14 +202,14 @@ namespace Epic.Query.Object
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"> is <c>0</c>.</exception>
-        public static ILimitedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
+        public static ISlicedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
         {
             if(null == search)
                 throw new ArgumentNullException("search");
             
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression, count));
+            return search.Deferrer.Defer<ISlicedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression, count));
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace Epic.Query.Object
         /// The number of elements to skip before returning the remaining results.
         /// </param>
         /// <returns>
-        /// An <see cref="ILimitedSearch{TEntity, TIdentity}"/> that skip
+        /// An <see cref="ISlicedSearch{TEntity, TIdentity}"/> that skip
         /// <paramref name="count"/> results.
         /// </returns>
         /// <typeparam name='TEntity'>
@@ -232,14 +232,14 @@ namespace Epic.Query.Object
         /// The type of the identities of the entities searched by <paramref name="search"/>.
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
-        public static ILimitedSearch<TEntity, TIdentity> Skip<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
+        public static ISlicedSearch<TEntity, TIdentity> Skip<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
         {
             if(null == search)
                 throw new ArgumentNullException("search");
             
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(count, search.Expression));
+            return search.Deferrer.Defer<ISlicedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(count, search.Expression));
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace Epic.Query.Object
         /// The number of results to return.
         /// </param>
         /// <returns>
-        /// An <see cref="ILimitedSearch{TEntity, TIdentity}"/> that returns
+        /// An <see cref="ISlicedSearch{TEntity, TIdentity}"/> that returns
         /// at most <paramref name="count"/> results.
         /// </returns>
         /// <typeparam name='TEntity'>
@@ -263,7 +263,7 @@ namespace Epic.Query.Object
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"> is <c>0</c>.</exception>
-        public static ILimitedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this ILimitedSearch<TEntity, TIdentity> search, uint count)
+        public static ISlicedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this ISlicedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
         {
@@ -271,7 +271,7 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("search");
             if(count == search.Expression.TakingAtMost)
                 return search;
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression.Source, search.Expression.Skipping, count));
+            return search.Deferrer.Defer<ISlicedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression.Source, search.Expression.Skipping, count));
         }    
 
         /// <summary>
@@ -284,7 +284,7 @@ namespace Epic.Query.Object
         /// The number of elements to skip before returning the remaining results.
         /// </param>
         /// <returns>
-        /// An <see cref="ILimitedSearch{TEntity, TIdentity}"/> that skip
+        /// An <see cref="ISlicedSearch{TEntity, TIdentity}"/> that skip
         /// <paramref name="count"/> results.
         /// </returns>
         /// <typeparam name='TEntity'>
@@ -294,7 +294,7 @@ namespace Epic.Query.Object
         /// The type of the identities of the entities searched by <paramref name="search"/>.
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
-        public static ILimitedSearch<TEntity, TIdentity> Skip<TEntity, TIdentity>(this ILimitedSearch<TEntity, TIdentity> search, uint count)
+        public static ISlicedSearch<TEntity, TIdentity> Skip<TEntity, TIdentity>(this ISlicedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
         {
@@ -302,7 +302,7 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("search");
             if(count == search.Expression.Skipping)
                 return search;
-            return search.Deferrer.Defer<ILimitedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression.Source, count, search.Expression.TakingAtMost));
+            return search.Deferrer.Defer<ISlicedSearch<TEntity, TIdentity>, IEnumerable<TEntity>>(new Slice<TEntity>(search.Expression.Source, count, search.Expression.TakingAtMost));
         }    
     }
 }

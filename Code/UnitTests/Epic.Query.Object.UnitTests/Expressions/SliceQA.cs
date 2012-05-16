@@ -126,6 +126,34 @@ namespace Epic.Query.Object.UnitTests.Expressions
             // assert:
             Assert.AreSame(expectedResult, result);
         }
+
+        [Test]
+        public void Initialize_takingZeroItems_throwsArgumentOutOfRangeException()
+        {
+            // arrange:
+            Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            Order<ICargo> order = new Order<ICargo>(source, criterion);
+
+            // assert:
+            Assert.Throws<ArgumentOutOfRangeException>(delegate {
+                new Slice<ICargo>(order, 10, 0);
+            });
+        }
+
+        [Test]
+        public void Initialize_bypassingMaxValueItems_throwsArgumentOutOfRangeException()
+        {
+            // arrange:
+            Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            Order<ICargo> order = new Order<ICargo>(source, criterion);
+
+            // assert:
+            Assert.Throws<ArgumentOutOfRangeException>(delegate {
+                new Slice<ICargo>(order, uint.MaxValue, 7);
+            });
+        }
     }
 }
 

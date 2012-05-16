@@ -51,12 +51,13 @@
     <Compile Include="IDeferred.cs" />
     <Compile Include="IDeferrer.cs" />
     <Compile Include="IOrderedSearch.cs" />
-    <Compile Include="ILimitedSearch.cs" />
     <Compile Include="Expressions\Order.cs" />
     <Compile Include="ReverseOrder.cs" />
     <Compile Include="Expressions\Identification.cs" />
     <Compile Include="Deferrable.cs" />
     <Compile Include="Expressions\Slice.cs" />
+    <Compile Include="DeferringException.cs" />
+    <Compile Include="ISlicedSearch.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

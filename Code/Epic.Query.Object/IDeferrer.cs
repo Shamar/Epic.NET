@@ -1,5 +1,5 @@
 //  
-//  IObjectProvider.cs
+//  IDeferrer.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -29,12 +29,40 @@ using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Defines methods to create and execute queries that are described by an <see cref="IDeferred{TResult}"/> object.
+    /// </summary>
     public interface IDeferrer
     {
+        /// <summary>
+        /// Defer the evaluation of the specified expression.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression to defer.
+        /// </param>
+        /// <typeparam name='TDeferred'>
+        /// The type of the <see cref="IDeferred{TResult}"/> to create.
+        /// </typeparam>
+        /// <typeparam name='TResult'>
+        /// The result to defer.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="expression"/> is <c>null</c>.</exception>
+        /// <exception cref="DeferringException">This deferrer can not build a <typeparamref name='TDeferred'/>
+        /// producing a <typeparamref name="TResult"/> on evaluation.</exception>
         TDeferred Defer<TDeferred, TResult>(Expression<TResult> expression)
             where TDeferred : IDeferred<TResult>;
 
-        TResult Evaluate<TResult>(Expression<TResult> query);
+        /// <summary>
+        /// Evaluate the specified expression.
+        /// </summary>
+        /// <param name='expression'>
+        /// Expression to evaluate.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// Result of the evaluation of <paramref name="expression"/>.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="expression"/> is <c>null</c>.</exception>
+        TResult Evaluate<TResult>(Expression<TResult> expression);
     }
 }
 

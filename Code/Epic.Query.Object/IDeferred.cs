@@ -48,7 +48,7 @@ namespace Epic.Query.Object
     /// will create new deferreds extending <see cref="IDeferred{TResult}"/>
     /// (like <see cref="ISearch{TEntity, TIdentity}"/>, 
     /// <see cref="IOrderedSearch{TEntity, TIdentity}"/> and
-    /// <see cref="ILimitedSearch{TEntity, TIdentity}"/>) using specialized
+    /// <see cref="ISlicedSearch{TEntity, TIdentity}"/>) using specialized
     /// <see cref="Expression{TResult}"/> for their specific purposes.
     /// </para>
     /// <para>
@@ -59,8 +59,14 @@ namespace Epic.Query.Object
     /// </remarks>
     public interface IDeferred<TResult>
     {
+        /// <summary>
+        /// Deferred expression.
+        /// </summary>
         Expression<TResult> Expression { get; }
-        
+
+        /// <summary>
+        /// Deferrer that created and can evaluated <see cref="IDeferred{TResult}.Expression"/>.
+        /// </summary>
         IDeferrer Deferrer { get; }
     }
 }

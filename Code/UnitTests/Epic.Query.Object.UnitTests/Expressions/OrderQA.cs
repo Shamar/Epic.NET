@@ -121,6 +121,38 @@ namespace Epic.Query.Object.UnitTests.Expressions
             // assert:
             Assert.AreSame(expectedResult, result);
         }
+        
+        [Test]
+        public void ThenBy_withoutACriterion_throwsArgumentNullException()
+        {
+            // arrange:
+            Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            Order<ICargo> toTest = new Order<ICargo>(source, criterion);
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                toTest.ThanBy(null);
+            });
+        }
+
+        [Test]
+        public void ThenBy_withAnotherCriterion_returnsANewOrder()
+        {
+            // arrange:
+            Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
+            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> otherCriterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            Order<ICargo> toTest = new Order<ICargo>(source, criterion);
+
+            // assert:
+            Order<ICargo> result = toTest.ThanBy(otherCriterion);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Criterion);
+            Assert.IsInstanceOf<OrderCriteria<ICargo>>(result.Criterion);
+        }
     }
 }
 

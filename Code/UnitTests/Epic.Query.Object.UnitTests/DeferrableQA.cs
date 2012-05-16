@@ -38,7 +38,7 @@ namespace Epic.Query.Object.UnitTests
         public void AsEnumerable_withoutASearch_throwsArgumentNullException()
         {
             // arrange:
-            ILimitedSearch<ICargo, TrackingId> search = null;
+            ISlicedSearch<ICargo, TrackingId> search = null;
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 

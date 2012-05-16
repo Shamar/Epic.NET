@@ -1,5 +1,5 @@
 //  
-//  ILimitedSearch.cs
+//  ISlicedSearch.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -27,7 +27,8 @@ using System.Collections.Generic;
 
 namespace Epic.Query.Object
 {
-    public interface ILimitedSearch<TEntity, TIdentity> : IOrderedSearch<TEntity, TIdentity>
+
+    public interface ISlicedSearch<TEntity, TIdentity> : IOrderedSearch<TEntity, TIdentity>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {

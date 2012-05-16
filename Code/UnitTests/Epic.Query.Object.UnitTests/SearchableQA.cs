@@ -200,12 +200,12 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
-            ILimitedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
+            ISlicedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> expression = new Order<ICargo>(sourceExpression, criterion);
             IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
-            deferrer.Expect(d => d.Defer<ILimitedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
+            deferrer.Expect(d => d.Defer<ISlicedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
                 .WhenCalled(m => deferArguments = m.Arguments)
                 .Return(deferResult).Repeat.Once();
             IOrderedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
@@ -213,7 +213,7 @@ namespace Epic.Query.Object.UnitTests
             search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
 
             // act:
-            ILimitedSearch<ICargo, TrackingId> result = search.Skip(10);
+            ISlicedSearch<ICargo, TrackingId> result = search.Skip(10);
 
             // assert:
             Assert.AreSame(deferResult, result);
@@ -229,21 +229,21 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
-            ILimitedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
+            ISlicedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
             Slice<ICargo> expression = new Slice<ICargo>(orderedExpression, 10, 5);
             IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
-            deferrer.Expect(d => d.Defer<ILimitedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
+            deferrer.Expect(d => d.Defer<ISlicedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
                 .WhenCalled(m => deferArguments = m.Arguments)
                 .Return(deferResult).Repeat.Once();
-            ILimitedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
+            ISlicedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             search.Expect(s => s.Expression).Return(expression).Repeat.Times(3);
             search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
 
             // act:
-            ILimitedSearch<ICargo, TrackingId> result = search.Skip(7);
+            ISlicedSearch<ICargo, TrackingId> result = search.Skip(7);
 
             // assert:
             Assert.AreSame(deferResult, result);
@@ -259,16 +259,15 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
-            ILimitedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
             Slice<ICargo> expression = new Slice<ICargo>(orderedExpression, 10, 5);
-            ILimitedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
+            ISlicedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             search.Expect(s => s.Expression).Return(expression).Repeat.Times(2);
 
             // act:
-            ILimitedSearch<ICargo, TrackingId> result = search.Skip(10);
+            ISlicedSearch<ICargo, TrackingId> result = search.Skip(10);
 
             // assert:
             Assert.AreSame(search, result);
@@ -280,7 +279,7 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             IOrderedSearch<ICargo, TrackingId> orderedSearch = null;
-            ILimitedSearch<ICargo, TrackingId> limitedSearch = null;
+            ISlicedSearch<ICargo, TrackingId> limitedSearch = null;
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 
@@ -296,16 +295,15 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
-            ILimitedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
             Slice<ICargo> expression = new Slice<ICargo>(orderedExpression, 10, 5);
-            ILimitedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
+            ISlicedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             search.Expect(s => s.Expression).Return(expression).Repeat.Times(2);
 
             // act:
-            ILimitedSearch<ICargo, TrackingId> result = search.Take(5);
+            ISlicedSearch<ICargo, TrackingId> result = search.Take(5);
 
             // assert:
             Assert.AreSame(search, result);
@@ -317,12 +315,12 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
-            ILimitedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
+            ISlicedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> expression = new Order<ICargo>(sourceExpression, criterion);
             IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
-            deferrer.Expect(d => d.Defer<ILimitedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
+            deferrer.Expect(d => d.Defer<ISlicedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
                 .WhenCalled(m => deferArguments = m.Arguments)
                 .Return(deferResult).Repeat.Once();
             IOrderedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
@@ -330,7 +328,7 @@ namespace Epic.Query.Object.UnitTests
             search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
 
             // act:
-            ILimitedSearch<ICargo, TrackingId> result = search.Take(10);
+            ISlicedSearch<ICargo, TrackingId> result = search.Take(10);
 
             // assert:
             Assert.AreSame(deferResult, result);
@@ -346,21 +344,21 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
-            ILimitedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
+            ISlicedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
             Slice<ICargo> expression = new Slice<ICargo>(orderedExpression, 10, 5);
             IDeferrer deferrer = MockRepository.GenerateStrictMock<IDeferrer>();
-            deferrer.Expect(d => d.Defer<ILimitedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
+            deferrer.Expect(d => d.Defer<ISlicedSearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments()
                 .WhenCalled(m => deferArguments = m.Arguments)
                 .Return(deferResult).Repeat.Once();
-            ILimitedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ILimitedSearch<ICargo, TrackingId>>();
+            ISlicedSearch<ICargo, TrackingId> search = MockRepository.GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             search.Expect(s => s.Expression).Return(expression).Repeat.Times(3);
             search.Expect(s => s.Deferrer).Return(deferrer).Repeat.Once();
 
             // act:
-            ILimitedSearch<ICargo, TrackingId> result = search.Take(7);
+            ISlicedSearch<ICargo, TrackingId> result = search.Take(7);
 
             // assert:
             Assert.AreSame(deferResult, result);
@@ -376,7 +374,7 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             IOrderedSearch<ICargo, TrackingId> orderedSearch = null;
-            ILimitedSearch<ICargo, TrackingId> limitedSearch = null;
+            ISlicedSearch<ICargo, TrackingId> limitedSearch = null;
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 
