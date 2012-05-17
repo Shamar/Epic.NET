@@ -111,7 +111,7 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             ISearch<ICargo, TrackingId> search = GenerateStrictMock<ISearch<ICargo, TrackingId>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 
@@ -126,7 +126,7 @@ namespace Epic.Query.Object.UnitTests
         public void OrderBy_withValidArguments_deferrsANewSearch()
         {
             // arrange:
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             IOrderedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> expression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
@@ -154,7 +154,7 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             IOrderedSearch<ICargo, TrackingId> search = GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 
@@ -169,8 +169,8 @@ namespace Epic.Query.Object.UnitTests
         public void ThenBy_withValidArguments_deferrsANewSearch()
         {
             // arrange:
-            OrderCriterion<ICargo> initialCriterion = GeneratePartialMock<OrderCriterion<ICargo>>();
-            OrderCriterion<ICargo> secondCriterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> initialCriterion = new Fakes.FakeCriterion<ICargo>();
+            OrderCriterion<ICargo> secondCriterion = new Fakes.FakeCriterion<ICargo>();
             IOrderedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<IOrderedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
@@ -199,7 +199,7 @@ namespace Epic.Query.Object.UnitTests
         public void Skip_withAOrderedSearch_deferrsANewLimitedSearch()
         {
             // arrange:
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             ISlicedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
@@ -228,7 +228,7 @@ namespace Epic.Query.Object.UnitTests
         public void Skip_withALimitedSearch_deferrsANewLimitedSearch()
         {
             // arrange:
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             ISlicedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
@@ -258,7 +258,7 @@ namespace Epic.Query.Object.UnitTests
         public void Skip_withAnEquivalentLimitedSearch_returnsTheSameInstance()
         {
             // arrange:
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
@@ -294,7 +294,7 @@ namespace Epic.Query.Object.UnitTests
         public void Take_withAnEquivalentLimitedSearch_returnsTheSameInstance()
         {
             // arrange:
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
             Order<ICargo> orderedExpression = new Order<ICargo>(sourceExpression, criterion);
@@ -314,7 +314,7 @@ namespace Epic.Query.Object.UnitTests
         public void Take_withAOrderedSearch_deferrsANewLimitedSearch()
         {
             // arrange:
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             ISlicedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
@@ -343,7 +343,7 @@ namespace Epic.Query.Object.UnitTests
         public void Take_withALimitedSearch_deferrsANewLimitedSearch()
         {
             // arrange:
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             ISlicedSearch<ICargo, TrackingId> deferResult = GenerateStrictMock<ISlicedSearch<ICargo, TrackingId>>();
             object[] deferArguments = null;
             Expression<IEnumerable<ICargo>> sourceExpression = MockRepository.GeneratePartialMock<Expression<IEnumerable<ICargo>>>();

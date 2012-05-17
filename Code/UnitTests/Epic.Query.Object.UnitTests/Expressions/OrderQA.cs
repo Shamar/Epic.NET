@@ -39,7 +39,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
@@ -55,7 +55,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
 
             // act:
             Order<ICargo> toTest = new Order<ICargo>(source, criterion);
@@ -106,7 +106,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             Order<ICargo> toTest = new Order<ICargo>(source, criterion);
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
@@ -127,7 +127,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             Order<ICargo> toTest = new Order<ICargo>(source, criterion);
 
             // assert:
@@ -141,8 +141,8 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
-            OrderCriterion<ICargo> otherCriterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
+            OrderCriterion<ICargo> otherCriterion = new Fakes.FakeCriterion<ICargo>();
             Order<ICargo> toTest = new Order<ICargo>(source, criterion);
 
             // assert:

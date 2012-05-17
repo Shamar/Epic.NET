@@ -29,6 +29,11 @@ namespace Epic.Query.Object
     /// <summary>
     /// Exception thrown when a request to <see cref="IDeferrer.Defer{TDeferred, TResult}"/> is invalid becouse of the type arguments.
     /// </summary>
+    /// <remarks>
+    /// The <see cref="DeferringException"/> is designed to be cought only: to throw it all <see cref="IDeferrer"/> implementation
+    /// must create an instance of <see cref="DeferringException{TDeferred, TResult}"/> instead.
+    /// </remarks>
+    /// <seealso cref="DeferringException{TDeferred, TResult}"/>
     [Serializable]
     public abstract class DeferringException : EpicException
     {
@@ -40,6 +45,22 @@ namespace Epic.Query.Object
         /// </param>
         internal DeferringException(string message)
             : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeferringException"/> class.
+        /// </summary>
+        /// <param name='message'>
+        /// The message that describes the error. 
+        /// </param>
+        /// <param name='inner'>
+        /// The exception that is the cause of the current exception. 
+        /// If the <paramref name="innerException"/> parameter is not a <c>null</c> reference, the current 
+        /// exception is raised in a catch block that handles the inner exception. 
+        /// </param>
+        internal DeferringException(string message, Exception inner)
+            : base(message, inner)
         {
         }
     
@@ -84,6 +105,22 @@ namespace Epic.Query.Object
         /// </param>
         public DeferringException(string message)
             : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeferringException"/> class.
+        /// </summary>
+        /// <param name='message'>
+        /// The message that describes the error. 
+        /// </param>
+        /// <param name='inner'>
+        /// The exception that is the cause of the current exception. 
+        /// If the <paramref name="innerException"/> parameter is not a <c>null</c> reference, the current 
+        /// exception is raised in a catch block that handles the inner exception. 
+        /// </param>
+        public DeferringException(string message, Exception inner)
+            : base(message, inner)
         {
         }
 

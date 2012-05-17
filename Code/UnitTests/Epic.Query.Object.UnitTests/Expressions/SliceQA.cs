@@ -54,7 +54,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             Order<ICargo> order = new Order<ICargo>(source, criterion);
 
             // act:
@@ -110,7 +110,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             Order<ICargo> order = new Order<ICargo>(source, criterion);
             Slice<ICargo> toTest = new Slice<ICargo>(order, 7, 10);
             object expectedResult = new object();
@@ -132,7 +132,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             Order<ICargo> order = new Order<ICargo>(source, criterion);
 
             // assert:
@@ -146,7 +146,7 @@ namespace Epic.Query.Object.UnitTests.Expressions
         {
             // arrange:
             Expression<IEnumerable<ICargo>> source = GeneratePartialMock<Expression<IEnumerable<ICargo>>>();
-            OrderCriterion<ICargo> criterion = GeneratePartialMock<OrderCriterion<ICargo>>();
+            OrderCriterion<ICargo> criterion = new Fakes.FakeCriterion<ICargo>();
             Order<ICargo> order = new Order<ICargo>(source, criterion);
 
             // assert:

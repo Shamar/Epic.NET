@@ -1,5 +1,5 @@
 //  
-//  ReverseOrderCriterion.cs
+//  ReverseOrder.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,6 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Runtime.Serialization;
 
 namespace Epic.Query.Object
 {
@@ -34,6 +35,19 @@ namespace Epic.Query.Object
             if(null == toReverse)
                 throw new ArgumentNullException("toReverse");
             _toReverse = toReverse;
+        }
+
+        public OrderCriterion<TEntity> Reversed
+        {
+            get
+            {
+                return _toReverse;
+            }
+        }
+
+        public override OrderCriterion<TEntity> Chain (OrderCriterion<TEntity> other)
+        {
+            return new OrderCriteria<TEntity>(this, other);
         }
 
         public override OrderCriterion<TEntity> Reverse ()
@@ -56,6 +70,20 @@ namespace Epic.Query.Object
             ReverseOrder<TEntity> reverseOther = other as ReverseOrder<TEntity>;
             return _toReverse.Equals(reverseOther._toReverse);
         }
+
+        #region implemented abstract members of Epic.Query.Object.OrderCriterion
+        private ReverseOrder(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            _toReverse = (ReverseOrder<TEntity>)info.GetValue("R", typeof(ReverseOrder<TEntity>));
+        }
+
+        protected override void GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("R", _toReverse, typeof(ReverseOrder<TEntity>));
+        }
+        #endregion
+
     }
 }
 

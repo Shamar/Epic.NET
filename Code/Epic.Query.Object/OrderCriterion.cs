@@ -1,5 +1,5 @@
 //  
-//  OrderCriterionBase.cs
+//  OrderCriterion.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -23,28 +23,24 @@
 //  
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Epic.Query.Object
 {
     [Serializable]
     public abstract class OrderCriterion<TEntity> : VisitableBase, 
                                                     IComparer<TEntity>,
-                                                    IEquatable<OrderCriterion<TEntity>>
+                                                    IEquatable<OrderCriterion<TEntity>>,
+                                                    ISerializable
     {
-        protected OrderCriterion ()
+        internal OrderCriterion ()
             : base()
         {
         }
 
-        public OrderCriterion<TEntity> Chain(OrderCriterion<TEntity> other)
-        {
-            return new OrderCriteria<TEntity>(this, other);
-        }
+        public abstract OrderCriterion<TEntity> Chain(OrderCriterion<TEntity> other);
 
-        public virtual OrderCriterion<TEntity> Reverse()
-        {
-            return new ReverseOrder<TEntity>(this);
-        }
+        public abstract OrderCriterion<TEntity> Reverse();
 
         #region IComparer implementation
 
@@ -78,6 +74,25 @@ namespace Epic.Query.Object
         }
 
         #endregion IEquatable implementation
+
+        #region ISerializable implementation
+
+        internal OrderCriterion(SerializationInfo info, StreamingContext context)
+            : this()
+        {
+            if(null == info)
+                throw new ArgumentNullException("info");
+        }
+
+        protected abstract void GetObjectData (SerializationInfo info, StreamingContext context);
+
+        void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+            if(null == info)
+                throw new ArgumentNullException("info");
+            GetObjectData(info, context);
+        }
+        #endregion ISerializable implementation
     }
 }
 

@@ -1,5 +1,5 @@
 //  
-//  ChainOfCriteria.cs
+//  OrderCriteria.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -23,6 +23,7 @@
 //  
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Epic.Query.Object
 {
@@ -65,6 +66,25 @@ namespace Epic.Query.Object
             }
 
             _criteria = criteria.ToArray();
+        }
+
+        private OrderCriteria(OrderCriterion<TEntity>[] criteria)
+        {
+            _criteria = criteria;
+        }
+
+        public override OrderCriterion<TEntity> Chain (OrderCriterion<TEntity> other)
+        {
+            return new OrderCriteria<TEntity>(this, other);
+        }
+
+        public override OrderCriterion<TEntity> Reverse ()
+        {
+            OrderCriterion<TEntity>[] criteria = new OrderCriterion<TEntity>[_criteria.Length];
+            int lastIndex = _criteria.Length - 1;
+            for(int i = 0; i < _criteria.Length; ++i)
+                criteria[lastIndex - i] = _criteria[i];
+            return new OrderCriteria<TEntity>(criteria);
         }
 
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
@@ -112,6 +132,20 @@ namespace Epic.Query.Object
         public IEnumerator<OrderCriterion<TEntity>> GetEnumerator ()
         {
             return (_criteria as IEnumerable<OrderCriterion<TEntity>>).GetEnumerator();
+        }
+        #endregion
+
+        #region implemented abstract members of Epic.Query.Object.OrderCriterion
+
+        private OrderCriteria(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            _criteria = (OrderCriterion<TEntity>[])info.GetValue("C", typeof(OrderCriterion<TEntity>[]));
+        }
+
+        protected override void GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("C", _criteria, typeof(OrderCriterion<TEntity>[]));
         }
         #endregion
     }

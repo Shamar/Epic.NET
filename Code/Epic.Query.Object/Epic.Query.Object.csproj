@@ -58,6 +58,7 @@
     <Compile Include="Expressions\Slice.cs" />
     <Compile Include="DeferringException.cs" />
     <Compile Include="ISlicedSearch.cs" />
+    <Compile Include="OrderCriterionBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

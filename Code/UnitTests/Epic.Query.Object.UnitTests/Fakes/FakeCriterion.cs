@@ -22,13 +22,17 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using System.Runtime.Serialization;
+
+
 namespace Epic.Query.Object.UnitTests.Fakes
 {
     [Serializable]
-    public class FakeCriterion<TEntity> : OrderCriterion<TEntity>
+    public class FakeCriterion<TEntity> : OrderCriterionBase<TEntity, FakeCriterion<TEntity>>
         where TEntity : class
     {
         public FakeCriterion ()
+            : base()
         {
         }
 
@@ -43,11 +47,19 @@ namespace Epic.Query.Object.UnitTests.Fakes
             throw new System.NotImplementedException();
         }
 
-        protected override bool SafeEquals(OrderCriterion<TEntity> other)
+        protected override bool SafeEquals(FakeCriterion<TEntity> other)
         {
             throw new System.NotImplementedException();
         }
         #endregion
+
+        protected FakeCriterion(SerializationInfo info, StreamingContext context)
+        {
+        }
+
+        protected override void GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+        }
     }
 }
 
