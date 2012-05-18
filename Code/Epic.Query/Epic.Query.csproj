@@ -62,6 +62,8 @@
     <Compile Include="..\EpicInfo.cs">
       <Link>EpicInfo.cs</Link>
     </Compile>
+    <Compile Include="Relational\Operations\Projection.cs" />
+    <Compile Include="Relational\Operations\Selection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -69,5 +71,8 @@
       <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
       <Name>Epic.Prelude</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Relational\Operations\" />
   </ItemGroup>
 </Project>
