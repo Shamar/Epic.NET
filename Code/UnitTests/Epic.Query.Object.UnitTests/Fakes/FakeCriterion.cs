@@ -36,6 +36,14 @@ namespace Epic.Query.Object.UnitTests.Fakes
         {
         }
 
+        public readonly int Identity;
+
+        public FakeCriterion (int identity)
+            : base()
+        {
+            Identity = identity;
+        }
+
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);
@@ -49,17 +57,24 @@ namespace Epic.Query.Object.UnitTests.Fakes
 
         protected override bool SafeEquals(FakeCriterion<TEntity> other)
         {
-            throw new System.NotImplementedException();
+            return Identity.Equals(other.Identity);
         }
         #endregion
 
-        protected FakeCriterion(SerializationInfo info, StreamingContext context)
+        public FakeCriterion(SerializationInfo info, StreamingContext context)
         {
+            Identity = info.GetInt32("I");
         }
 
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
+            info.AddValue("I", Identity);
         }
+    }
+
+    public class WrongFakeCriterion<TEntity> : FakeCriterion<TEntity>
+        where TEntity : class
+    {
     }
 }
 
