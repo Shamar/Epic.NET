@@ -49,8 +49,8 @@ namespace Epic.Query.Relational.Operations
         public Selection (Relation relation, Predicate condition): 
             base(RelationType.Selection, getDefaultName (relation, condition))
         {
-            if (null == relation) throw new ArgumentNullException("relation");
-            if (null == condition) throw new ArgumentNullException("condition");
+            // if (null == relation) throw new ArgumentNullException("relation");
+            // if (null == condition) throw new ArgumentNullException("condition");
             this.condition = condition;
             this.relation = relation;
         }

@@ -49,8 +49,10 @@ namespace Epic.Query.Relational.Operations
             // assert:
             Assert.Throws<ArgumentNullException>(() => new Projection(table, null));
             Assert.Throws<ArgumentNullException>(() => new Projection(null, attributes));
-            Assert.Throws<ArgumentNullException>(() => new Projection(table, attributes, null));
             Assert.Throws<ArgumentNullException>(() => new Projection(null, null));
+            Assert.Throws<ArgumentNullException>(() => new Projection(table, attributes, null));
+            Assert.Throws<ArgumentNullException>(() => new Projection(null, attributes, tableName));
+            Assert.Throws<ArgumentNullException>(() => new Projection(table, null, tableName));
         }
 
         [Test]
@@ -106,9 +108,11 @@ namespace Epic.Query.Relational.Operations
             // act:
             Projection firstProjection = new Projection(table, attributes, operationName);
             Projection secondProjection = new Projection(table, attributes,  operationName);
+            Relation relation = secondProjection;
 
             // assert:
             Assert.IsTrue (firstProjection.Equals (secondProjection));
+            Assert.IsTrue (firstProjection.Equals (relation));
             Assert.AreEqual (firstProjection.GetHashCode (), secondProjection.GetHashCode ());
         }
 
