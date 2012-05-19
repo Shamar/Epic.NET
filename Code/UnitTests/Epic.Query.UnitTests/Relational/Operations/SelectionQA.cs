@@ -44,8 +44,10 @@ namespace Epic.Query.Relational.Operations
             // assert:
             Assert.Throws<ArgumentNullException>(() => new Selection(table, null));
             Assert.Throws<ArgumentNullException>(() => new Selection(null, predicate));
-            Assert.Throws<ArgumentNullException>(() => new Selection(table, predicate, null));
             Assert.Throws<ArgumentNullException>(() => new Selection(null, null));
+            Assert.Throws<ArgumentNullException>(() => new Selection(table, predicate, null));
+            Assert.Throws<ArgumentNullException>(() => new Selection(null, predicate, tableName));
+            Assert.Throws<ArgumentNullException>(() => new Selection(table, null, tableName));
         }
 
         [Test]
@@ -101,9 +103,11 @@ namespace Epic.Query.Relational.Operations
             // act:
             Selection firstSelection = new Selection(table, predicate, operationName);
             Selection secondSelection = new Selection(table, predicate,  operationName);
+            Relation relation = secondSelection;
 
             // assert:
             Assert.IsTrue (firstSelection.Equals (secondSelection));
+            Assert.IsTrue (firstSelection.Equals (relation));
             Assert.AreEqual (firstSelection.GetHashCode (), secondSelection.GetHashCode ());
         }
 

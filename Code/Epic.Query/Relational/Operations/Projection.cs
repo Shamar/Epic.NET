@@ -73,8 +73,8 @@ namespace Epic.Query.Relational.Operations
         public Projection(Relation relation, IEnumerable<RelationAttribute> attributes):
             base(RelationType.Projection, getDefaultName(relation, attributes))
         {
-            if (null == relation) throw new ArgumentNullException("relation");
-            if (null == attributes) throw new ArgumentNullException("attributes");
+            // if (null == relation) throw new ArgumentNullException("relation");
+            // if (null == attributes) throw new ArgumentNullException("attributes");
             this.relation = relation;
             this.attributes = attributes;
         }
