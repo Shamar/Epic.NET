@@ -44,8 +44,9 @@ namespace Epic.Query.Object
         protected override sealed bool SafeEquals (OrderCriterion<TEntity> other)
         {
             TOrderCriterion otherCriterion = other as TOrderCriterion;
-            if(null == other)
-                return false;
+            // we don't need to check the cast again, since it's granted from the OrderCriterionBase 
+            // constructor and the last OrderCriterion.Equals() check.
+
             return SafeEquals(otherCriterion);
         }
 
@@ -64,8 +65,6 @@ namespace Epic.Query.Object
         protected OrderCriterionBase(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            if(null == info)
-                throw new ArgumentNullException("info");
         }
     }
 }

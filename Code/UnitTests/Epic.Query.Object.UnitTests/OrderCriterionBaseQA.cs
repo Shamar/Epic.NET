@@ -25,6 +25,9 @@ using System;
 using NUnit.Framework;
 using Challenge00.DDDSample.Cargo;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Epic.Query.Object.UnitTests
 {
@@ -78,6 +81,134 @@ namespace Epic.Query.Object.UnitTests
             Assert.AreEqual (10, deserialized.Identity);
         }
 
+        [Test]
+        public void Deserialization_withoutSerializationInfo_throwsArgumentNullException()
+        {
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                new Fakes.FakeCriterion<ICargo>(null, default(StreamingContext));
+            });
+        }
+
+        [Test]
+        public void Serialization_withoutSerializationInfo_throwsArgumentNullException()
+        {
+            // arrange:
+            ISerializable toTest = new Fakes.FakeCriterion<ICargo>();
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                toTest.GetObjectData(null, default(StreamingContext));
+            });
+        }
+
+        [Test]
+        public void Equals_toNull_isFalse()
+        {
+            // arrange:
+            OrderCriterion<ICargo> toTest = new Fakes.FakeCriterion<ICargo>(10);
+
+            // act:
+            bool equalsNullCriterion = toTest.Equals((OrderCriterion<ICargo>)null);
+            bool equalsNullObject = toTest.Equals((object)null);
+
+            // assert:
+            Assert.IsFalse (equalsNullCriterion);
+            Assert.IsFalse (equalsNullObject);
+        }
+
+        [Test]
+        public void Equals_toItself_isTrue()
+        {
+            // arrange:
+            OrderCriterion<ICargo> toTest = new Fakes.FakeCriterion<ICargo>(10);
+
+            // act:
+            bool equalsCriterion = toTest.Equals((OrderCriterion<ICargo>)toTest);
+            bool equalsObject = toTest.Equals((object)toTest);
+
+            // assert:
+            Assert.IsTrue (equalsCriterion);
+            Assert.IsTrue (equalsObject);
+        }
+
+
+        [Test]
+        public void Equals_toAnotherTypeOfCriterion_isFalse()
+        {
+            // arrange:
+            OrderCriterion<ICargo> toTest = new Fakes.FakeCriterion<ICargo>();
+            OrderCriterion<ICargo> other = new Fakes.OtherFakeCriterion<ICargo>();
+
+            // act:
+            bool equalsCriterion = toTest.Equals((OrderCriterion<ICargo>)other);
+            bool equalsObject = toTest.Equals((object)other);
+
+            // assert:
+            Assert.IsFalse (equalsCriterion);
+            Assert.IsFalse (equalsObject);
+        }
+
+        [Test]
+        public void Equals_toAnotherInstanceOfTheSameType_callSafeEquals()
+        {
+            // arrange:
+            Fakes.FakeCriterion<ICargo> toTest = new Fakes.FakeCriterion<ICargo>(3);
+            OrderCriterion<ICargo> other = new Fakes.FakeCriterion<ICargo>(4);
+
+            // act:
+            bool equalsCriterion = toTest.Equals((OrderCriterion<ICargo>)other);
+            bool equalsObject = toTest.Equals((object)other);
+
+            // assert:
+            Assert.IsFalse (equalsCriterion);
+            Assert.IsFalse (equalsObject);
+            Assert.IsTrue(toTest.SafeEqualsCalled);
+        }
+
+        [Test]
+        public void Chain_toAnotherCriterion_returnsOrderCriteriaInTheRightOrder()
+        {
+            // arrange:
+            Fakes.FakeCriterion<ICargo> first = new Fakes.FakeCriterion<ICargo>(1);
+            Fakes.FakeCriterion<ICargo> second = new Fakes.FakeCriterion<ICargo>(2);
+
+            // act:
+            OrderCriterion<ICargo> result = first.Chain(second);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<OrderCriteria<ICargo>>(result);
+            OrderCriteria<ICargo> criteria = (OrderCriteria<ICargo>)result;
+            Assert.AreSame(first, criteria.ElementAt(0));
+            Assert.AreSame(second, criteria.ElementAt(1));
+        }
+       
+        [Test]
+        public void Chain_toNull_throwsArgumentNullException()
+        {
+            // arrange:
+            Fakes.FakeCriterion<ICargo> toTest = new Fakes.FakeCriterion<ICargo>(3);
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                toTest.Chain(null);
+            });
+        }
+
+        [Test]
+        public void Reverse_returnsAReversedInstance()
+        {
+            // arrange:
+            Fakes.FakeCriterion<ICargo> toTest = new Fakes.FakeCriterion<ICargo>(1);
+
+            // act:
+            OrderCriterion<ICargo> result = toTest.Reverse();
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ReverseOrder<ICargo>>(result);
+        }
     }
 }
 

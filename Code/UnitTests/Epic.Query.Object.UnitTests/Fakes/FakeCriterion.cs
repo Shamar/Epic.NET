@@ -37,6 +37,7 @@ namespace Epic.Query.Object.UnitTests.Fakes
         }
 
         public readonly int Identity;
+        public bool SafeEqualsCalled = false;
 
         public FakeCriterion (int identity)
             : base()
@@ -57,11 +58,13 @@ namespace Epic.Query.Object.UnitTests.Fakes
 
         protected override bool SafeEquals(FakeCriterion<TEntity> other)
         {
+            SafeEqualsCalled = true;
             return Identity.Equals(other.Identity);
         }
         #endregion
 
         public FakeCriterion(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
             Identity = info.GetInt32("I");
         }
@@ -69,6 +72,42 @@ namespace Epic.Query.Object.UnitTests.Fakes
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue("I", Identity);
+        }
+    }
+
+    [Serializable]
+    public sealed class OtherFakeCriterion<TEntity> : OrderCriterionBase<TEntity, OtherFakeCriterion<TEntity>>
+        where TEntity : class
+    {
+        public OtherFakeCriterion ()
+            : base()
+        {
+        }
+
+        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
+        {
+            return AcceptMe(this, visitor, context);
+        }
+
+        #region implemented abstract members of Epic.Query.Object.OrderCriterion
+        public override int Compare(TEntity x, TEntity y)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override bool SafeEquals(OtherFakeCriterion<TEntity> other)
+        {
+            throw new System.NotImplementedException();
+        }
+        #endregion
+
+        public OtherFakeCriterion(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
+        protected override void GetObjectData (SerializationInfo info, StreamingContext context)
+        {
         }
     }
 

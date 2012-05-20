@@ -52,7 +52,6 @@ namespace Epic.Query.Object.UnitTests.Expressions
             Assert.Throws<ArgumentNullException>(delegate {
                 toTest.GetObjectData(null, default(StreamingContext));
             });
-           
         }
     }
 }
