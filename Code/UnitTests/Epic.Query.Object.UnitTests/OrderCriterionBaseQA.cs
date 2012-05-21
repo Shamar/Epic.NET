@@ -132,6 +132,22 @@ namespace Epic.Query.Object.UnitTests
             Assert.IsTrue (equalsObject);
         }
 
+        [Test]
+        public void Equals_toEqualCriterion_isTrue()
+        {
+            // arrange:
+            OrderCriterion<ICargo> toTest = new Fakes.FakeCriterion<ICargo>(10);
+            OrderCriterion<ICargo> other = new Fakes.FakeCriterion<ICargo>(10);
+
+            // act:
+            bool equalsCriterion = toTest.Equals((OrderCriterion<ICargo>)other);
+            bool equalsObject = toTest.Equals((object)other);
+
+            // assert:
+            Assert.IsTrue (equalsCriterion);
+            Assert.IsTrue (equalsObject);
+            Assert.AreEqual(toTest.GetHashCode(), other.GetHashCode());
+        }
 
         [Test]
         public void Equals_toAnotherTypeOfCriterion_isFalse()
