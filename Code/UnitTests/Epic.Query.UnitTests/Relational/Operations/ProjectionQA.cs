@@ -62,7 +62,7 @@ namespace Epic.Query.Relational.Operations
             string tableName = "testTable";
             Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select * from testTable where 1 = 1";
+            string operationName = "select fakeAttribute from testTable";
 
             // act:
             Projection firstProjection = new Projection(table, attributes);
@@ -103,7 +103,7 @@ namespace Epic.Query.Relational.Operations
             string tableName = "testTable";
             Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select * from testTable where 1 = 1";
+            string operationName = "select fakeAttribute from testTable";
 
             // act:
             Projection firstProjection = new Projection(table, attributes, operationName);
@@ -116,14 +116,14 @@ namespace Epic.Query.Relational.Operations
             Assert.AreEqual (firstProjection.GetHashCode (), secondProjection.GetHashCode ());
         }
 
-                [Test]
+        [Test]
         public void Test_Serialization_Works()
         {
             // arrange:
             string tableName = "testTable";
             Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select * from testTable where 1 = 1";
+            string operationName = "select fakeAttribute from testTable";
             Projection selection = new Projection(table, attributes, operationName);
 
             // act:
@@ -140,7 +140,7 @@ namespace Epic.Query.Relational.Operations
             string tableName = "testTable";
             Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select * from testTable where 1 = 1";
+            string operationName = "select fakeAttribute from testTable";
             Projection selection = new Projection(table, attributes, operationName);
 
             // act:
@@ -161,7 +161,7 @@ namespace Epic.Query.Relational.Operations
             string tableName = "testTable";
             Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select * from testTable where 1 = 1";
+            string operationName = "select fakeAttribute from testTable";
             Projection selection = new Projection(table, attributes, operationName);
 
             IVisitor<object, Projection> selectionVisitor =

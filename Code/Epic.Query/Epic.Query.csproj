@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Relational\Operations\Projection.cs" />
     <Compile Include="Relational\Operations\Selection.cs" />
+    <Compile Include="Relational\Operations\Rename.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

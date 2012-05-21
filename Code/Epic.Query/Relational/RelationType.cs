@@ -55,6 +55,11 @@ namespace Epic.Query.Relational
         /// Union.
         /// </summary>
         Union,
+
+        /// <summary>
+        /// Rename.
+        /// </summary>
+        Rename,
         
         /// <summary>
         /// Grouped relation (in SQL, it's the effect of a group by)
