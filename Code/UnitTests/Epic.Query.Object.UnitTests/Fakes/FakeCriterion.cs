@@ -37,12 +37,19 @@ namespace Epic.Query.Object.UnitTests.Fakes
         }
 
         public readonly int Identity;
+        private readonly Func<TEntity, TEntity, int> _comparison;
         public bool SafeEqualsCalled = false;
 
         public FakeCriterion (int identity)
             : base()
         {
             Identity = identity;
+        }
+
+        public FakeCriterion(int identity, Func<TEntity, TEntity, int> comparison)
+            : this(identity)
+        {
+            _comparison = comparison;
         }
 
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
@@ -53,7 +60,7 @@ namespace Epic.Query.Object.UnitTests.Fakes
         #region implemented abstract members of Epic.Query.Object.OrderCriterion
         public override int Compare(TEntity x, TEntity y)
         {
-            throw new System.NotImplementedException();
+            return _comparison(x, y);
         }
 
         protected override bool SafeEquals(FakeCriterion<TEntity> other)

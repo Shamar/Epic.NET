@@ -27,11 +27,25 @@ using System.Runtime.Serialization;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Set of criteria to sort an <see cref="IEnumerable{TEntity}"/>. 
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity that can be sorted by these criteria.</typeparam>
     [Serializable]
     public sealed class OrderCriteria<TEntity> : OrderCriterion<TEntity>, IEnumerable<OrderCriterion<TEntity>>
     {
         private readonly OrderCriterion<TEntity>[] _criteria;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderCriteria{TEntity}"/> class.
+        /// </summary>
+        /// <param name='first'>
+        /// First criterion to apply.
+        /// </param>
+        /// <param name='second'>
+        /// Second criterion to apply.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> or <paramref name="second"/> is <c>null</c>.</exception>
         internal OrderCriteria (OrderCriterion<TEntity> first, OrderCriterion<TEntity> second)
         {
             if(null == first)
@@ -49,8 +63,6 @@ namespace Epic.Query.Object
             }
             else
             {
-                if(firstChain._criteria.Length == 0)
-                    throw new ArgumentNullException("first");
                 criteria = new List<OrderCriterion<TEntity>>(firstChain._criteria);
             }
 
@@ -60,8 +72,6 @@ namespace Epic.Query.Object
             }
             else
             {
-                if(secondChain._criteria.Length == 0)
-                    throw new ArgumentNullException("second");
                 criteria.AddRange(secondChain._criteria);
             }
 
@@ -70,6 +80,7 @@ namespace Epic.Query.Object
 
         private OrderCriteria(OrderCriterion<TEntity>[] criteria)
         {
+            // This constructor must remain private.
             _criteria = criteria;
         }
 
@@ -96,8 +107,6 @@ namespace Epic.Query.Object
         protected override bool SafeEquals (OrderCriterion<TEntity> other)
         {
             OrderCriteria<TEntity> others = other as OrderCriteria<TEntity>;
-            if(null == others)
-                return false;
             if(_criteria.Length != others._criteria.Length)
                 return false;
             for(int i = 0; i < _criteria.Length; ++i)
