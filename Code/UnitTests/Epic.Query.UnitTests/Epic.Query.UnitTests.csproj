@@ -78,6 +78,7 @@
     <Compile Include="Fakes\FakeScalarFunction.cs" />
     <Compile Include="Relational\Operations\SelectionQA.cs" />
     <Compile Include="Relational\Operations\ProjectionQA.cs" />
+    <Compile Include="Relational\Operations\RenameQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fakes\" />
