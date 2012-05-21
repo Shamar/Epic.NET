@@ -56,7 +56,6 @@ namespace Epic.Query.Relational.Operations
         {
             if (null == relation) throw new ArgumentNullException("relation");
             if (null == attributes) throw new ArgumentNullException("attributes");
-            if (null == name) throw new ArgumentNullException("name");
             this.relation = relation;
             this.attributes = attributes;
         }

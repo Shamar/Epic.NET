@@ -92,6 +92,22 @@ namespace Epic.Query.Relational.Operations
         }
 
         [Test]
+        public void Equals_ToNull_works()
+        {
+            // arrange:
+            string tableName = "testTable";
+            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            Predicate predicate = new Fakes.FakePredicate();
+            string operationName = "select * from testTable where 1 = 1";
+
+            // act:
+            Selection firstSelection = new Selection(table, predicate, operationName);
+
+            // assert:
+            Assert.IsFalse (firstSelection.Equals (null));
+        }
+
+        [Test]
         public void Equals_AgainstEquivalentObject_works()
         {
             // arrange:

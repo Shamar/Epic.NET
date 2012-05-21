@@ -65,6 +65,11 @@ namespace Epic.Query.Relational.Operations
         public Rename (Relation relation, string newRelationName, string operationName):
             base(RelationType.Rename, operationName)
         {
+            if(null == relation)
+                throw new ArgumentNullException("relation");
+            if(string.IsNullOrEmpty(newRelationName))
+                throw new ArgumentNullException("newRelationName");
+
             this.relation = relation;
             this.newRelationName = newRelationName;
         }
@@ -150,6 +155,10 @@ namespace Epic.Query.Relational.Operations
 
         private static string getDefaultName(Relation relation, string newRelationName)
         {
+            if(null == relation)
+                throw new ArgumentNullException("relation");
+            if(string.IsNullOrEmpty(newRelationName))
+                throw new ArgumentNullException("newRelationName");
             return string.Format ("{0} as {1}", relation.Name, newRelationName);
         }
     }

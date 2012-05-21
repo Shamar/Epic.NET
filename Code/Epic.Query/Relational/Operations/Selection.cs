@@ -46,8 +46,8 @@ namespace Epic.Query.Relational.Operations
         /// <param name='condition'>
         /// The <see cref="Predicate"/> against which the records are matched.
         /// </param>
-        public Selection (Relation relation, Predicate condition): 
-            base(RelationType.Selection, getDefaultName (relation, condition))
+        public Selection (Relation relation, Predicate condition)
+            : base(RelationType.Selection, getDefaultName (relation, condition))
         {
             // if (null == relation) throw new ArgumentNullException("relation");
             // if (null == condition) throw new ArgumentNullException("condition");
@@ -67,11 +67,11 @@ namespace Epic.Query.Relational.Operations
         /// <param name='name'>
         /// A user-defined name to identify the Selection relation.
         /// </param>
-        public Selection (Relation relation, Predicate condition, string name): base(RelationType.Selection, name)
+        public Selection (Relation relation, Predicate condition, string name)
+            : base(RelationType.Selection, name)
         {
             if (null == relation) throw new ArgumentNullException("relation");
             if (null == condition) throw new ArgumentNullException("condition");
-            if (null == name) throw new ArgumentNullException("name");
             this.condition = condition;
             this.relation = relation;
         }

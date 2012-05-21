@@ -111,6 +111,22 @@ namespace Epic.Query.Relational.Operations
         }
 
         [Test]
+        public void Equals_ToNull_works()
+        {
+            // arrange:
+            string tableName = "testTable";
+            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            string newRelationName = "testTableRenamed";
+            string operationName = "testTable as testTableRenamed";
+
+            // act:
+            Rename toTest = new Rename(table, newRelationName, operationName);
+
+            // assert:
+            Assert.IsFalse (toTest.Equals (null));
+        }
+
+        [Test]
         public void Test_Serialization_Works()
         {
             // arrange:

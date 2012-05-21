@@ -80,6 +80,22 @@ namespace Epic.Query.Relational.Operations
         }
 
         [Test]
+        public void Equals_ToNull_works()
+        {
+            // arrange:
+            string tableName = "testTable";
+            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
+            string operationName = "select * from testTable where 1 = 1";
+
+            // act:
+            Projection firstProjection = new Projection(table, attributes, operationName);
+
+            // assert:
+            Assert.IsFalse(firstProjection.Equals (null));
+        }
+
+        [Test]
         public void Equals_AgainstSameObject_works()
         {
             // arrange:
