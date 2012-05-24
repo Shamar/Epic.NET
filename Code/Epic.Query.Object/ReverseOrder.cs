@@ -75,12 +75,12 @@ namespace Epic.Query.Object
         private ReverseOrder(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            _toReverse = (ReverseOrder<TEntity>)info.GetValue("R", typeof(ReverseOrder<TEntity>));
+            _toReverse = (OrderCriterion<TEntity>)info.GetValue("C", typeof(OrderCriterion<TEntity>));
         }
 
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("R", _toReverse, typeof(ReverseOrder<TEntity>));
+            info.AddValue("C", _toReverse, typeof(OrderCriterion<TEntity>));
         }
         #endregion
 
