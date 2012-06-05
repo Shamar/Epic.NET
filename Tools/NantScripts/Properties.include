@@ -16,7 +16,21 @@
 	<property name="msbuild.path" value="${path::combine(framework::get-framework-directory(framework::get-target-framework()), msbuild.name)}" />
 	
 	<property name="library.dir" value="${path::combine(repository.rootdirectory, '3rdParties')}" />
-	<property name="nunit.path" value="${path::combine(path::combine(library.dir, 'NUnit'), 'nunit-console.exe')}" />
+	<property name="nunit.path" value="${path::combine(path::combine(library.dir, 'NUnit'), 'nunit-console.exe')}" overwrite="false" />
 	<property name="samples.dir" value="${path::combine(repository.rootdirectory, 'Challenges')}" />
+
+    <property name="MailLogger.failure.notify" value="true" if="${property::exists('MailLogger.mailhost')}" />
+    <property name="MailLogger.success.notify" value="true" if="${property::exists('MailLogger.mailhost')}" />
+    <property name="MailLogger.failure.subject" value="Epic.NET build failure" if="${property::exists('MailLogger.mailhost')}" />
+    <property name="MailLogger.success.subject" value="Epic.NET build successful" if="${property::exists('MailLogger.mailhost')}" />
+    <property name="MailLogger.failure.attachments" value="MailLogger.files" if="${property::exists('MailLogger.mailhost')}" />
+    <property name="MailLogger.success.attachments" value="MailLogger.files" if="${property::exists('MailLogger.mailhost')}" />
+
+    
+    <fileset id="MailLogger.files">
+        <include name="${path::combine(repository.testdirectory, '*.QA.xml')}" />
+        <include name="${path::combine(repository.testdirectory, '*.Coverage.xml')}" />
+        <include name="${path::combine(repository.testdirectory, '*.Coverage.html')}" />
+    </fileset>
 	
 </project>

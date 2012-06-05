@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="RunNUnit" default="run-tests" xmlns="http://nant.sf.net/schemas/nant.xsd">
     <target name="run-nunit">
+        <property name="coverage-file" value="${path::combine(repository.testdirectory, component.name + '.Coverage')}"/>
         <property name="results-file" value="${path::combine(repository.testdirectory, component.name + '.QA')}"/>
         <property name="working.dir" value="${working.dir}" overwrite="false"/>
-        <if test="${not property::exists('build.number')}">
+        <if test="${not property::exists('ncover.path')}">
             <exec workingdir="${working.dir}"
                   program="${nunit.path}">
                 <arg line="${tests.to.run}" /> 
@@ -11,15 +12,32 @@
                 <arg value="-xml=${results-file}.xml" />
             </exec>
         </if>
-        <if test="${property::exists('build.number')}">
-            <nunit2>
-                <formatter type="Xml" usefile="true" extension=".QA.xml" outputdir="${repository.testdirectory}" />
-                <test>
-                    <assemblies>
-                        <include name="${path::combine(repository.testdirectory, '*.UnitTests.dll')}" />
-                    </assemblies>
-                </test>
-            </nunit2>
+        
+        <if test="${property::exists('ncover.path')}">
+            <property name="working.dir" value="${working.dir}" overwrite="false"/>
+            <exec workingdir="${path::get-directory-name(ncover.path)}"
+                  program="${ncover.path}">
+                <arg value="//reg" />
+                <arg line="//w &quot;${working.dir}&quot;" />
+                <arg line="//x &quot;${coverage-file}.xml&quot;" /> 
+                <arg line="//a ${string::replace(string::replace(tests.to.run, '.UnitTests.dll', ';'), ' ', '')}" />
+                <arg value="${nunit.path}"/>
+                <arg line="${tests.to.run}" /> 
+                <arg value="-nologo" />
+                <arg value="-xml=${results-file}.xml" /> 
+            </exec>
         </if>
+        
+        <style if="${file::exists(coverage-file + '.xml')}"
+            style="${path::combine(nant.include.dir, 'coverage.xsl')}"
+            in="${coverage-file}.xml"
+            out="${coverage-file}.html"/>
+        <xmlpeek if="${file::exists(coverage-file + '.xml')}"
+                file="${coverage-file}.xml"
+                xpath="//method[seqpnt[@visitcount='0']]/@name"
+                nodeindex="0"
+                property="uncovered-method"/>
+        <fail if="${property::exists('uncovered-method')}" 
+              message="Incomplete code coverage in ${component.name}. See ${path::get-file-name(coverage-file)}.html for details."/>
     </target>
 </project>

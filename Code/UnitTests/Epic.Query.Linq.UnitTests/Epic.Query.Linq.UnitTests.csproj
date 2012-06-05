@@ -93,5 +93,6 @@
     <Compile Include="Expressions\Normalization\EnumerableMethodsReducerQA.cs" />
     <Compile Include="Expressions\Normalization\QueryableMethodsReducerQA.cs" />
     <Compile Include="Expressions\Normalization\DefaultNormalizerQA.cs" />
+    <Compile Include="MissingMethods.cs" />
   </ItemGroup>
 </Project>

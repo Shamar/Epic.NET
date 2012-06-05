@@ -30,8 +30,8 @@
         <foreach item="String" in="${projects}" delim="," property="project">
             <property name="project.name" value="${common.namespace + '.' + project + '.UnitTests'}"/>
             <property name="project.path" value="${path::combine('UnitTests', path::combine(project.name, project.name + '.csproj'))}"/>
-            <property name="tests.to.run" value="${project.name + '.dll'}" if="${not property::exists('tests.to.run')}"/>
             <property name="tests.to.run" value="${tests.to.run +' '+project.name + '.dll'}" if="${property::exists('tests.to.run')}"/>
+            <property name="tests.to.run" value="${project.name + '.dll'}" if="${not property::exists('tests.to.run')}"/>
             <echo message="Building ${project.name}." />
             <exec program="${msbuild.path}"        
                   commandline="${project.path} /t:${build.target} /p:Configuration=${build.configuration} /v:${build.verbosity}" 
