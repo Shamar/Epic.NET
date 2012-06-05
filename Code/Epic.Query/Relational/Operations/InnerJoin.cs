@@ -42,14 +42,15 @@ namespace Epic.Query.Relational.Operations
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.InnerJoin"/> class.
         /// </summary>
         /// <param name='leftRelation'>
-        /// Left relation.
+        /// Left relation in the Join operation.
         /// </param>
         /// <param name='rightRelation'>
-        /// Right relation.
+        /// Right relation in the Join operation.
         /// </param>
         /// <param name='predicate'>
         /// Predicate used to join the two Relations.
         /// </param>
+        /// <exception cref="ArgumentNullException">Thrown when any argument is <see langword="null"/></exception> 
         public InnerJoin (Relation leftRelation, Relation rightRelation, Predicate predicate) :
             base(RelationType.InnerJoin, getDefaultName(leftRelation))
         {
@@ -57,7 +58,6 @@ namespace Epic.Query.Relational.Operations
                 throw new ArgumentNullException("rightRelation");
             if (null == predicate)
                 throw new ArgumentNullException("predicate");
-
 
             this._leftRelation = leftRelation;
             this._rightRelation = rightRelation;
@@ -68,10 +68,10 @@ namespace Epic.Query.Relational.Operations
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.InnerJoin"/> class.
         /// </summary>
         /// <param name='leftRelation'>
-        /// Left relation.
+        /// Left relation in the Join operation.
         /// </param>
         /// <param name='rightRelation'>
-        /// Right relation.
+        /// Right relation in the Join operation.
         /// </param>
         /// <param name='predicate'>
         /// Predicate used to join the two Relations.
@@ -79,6 +79,7 @@ namespace Epic.Query.Relational.Operations
         /// <param name='name'>
         /// Name assigned to the join relation.
         /// </param>
+        /// <exception cref="ArgumentNullException">Thrown when any argument is <see langword="null"/></exception> 
         public InnerJoin (Relation leftRelation, Relation rightRelation, Predicate predicate, string name):
             base(RelationType.InnerJoin, name)
         {
