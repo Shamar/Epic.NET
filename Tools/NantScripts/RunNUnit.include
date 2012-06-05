@@ -3,11 +3,23 @@
     <target name="run-nunit">
         <property name="results-file" value="${path::combine(repository.testdirectory, component.name + '.QA')}"/>
         <property name="working.dir" value="${working.dir}" overwrite="false"/>
-	    <exec workingdir="${working.dir}"
-	          program="${nunit.path}">
-	        <arg line="${tests.to.run}" /> 
-	        <arg value="-nologo" />
-	        <arg value="-xml=${results-file}.xml" />
-        </exec>
+        <if test="${not property::exists('build.number')}">
+            <exec workingdir="${working.dir}"
+                  program="${nunit.path}">
+                <arg line="${tests.to.run}" /> 
+                <arg value="-nologo" />
+                <arg value="-xml=${results-file}.xml" />
+            </exec>
+        </if>
+        <if test="${property::exists('build.number')}">
+            <nunit2>
+                <formatter type="Xml" usefile="true" extension=".QA.xml" outputdir="${repository.testdirectory}" />
+                <test>
+                    <assemblies>
+                        <include name="${path::combine(repository.testdirectory, '*.UnitTests.dll')}" />
+                    </assemblies>
+                </test>
+            </nunit2>
+        </if>
     </target>
 </project>
