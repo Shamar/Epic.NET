@@ -34,8 +34,8 @@ namespace Epic.Query.Relational.Operations
     [Serializable]
     public sealed class Selection: Relation, IEquatable<Selection>
     {
-        private readonly Predicate condition;
-        private readonly Relation relation;
+        private readonly Predicate _condition;
+        private readonly Relation _relation;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.Selection"/> class.
@@ -51,8 +51,8 @@ namespace Epic.Query.Relational.Operations
         {
             // if (null == relation) throw new ArgumentNullException("relation");
             // if (null == condition) throw new ArgumentNullException("condition");
-            this.condition = condition;
-            this.relation = relation;
+            this._condition = condition;
+            this._relation = relation;
         }
         
         /// <summary>
@@ -72,8 +72,8 @@ namespace Epic.Query.Relational.Operations
         {
             if (null == relation) throw new ArgumentNullException("relation");
             if (null == condition) throw new ArgumentNullException("condition");
-            this.condition = condition;
-            this.relation = relation;
+            this._condition = condition;
+            this._relation = relation;
         }
         
         /// <summary>
@@ -82,7 +82,7 @@ namespace Epic.Query.Relational.Operations
         /// <value>
         /// The condition.
         /// </value>
-        public Predicate Condition { get { return this.condition; } }
+        public Predicate Condition { get { return this._condition; } }
         
         /// <summary>
         /// Gets the <see cref="Relation"/> used as source for the selection.
@@ -90,7 +90,7 @@ namespace Epic.Query.Relational.Operations
         /// <value>
         /// The table.
         /// </value>
-        public Relation Relation { get { return this.relation; } }
+        public Relation Relation { get { return this._relation; } }
         
         /// <summary>
         /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.Selection"/>.

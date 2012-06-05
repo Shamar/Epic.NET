@@ -60,6 +60,11 @@ namespace Epic.Query.Relational
         /// Rename.
         /// </summary>
         Rename,
+
+        /// <summary>
+        /// Inner Join.
+        /// </summary>
+        InnerJoin,
         
         /// <summary>
         /// Grouped relation (in SQL, it's the effect of a group by)
