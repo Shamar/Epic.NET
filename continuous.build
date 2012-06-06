@@ -9,8 +9,13 @@
 
 	<include buildfile="${path::combine(nant.include.dir, 'Properties.include')}" if="${not property::exists('epic.infofile')}"/>
 	
-    <target name="continuous">
+    <target name="continuous" depends="clean-builddirectory">
         <tstamp />
+        <exec workingdir="${repository.rootdirectory}"
+              program="git">
+            <arg line="log" /> 
+            <arg value="-n1" />
+        </exec>
         <call target="update-version" />
         <trycatch>
             <try>
@@ -25,6 +30,29 @@
             </finally>
         </trycatch>
     </target>
+    
+	<target name="clean-builddirectory">
+	    <delete if="${directory::exists(repository.testdirectory)}">
+	        <fileset>
+	            <include name="${path::combine(path::combine(repository.testdirectory, '**'), '*.dll')}" />
+	            <include name="${path::combine(path::combine(repository.testdirectory, '**'), '*.pdb')}" />
+	            <include name="${path::combine(path::combine(repository.testdirectory, '**'), '*.xml')}" />
+	            <include name="${path::combine(path::combine(repository.testdirectory, '**'), '*.txt')}" />
+	            <include name="${path::combine(path::combine(repository.testdirectory, '**'), '*.log')}" />
+	            <include name="${path::combine(path::combine(repository.testdirectory, '**'), '*.html')}" />
+	        </fileset>
+	    </delete>
+	    <delete if="${directory::exists(repository.builddirectory)}">
+	        <fileset>
+	            <include name="${path::combine(path::combine(repository.builddirectory, '**'), '*.dll')}" />
+	            <include name="${path::combine(path::combine(repository.builddirectory, '**'), '*.pdb')}" />
+	            <include name="${path::combine(path::combine(repository.builddirectory, '**'), '*.xml')}" />
+	            <include name="${path::combine(path::combine(repository.builddirectory, '**'), '*.txt')}" />
+	            <include name="${path::combine(path::combine(repository.builddirectory, '**'), '*.log')}" />
+	            <include name="${path::combine(path::combine(repository.builddirectory, '**'), '*.html')}" />
+	        </fileset>
+	    </delete>
+	</target>
     
     <target name="update-version">
         <if test="${build.configuration=='Release'}">

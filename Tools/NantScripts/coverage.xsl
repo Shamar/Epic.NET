@@ -3,7 +3,7 @@
 	<xsl:template match="coverage">
 		<html>
 			<head>
-				<title>NCollection Code Coverage Report</title>
+				<title>Epic.NET Code Coverage Report</title>
 				<style>BODY {
 				font: small verdana, arial, helvetica;
 				color:#000000;
@@ -47,26 +47,6 @@
                 .hldatacell {font-size:9px; background-color: #FFCCCC; text-align: right; }
                 .detailProcent {  font-size: 9px; font-weight: bold; padding-top: 1px; padding-bottom: 1px; padding-left: 3px; padding-right: 3px;}
 				</style>
-				<script language="JavaScript"><![CDATA[   
-				function toggle (field)	
-				{ field.style.display = (field.style.display == "block") ? "none" : "block"; }  
-				
-				function SwitchAll(how)
-				{	var len = document.all.length-1;
-					for(i=0;i!=len;i++)	{	
-						var block = document.all[i];
-						if (block != null && block.id != '')
-						{ block.style.display=how;}
-					}
-				}
-
-
-				function ExpandAll()
-				{SwitchAll('block');}
-		
-				function CollapseAll()
-				{SwitchAll('none');}
-				]]></script>
 			</head>
 			<body>
 				<a name="#top"></a>
@@ -74,12 +54,11 @@
 				<xsl:call-template name="ModuleSummary" />
 				<xsl:call-template name="module" />
 				<xsl:call-template name="footer" />
-				<script language="JavaScript">CollapseAll();</script>
 			</body>
 		</html>
 	</xsl:template>
 	<xsl:template name="module">
-		<xsl:for-each select="//module">
+		<xsl:for-each select="//module[method[seqpnt[@visitcount='0']]]">
 			<xsl:sort select="@assembly" />
 			<xsl:variable name="module" select="./@assembly" />
 			<div class="assembly">
@@ -90,10 +69,10 @@
 			<xsl:for-each select="./method[not(./@class = preceding-sibling::method/@class)]">
 				<xsl:sort select="@class" />
 				<xsl:sort select="@name" />
-				<xsl:call-template name="ClassSummary">
-					<xsl:with-param name="module" select="$module" />
-					<xsl:with-param name="class" select="./@class" />
-				</xsl:call-template>
+                <xsl:call-template name="ClassSummary">
+                    <xsl:with-param name="module" select="$module" />
+                    <xsl:with-param name="class" select="./@class" />
+                </xsl:call-template>
 			</xsl:for-each>
 		</xsl:for-each>
 		<xsl:variable name="totalMod" select="count(./method/seqpnt)" />
@@ -103,7 +82,7 @@
 	<xsl:template name="Methods">
 		<xsl:param name="module" />
 		<xsl:param name="class" />
-		<xsl:for-each select="//method[(@class = $class) and (parent::module/@assembly=$module)]">
+		<xsl:for-each select="//method[seqpnt[@visitcount='0'] and (@class = $class) and (parent::module/@assembly=$module)]">
 			<xsl:sort select="@name" />
 			<xsl:variable name="total" select="count(./seqpnt)" />
 			<xsl:variable name="notvisited" select="count(./seqpnt[@visitcount='0'] ) " />
@@ -112,9 +91,6 @@
 			<table cellpadding="3" cellspacing="0" width="90%">
 				<tr>
 					<td width="45%" class='method'>
-						<xsl:attribute name="onclick">javascript:toggle(
-							<xsl:value-of select="$methid" />)
-						</xsl:attribute>
 						<xsl:value-of select="@name" />
 					</td>
 					<td width="55%">
@@ -188,12 +164,10 @@
 		<xsl:variable name="notvisited" select="count(//seqpnt[(parent::method/parent::module/@assembly=$module)and (parent::method/@class=$class) and (@visitcount='0')] )" />
 		<xsl:variable name="visited" select="count(//seqpnt[(parent::method/parent::module/@assembly=$module) and (parent::method/@class=$class) and (not(@visitcount='0'))] )" />
 		<xsl:variable name="newid" select="concat (generate-id(), 'class')" />
+		<xsl:if test="not($notvisited=0)">
 		<table width='90%'>
 			<tr>
 				<td width="40%" class="class">
-					<xsl:attribute name="onclick">javascript:toggle(
-						<xsl:value-of select="$newid" />)
-					</xsl:attribute>
 					<xsl:value-of select="$class" />
 				</td>
 				<td width="60%">
@@ -221,6 +195,7 @@
 			</tr>
 		</table>
 		<hr size="1" width='90%' align='left' style=" border-bottom: 1px dotted #999;" />
+		</xsl:if>
 	</xsl:template>
 	<xsl:template name="ClassSummaryDetail">
 		<xsl:param name="module" />
@@ -245,7 +220,7 @@
 	<!-- Modules Summary -->
 	<xsl:template name="ModuleSummary">
 		<H2>Modules summary</H2>
-		<xsl:for-each select="//module">
+		<xsl:for-each select="//module[method[seqpnt[@visitcount='0']]]">
 			<xsl:sort select="@assembly" />
 			<table width='90%'>
 				<tr>
@@ -280,19 +255,8 @@
 	<!-- General Header -->
 	<xsl:template name="header">
 		<h1>
-			<b>NCollection</b> Code Coverage Report
+			<b>Epic.NET</b> Code Coverage Report
 		</h1>
-		<table>
-			<tr>
-				<td class="class">
-					<a onClick="ExpandAll();">Expand</a>
-				</td>
-				<td> | </td>
-				<td class="class">
-					<a onClick="CollapseAll();">Collapse</a>
-				</td>
-			</tr>
-		</table>
 		<hr size="1" />
 	</xsl:template>
 	<xsl:template name="footer">

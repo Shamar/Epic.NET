@@ -4,6 +4,7 @@
         <property name="coverage-file" value="${path::combine(repository.testdirectory, component.name + '.Coverage')}"/>
         <property name="results-file" value="${path::combine(repository.testdirectory, component.name + '.QA')}"/>
         <property name="working.dir" value="${working.dir}" overwrite="false"/>
+
         <if test="${not property::exists('ncover.path')}">
             <exec workingdir="${working.dir}"
                   program="${nunit.path}">
@@ -15,8 +16,7 @@
         
         <if test="${property::exists('ncover.path')}">
             <property name="working.dir" value="${working.dir}" overwrite="false"/>
-            <exec workingdir="${path::get-directory-name(ncover.path)}"
-                  program="${ncover.path}">
+            <exec program="${ncover.path}">
                 <arg value="//reg" />
                 <arg line="//w &quot;${working.dir}&quot;" />
                 <arg line="//x &quot;${coverage-file}.xml&quot;" /> 
@@ -27,17 +27,35 @@
                 <arg value="-xml=${results-file}.xml" /> 
             </exec>
         </if>
-        
+
+        <!-- list the uncovered members -->
         <style if="${file::exists(coverage-file + '.xml')}"
+            style="${path::combine(nant.include.dir, 'coverage-txt.xsl')}"
+            in="${coverage-file}.xml"
+            out="${coverage-file}.txt"/>
+        <!-- build a detailed report of uncovered members (if any) -->
+        <style if="${file::exists(coverage-file + '.xml') and (file::get-length(coverage-file + '.txt') &gt; 0)}"
             style="${path::combine(nant.include.dir, 'coverage.xsl')}"
             in="${coverage-file}.xml"
-            out="${coverage-file}.html"/>
-        <xmlpeek if="${file::exists(coverage-file + '.xml')}"
-                file="${coverage-file}.xml"
-                xpath="//method[seqpnt[@visitcount='0']]/@name"
-                nodeindex="0"
-                property="uncovered-method"/>
-        <fail if="${property::exists('uncovered-method')}" 
-              message="Incomplete code coverage in ${component.name}. See ${path::get-file-name(coverage-file)}.html for details."/>
+            out="${coverage-file}.html" />
+        <if test="${file::exists(coverage-file + '.xml')}">
+            <if test="${file::get-length(coverage-file + '.txt') &gt; 0}">
+                <xmlpeek
+                        file="${coverage-file}.xml"
+                        xpath="count(//seqpnt)"
+                        property="all-seqpnt"/>
+                <xmlpeek
+                        file="${coverage-file}.xml"
+                        xpath="count(//seqpnt[@visitcount!='0'])"
+                        property="covered-seqpnt"/>
+                <foreach item="Line" in="${coverage-file + '.txt'}" delim="," property="class,method">
+                    <echo message="The '${method}' of '${class}' is not completelly covered." />
+                </foreach>
+                <fail if="${int::parse(all-seqpnt) != int::parse(covered-seqpnt)}">Code coverage of ${component.name} is just ${double::parse(covered-seqpnt) * 100 / double::parse(all-seqpnt)} %. 
+See ${path::get-file-name(coverage-file)}.html for details.</fail>
+            </if>
+            <echo if="${not (file::get-length(coverage-file + '.txt') &gt; 0)}" 
+                  message="Code coverage of ${component.name} is 100%" />
+        </if>
     </target>
 </project>
