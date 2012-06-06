@@ -36,8 +36,8 @@ namespace Epic.Query.Relational.Operations
     [Serializable]
     public sealed class Projection: Relation, IEquatable<Projection>
     {
-        private readonly Relation relation;
-        private readonly IEnumerable<RelationAttribute> attributes;
+        private readonly Relation _relation;
+        private readonly IEnumerable<RelationAttribute> _attributes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.Projection"/> class.
@@ -56,8 +56,8 @@ namespace Epic.Query.Relational.Operations
         {
             if (null == relation) throw new ArgumentNullException("relation");
             if (null == attributes) throw new ArgumentNullException("attributes");
-            this.relation = relation;
-            this.attributes = attributes;
+            this._relation = relation;
+            this._attributes = attributes;
         }
 
         /// <summary>
@@ -74,8 +74,8 @@ namespace Epic.Query.Relational.Operations
         {
             // if (null == relation) throw new ArgumentNullException("relation");
             // if (null == attributes) throw new ArgumentNullException("attributes");
-            this.relation = relation;
-            this.attributes = attributes;
+            this._relation = relation;
+            this._attributes = attributes;
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Epic.Query.Relational.Operations
         /// <value>
         /// The table.
         /// </value>
-        public Relation Relation { get { return this.relation; } }
+        public Relation Relation { get { return this._relation; } }
 
         /// <summary>
         /// Gets the attributes extracted from the given table.
@@ -92,7 +92,7 @@ namespace Epic.Query.Relational.Operations
         /// <value>
         /// The attributes.
         /// </value>
-        public IEnumerable<RelationAttribute> Attributes { get { return this.attributes; } }
+        public IEnumerable<RelationAttribute> Attributes { get { return this._attributes; } }
 
         /// <summary>
         /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.Projection"/>.

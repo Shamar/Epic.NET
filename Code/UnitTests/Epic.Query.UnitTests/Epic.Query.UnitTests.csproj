@@ -79,6 +79,7 @@
     <Compile Include="Relational\Operations\SelectionQA.cs" />
     <Compile Include="Relational\Operations\ProjectionQA.cs" />
     <Compile Include="Relational\Operations\RenameQA.cs" />
+    <Compile Include="Relational\Operations\InnerJoinQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fakes\" />

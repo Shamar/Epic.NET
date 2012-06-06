@@ -178,16 +178,16 @@ namespace Epic.Query.Relational.Operations
             Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
             string operationName = "select fakeAttribute from testTable";
-            Projection selection = new Projection(table, attributes, operationName);
+            Projection projection = new Projection(table, attributes, operationName);
 
             IVisitor<object, Projection> selectionVisitor =
             GenerateStrictMock<IVisitor<object, Projection>>();
-            selectionVisitor.Expect(v => v.Visit(selection, context)).Return(expectedResult).Repeat.Once();
+            selectionVisitor.Expect(v => v.Visit(projection, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(selection)).Return(selectionVisitor).Repeat.Once ();
+            visitor.Expect(v => v.GetVisitor(projection)).Return(selectionVisitor).Repeat.Once ();
 
             // act:
-            object result = selection.Accept(visitor, context);
+            object result = projection.Accept(visitor, context);
 
             // assert:
             Assert.AreSame(expectedResult, result);
