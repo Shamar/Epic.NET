@@ -28,6 +28,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Linq;
+using Rhino.Mocks;
 
 namespace Epic.Query.Object.UnitTests
 {
@@ -225,6 +226,26 @@ namespace Epic.Query.Object.UnitTests
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ReverseOrder<ICargo>>(result);
         }
+
+        [Test]
+        public void Accept_withValidArguments_delegateVisitToTheRightVisitor()
+        {
+            // arrange:
+            Fakes.FakeCriterion<ICargo> toTest = new Fakes.FakeCriterion<ICargo>(1);
+            object expectedResult = new object();
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            IVisitor<object, Fakes.FakeCriterion<ICargo>> expressionVisitor = GenerateStrictMock<IVisitor<object, Fakes.FakeCriterion<ICargo>>>();
+            expressionVisitor.Expect(v => v.Visit(toTest, context)).Return(expectedResult).Repeat.Once();
+            IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
+            visitor.Expect(v => v.GetVisitor(toTest)).Return(expressionVisitor).Repeat.Once ();
+
+            // act:
+            object result = toTest.Accept(visitor, context);
+
+            // assert:
+            Assert.AreSame(expectedResult, result);
+        }
+
     }
 }
 
