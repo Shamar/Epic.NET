@@ -11,6 +11,9 @@
 	
     <target name="continuous" depends="clean-builddirectory">
         <tstamp />
+        <if test="${property::exists('build.vcs.number')}">
+            <echo message="Commit: ${build.vcs.number}" />
+        </if>
         <call target="update-version" />
         <trycatch>
             <try>
