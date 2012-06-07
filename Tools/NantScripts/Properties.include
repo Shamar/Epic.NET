@@ -21,8 +21,8 @@
 
     <property name="MailLogger.failure.notify" value="true" if="${property::exists('MailLogger.mailhost')}" />
     <property name="MailLogger.success.notify" value="true" if="${property::exists('MailLogger.mailhost')}" />
-    <property name="MailLogger.failure.subject" value="Epic.NET build failure" if="${property::exists('MailLogger.mailhost')}" />
-    <property name="MailLogger.success.subject" value="Epic.NET build successful" if="${property::exists('MailLogger.mailhost')}" />
+    <property name="MailLogger.failure.subject" value="[Epic.NET] build failure" if="${property::exists('MailLogger.mailhost')}" />
+    <property name="MailLogger.success.subject" value="[Epic.NET] build successful" if="${property::exists('MailLogger.mailhost')}" />
     <property name="MailLogger.failure.attachments" value="MailLogger.files" if="${property::exists('MailLogger.mailhost')}" />
     <property name="MailLogger.success.attachments" value="MailLogger.files" if="${property::exists('MailLogger.mailhost')}" />
 
