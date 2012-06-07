@@ -11,11 +11,6 @@
 	
     <target name="continuous" depends="clean-builddirectory">
         <tstamp />
-        <exec workingdir="${repository.rootdirectory}"
-              program="git">
-            <arg line="log" /> 
-            <arg value="-n1" />
-        </exec>
         <call target="update-version" />
         <trycatch>
             <try>
