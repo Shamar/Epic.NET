@@ -26,6 +26,10 @@ using System.Runtime.Serialization;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Reppresent a reversed order criterion.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
     [Serializable]
     public sealed class ReverseOrder<TEntity> : OrderCriterion<TEntity>
     {
@@ -37,6 +41,12 @@ namespace Epic.Query.Object
             _toReverse = toReverse;
         }
 
+        /// <summary>
+        /// The <see cref="OrderCriterion{TEntity}"/> that has been reversed.
+        /// </summary>
+        /// <value>
+        /// The reversed.
+        /// </value>
         public OrderCriterion<TEntity> Reversed
         {
             get

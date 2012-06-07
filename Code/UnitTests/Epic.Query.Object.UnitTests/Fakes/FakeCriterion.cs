@@ -52,11 +52,6 @@ namespace Epic.Query.Object.UnitTests.Fakes
             _comparison = comparison;
         }
 
-        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
-        {
-            return AcceptMe(this, visitor, context);
-        }
-
         #region implemented abstract members of Epic.Query.Object.OrderCriterion
         public override int Compare(TEntity x, TEntity y)
         {
@@ -89,11 +84,6 @@ namespace Epic.Query.Object.UnitTests.Fakes
         public OtherFakeCriterion ()
             : base()
         {
-        }
-
-        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
-        {
-            return AcceptMe(this, visitor, context);
         }
 
         #region implemented abstract members of Epic.Query.Object.OrderCriterion

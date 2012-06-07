@@ -27,11 +27,19 @@ using System.Collections.Generic;
 
 namespace Epic.Query.Object
 {
-
+    /// <summary>
+    /// Reppresent a search for a <typeparamref name="TEntity"/> that includes 
+    /// a subset of the original results.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
+    /// <typeparam name="TIdentity">Type of the identity of <typeparamref name="TEntity"/>.</typeparam>
     public interface ISlicedSearch<TEntity, TIdentity> : IOrderedSearch<TEntity, TIdentity>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
+        /// <summary>
+        /// Deferred expression, skipping and taking a subset of the results.
+        /// </summary>
         new Slice<TEntity> Expression { get; }
     }
 }

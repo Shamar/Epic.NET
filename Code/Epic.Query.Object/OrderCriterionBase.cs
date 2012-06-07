@@ -27,10 +27,25 @@ using System.Runtime.Serialization;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Base class for custom order criteria.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
+    /// <typeparam name="TOrderCriterion">Type of the order criterion.</typeparam>
+    /// <remarks>
+    /// <para>This base class is designed to be derived by sealed class only 
+    /// (the constructor will throw an <see cref="EpicException"/> otherwise) so that the 
+    /// interpretation of <see cref="OrderCriterionBase{TEntity, TOrderCriterion}.Accept{TResult}"/> 
+    /// can be done right here.</para>
+    /// </remarks>
     [Serializable]
     public abstract class OrderCriterionBase<TEntity, TOrderCriterion> : OrderCriterion<TEntity>
         where TOrderCriterion : OrderCriterion<TEntity>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderCriterionBase{TEntity, TOrderCriterion}"/> class.
+        /// </summary>
+        /// <exception cref="EpicException">This class is not of type <typeparamref name="TOrderCriterion"/>.</exception>
         protected OrderCriterionBase ()
             : base()
         {
@@ -51,6 +66,11 @@ namespace Epic.Query.Object
         }
 
         protected abstract bool SafeEquals (TOrderCriterion other);
+
+        public sealed override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
+        {
+            return AcceptMe<TResult, TOrderCriterion>(this as TOrderCriterion, visitor, context);
+        }
 
         public override sealed OrderCriterion<TEntity> Chain(OrderCriterion<TEntity> other)
         {

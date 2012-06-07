@@ -27,6 +27,18 @@ using System.Runtime.Serialization;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Order criterion for <typeparamref name="TEntity"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
+    /// <remarks>
+    /// <para>The order criteria are used to sort search results.
+    /// They are basically visitable comparers that can be either interpreted or evaluated.</para>
+    /// <para>This class describe the public API of all order criteria, but can not be derived
+    /// directly: you must derive <see cref="OrderCriterionBase{TEntity, TOrderCriterion}"/> that
+    /// add some constraints.</para>
+    /// </remarks>
+    /// <seealso cref="OrderCriterionBase{TEntity, TOrderCriterion}"/>
     [Serializable]
     public abstract class OrderCriterion<TEntity> : VisitableBase, 
                                                     IComparer<TEntity>,
@@ -38,8 +50,20 @@ namespace Epic.Query.Object
         {
         }
 
+        /// <summary>
+        /// Returns a criterion that chain the <paramref name="other"/> order criterion after this.
+        /// </summary>
+        /// <param name='other'>
+        /// Another order criterion.
+        /// </param>
+        /// <returns>A criterion that chain the <paramref name="other"/> order criterion after this.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c></exception>
         public abstract OrderCriterion<TEntity> Chain(OrderCriterion<TEntity> other);
 
+        /// <summary>
+        /// Reverse this criterion.
+        /// </summary>
+        /// <returns>A criterion that is the reverse of this.</returns>
         public abstract OrderCriterion<TEntity> Reverse();
 
         #region IComparer implementation

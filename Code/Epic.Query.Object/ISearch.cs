@@ -1,5 +1,5 @@
 //  
-//  IQuery.cs
+//  ISearch.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -29,6 +29,21 @@ using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Reppresent a search for a <typeparamref name="TEntity"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
+    /// <typeparam name="TIdentity">Type of the identity of <typeparamref name="TEntity"/>.</typeparam>
+    /// <remarks>
+    /// <para>
+    /// As a <see cref="IDeferred{TResult}"/>, this interface can be used to obtain a result
+    /// with some extension method (see for example <see cref="Deferrable.Evaluate{TResult}"/> 
+    /// and <see cref="Searchable.Identify{TEntity, TIdentity}"/>) but it can be used
+    /// to build other deferreds to specialize the search.
+    /// </para>
+    /// </remarks>
+    /// <seealso cref="IOrderedSearch{TEntity, TIdentity}"/>
+    /// <seealso cref="ISlicedSearch{TEntity, TIdentity}"/>
     public interface ISearch<TEntity, TIdentity> : IDeferred<IEnumerable<TEntity>>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>

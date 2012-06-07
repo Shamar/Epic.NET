@@ -27,10 +27,19 @@ using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Reppresent a search for a <typeparamref name="TEntity"/> that sorts the results
+    /// by an <seealso cref="OrderCriteria{TEntity}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
+    /// <typeparam name="TIdentity">Type of the identity of <typeparamref name="TEntity"/>.</typeparam>
     public interface IOrderedSearch<TEntity, TIdentity> : ISearch<TEntity, TIdentity>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
+        /// <summary>
+        /// Deferred expression, sorting the results. 
+        /// </summary>
         new Order<TEntity> Expression { get; }
     }
 }
