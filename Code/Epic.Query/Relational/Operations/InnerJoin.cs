@@ -89,8 +89,6 @@ namespace Epic.Query.Relational.Operations
                 throw new ArgumentNullException("rightRelation");
             if (null == predicate)
                 throw new ArgumentNullException("predicate");
-            if (null == name)
-                throw new ArgumentNullException("name");
 
             this._leftRelation = leftRelation;
             this._rightRelation = rightRelation;
