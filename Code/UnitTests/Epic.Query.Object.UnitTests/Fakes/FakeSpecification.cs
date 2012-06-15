@@ -66,6 +66,33 @@ namespace Epic.Query.Object.UnitTests.Fakes
                 throw new System.NotImplementedException ();
             }
         }
+
+        public ISpecification<TEntity> And (ISpecification<TEntity> other)
+        {
+            throw new System.NotImplementedException ();
+        }
+
+        public ISpecification<TEntity> Or (ISpecification<TEntity> other)
+        {
+            throw new System.NotImplementedException ();
+        }
+
+        public ISpecification<TEntity> Negate ()
+        {
+            throw new System.NotImplementedException ();
+        }
+
+        public ISpecification<TOther> OfType<TOther> () where TOther : class
+        {
+            throw new System.NotImplementedException ();
+        }
+        #endregion
+
+        #region IVisitable implementation
+        TResult IVisitable.Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
+        {
+            throw new System.NotImplementedException ();
+        }
         #endregion
     }
 }

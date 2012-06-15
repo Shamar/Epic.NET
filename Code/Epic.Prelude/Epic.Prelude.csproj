@@ -47,8 +47,16 @@
     <Compile Include="..\EpicInfo.cs">
       <Link>EpicInfo.cs</Link>
     </Compile>
+    <Compile Include="Collections\IMap.cs" />
+    <Compile Include="Collections\KeyNotFoundException.cs" />
+    <Compile Include="Collections\IdentityMap.cs" />
+    <Compile Include="Math\IMapping.cs" />
+    <Compile Include="Math\FunctionMapping.cs" />
+    <Compile Include="Collections\IIdentityMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Specifications\" />
+    <Folder Include="Collections\" />
+    <Folder Include="Math\" />
   </ItemGroup>
 </Project>

@@ -27,6 +27,8 @@ namespace Epic.Specifications
     /// <summary>
     /// Specificaiton interface.  
     /// </summary>
+    /// <typeparam name="TCandidate">The (reference) type of the objects 
+    /// that can satisfy the specification.</typeparam>
     public interface ISpecification<TCandidate> : IEquatable<ISpecification<TCandidate>>, IVisitable
         where TCandidate : class
     {
@@ -52,7 +54,50 @@ namespace Epic.Specifications
         /// Note that <c>null</c> can not satisfy any specification.
         /// </returns>
         bool IsSatisfiedBy(TCandidate candidate);
-    }
 
+        /// <summary>
+        /// Create a new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is satisfied.
+        /// </summary>
+        /// <param name="other">The other specification to evaluate.</param>
+        /// <returns>A new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is satisfied.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        ISpecification<TCandidate> And(ISpecification<TCandidate> other);
+        
+        /// <summary>
+        /// Create a new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is not satisfied.
+        /// </summary>
+        /// <param name="other">The other specification to evaluate.</param>
+        /// <returns>A new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is not satisfied.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        ISpecification<TCandidate> Or(ISpecification<TCandidate> other);
+
+        /// <summary>
+        /// Create a new <see cref="ISpecification{TCandidate}"/> that is satisfied if and only if the
+        /// current specification is not satisfied.
+        /// </summary>
+        /// <returns>A new <see cref="ISpecification{TCandidate}"/> that is satisfied if and only if the
+        /// current specification is not satisfied.</returns>
+        ISpecification<TCandidate> Negate();
+
+        /// <summary>
+        /// Create a new <see cref="ISpecification{TOther}"/> that is satisfied by all the <typeparamref name="TOther"/> 
+        /// that are <typeparamref name="TCandidate"/> and satisfy the current specification.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="ISpecification{TOther}"/> that is satisfied by all the <typeparamref name="TOther"/> 
+        /// that are <typeparamref name="TCandidate"/> and satisfy the current specification.
+        /// </returns>
+        /// <typeparam name='TOther'>
+        /// The type of objects that we want to check against the current specification. 
+        /// It must either abstract or extend <typeparamref name="TCandidate"/>.
+        /// </typeparam>
+        /// <exception cref="InvalidCastException"><typeparamref name="TOther"/> does not abstract or specialize <typeparamref name="TCandidate"/>.</exception>
+        /// <exception cref="InvalidOperationException"><typeparamref name="TOther"/> is <see cref="System.Object"/>.</exception>
+        ISpecification<TOther> OfType<TOther>() where TOther : class;
+    }
 }
 
