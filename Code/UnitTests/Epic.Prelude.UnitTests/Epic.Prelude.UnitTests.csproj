@@ -53,10 +53,12 @@
     <Compile Include="SerializationUtilities.cs" />
     <Compile Include="Collections\KeyNotFoundExceptionQA.cs" />
     <Compile Include="Collections\IdentityMapQA.cs" />
+    <Compile Include="Math\FunctionMappingQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fakes\" />
     <Folder Include="Collections\" />
+    <Folder Include="Math\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Prelude\Epic.Prelude.csproj">
