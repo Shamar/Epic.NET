@@ -119,6 +119,7 @@ namespace Epic.Collections
             Dictionary<TIdentity, TEntity> map = _map;
             if(null != map)
                 map.Clear();
+            _map = null;
         }
         #endregion
 
