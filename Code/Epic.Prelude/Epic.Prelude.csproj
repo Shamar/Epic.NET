@@ -53,6 +53,12 @@
     <Compile Include="Math\IMapping.cs" />
     <Compile Include="Math\FunctionMapping.cs" />
     <Compile Include="Collections\IIdentityMap.cs" />
+    <Compile Include="Specifications\SpecificationBase.cs" />
+    <Compile Include="Specifications\OfType.cs" />
+    <Compile Include="Specifications\Any.cs" />
+    <Compile Include="Specifications\No.cs" />
+    <Compile Include="Specifications\Negation.cs" />
+    <Compile Include="Specifications\And.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Specifications\" />
