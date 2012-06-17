@@ -60,7 +60,7 @@ namespace Epic.Specifications
             }
         }
 
-        private static void ThrowIfNull(ISpecification<TCandidate> other)
+        protected static void ThrowIfNull(ISpecification<TCandidate> other)
         {
             if(null == other)
                 throw new ArgumentNullException("other");
@@ -130,18 +130,36 @@ namespace Epic.Specifications
         public ISpecification<TCandidate> And (ISpecification<TCandidate> other)
         {
             ThrowIfNull(other);
-            throw new System.NotImplementedException ();
+            if (other is No<TCandidate>)
+                return other;
+            if (other is Any<TCandidate>)
+                return this;
+            return AndAlso(other);
+        }
+
+        protected virtual ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
+        {
+            return new And<TCandidate>(this, other);
         }
 
         public ISpecification<TCandidate> Or (ISpecification<TCandidate> other)
         {
             ThrowIfNull(other);
-            throw new System.NotImplementedException ();
+            if (other is No<TCandidate>)
+                return this;
+            if (other is Any<TCandidate>)
+                return other;
+            return OrElse(other);
+        }
+
+        protected virtual ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
+        {
+            return new Or<TCandidate>(this, other);
         }
 
         public virtual ISpecification<TCandidate> Negate ()
         {
-            throw new System.NotImplementedException ();
+            return new Negation<TCandidate>(this);
         }
 
         public ISpecification<TOther> OfType<TOther> () where TOther : class

@@ -57,6 +57,22 @@ namespace Epic.Specifications
         {
             return true;
         }
+
+        protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
+        {
+            return other;
+        }
+
+        protected override ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
+        {
+            return this;
+        }
+
+        public override ISpecification<TCandidate> Negate ()
+        {
+            return No<TCandidate>.Specification;
+        }
+
         #endregion
 
         #region ISerializable implementation

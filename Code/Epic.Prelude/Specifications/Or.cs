@@ -1,5 +1,5 @@
 //
-//  And.cs
+//  Or.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -27,13 +27,13 @@ using System.Collections.Generic;
 namespace Epic.Specifications
 {
     [Serializable]
-    public sealed class And<TCandidate> : SpecificationBase<And<TCandidate>, TCandidate>,
-                                          IEquatable<And<TCandidate>>,
-                                          IEnumerable<ISpecification<TCandidate>>
+    public sealed class Or<TCandidate> : SpecificationBase<Or<TCandidate>, TCandidate>,
+                                         IEquatable<Or<TCandidate>>,
+                                         IEnumerable<ISpecification<TCandidate>>
         where TCandidate : class
     {
         private readonly ISpecification<TCandidate>[] _specifications;
-        public And(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
+        public Or(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
         {
             if (null == first)
                 throw new ArgumentNullException("first");
@@ -42,25 +42,24 @@ namespace Epic.Specifications
 
             List<ISpecification<TCandidate>> specifications = new List<ISpecification<TCandidate>>();
 
-            And<TCandidate> firstAnd = first as And<TCandidate>;
-            And<TCandidate> secondAnd = second as And<TCandidate>;
+            Or<TCandidate> firstOr = first as Or<TCandidate>;
+            Or<TCandidate> secondOr = second as Or<TCandidate>;
 
-            if (null == firstAnd)
+            if (null == firstOr)
                 specifications.Add(first);
             else
-                specifications.AddRange(firstAnd._specifications);
+                specifications.AddRange(firstOr._specifications);
 
-            if (null == secondAnd)
+            if (null == secondOr)
                 specifications.Add(second);
             else
-                specifications.AddRange(secondAnd._specifications);
+                specifications.AddRange(secondOr._specifications);
 
             _specifications = specifications.ToArray();
         }
 
-
         #region implemented abstract members of Epic.Specifications.SpecificationBase
-        protected override bool EqualsA (And<TCandidate> otherSpecification)
+        protected override bool EqualsA (Or<TCandidate> otherSpecification)
         {
             if(_specifications.Length != otherSpecification._specifications.Length)
                 return false;
@@ -73,9 +72,9 @@ namespace Epic.Specifications
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
             for(int i = 0; i < _specifications.Length; ++i)
-                if(!_specifications[i].IsSatisfiedBy(candidate))
-                    return false;
-            return true;
+                if(_specifications[i].IsSatisfiedBy(candidate))
+                    return true;
+            return false;
         }
 
         #endregion
