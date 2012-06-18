@@ -51,15 +51,56 @@ namespace Epic.Specifications
                 specifications.AddRange(firstAnd._specifications);
 
             if (null == secondAnd)
+            {
+                // No need to check that the second is not included in first, since AndAlso already check this.
                 specifications.Add(second);
+            }
+            else if(null == firstAnd)
+            {
+                for(int i = 0; i < secondAnd._specifications.Length; ++i)
+                {
+                    ISpecification<TCandidate> toAdd = secondAnd._specifications[i];
+                    if(!first.Equals(toAdd))
+                    {
+                        specifications.Add(toAdd);
+                    }
+                }
+            }
             else
-                specifications.AddRange(secondAnd._specifications);
+            {
+                List<ISpecification<TCandidate>> specificationsToAdd = new List<ISpecification<TCandidate>>();
+                for(int i = 0; i < secondAnd._specifications.Length; ++i)
+                {
+                    ISpecification<TCandidate> toAdd = secondAnd._specifications[i];
+                    for(int j = 0; j < firstAnd._specifications.Length; ++j)
+                    {
+                        if(!toAdd.Equals(firstAnd._specifications[j]))
+                        {
+                            specifications.Add(toAdd);
+                        }
+                    }
+                }
+            }
 
             _specifications = specifications.ToArray();
         }
 
-
         #region implemented abstract members of Epic.Specifications.SpecificationBase
+
+        protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
+        {
+            And<TCandidate> otherAnd = other as And<TCandidate>;
+            if(null == otherAnd)
+            {
+                for(int i = 0; i < _specifications.Length; ++i)
+                {
+                    if(other.Equals(_specifications[i]))
+                        return this;
+                }
+            }
+            return base.AndAlso (other);
+        }
+
         protected override bool EqualsA (And<TCandidate> otherSpecification)
         {
             if(_specifications.Length != otherSpecification._specifications.Length)

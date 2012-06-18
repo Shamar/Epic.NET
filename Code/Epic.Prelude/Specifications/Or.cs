@@ -51,14 +51,56 @@ namespace Epic.Specifications
                 specifications.AddRange(firstOr._specifications);
 
             if (null == secondOr)
+            {
+                // No need to check that the second is not included in first, since OrElse already check this.
                 specifications.Add(second);
+            }
+            else if(null == firstOr)
+            {
+                for(int i = 0; i < secondOr._specifications.Length; ++i)
+                {
+                    ISpecification<TCandidate> toAdd = secondOr._specifications[i];
+                    if(!first.Equals(toAdd))
+                    {
+                        specifications.Add(toAdd);
+                    }
+                }
+            }
             else
-                specifications.AddRange(secondOr._specifications);
+            {
+                List<ISpecification<TCandidate>> specificationsToAdd = new List<ISpecification<TCandidate>>();
+                for(int i = 0; i < secondOr._specifications.Length; ++i)
+                {
+                    ISpecification<TCandidate> toAdd = secondOr._specifications[i];
+                    for(int j = 0; j < firstOr._specifications.Length; ++j)
+                    {
+                        if(!toAdd.Equals(firstOr._specifications[j]))
+                        {
+                            specifications.Add(toAdd);
+                        }
+                    }
+                }
+            }
 
             _specifications = specifications.ToArray();
         }
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
+
+        protected override ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
+        {
+            Or<TCandidate> otherOr = other as Or<TCandidate>;
+            if(null == otherOr)
+            {
+                for(int i = 0; i < _specifications.Length; ++i)
+                {
+                    if(other.Equals(_specifications[i]))
+                        return this;
+                }
+            }
+            return base.OrElse (other);
+        }
+
         protected override bool EqualsA (Or<TCandidate> otherSpecification)
         {
             if(_specifications.Length != otherSpecification._specifications.Length)
