@@ -139,7 +139,7 @@ namespace Epic.Specifications
 
         protected virtual ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
         {
-            return new And<TCandidate>(this, other);
+            return new Conjunction<TCandidate>(this, other);
         }
 
         public ISpecification<TCandidate> Or (ISpecification<TCandidate> other)
@@ -154,7 +154,7 @@ namespace Epic.Specifications
 
         protected virtual ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
         {
-            return new Or<TCandidate>(this, other);
+            return new Disjunction<TCandidate>(this, other);
         }
 
         public virtual ISpecification<TCandidate> Negate ()

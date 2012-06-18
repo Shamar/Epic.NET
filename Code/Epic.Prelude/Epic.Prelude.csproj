@@ -58,8 +58,8 @@
     <Compile Include="Specifications\Any.cs" />
     <Compile Include="Specifications\No.cs" />
     <Compile Include="Specifications\Negation.cs" />
-    <Compile Include="Specifications\And.cs" />
-    <Compile Include="Specifications\Or.cs" />
+    <Compile Include="Specifications\Disjunction.cs" />
+    <Compile Include="Specifications\Conjunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Specifications\" />

@@ -1,5 +1,5 @@
 //
-//  And.cs
+//  Or.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -27,13 +27,13 @@ using System.Collections.Generic;
 namespace Epic.Specifications
 {
     [Serializable]
-    public sealed class And<TCandidate> : SpecificationBase<And<TCandidate>, TCandidate>,
-                                          IEquatable<And<TCandidate>>,
-                                          IEnumerable<ISpecification<TCandidate>>
+    public sealed class Disjunction<TCandidate> : SpecificationBase<Disjunction<TCandidate>, TCandidate>,
+                                                  IEquatable<Disjunction<TCandidate>>,
+                                                  IEnumerable<ISpecification<TCandidate>>
         where TCandidate : class
     {
         private readonly ISpecification<TCandidate>[] _specifications;
-        public And(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
+        public Disjunction(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
         {
             if (null == first)
                 throw new ArgumentNullException("first");
@@ -42,24 +42,24 @@ namespace Epic.Specifications
 
             List<ISpecification<TCandidate>> specifications = new List<ISpecification<TCandidate>>();
 
-            And<TCandidate> firstAnd = first as And<TCandidate>;
-            And<TCandidate> secondAnd = second as And<TCandidate>;
+            Disjunction<TCandidate> firstOr = first as Disjunction<TCandidate>;
+            Disjunction<TCandidate> secondOr = second as Disjunction<TCandidate>;
 
-            if (null == firstAnd)
+            if (null == firstOr)
                 specifications.Add(first);
             else
-                specifications.AddRange(firstAnd._specifications);
+                specifications.AddRange(firstOr._specifications);
 
-            if (null == secondAnd)
+            if (null == secondOr)
             {
-                // No need to check that the second is not included in first, since AndAlso already check this.
+                // No need to check that the second is not included in first, since OrElse already check this.
                 specifications.Add(second);
             }
-            else if(null == firstAnd)
+            else if(null == firstOr)
             {
-                for(int i = 0; i < secondAnd._specifications.Length; ++i)
+                for(int i = 0; i < secondOr._specifications.Length; ++i)
                 {
-                    ISpecification<TCandidate> toAdd = secondAnd._specifications[i];
+                    ISpecification<TCandidate> toAdd = secondOr._specifications[i];
                     if(!first.Equals(toAdd))
                     {
                         specifications.Add(toAdd);
@@ -69,12 +69,12 @@ namespace Epic.Specifications
             else
             {
                 List<ISpecification<TCandidate>> specificationsToAdd = new List<ISpecification<TCandidate>>();
-                for(int i = 0; i < secondAnd._specifications.Length; ++i)
+                for(int i = 0; i < secondOr._specifications.Length; ++i)
                 {
-                    ISpecification<TCandidate> toAdd = secondAnd._specifications[i];
-                    for(int j = 0; j < firstAnd._specifications.Length; ++j)
+                    ISpecification<TCandidate> toAdd = secondOr._specifications[i];
+                    for(int j = 0; j < firstOr._specifications.Length; ++j)
                     {
-                        if(!toAdd.Equals(firstAnd._specifications[j]))
+                        if(!toAdd.Equals(firstOr._specifications[j]))
                         {
                             specifications.Add(toAdd);
                         }
@@ -87,10 +87,10 @@ namespace Epic.Specifications
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 
-        protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
+        protected override ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
         {
-            And<TCandidate> otherAnd = other as And<TCandidate>;
-            if(null == otherAnd)
+            Disjunction<TCandidate> otherOr = other as Disjunction<TCandidate>;
+            if(null == otherOr)
             {
                 for(int i = 0; i < _specifications.Length; ++i)
                 {
@@ -98,10 +98,10 @@ namespace Epic.Specifications
                         return this;
                 }
             }
-            return base.AndAlso (other);
+            return base.OrElse (other);
         }
 
-        protected override bool EqualsA (And<TCandidate> otherSpecification)
+        protected override bool EqualsA (Disjunction<TCandidate> otherSpecification)
         {
             if(_specifications.Length != otherSpecification._specifications.Length)
                 return false;
@@ -114,9 +114,9 @@ namespace Epic.Specifications
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
             for(int i = 0; i < _specifications.Length; ++i)
-                if(!_specifications[i].IsSatisfiedBy(candidate))
-                    return false;
-            return true;
+                if(_specifications[i].IsSatisfiedBy(candidate))
+                    return true;
+            return false;
         }
 
         #endregion
