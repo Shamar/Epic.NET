@@ -54,11 +54,15 @@
     <Compile Include="Collections\KeyNotFoundExceptionQA.cs" />
     <Compile Include="Collections\IdentityMapQA.cs" />
     <Compile Include="Math\FunctionMappingQA.cs" />
+    <Compile Include="Specifications\SpecificationBaseQA.cs" />
+    <Compile Include="Fakes\WrongSpecification.cs" />
+    <Compile Include="Fakes\SampleSpecification.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fakes\" />
     <Folder Include="Collections\" />
     <Folder Include="Math\" />
+    <Folder Include="Specifications\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Prelude\Epic.Prelude.csproj">

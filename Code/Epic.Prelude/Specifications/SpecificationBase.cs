@@ -99,7 +99,7 @@ namespace Epic.Specifications
                 return false;
             if (this == other)
                 return true;
-            if (this.GetType ().Equals (other))
+            if (!this.GetType ().Equals (other.GetType()))
                 return false;
             return EqualsA (other);
         }
