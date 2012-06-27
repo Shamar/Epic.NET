@@ -130,7 +130,7 @@ namespace Epic.Specifications
         public ISpecification<TCandidate> And (ISpecification<TCandidate> other)
         {
             ThrowIfNull(other);
-            if (other is Any<TCandidate> || this.Equals(other))
+            if (other is No<TCandidate> || this.Equals(other))
                 return other;
             if (other is Any<TCandidate>)
                 return this;

@@ -37,10 +37,17 @@ namespace Epic.Fakes
         where TCandidate : class
     {
         public int EqualsACalled;
+        public int IsSatisfiedByACalled;
+        private readonly Func<TCandidate, bool> _satifactionRule;
         private readonly Func<ISampleSpecification<TCandidate>, ISampleSpecification<TCandidate>, bool> _equalityComparison;
         public SampleSpecification (Func<ISampleSpecification<TCandidate>, ISampleSpecification<TCandidate>, bool> equalityComparison)
         {
             _equalityComparison = equalityComparison;
+        }
+
+        public SampleSpecification(Func<TCandidate, bool> satifactionRule)
+        {
+            _satifactionRule = satifactionRule;
         }
 
         public SampleSpecification ()
@@ -56,7 +63,8 @@ namespace Epic.Fakes
 
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
-            throw new System.NotImplementedException ();
+            IsSatisfiedByACalled++;
+            return _satifactionRule(candidate);
         }
         #endregion
     }

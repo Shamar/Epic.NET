@@ -23,6 +23,8 @@
 //
 using NUnit.Framework;
 using System;
+using Rhino.Mocks;
+using Epic.Math;
 
 namespace Epic.Specifications
 {
@@ -31,7 +33,7 @@ namespace Epic.Specifications
     {
     }
     [TestFixture()]
-    public class SpecificationBaseQA
+    public class SpecificationBaseQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_aSpecificationTooAbstract_throwsTypeInitializationException()
@@ -88,6 +90,7 @@ namespace Epic.Specifications
             Assert.IsTrue (toTest.Equals(toTest as Object));
             Assert.IsTrue (toTest.Equals(toTest as Fakes.ISampleSpecification<string>));
             Assert.IsTrue (toTest.Equals(toTest as ISpecification<string>));
+            Assert.AreEqual(typeof(Fakes.ISampleSpecification<string>).GetHashCode(), toTest.GetHashCode());
         }
 
         [Test]
@@ -119,6 +122,69 @@ namespace Epic.Specifications
             Assert.IsFalse (other.Equals(toTest as ISpecification<string>));
             Assert.AreEqual(3, toTest.EqualsACalled); 
             Assert.AreEqual(3, other.EqualsACalled);
+        }
+
+        [Test]
+        public void Accept_withValidArguments_delegateVisitToTheRightVisitor()
+        {
+            // arrange:
+            Fakes.ISampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
+            object expectedResult = new object();
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            IVisitor<object, Fakes.ISampleSpecification<string>> specificationVisitor = GenerateStrictMock<IVisitor<object, Fakes.ISampleSpecification<string>>>();
+            specificationVisitor.Expect(v => v.Visit(toTest, context)).Return(expectedResult).Repeat.Once();
+            IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
+            visitor.Expect(v => v.GetVisitor(toTest)).Return(specificationVisitor).Repeat.Once ();
+
+            // act:
+            object result = toTest.Accept(visitor, context);
+
+            // assert:
+            Assert.AreSame(expectedResult, result);
+        }
+
+        [Test]
+        public void IsSatisfiedBy_null_isFalse()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
+
+            // act:
+            bool result = toTest.IsSatisfiedBy(null);
+
+            // assert:
+            Assert.IsFalse(result);
+            Assert.AreEqual(0, toTest.IsSatisfiedByACalled);
+        }
+
+        [Test]
+        public void IsSatifiedBy_aCandidate_callIsSatisfiedByA()
+        {
+            // arrange:
+            string candidate = "test";
+            Fakes.SampleSpecification<string> toTest1 = new Fakes.SampleSpecification<string>(s => true);
+            Fakes.SampleSpecification<string> toTest2 = new Fakes.SampleSpecification<string>(s => false);
+
+            // assert:
+            Assert.IsTrue(toTest1.IsSatisfiedBy(candidate));
+            Assert.AreEqual(1, toTest1.IsSatisfiedByACalled);
+            Assert.IsFalse(toTest2.IsSatisfiedBy(candidate));
+            Assert.AreEqual(1, toTest2.IsSatisfiedByACalled);
+        }
+
+        [Test]
+        public void ApplyTo_aCandidate_callIsSatisfiedByA()
+        {
+            // arrange:
+            string candidate = "test";
+            Fakes.SampleSpecification<string> toTest1 = new Fakes.SampleSpecification<string>(s => true);
+            Fakes.SampleSpecification<string> toTest2 = new Fakes.SampleSpecification<string>(s => false);
+
+            // assert:
+            Assert.IsTrue((toTest1 as IMapping<string, bool>).ApplyTo(candidate));
+            Assert.AreEqual(1, toTest1.IsSatisfiedByACalled);
+            Assert.IsFalse((toTest2 as IMapping<string, bool>).ApplyTo(candidate));
+            Assert.AreEqual(1, toTest2.IsSatisfiedByACalled);
         }
     }
 }

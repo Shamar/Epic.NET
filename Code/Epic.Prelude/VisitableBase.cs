@@ -85,7 +85,7 @@ namespace Epic
                 // this would be a bug.
                 throw new ArgumentOutOfRangeException("visitable", "You must provide the current instance.");
             }
-            if(!typeof(TVisitable).Equals(this.GetType()))
+            if(!typeof(TVisitable).IsInterface && !typeof(TVisitable).Equals(this.GetType()))
             {
                 string message = string.Format("VisitableBase.AcceptMe() must be called only from leafs of the hierarchy tree.");
                 throw new InvalidOperationException(message);
