@@ -60,7 +60,7 @@ namespace Epic.Specifications
         public void Initialize_aValidSpecification_works()
         {
             // act:
-            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
+            Fakes.ISampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
 
             // assert:
             Assert.IsNotNull(toTest);
@@ -185,6 +185,139 @@ namespace Epic.Specifications
             Assert.AreEqual(1, toTest1.IsSatisfiedByACalled);
             Assert.IsFalse((toTest2 as IMapping<string, bool>).ApplyTo(candidate));
             Assert.AreEqual(1, toTest2.IsSatisfiedByACalled);
+        }
+
+        [Test]
+        public void And_withoutASpecification_throwsArgumentNullException ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>(s => true);
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                toTest.And(null);
+            });
+        }
+
+        [Test]
+        public void And_withNoCandidateSpecification_returnsNoCandidateSpecification ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>(s => true);
+
+            // act:
+            ISpecification<string> result = toTest.And(No<string>.Specification);
+
+            // assert:
+            Assert.AreSame(No<string>.Specification, result);
+        }
+
+        [Test]
+        public void And_withAnyCandidateSpecification_returnsItself ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
+
+            // act:
+            ISpecification<string> result = toTest.And(Any<string>.Specification);
+            
+            // assert:
+            Assert.AreSame(toTest, result);
+        }
+
+        [Test]
+        public void And_anotherSpecification_returnsAConjunction ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
+            ISpecification<string> other = GenerateStrictMock<ISpecification<string>>();
+
+            // act:
+            ISpecification<string> result = toTest.And(other);
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<Conjunction<string>>(result);
+        }
+
+        [Test]
+        public void Or_withoutASpecification_throwsArgumentNullException ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>(s => true);
+            
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                toTest.Or(null);
+            });
+        }
+        
+        [Test]
+        public void Or_withNoCandidateSpecification_returnsItself ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>(s => true);
+            
+            // act:
+            ISpecification<string> result = toTest.Or(No<string>.Specification);
+            
+            // assert:
+            Assert.AreSame(toTest, result);
+        }
+        
+        [Test]
+        public void Or_withAnyCandidateSpecification_returnsAnyCandidateSpecification ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
+            
+            // act:
+            ISpecification<string> result = toTest.Or(Any<string>.Specification);
+            
+            // assert:
+            Assert.AreSame(Any<string>.Specification, result);
+        }
+        
+        [Test]
+        public void Or_anotherSpecification_returnsADisjunction ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
+            ISpecification<string> other = GenerateStrictMock<ISpecification<string>>();
+            
+            // act:
+            ISpecification<string> result = toTest.Or(other);
+            
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<Disjunction<string>>(result);
+        }
+
+        [Test]
+        public void Negate_returnANegation ()
+        {
+            // arrange:
+            Fakes.ISampleSpecification<string> toTest = new Fakes.SampleSpecification<string>();
+
+            // act:
+            ISpecification<string> result = toTest.Negate();
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<Negation<string>>(result);
+        }
+
+        [Test]
+        public void OfType_withAnImplementedType_returnItself ()
+        {
+            // arrange:
+
+
+            // act:
+
+
+            // assert:
+
         }
     }
 }

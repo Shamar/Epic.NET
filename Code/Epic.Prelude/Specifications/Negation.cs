@@ -57,7 +57,7 @@ namespace Epic.Specifications
             return !_negated.IsSatisfiedBy(candidate);
         }
 
-        public override ISpecification<TCandidate> Negate ()
+        protected override ISpecification<TCandidate> NegateFirstCandidate ()
         {
             return _negated;
         }

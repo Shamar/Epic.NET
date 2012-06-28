@@ -38,15 +38,13 @@ namespace Epic.Specifications
         where TCandidate : class
         where TSpecification : class, ISpecification<TCandidate>, IEquatable<TSpecification>
     {
-        static SpecificationBase()
+        static SpecificationBase ()
         {
-            if(typeof(object).Equals(typeof(TCandidate)))
-            {
+            if (typeof(object).Equals (typeof(TCandidate))) {
                 string message = "System.Object is too generic to be a valid candidate for specifications.";
                 throw new InvalidOperationException (message);
             }
-            if(typeof(ISpecification<TCandidate>).Equals(typeof(TSpecification)))
-            {
+            if (typeof(ISpecification<TCandidate>).Equals (typeof(TSpecification))) {
                 string message = string.Format ("ISpecification<{0}> is too generic to be a valid specification type.", typeof(TCandidate));
                 throw new InvalidOperationException (message);
             }
@@ -60,10 +58,11 @@ namespace Epic.Specifications
             }
         }
 
-        protected static void ThrowIfNull(ISpecification<TCandidate> other)
+        protected static void ThrowIfNull<T> (ISpecification<T> other)
+            where T : class
         {
-            if(null == other)
-                throw new ArgumentNullException("other");
+            if (null == other)
+                throw new ArgumentNullException ("other");
         }
 
         #region implemented abstract members of Epic.VisitableBase
@@ -79,7 +78,7 @@ namespace Epic.Specifications
             return Equals (other as TSpecification);
         }
         
-        public override bool Equals(object obj)
+        public override bool Equals (object obj)
         {
             return Equals (obj as TSpecification);
         }
@@ -99,7 +98,7 @@ namespace Epic.Specifications
                 return false;
             if (this == other)
                 return true;
-            if (!this.GetType ().Equals (other.GetType()))
+            if (!this.GetType ().Equals (other.GetType ()))
                 return false;
             return EqualsA (other);
         }
@@ -129,37 +128,42 @@ namespace Epic.Specifications
 
         public ISpecification<TCandidate> And (ISpecification<TCandidate> other)
         {
-            ThrowIfNull(other);
-            if (other is No<TCandidate> || this.Equals(other))
+            ThrowIfNull (other);
+            if (other is No<TCandidate> || this.Equals (other))
                 return other;
             if (other is Any<TCandidate>)
                 return this;
-            return AndAlso(other);
+            return AndAlso (other);
         }
 
         protected virtual ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
         {
-            return new Conjunction<TCandidate>(this, other);
+            return new Conjunction<TCandidate> (this, other);
         }
 
         public ISpecification<TCandidate> Or (ISpecification<TCandidate> other)
         {
-            ThrowIfNull(other);
-            if (other is No<TCandidate> || this.Equals(other))
+            ThrowIfNull (other);
+            if (other is No<TCandidate> || this.Equals (other))
                 return this;
             if (other is Any<TCandidate>)
                 return other;
-            return OrElse(other);
+            return OrElse (other);
         }
 
         protected virtual ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
         {
-            return new Disjunction<TCandidate>(this, other);
+            return new Disjunction<TCandidate> (this, other);
         }
 
-        public virtual ISpecification<TCandidate> Negate ()
+        ISpecification<TCandidate> ISpecification<TCandidate>.Negate ()
         {
-            return new Negation<TCandidate>(this);
+            return NegateFirstCandidate();
+        }
+        
+        protected virtual ISpecification<TCandidate> NegateFirstCandidate()
+        {
+            return new Negation<TCandidate> (this);
         }
 
         public ISpecification<TOther> OfType<TOther> () where TOther : class
@@ -167,7 +171,7 @@ namespace Epic.Specifications
             ISpecification<TOther> other = this as ISpecification<TOther>;
             if (null != other)
                 return other;
-            return OfAnotherType<TOther>();
+            return OfAnotherType<TOther> ();
         }
         
         /// <summary>
@@ -185,12 +189,18 @@ namespace Epic.Specifications
         /// abstraction nor a specialization of <typeparamref name="TCandidate"/>.</exception>
         protected virtual ISpecification<TOther> OfAnotherType<TOther> () where TOther : class
         {
-            return new OfType<TOther, TCandidate>(this);
+            return new OfType<TOther, TCandidate> (this);
         }
 
-        public virtual Type CandidateType {
+        protected virtual Type FirstCandidateType {
             get {
                 return typeof(TCandidate);
+            }
+        }
+
+        Type ISpecification<TCandidate>.CandidateType {
+            get {
+                return FirstCandidateType;
             }
         }
 
@@ -205,6 +215,112 @@ namespace Epic.Specifications
         bool IMapping<TCandidate, bool>.ApplyTo (TCandidate element)
         {
             return IsSatisfiedBy (element);
+        }
+        #endregion
+    }
+
+    [Serializable]
+    public abstract class SpecificationBase<TSpecification, TFirstCandidate, TSecondCandidate> : 
+                                                        SpecificationBase<TSpecification, TFirstCandidate>,
+                                                        ISpecification<TSecondCandidate>,
+                                                        IMapping<TSecondCandidate, bool>
+            where TFirstCandidate : class
+            where TSecondCandidate : class
+            where TSpecification : class, ISpecification<TFirstCandidate>, 
+                                          ISpecification<TSecondCandidate>, 
+                                          IEquatable<TSpecification>
+    {
+        static SpecificationBase ()
+        {
+            if (typeof(TFirstCandidate).Equals(typeof(TSecondCandidate))) {
+                string message = string.Format("The types of candidates must be different, but {0} has been provided twice while implementing {1}.", 
+                                               typeof(TFirstCandidate), typeof(TSpecification));
+                throw new InvalidOperationException (message);
+            }
+            if (typeof(object).Equals (typeof(TSecondCandidate))) {
+                string message = "System.Object is too generic to be a valid candidate for specifications.";
+                throw new InvalidOperationException (message);
+            }
+        }
+
+        protected virtual ISpecification<TSecondCandidate> NegateSecondCandidate()
+        {
+            return new Negation<TSecondCandidate> (this);
+        }
+
+        #region IEquatable implementation
+        public bool Equals (ISpecification<TSecondCandidate> other)
+        {
+            return Equals(other as TSpecification);
+        }
+        #endregion
+
+        #region ISpecification implementation
+        public bool IsSatisfiedBy (TSecondCandidate candidate)
+        {
+            if (null == candidate)
+                return false;
+            return IsSatisfiedByA (candidate);
+        }
+        
+        /// <summary>
+        /// Determines whether this specification is satisfied by a the specified candidate.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if this specification is satisfied by a the specified candidate; otherwise, <c>false</c>.
+        /// </returns>
+        /// <param name='candidate'>
+        /// A valid (not null) candidate.
+        /// </param>
+        protected abstract bool IsSatisfiedByA (TSecondCandidate candidate);
+
+        public ISpecification<TSecondCandidate> And (ISpecification<TSecondCandidate> other)
+        {
+            ThrowIfNull (other);
+            if (other is No<TSecondCandidate> || this.Equals (other))
+                return other;
+            if (other is Any<TSecondCandidate>)
+                return this;
+            return AndAlso (other);
+        }
+        
+        protected virtual ISpecification<TSecondCandidate> AndAlso (ISpecification<TSecondCandidate> other)
+        {
+            return new Conjunction<TSecondCandidate> (this, other);
+        }
+        
+        public ISpecification<TSecondCandidate> Or (ISpecification<TSecondCandidate> other)
+        {
+            ThrowIfNull (other);
+            if (other is No<TSecondCandidate> || this.Equals (other))
+                return this;
+            if (other is Any<TSecondCandidate>)
+                return other;
+            return OrElse (other);
+        }
+        
+        protected virtual ISpecification<TSecondCandidate> OrElse (ISpecification<TSecondCandidate> other)
+        {
+            return new Disjunction<TSecondCandidate> (this, other);
+        }
+
+        ISpecification<TSecondCandidate> ISpecification<TSecondCandidate>.Negate ()
+        {
+            return NegateSecondCandidate();
+        }
+
+        Type ISpecification<TSecondCandidate>.CandidateType {
+            get {
+                return typeof(TSecondCandidate);
+            }
+        }
+
+        #endregion ISpecification implementation
+
+        #region IMapping implementation
+        bool IMapping<TSecondCandidate, bool>.ApplyTo (TSecondCandidate candidate)
+        {
+            return IsSatisfiedBy(candidate);
         }
         #endregion
     }

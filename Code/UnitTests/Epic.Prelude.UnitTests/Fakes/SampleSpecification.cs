@@ -31,21 +31,27 @@ namespace Epic.Fakes
     {
     }
 
+    public interface ISampleSpecification : ISpecification<FakeCandidate1>, ISpecification<FakeCandidate2>,
+                                            IEquatable<ISampleSpecification>
+    {
+    }
+
+
     [Serializable]
-    public class SampleSpecification<TCandidate> : Specifications.SpecificationBase<ISampleSpecification<TCandidate>,TCandidate>,
-                                                   ISampleSpecification<TCandidate>
-        where TCandidate : class
+    public class SampleSpecification<TCandidate1> : Specifications.SpecificationBase<ISampleSpecification<TCandidate1>,TCandidate1>,
+                                                   ISampleSpecification<TCandidate1>
+        where TCandidate1 : class
     {
         public int EqualsACalled;
         public int IsSatisfiedByACalled;
-        private readonly Func<TCandidate, bool> _satifactionRule;
-        private readonly Func<ISampleSpecification<TCandidate>, ISampleSpecification<TCandidate>, bool> _equalityComparison;
-        public SampleSpecification (Func<ISampleSpecification<TCandidate>, ISampleSpecification<TCandidate>, bool> equalityComparison)
+        private readonly Func<TCandidate1, bool> _satifactionRule;
+        private readonly Func<ISampleSpecification<TCandidate1>, ISampleSpecification<TCandidate1>, bool> _equalityComparison;
+        public SampleSpecification (Func<ISampleSpecification<TCandidate1>, ISampleSpecification<TCandidate1>, bool> equalityComparison)
         {
             _equalityComparison = equalityComparison;
         }
 
-        public SampleSpecification(Func<TCandidate, bool> satifactionRule)
+        public SampleSpecification(Func<TCandidate1, bool> satifactionRule)
         {
             _satifactionRule = satifactionRule;
         }
@@ -55,13 +61,13 @@ namespace Epic.Fakes
         }
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
-        protected override bool EqualsA (ISampleSpecification<TCandidate> otherSpecification)
+        protected override bool EqualsA (ISampleSpecification<TCandidate1> otherSpecification)
         {
             EqualsACalled++;
             return _equalityComparison(this, otherSpecification);
         }
 
-        protected override bool IsSatisfiedByA (TCandidate candidate)
+        protected override bool IsSatisfiedByA (TCandidate1 candidate)
         {
             IsSatisfiedByACalled++;
             return _satifactionRule(candidate);
@@ -73,5 +79,31 @@ namespace Epic.Fakes
         where TCandidate : class
     {
     }
+
+    public class SampleSpecification : Specifications.SpecificationBase<ISampleSpecification, FakeCandidate1, FakeCandidate2>,
+                                ISampleSpecification
+    {
+        public SampleSpecification ()
+        {
+        }
+
+        protected override bool EqualsA (ISampleSpecification otherSpecification)
+        {
+            return true;
+        }
+        
+        #region implemented abstract members of Epic.Specifications.SpecificationBase
+        protected override bool IsSatisfiedByA (FakeCandidate1 candidate)
+        {
+            return true;
+        }
+        protected override bool IsSatisfiedByA (FakeCandidate2 candidate)
+        {
+            return true;
+        }
+
+        #endregion
+    }
+
 }
 

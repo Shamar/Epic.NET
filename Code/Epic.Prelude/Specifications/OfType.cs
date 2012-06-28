@@ -77,7 +77,7 @@ namespace Epic.Specifications
             return _innerSpecification.OfType<TOther> ();
         }
 
-        public override Type CandidateType {
+        protected override Type FirstCandidateType {
             get {
                 return _innerSpecification.CandidateType;
             }
