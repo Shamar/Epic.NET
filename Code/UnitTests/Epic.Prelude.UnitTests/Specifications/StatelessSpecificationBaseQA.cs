@@ -1,5 +1,5 @@
 //
-//  Candidate1.cs
+//  StatelessSpecificationBaseQA.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,15 +22,33 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 using System;
+using NUnit.Framework;
 
-namespace Epic.Fakes
+namespace Epic.Specifications
 {
-    public class FakeCandidate1Abstraction
+    [TestFixture]
+    public class StatelessSpecificationBaseQA
     {
-    }
+        [Test]
+        public void Initialization_works ()
+        {
+            // arrange:
+            new Fakes.FakeStatelessSpecification<Fakes.FakeCandidate1>();
+        }
 
-    public class FakeCandidate1 : FakeCandidate1Abstraction
-    {
+        [Test]
+        public void Equals_toAnotherInstanceOfTheSameType_isTrue ()
+        {
+            // arrange:
+            var toTest = new Fakes.FakeStatelessSpecification<Fakes.FakeCandidate1>();
+            var other = new Fakes.FakeStatelessSpecification<Fakes.FakeCandidate1>();
+
+            // act:
+            bool result = toTest.Equals(other);
+
+            // assert:
+            Assert.IsTrue(result);
+        }
     }
 }
 

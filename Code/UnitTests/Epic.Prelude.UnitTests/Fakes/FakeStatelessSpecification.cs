@@ -1,5 +1,5 @@
 //
-//  Candidate1.cs
+//  FakeStatelessSpecification.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,15 +22,23 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 using System;
+using Epic.Specifications;
 
 namespace Epic.Fakes
 {
-    public class FakeCandidate1Abstraction
+    public class FakeStatelessSpecification<TCandidate> : StatelessSpecificationBase<ISampleSpecification<TCandidate>, TCandidate>, ISampleSpecification<TCandidate>
+        where TCandidate : class
     {
-    }
+        public FakeStatelessSpecification ()
+        {
+        }
 
-    public class FakeCandidate1 : FakeCandidate1Abstraction
-    {
+        #region implemented abstract members of Epic.Specifications.SpecificationBase
+        protected override bool IsSatisfiedByA (TCandidate candidate)
+        {
+            throw new System.NotImplementedException ();
+        }
+        #endregion
     }
 }
 

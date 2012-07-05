@@ -32,7 +32,7 @@ namespace Epic.Specifications
     /// </summary>
     /// <typeparam name="TCandidate">Type of the objects that can be tested with this specification.</typeparam>
     [Serializable]
-    public sealed class No<TCandidate> : SpecificationBase<No<TCandidate>, TCandidate>,
+    public sealed class No<TCandidate> : StatelessSpecificationBase<No<TCandidate>, TCandidate>,
                                          IEquatable<No<TCandidate>>,
                                          ISerializable
         where TCandidate : class
@@ -47,11 +47,6 @@ namespace Epic.Specifications
         public static No<TCandidate> Specification = new No<TCandidate>();
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
-
-        protected override bool EqualsA (No<TCandidate> otherSpecification)
-        {
-            return true;
-        }
 
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
@@ -78,7 +73,7 @@ namespace Epic.Specifications
         #region ISerializable implementation
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
         {
-            info.SetType(typeof(Ref));
+            Ref.Instance.GetObjectData(info, context);
         }
         #endregion
 
@@ -86,26 +81,33 @@ namespace Epic.Specifications
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         private sealed class Ref : IObjectReference, ISerializable
         {
+            private Ref()
+            {
+            }
+            
+            public static readonly Ref Instance = new Ref();
+            
             private Ref(SerializationInfo info, StreamingContext context)
             {
             }
-
+            
             #region ISerializable Members
-
+            
             public void GetObjectData(SerializationInfo info, StreamingContext context)
             {
+                info.SetType(typeof(Ref));
             }
-
-            #endregion
-
+            
+#endregion
+            
             #region IObjectReference Members
-
+            
             public object GetRealObject(StreamingContext context)
             {
                 return No<TCandidate>.Specification;
             }
-
-            #endregion
+            
+#endregion
         }
     }
 }

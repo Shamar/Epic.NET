@@ -230,19 +230,6 @@ namespace Epic.Specifications
                                           ISpecification<TSecondCandidate>, 
                                           IEquatable<TSpecification>
     {
-        static SpecificationBase ()
-        {
-            if (typeof(TFirstCandidate).Equals(typeof(TSecondCandidate))) {
-                string message = string.Format("The types of candidates must be different, but {0} has been provided twice while implementing {1}.", 
-                                               typeof(TFirstCandidate), typeof(TSpecification));
-                throw new InvalidOperationException (message);
-            }
-            if (typeof(object).Equals (typeof(TSecondCandidate))) {
-                string message = "System.Object is too generic to be a valid candidate for specifications.";
-                throw new InvalidOperationException (message);
-            }
-        }
-
         protected virtual ISpecification<TSecondCandidate> NegateSecondCandidate()
         {
             return new Negation<TSecondCandidate> (this);

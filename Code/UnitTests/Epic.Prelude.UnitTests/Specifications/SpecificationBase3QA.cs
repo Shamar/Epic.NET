@@ -1,5 +1,5 @@
 //
-//  Candidate1.cs
+//  SpecificationBase3QA.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -21,16 +21,21 @@
 //  You should have received a copy of the GNU Affero General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+using NUnit.Framework;
 using System;
+using Rhino.Mocks;
+using Epic.Math;
+using System.IO;
 
-namespace Epic.Fakes
+namespace Epic.Specifications
 {
-    public class FakeCandidate1Abstraction
+    interface IDoubleSpec : ISpecification<Fakes.FakeCandidate1>, ISpecification<Fakes.FakeCandidate2>, IEquatable<IDoubleSpec>
     {
     }
-
-    public class FakeCandidate1 : FakeCandidate1Abstraction
+    [TestFixture()]
+    public class SpecificationBase3QA : RhinoMocksFixtureBase
     {
+
     }
 }
 

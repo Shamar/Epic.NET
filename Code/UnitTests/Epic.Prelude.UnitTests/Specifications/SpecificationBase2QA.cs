@@ -25,6 +25,7 @@ using NUnit.Framework;
 using System;
 using Rhino.Mocks;
 using Epic.Math;
+using System.IO;
 
 namespace Epic.Specifications
 {
@@ -33,7 +34,7 @@ namespace Epic.Specifications
     {
     }
     [TestFixture()]
-    public class SpecificationBaseQA : RhinoMocksFixtureBase
+    public class SpecificationBase2QA : RhinoMocksFixtureBase
     {
         [Test]
         public void Initialize_aSpecificationTooAbstract_throwsTypeInitializationException()
@@ -311,14 +312,56 @@ namespace Epic.Specifications
         public void OfType_withAnImplementedType_returnItself ()
         {
             // arrange:
-
+            ISpecification<Fakes.FakeCandidate1> toTest = new Fakes.SampleSpecification();
 
             // act:
-
+            ISpecification<Fakes.FakeCandidate2> result = toTest.OfType<Fakes.FakeCandidate2>();
 
             // assert:
-
+            Assert.AreSame(toTest, result);
         }
+
+        [Test]
+        public void OfType_withAnAbstraction_returnASpecificationOfType ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<Fakes.FakeCandidate1> toTest = new Fakes.SampleSpecification<Fakes.FakeCandidate1>();
+
+            // act:
+            ISpecification<Fakes.FakeCandidate1Abstraction> result = toTest.OfType<Fakes.FakeCandidate1Abstraction>();
+
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<OfType<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>>(result);
+        }
+
+        [Test]
+        public void Serialization_works ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<Fakes.FakeCandidate1> toSerialize = new Fakes.SampleSpecification<Fakes.FakeCandidate1>();
+
+            // act:
+            Stream stream = SerializationUtilities.Serialize(toSerialize);
+            
+            // assert:
+            Assert.IsNotNull (stream);
+        }
+
+        [Test]
+        public void Deserialization_works ()
+        {
+            // arrange:
+            Fakes.SampleSpecification<Fakes.FakeCandidate1> toSerialize = new Fakes.SampleSpecification<Fakes.FakeCandidate1>();
+            Stream stream = SerializationUtilities.Serialize(toSerialize);
+
+            // act:
+            Fakes.SampleSpecification<Fakes.FakeCandidate1> deserialized = SerializationUtilities.Deserialize<Fakes.SampleSpecification<Fakes.FakeCandidate1>>(stream);
+            
+            // assert:
+            Assert.IsNotNull (deserialized);
+        }
+
     }
 }
 

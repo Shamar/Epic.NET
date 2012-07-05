@@ -1,5 +1,5 @@
 //
-//  Candidate1.cs
+//  StatelessSpecificationBase.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -23,14 +23,24 @@
 //
 using System;
 
-namespace Epic.Fakes
+namespace Epic.Specifications
 {
-    public class FakeCandidate1Abstraction
+    /// <summary>
+    /// Base class for stateless specification.
+    /// </summary>
+    [Serializable]
+    public abstract class StatelessSpecificationBase<TSpecification, TCandidate> : SpecificationBase<TSpecification, TCandidate>
+        where TCandidate : class
+        where TSpecification : class, ISpecification<TCandidate>, IEquatable<TSpecification>
     {
-    }
+        protected StatelessSpecificationBase ()
+        {
+        }
 
-    public class FakeCandidate1 : FakeCandidate1Abstraction
-    {
+        protected override sealed bool EqualsA (TSpecification otherSpecification)
+        {
+            return true;
+        }
     }
 }
 

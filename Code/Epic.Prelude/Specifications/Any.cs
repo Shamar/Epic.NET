@@ -32,7 +32,7 @@ namespace Epic.Specifications
     /// </summary>
     /// <typeparam name="TCandidate">Type of the objects that can be tested with this specification.</typeparam>
     [Serializable]
-    public sealed class Any<TCandidate> : SpecificationBase<Any<TCandidate>, TCandidate>,
+    public sealed class Any<TCandidate> : StatelessSpecificationBase<Any<TCandidate>, TCandidate>,
                                           IEquatable<Any<TCandidate>>,
                                           ISerializable
         where TCandidate : class
@@ -47,11 +47,6 @@ namespace Epic.Specifications
         public static Any<TCandidate> Specification = new Any<TCandidate>();
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
-
-        protected override bool EqualsA (Any<TCandidate> otherSpecification)
-        {
-            return true;
-        }
 
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
@@ -78,7 +73,7 @@ namespace Epic.Specifications
         #region ISerializable implementation
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
         {
-            info.SetType(typeof(Ref));
+            Ref.Instance.GetObjectData(info, context);
         }
         #endregion
 
@@ -86,6 +81,12 @@ namespace Epic.Specifications
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         private sealed class Ref : IObjectReference, ISerializable
         {
+            private Ref()
+            {
+            }
+
+            public static readonly Ref Instance = new Ref();
+
             private Ref(SerializationInfo info, StreamingContext context)
             {
             }
@@ -94,6 +95,7 @@ namespace Epic.Specifications
 
             public void GetObjectData(SerializationInfo info, StreamingContext context)
             {
+                info.SetType(typeof(Ref));
             }
 
             #endregion
