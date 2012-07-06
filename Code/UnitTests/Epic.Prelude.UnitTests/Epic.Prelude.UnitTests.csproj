@@ -64,6 +64,8 @@
     <Compile Include="Specifications\NoQA.cs" />
     <Compile Include="Specifications\StatelessSpecificationBaseQA.cs" />
     <Compile Include="Fakes\FakeStatelessSpecification.cs" />
+    <Compile Include="Specifications\OfTypeQA.cs" />
+    <Compile Include="Specifications\NegationQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fakes\" />

@@ -37,14 +37,14 @@ namespace Epic.Specifications
                 string message = string.Format ("Cannot cast neither from {0} to {1} nor from {1} to {0}.", typeof(TInitial), typeof(TCandidate));
                 throw new InvalidCastException (message);
             }
+            if (typeof(TCandidate).Equals(typeof(TInitial)))
+            {
+                string message = string.Format ("Cannot create an OfType<{1}, {0}>, becouse the two type arguments are equals.", typeof(TInitial), typeof(TCandidate));
+                throw new InvalidCastException (message);
+            }
         }
         
         private readonly ISpecification<TInitial> _innerSpecification;
-
-        public OfType ()
-            : this(Any<TInitial>.Specification)
-        {
-        }
 
         public ISpecification<TInitial> InnerSpecification
         {
