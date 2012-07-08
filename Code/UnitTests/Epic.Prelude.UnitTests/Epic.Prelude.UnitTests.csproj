@@ -66,6 +66,8 @@
     <Compile Include="Fakes\FakeStatelessSpecification.cs" />
     <Compile Include="Specifications\OfTypeQA.cs" />
     <Compile Include="Specifications\NegationQA.cs" />
+    <Compile Include="Specifications\ConjunctionQA.cs" />
+    <Compile Include="IObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fakes\" />

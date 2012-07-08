@@ -39,6 +39,8 @@ namespace Epic.Specifications
                 throw new ArgumentNullException("first");
             if (null == second)
                 throw new ArgumentNullException("second");
+            if (first.Equals(second))
+                throw new ArgumentException("Cannot create a Disjunction of two equals specification.", "second");
 
             List<ISpecification<TCandidate>> specifications = new List<ISpecification<TCandidate>>();
 
@@ -68,16 +70,20 @@ namespace Epic.Specifications
             }
             else
             {
-                List<ISpecification<TCandidate>> specificationsToAdd = new List<ISpecification<TCandidate>>();
                 for(int i = 0; i < secondOr._specifications.Length; ++i)
                 {
+                    bool alreadyPresent = false;
                     ISpecification<TCandidate> toAdd = secondOr._specifications[i];
-                    for(int j = 0; j < firstOr._specifications.Length; ++j)
+                    for(int j = 0; j < firstOr._specifications.Length && !alreadyPresent; ++j)
                     {
-                        if(!toAdd.Equals(firstOr._specifications[j]))
+                        if(toAdd.Equals(firstOr._specifications[j]))
                         {
-                            specifications.Add(toAdd);
+                            alreadyPresent = true;
                         }
+                    }
+                    if (!alreadyPresent)
+                    {
+                        specifications.Add(toAdd);
                     }
                 }
             }
