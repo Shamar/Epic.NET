@@ -238,7 +238,7 @@ namespace Epic.Specifications
         #region IEquatable implementation
         public bool Equals (ISpecification<TSecondCandidate> other)
         {
-            return Equals(other as TSpecification);
+            return base.Equals(other as TSpecification);
         }
         #endregion
 

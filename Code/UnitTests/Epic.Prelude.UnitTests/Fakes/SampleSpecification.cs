@@ -80,7 +80,8 @@ namespace Epic.Fakes
     {
     }
 
-    public class SampleSpecification : Specifications.SpecificationBase<ISampleSpecification, FakeCandidate1, FakeCandidate2>,
+    [Serializable]
+    public class SampleSpecification : Specifications.SpecificationBase<ISampleSpecification, FakeCandidate2, FakeCandidate1>,
                                 ISampleSpecification
     {
         public SampleSpecification ()
@@ -91,14 +92,20 @@ namespace Epic.Fakes
         {
             return true;
         }
-        
+
+        public int IsSatisfiedByAFakeCandidate1Calls = 0;
+        public int IsSatisfiedByAFakeCandidate2Calls = 0;
+        public Func<FakeCandidate1, bool> SatifactionRule;
+
         #region implemented abstract members of Epic.Specifications.SpecificationBase
         protected override bool IsSatisfiedByA (FakeCandidate1 candidate)
         {
-            return true;
+            IsSatisfiedByAFakeCandidate1Calls++;
+            return SatifactionRule(candidate);
         }
         protected override bool IsSatisfiedByA (FakeCandidate2 candidate)
         {
+            IsSatisfiedByAFakeCandidate2Calls++;
             return true;
         }
 
