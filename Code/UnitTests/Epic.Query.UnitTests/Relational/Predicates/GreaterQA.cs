@@ -72,7 +72,7 @@ namespace Epic.Query.Relational.Predicates
             
             // assert:
             Assert.IsFalse (toTest.Equals (null as Object));
-            Assert.IsFalse (toTest.Equals (null as Equal));
+            Assert.IsFalse (toTest.Equals (null as Greater));
         }
 
         [Test]
