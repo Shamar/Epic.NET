@@ -42,8 +42,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = null;
 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new Equal<FakeScalar, FakeScalar>(scalar1, scalar2));
-            Assert.Throws<ArgumentNullException>(() => new Equal<FakeScalar, FakeScalar>(scalar2, scalar1));
+            Assert.Throws<ArgumentNullException>(() => new Equal(scalar1, scalar2));
+            Assert.Throws<ArgumentNullException>(() => new Equal(scalar2, scalar1));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Equal equal = new Equal(scalar1, scalar2);
 
             // assert:
             Assert.IsNotNull (equal);
@@ -63,21 +63,17 @@ namespace Epic.Query.Relational.Predicates
         }
 
         [Test]
-        public void TwoPredicates_withDifferentGenericTypes_areNotEqual()
+        public void Equals_AgainstNull_isFalse()
         {
             // arrange:
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-
-            // act:
-            Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Equal<Scalar, Scalar> equal2 = new Equal<Scalar, Scalar>(scalar1, scalar2);
-
+            var toTest = new Equal(scalar1, scalar2);
+            
             // assert:
-            Assert.IsFalse (equal.Equals (equal2));
-            Assert.AreNotEqual (equal.GetHashCode (), equal2.GetHashCode ());
+            Assert.IsFalse (toTest.Equals (null as Object));
+            Assert.IsFalse (toTest.Equals (null as Equal));
         }
-
 
         [Test]
         public void Equals_AgainstSameObject_works()
@@ -87,8 +83,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Equal<FakeScalar, FakeScalar> equal2 = equal;
+            Equal equal = new Equal(scalar1, scalar2);
+            Equal equal2 = equal;
 
             // assert:
             Assert.IsTrue (equal.Equals (equal2));
@@ -103,8 +99,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Equal<FakeScalar, FakeScalar> equal2 = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Equal equal = new Equal(scalar1, scalar2);
+            Equal equal2 = new Equal(scalar1, scalar2);
 
             // assert:
             Assert.IsTrue (equal.Equals (equal2));
@@ -120,8 +116,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar3 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Equal<FakeScalar, FakeScalar> equal2 = new Equal<FakeScalar, FakeScalar>(scalar1, scalar3);
+            Equal equal = new Equal(scalar1, scalar2);
+            Equal equal2 = new Equal(scalar1, scalar3);
 
             // assert:
             Assert.IsFalse (equal.Equals (equal2));
@@ -137,8 +133,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalarFunction function = new FakeScalarFunction("test");
 
             // act:
-            Equal<FakeScalar, FakeScalarFunction> equal = new Equal<FakeScalar, FakeScalarFunction>(scalar1, function);
-            Equal<FakeScalar, FakeScalar> equal2 = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Equal equal = new Equal(scalar1, function);
+            Equal equal2 = new Equal(scalar1, scalar2);
 
             // assert:
             Assert.IsFalse (equal.Equals (equal2));
@@ -151,10 +147,10 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Equal equal = new Equal(scalar1, scalar2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Equal<FakeScalar,FakeScalar>>(equal);
+            Stream stream = SerializationUtilities.Serialize<Equal>(equal);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -166,11 +162,11 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Equal equal = new Equal(scalar1, scalar2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Equal<FakeScalar,FakeScalar>>(equal);
-            Equal<FakeScalar, FakeScalar> deserialized = SerializationUtilities.Deserialize<Equal<FakeScalar, FakeScalar>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Equal>(equal);
+            Equal deserialized = SerializationUtilities.Deserialize<Equal>(stream);
 
             // assert:
             // Assert.AreSame(equal, deserialized);
@@ -185,10 +181,10 @@ namespace Epic.Query.Relational.Predicates
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Equal<FakeScalar, FakeScalar> equal = new Equal<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Equal equal = new Equal(scalar1, scalar2);
 
-            IVisitor<object, Equal<FakeScalar, FakeScalar>> equalPredicateVisitor =
-                GenerateStrictMock<IVisitor<object, Equal<FakeScalar, FakeScalar>>>();
+            IVisitor<object, Equal> equalPredicateVisitor =
+                GenerateStrictMock<IVisitor<object, Equal>>();
             equalPredicateVisitor.Expect(v => v.Visit(equal, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(equal)).Return(equalPredicateVisitor).Repeat.Once ();

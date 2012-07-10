@@ -42,8 +42,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = null;
 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new Less<FakeScalar, FakeScalar>(scalar1, scalar2));
-            Assert.Throws<ArgumentNullException>(() => new Less<FakeScalar, FakeScalar>(scalar2, scalar1));
+            Assert.Throws<ArgumentNullException>(() => new Less(scalar1, scalar2));
+            Assert.Throws<ArgumentNullException>(() => new Less(scalar2, scalar1));
         }
 
         [Test]
@@ -54,30 +54,13 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Less less = new Less(scalar1, scalar2);
 
             // assert:
             Assert.IsNotNull (less);
             Assert.IsTrue (less.Left.Equals (scalar1));
             Assert.IsTrue (less.Right.Equals (scalar2));
         }
-
-        [Test]
-        public void TwoPredicates_withDifferentGenericTypes_areNotEqual()
-        {
-            // arrange:
-            FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
-            FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-
-            // act:
-            Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Less<Scalar, Scalar> less2 = new Less<Scalar, Scalar>(scalar1, scalar2);
-
-            // assert:
-            Assert.IsFalse (less.Equals (less2));
-            Assert.AreNotEqual (less.GetHashCode (), less2.GetHashCode ());
-        }
-
 
         [Test]
         public void Equals_AgainstSameObject_works()
@@ -87,14 +70,27 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Less<FakeScalar, FakeScalar> less2 = less;
+            Less less = new Less(scalar1, scalar2);
+            Less less2 = less;
 
             // assert:
             Assert.IsTrue (less.Equals (less2));
             Assert.AreEqual (less.GetHashCode (), less2.GetHashCode ());
         }
 
+        [Test]
+        public void Equals_AgainstNull_isFalse()
+        {
+            // arrange:
+            FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
+            FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
+            var toTest = new Less(scalar1, scalar2);
+
+            // assert:
+            Assert.IsFalse (toTest.Equals (null as Object));
+            Assert.IsFalse (toTest.Equals (null as Less));
+        }
+        
         [Test]
         public void Equals_AgainstEquivalentObject_works()
         {
@@ -103,8 +99,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Less<FakeScalar, FakeScalar> less2 = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Less less = new Less(scalar1, scalar2);
+            Less less2 = new Less(scalar1, scalar2);
 
             // assert:
             Assert.IsTrue (less.Equals (less2));
@@ -120,8 +116,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar3 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Less<FakeScalar, FakeScalar> less2 = new Less<FakeScalar, FakeScalar>(scalar1, scalar3);
+            Less less = new Less(scalar1, scalar2);
+            Less less2 = new Less(scalar1, scalar3);
 
             // assert:
             Assert.IsFalse (less.Equals (less2));
@@ -137,8 +133,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalarFunction function = new FakeScalarFunction("test");
 
             // act:
-            Less<FakeScalar, FakeScalarFunction> less = new Less<FakeScalar, FakeScalarFunction>(scalar1, function);
-            Less<FakeScalar, FakeScalar> less2 = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Less less = new Less(scalar1, function);
+            Less less2 = new Less(scalar1, scalar2);
 
             // assert:
             Assert.IsFalse (less.Equals (less2));
@@ -151,10 +147,10 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Less less = new Less(scalar1, scalar2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Less<FakeScalar,FakeScalar>>(less);
+            Stream stream = SerializationUtilities.Serialize<Less>(less);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -166,11 +162,11 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Less less = new Less(scalar1, scalar2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Less<FakeScalar,FakeScalar>>(less);
-            Less<FakeScalar, FakeScalar> deserialized = SerializationUtilities.Deserialize<Less<FakeScalar, FakeScalar>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Less>(less);
+            Less deserialized = SerializationUtilities.Deserialize<Less>(stream);
 
             // assert:
             // Assert.AreSame(less, deserialized);
@@ -185,10 +181,10 @@ namespace Epic.Query.Relational.Predicates
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Less<FakeScalar, FakeScalar> less = new Less<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Less less = new Less(scalar1, scalar2);
 
-            IVisitor<object, Less<FakeScalar, FakeScalar>> lessPredicateVisitor =
-                GenerateStrictMock<IVisitor<object, Less<FakeScalar, FakeScalar>>>();
+            IVisitor<object, Less> lessPredicateVisitor =
+                GenerateStrictMock<IVisitor<object, Less>>();
             lessPredicateVisitor.Expect(v => v.Visit(less, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(less)).Return(lessPredicateVisitor).Repeat.Once ();

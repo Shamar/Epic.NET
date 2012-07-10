@@ -29,9 +29,7 @@ namespace Epic.Query.Relational.Predicates
     /// Implementation of the Equal predicate. It is true if the first operand is equal to the second one.
     /// </summary>
     [Serializable]
-    public sealed class Equal<TScalar1, TScalar2>: ScalarPredicateBase<TScalar1, TScalar2>, IEquatable<Equal<TScalar1, TScalar2>>
-        where TScalar1: Scalar
-        where TScalar2: Scalar
+    public sealed class Equal : ScalarPredicateBase, IEquatable<Equal>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/> class.
@@ -42,7 +40,8 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='rightOperand'>
         /// Right operand.
         /// </param>
-        public Equal (TScalar1 leftOperand, TScalar2 rightOperand): base(leftOperand, rightOperand)
+        public Equal (Scalar leftOperand, Scalar rightOperand)
+            : base(leftOperand, rightOperand)
         {
 
         }
@@ -58,9 +57,9 @@ namespace Epic.Query.Relational.Predicates
         /// <c>true</c> if the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the current
         /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (ScalarPredicateBase<TScalar1, TScalar2> other)
+        public override bool Equals (ScalarPredicateBase other)
         {
-            return Equals(other as Equal<TScalar1, TScalar2>);
+            return Equals(other as Equal);
         }
 
         /// <summary>
@@ -73,7 +72,7 @@ namespace Epic.Query.Relational.Predicates
         /// <c>true</c> if the specified <see cref="Equal<TScalar1,TScalar2>"/> is equal to the current
         /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals(Equal<TScalar1, TScalar2> other)
+        public bool Equals(Equal other)
         {
             if (other == null) return false;
             return this.Left.Equals (other.Left) && this.Right.Equals (other.Right);

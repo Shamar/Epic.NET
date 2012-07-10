@@ -29,12 +29,10 @@ namespace Epic.Query.Relational.Predicates
     /// Implementation of the Less predicate. It is true if the first operand is less than the second one.
     /// </summary>
     [Serializable]
-    public sealed class Less<TScalar1, TScalar2>: ScalarPredicateBase<TScalar1, TScalar2>, IEquatable<Less<TScalar1, TScalar2>>
-        where TScalar1: Scalar
-        where TScalar2: Scalar
+    public sealed class Less : ScalarPredicateBase, IEquatable<Less>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand.
@@ -42,38 +40,39 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='rightOperand'>
         /// Right operand.
         /// </param>
-        public Less (TScalar1 leftOperand, TScalar2 rightOperand): base(leftOperand, rightOperand)
+        public Less (Scalar leftOperand, Scalar rightOperand)
+            : base(leftOperand, rightOperand)
         {
 
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>.
+        /// Determines whether the specified <see cref="ScalarPredicateBase<Scalar,Scalar>"/> is equal to the
+        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>.
+        /// The <see cref="ScalarPredicateBase<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="ScalarPredicateBase<Scalar,Scalar>"/> is equal to the current
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (ScalarPredicateBase<TScalar1, TScalar2> other)
+        public override bool Equals (ScalarPredicateBase other)
         {
-            return Equals(other as Less<TScalar1, TScalar2>);
+            return Equals(other as Less);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Less<TScalar1,TScalar2>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>.
+        /// Determines whether the specified <see cref="Less<Scalar,Scalar>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Less<TScalar1,TScalar2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>.
+        /// The <see cref="Less<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Less<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Less`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Less<Scalar,Scalar>"/> is equal to the current
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals(Less<TScalar1, TScalar2> other)
+        public bool Equals(Less other)
         {
             if (other == null) return false;
             return this.Left.Equals (other.Left) && this.Right.Equals (other.Right);

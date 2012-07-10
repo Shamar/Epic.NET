@@ -29,12 +29,10 @@ namespace Epic.Query.Relational.Predicates
     /// Implementation of the Greater predicate. It is true if the first operand is greater than the second one.
     /// </summary>
     [Serializable]
-    public sealed class Greater<TScalar1, TScalar2>: ScalarPredicateBase<TScalar1, TScalar2>, IEquatable<Greater<TScalar1, TScalar2>>
-        where TScalar1: Scalar
-        where TScalar2: Scalar
+    public sealed class Greater: ScalarPredicateBase, IEquatable<Greater>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater`2"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand.
@@ -42,37 +40,37 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='rightOperand'>
         /// Right operand.
         /// </param>
-        public Greater (TScalar1 leftOperand, TScalar2 rightOperand): base(leftOperand, rightOperand)
+        public Greater (Scalar leftOperand, Scalar rightOperand): base(leftOperand, rightOperand)
         {
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater`2"/>.
+        /// Determines whether the specified <see cref="ScalarPredicateBase"/> is equal to the
+        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater`2"/>.
+        /// The <see cref="ScalarPredicateBase"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="ScalarPredicateBase"/> is equal to the current
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (ScalarPredicateBase<TScalar1, TScalar2> other)
+        public override bool Equals (ScalarPredicateBase other)
         {
-            return Equals(other as Greater<TScalar1, TScalar2>);
+            return Equals(other as Greater);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Greater<TScalar1,TScalar2>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater`2"/>.
+        /// Determines whether the specified <see cref="Greater<Scalar,Scalar>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Greater<TScalar1,TScalar2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater`2"/>.
+        /// The <see cref="Greater<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Greater<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Greater<Scalar,Scalar>"/> is equal to the current
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals(Greater<TScalar1, TScalar2> other)
+        public bool Equals(Greater other)
         {
             if (other == null) return false;
             return this.Left.Equals (other.Left) && this.Right.Equals (other.Right);

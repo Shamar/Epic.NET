@@ -44,25 +44,19 @@ namespace Epic.Query.Relational.Predicates
             return new Or<TPredicate1, TPredicate2>(predicate, other);
         }
 
-        public static Equal<TScalar1, TScalar2> Equal<TScalar1, TScalar2>(this TScalar1 scalar, TScalar2 other)
-            where TScalar1: Scalar
-            where TScalar2: Scalar
+        public static Equal Equal(this Scalar scalar, Scalar other)
         {
-            return new Equal<TScalar1, TScalar2>(scalar, other);
+            return new Equal(scalar, other);
         }
 
-        public static Greater<TScalar1, TScalar2> Greater<TScalar1, TScalar2>(this TScalar1 scalar, TScalar2 other)
-            where TScalar1: Scalar
-            where TScalar2: Scalar
+        public static Greater Greater(this Scalar scalar, Scalar other)
         {
-            return new Greater<TScalar1, TScalar2>(scalar, other);
+            return new Greater(scalar, other);
         }
 
-        public static Less<TScalar1, TScalar2> Less<TScalar1, TScalar2>(this TScalar1 scalar, TScalar2 other)
-            where TScalar1: Scalar
-            where TScalar2: Scalar
+        public static Less Less(this Scalar scalar, Scalar other)
         {
-            return new Less<TScalar1, TScalar2>(scalar, other);
+            return new Less(scalar, other);
         }
 
     }

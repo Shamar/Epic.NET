@@ -30,16 +30,14 @@ namespace Epic.Query.Relational.Predicates
     /// <para>Examples are: <see cref="Less"/>, <see cref="Greater"/>, <see cref="Equals"/>.</para>
     /// </summary>
     [Serializable]
-    public abstract class ScalarPredicateBase<TScalar1, TScalar2>: Predicate, IEquatable<ScalarPredicateBase<TScalar1, TScalar2>>
-        where TScalar1: Scalar
-        where TScalar2: Scalar
+    public abstract class ScalarPredicateBase : Predicate, IEquatable<ScalarPredicateBase>
     {
-        TScalar1 _left;
-        TScalar2 _right;
+        private readonly Scalar _left;
+        private readonly Scalar _right;
 
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase`2"/> class.
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand of the predicate. Cannot be <see langword="null"/>.
@@ -50,7 +48,7 @@ namespace Epic.Query.Relational.Predicates
         /// <exception cref='ArgumentNullException'>
         /// This exception is thrown if any of the operand is <see langword="null"/>
         /// </exception>
-        internal protected ScalarPredicateBase (TScalar1 leftOperand, TScalar2 rightOperand)
+        internal protected ScalarPredicateBase (Scalar leftOperand, Scalar rightOperand)
         {
             if (null == leftOperand) throw new ArgumentNullException("leftOperand");
             if (null == rightOperand) throw new ArgumentNullException("rightOperand");
@@ -64,7 +62,7 @@ namespace Epic.Query.Relational.Predicates
         /// <value>
         /// The left operand.
         /// </value>
-        public TScalar1 Left { get { return this._left; } }
+        public Scalar Left { get { return this._left; } }
 
         /// <summary>
         /// Gets the right operand of the predicate.
@@ -72,38 +70,38 @@ namespace Epic.Query.Relational.Predicates
         /// <value>
         /// The right operand.
         /// </value>
-        public TScalar2 Right { get { return this._right; } }
+        public Scalar Right { get { return this._right; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase`2"/>.
+        /// Determines whether the specified <see cref="ScalarPredicateBase<Scalar,Scalar"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase`2"/>.
+        /// The <see cref="ScalarPredicateBase<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="ScalarPredicateBase<Scalar,Scalar>"/> is equal to the current
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
-        public abstract bool Equals(ScalarPredicateBase<TScalar1, TScalar2> other);
+        public abstract bool Equals(ScalarPredicateBase other);
 
         /// <summary>
-        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase`2"/>.
+        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Predicate"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase`2"/>.
+        /// The <see cref="Predicate"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Predicate"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase`2"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (Predicate other)
         {
-            return Equals(other as ScalarPredicateBase<TScalar1, TScalar2>);
+            return Equals(other as ScalarPredicateBase);
         }
 
         /// <summary>
         /// Serves as a hash function for a
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase`2"/> object.
+        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a

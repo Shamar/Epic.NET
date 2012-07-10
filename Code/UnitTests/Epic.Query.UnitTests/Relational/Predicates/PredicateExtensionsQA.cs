@@ -40,7 +40,7 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Greater<FakeScalar, FakeScalar> greater = scalar1.Greater(scalar2);
+            Greater greater = scalar1.Greater(scalar2);
 
             // assert:
             Assert.IsTrue (greater.Left.Equals (scalar1));
@@ -55,7 +55,7 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Less<FakeScalar, FakeScalar> less = scalar1.Less(scalar2);
+            Less less = scalar1.Less(scalar2);
 
             // assert:
             Assert.IsTrue (less.Left.Equals (scalar1));
@@ -70,7 +70,7 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Equal<FakeScalar, FakeScalar> equal = scalar1.Equal(scalar2);
+            Equal equal = scalar1.Equal(scalar2);
 
             // assert:
             Assert.IsTrue (equal.Left.Equals (scalar1));
@@ -135,7 +135,7 @@ namespace Epic.Query.Relational.Predicates
             Predicate composition = scalar1.Greater (scalar2).And (scalar1.Less (scalar3)).Not ();
 
             Assert.IsAssignableFrom(
-                typeof(Not<And<Greater<FakeScalar, FakeScalar>, Less<FakeScalar, FakeScalar>>>),
+                typeof(Not<And<Greater, Less>>),
                 composition);
 
         }

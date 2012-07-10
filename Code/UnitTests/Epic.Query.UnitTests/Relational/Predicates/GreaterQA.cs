@@ -42,8 +42,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = null;
 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new Greater<FakeScalar, FakeScalar>(scalar1, scalar2));
-            Assert.Throws<ArgumentNullException>(() => new Greater<FakeScalar, FakeScalar>(scalar2, scalar1));
+            Assert.Throws<ArgumentNullException>(() => new Greater(scalar1, scalar2));
+            Assert.Throws<ArgumentNullException>(() => new Greater(scalar2, scalar1));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Greater greater = new Greater(scalar1, scalar2);
 
             // assert:
             Assert.IsNotNull (greater);
@@ -63,21 +63,17 @@ namespace Epic.Query.Relational.Predicates
         }
 
         [Test]
-        public void TwoPredicates_withDifferentGenericTypes_areNotEqual()
+        public void Equals_AgainstNull_isFalse()
         {
             // arrange:
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-
-            // act:
-            Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Greater<Scalar, Scalar> greater2 = new Greater<Scalar, Scalar>(scalar1, scalar2);
-
+            var toTest = new Greater(scalar1, scalar2);
+            
             // assert:
-            Assert.IsFalse (greater.Equals (greater2));
-            Assert.AreNotEqual (greater.GetHashCode (), greater2.GetHashCode ());
+            Assert.IsFalse (toTest.Equals (null as Object));
+            Assert.IsFalse (toTest.Equals (null as Equal));
         }
-
 
         [Test]
         public void Equals_AgainstSameObject_works()
@@ -87,8 +83,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Greater<FakeScalar, FakeScalar> greater2 = greater;
+            Greater greater = new Greater(scalar1, scalar2);
+            Greater greater2 = greater;
 
             // assert:
             Assert.IsTrue (greater.Equals (greater2));
@@ -103,8 +99,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Greater<FakeScalar, FakeScalar> greater2 = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Greater greater = new Greater(scalar1, scalar2);
+            Greater greater2 = new Greater(scalar1, scalar2);
 
             // assert:
             Assert.IsTrue (greater.Equals (greater2));
@@ -120,8 +116,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalar scalar3 = new FakeScalar(ScalarType.Constant);
 
             // act:
-            Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
-            Greater<FakeScalar, FakeScalar> greater2 = new Greater<FakeScalar, FakeScalar>(scalar1, scalar3);
+            Greater greater = new Greater(scalar1, scalar2);
+            Greater greater2 = new Greater(scalar1, scalar3);
 
             // assert:
             Assert.IsFalse (greater.Equals (greater2));
@@ -137,8 +133,8 @@ namespace Epic.Query.Relational.Predicates
             FakeScalarFunction function = new FakeScalarFunction("test");
 
             // act:
-            Greater<FakeScalar, FakeScalarFunction> greater = new Greater<FakeScalar, FakeScalarFunction>(scalar1, function);
-            Greater<FakeScalar, FakeScalar> greater2 = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Greater greater = new Greater(scalar1, function);
+            Greater greater2 = new Greater(scalar1, scalar2);
 
             // assert:
             Assert.IsFalse (greater.Equals (greater2));
@@ -151,10 +147,10 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Greater greater = new Greater(scalar1, scalar2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Greater<FakeScalar,FakeScalar>>(greater);
+            Stream stream = SerializationUtilities.Serialize<Greater>(greater);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -166,11 +162,11 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Greater greater = new Greater(scalar1, scalar2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Greater<FakeScalar,FakeScalar>>(greater);
-            Greater<FakeScalar, FakeScalar> deserialized = SerializationUtilities.Deserialize<Greater<FakeScalar, FakeScalar>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Greater>(greater);
+            Greater deserialized = SerializationUtilities.Deserialize<Greater>(stream);
 
             // assert:
             // Assert.AreSame(greater, deserialized);
@@ -185,10 +181,10 @@ namespace Epic.Query.Relational.Predicates
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeScalar scalar1 = new FakeScalar(ScalarType.Constant);
             FakeScalar scalar2 = new FakeScalar(ScalarType.Constant);
-            Greater<FakeScalar, FakeScalar> greater = new Greater<FakeScalar, FakeScalar>(scalar1, scalar2);
+            Greater greater = new Greater(scalar1, scalar2);
 
-            IVisitor<object, Greater<FakeScalar, FakeScalar>> greaterPredicateVisitor =
-                GenerateStrictMock<IVisitor<object, Greater<FakeScalar, FakeScalar>>>();
+            IVisitor<object, Greater> greaterPredicateVisitor =
+                GenerateStrictMock<IVisitor<object, Greater>>();
             greaterPredicateVisitor.Expect(v => v.Visit(greater, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(greater)).Return(greaterPredicateVisitor).Repeat.Once ();
