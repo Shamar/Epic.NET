@@ -47,10 +47,9 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="Predicate"/> against which the records are matched.
         /// </param>
         public Selection (Relation relation, Predicate condition)
-            : base(RelationType.Selection, getDefaultName (relation, condition))
+            : base(RelationType.Selection, getDefaultName (relation))
         {
-            // if (null == relation) throw new ArgumentNullException("relation");
-            // if (null == condition) throw new ArgumentNullException("condition");
+            if (null == condition) throw new ArgumentNullException("condition");
             this._condition = condition;
             this._relation = relation;
         }
@@ -121,7 +120,8 @@ namespace Epic.Query.Relational.Operations
         public bool Equals(Selection other)
         {
             if (null == other) return false;
-            return this.Relation.Equals (other.Relation) && this.Condition.Equals (other.Condition);
+            return this.Relation.Equals (other.Relation) && this.Condition.Equals (other.Condition)
+                && this.Name.Equals (other.Name);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Epic.Query.Relational.Operations
         /// </returns>
         public override int GetHashCode ()
         {
-            return this.Relation.GetHashCode () ^ this.Condition.GetHashCode ();
+            return this.Relation.GetHashCode () ^ this.Condition.GetHashCode () ^ this.Name.GetHashCode ();
         }
         
         /// <summary>
@@ -165,11 +165,10 @@ namespace Epic.Query.Relational.Operations
         /// <param name='predicate'>
         /// The condition against which the records are matched.
         /// </param>
-        private static string getDefaultName(Relation relation, Predicate predicate)
+        private static string getDefaultName(Relation relation)
         {
             if (null == relation) throw new ArgumentNullException("relation");
-            if (null == predicate) throw new ArgumentNullException("predicate");
-            return string.Format ("SELECT * from {0} where {1}", relation.Name, predicate.ToString ());
+            return relation.Name;
         }
     }
 }
