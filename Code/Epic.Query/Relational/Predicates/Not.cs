@@ -29,7 +29,7 @@ namespace Epic.Query.Relational.Predicates
     /// Implementation of the Not predicate. It is true if its operand is false
     /// </summary>
     [Serializable]
-    public sealed class Not<TPredicate>: UnaryPredicateBase<TPredicate>, IEquatable<Not<TPredicate>> where TPredicate: Predicate
+    public sealed class Not : UnaryPredicateBase, IEquatable<Not> 
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/> class.
@@ -37,7 +37,7 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='operand'>
         /// Operand.
         /// </param>
-        public Not (TPredicate operand): base(operand)
+        public Not (Predicate operand): base(operand)
         {
         }
 
@@ -51,9 +51,9 @@ namespace Epic.Query.Relational.Predicates
         /// <c>true</c> if the specified <see cref="UnaryPredicateBase<TPredicate>"/> is equal to the current
         /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (UnaryPredicateBase<TPredicate> other)
+        public override bool Equals (UnaryPredicateBase other)
         {
-            return Equals (other as Not<TPredicate>);
+            return Equals (other as Not);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Epic.Query.Relational.Predicates
         /// <c>true</c> if the specified <see cref="Not<TPredicate>"/> is equal to the current
         /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals(Not<TPredicate> other)
+        public bool Equals(Not other)
         {
             if (null == other) return false;
             return this.Operand.Equals (other.Operand);

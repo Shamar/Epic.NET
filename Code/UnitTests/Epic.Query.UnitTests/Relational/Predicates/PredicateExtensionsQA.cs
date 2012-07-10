@@ -115,7 +115,7 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate = new FakePredicate();
 
             // act:
-            Not<FakePredicate> not = predicate.Not();
+            Not not = predicate.Not();
 
             // assert:
             Assert.IsTrue (not.Operand.Equals (predicate));
@@ -135,7 +135,7 @@ namespace Epic.Query.Relational.Predicates
             Predicate composition = scalar1.Greater (scalar2).And (scalar1.Less (scalar3)).Not ();
 
             Assert.IsAssignableFrom(
-                typeof(Not<And<Greater, Less>>),
+                typeof(Not),
                 composition);
 
         }

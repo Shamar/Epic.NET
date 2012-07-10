@@ -30,10 +30,9 @@ namespace Epic.Query.Relational.Predicates
     /// <para>Examples are: <see cref="Not"/>.</para>
     /// </summary>
     [Serializable]
-    public abstract class UnaryPredicateBase<TPredicate>: Predicate, IEquatable<UnaryPredicateBase<TPredicate>>
-        where TPredicate: Predicate
+    public abstract class UnaryPredicateBase : Predicate, IEquatable<UnaryPredicateBase>
     {
-        TPredicate _operand;
+        Predicate _operand;
 
         /// <summary>
         /// Initializes a new instance of the
@@ -45,7 +44,7 @@ namespace Epic.Query.Relational.Predicates
         /// <exception cref='ArgumentNullException'>
         /// This exception is thrown if any of the operand is <see langword="null"/>
         /// </exception>
-        protected UnaryPredicateBase (TPredicate operand)
+        protected UnaryPredicateBase (Predicate operand)
         {
             if (null == operand) throw new ArgumentNullException("operand");
             this._operand = operand;
@@ -57,7 +56,7 @@ namespace Epic.Query.Relational.Predicates
         /// <value>
         /// The operand.
         /// </value>
-        public TPredicate Operand { get { return this._operand; } }
+        public Predicate Operand { get { return this._operand; } }
 
         /// <summary>
         /// Determines whether the specified <see cref="UnaryPredicateBase<TScalar>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>.
@@ -69,7 +68,7 @@ namespace Epic.Query.Relational.Predicates
         /// <c>true</c> if the specified <see cref="UnaryPredicateBase<TPredicate>"/> is equal to the current
         /// <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>; otherwise, <c>false</c>.
         /// </returns>
-        public abstract bool Equals(UnaryPredicateBase<TPredicate> other);
+        public abstract bool Equals(UnaryPredicateBase other);
 
         /// <summary>
         /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>.
@@ -83,7 +82,7 @@ namespace Epic.Query.Relational.Predicates
         /// </returns>
         public override bool Equals(Predicate other)
         {
-            return Equals (other as UnaryPredicateBase<TPredicate>);
+            return Equals (other as UnaryPredicateBase);
         }
 
         /// <summary>

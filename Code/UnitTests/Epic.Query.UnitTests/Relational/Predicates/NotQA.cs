@@ -41,7 +41,7 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate = null;
 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new Not<FakePredicate>(predicate));
+            Assert.Throws<ArgumentNullException>(() => new Not(predicate));
         }
 
         [Test]
@@ -51,28 +51,24 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate = new FakePredicate();
 
             // act:
-            Not<FakePredicate> not = new Not<FakePredicate>(predicate);
+            Not not = new Not(predicate);
 
             // assert:
             Assert.IsTrue(not.Operand.Equals (predicate));
         }
 
         [Test]
-        public void TwoPredicates_withDifferentGenericTypes_areNotEqual()
+        public void Equals_AgainstNull_isFalse()
         {
             // arrange:
             FakePredicate predicate = new FakePredicate();
-
-            // act:
-            Not<FakePredicate> not = new Not<FakePredicate>(predicate);
-            Not<Predicate> not2 = new Not<Predicate>(predicate);
+            Not toTest = new Not(predicate);
 
             // assert:
-            Assert.IsFalse(not.Equals (not2));
-            Assert.AreNotEqual (not.GetHashCode (), not2.GetHashCode ());
-
+            Assert.IsFalse (toTest.Equals (null as Object));
+            Assert.IsFalse (toTest.Equals (null as Not));
         }
-
+        
         [Test]
         public void Equals_AgainstSameObject_works()
         {
@@ -80,8 +76,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate = new FakePredicate();
 
             // act:
-            Not<FakePredicate> not = new Not<FakePredicate>(predicate);
-            Not<FakePredicate> not2 = not;
+            Not not = new Not(predicate);
+            Not not2 = not;
 
             // assert:
             Assert.IsTrue (not.Equals (not2));
@@ -95,8 +91,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate = new FakePredicate();
 
             // act:
-            Not<FakePredicate> not = new Not<FakePredicate>(predicate);
-            Not<FakePredicate> not2 = new Not<FakePredicate>(predicate);
+            Not not = new Not(predicate);
+            Not not2 = new Not(predicate);
 
             // assert:
             Assert.IsTrue (not.Equals (not2));
@@ -111,8 +107,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            Not<FakePredicate> not = new Not<FakePredicate>(predicate);
-            Not<FakePredicate> not2 = new Not<FakePredicate>(predicate2);
+            Not not = new Not(predicate);
+            Not not2 = new Not(predicate2);
 
             // assert:
             Assert.IsFalse (not.Equals (not2));
@@ -124,10 +120,10 @@ namespace Epic.Query.Relational.Predicates
         {
             // arrange:
             FakePredicate predicate = new FakePredicate();
-            Not<FakePredicate> not = new Not<FakePredicate>(predicate);
+            Not not = new Not(predicate);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Not<FakePredicate>>(not);
+            Stream stream = SerializationUtilities.Serialize<Not>(not);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -138,11 +134,11 @@ namespace Epic.Query.Relational.Predicates
         {
             // arrange:
             FakePredicate predicate = new FakePredicate();
-            Not<FakePredicate> not = new Not<FakePredicate>(predicate);
+            Not not = new Not(predicate);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Not<FakePredicate>>(not);
-            Not<FakePredicate> deserialized = SerializationUtilities.Deserialize<Not<FakePredicate>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Not>(not);
+            Not deserialized = SerializationUtilities.Deserialize<Not>(stream);
 
             // assert:
             Assert.IsTrue (not.Equals (deserialized));
@@ -155,10 +151,10 @@ namespace Epic.Query.Relational.Predicates
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakePredicate predicate = new FakePredicate();
-            Not<FakePredicate> not = new Not<FakePredicate>(predicate);
+            Not not = new Not(predicate);
 
-            IVisitor<object, Not<FakePredicate>> notPredicateVisitor =
-                GenerateStrictMock<IVisitor<object, Not<FakePredicate>>>();
+            IVisitor<object, Not> notPredicateVisitor =
+                GenerateStrictMock<IVisitor<object, Not>>();
             notPredicateVisitor.Expect(v => v.Visit(not, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(not)).Return(notPredicateVisitor).Repeat.Once ();

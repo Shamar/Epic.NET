@@ -27,9 +27,9 @@ namespace Epic.Query.Relational.Predicates
 {
     public static class PredicateExtension
     {
-        public static Not<TPredicate> Not<TPredicate>(this TPredicate predicate) where TPredicate: Predicate
+        public static Not Not(this Predicate predicate)
         {
-            return new Not<TPredicate>(predicate);
+            return new Not(predicate);
         }
 
         public static And<TPredicate1, TPredicate2> And<TPredicate1, TPredicate2>(this TPredicate1 predicate, TPredicate2 other)
