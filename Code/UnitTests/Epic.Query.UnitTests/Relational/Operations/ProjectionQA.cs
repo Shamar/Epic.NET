@@ -75,6 +75,7 @@ namespace Epic.Query.Relational.Operations
             Assert.IsTrue (firstProjection.Attributes.SequenceEqual (attributes));
             Assert.IsTrue (firstProjection.Attributes.SequenceEqual (secondProjection.Attributes));
 
+            Assert.IsTrue (firstProjection.Name.Equals (table.Name));
             Assert.IsTrue (secondProjection.Name.Equals (operationName));
             Assert.IsFalse (firstProjection.Equals (secondProjection));
         }

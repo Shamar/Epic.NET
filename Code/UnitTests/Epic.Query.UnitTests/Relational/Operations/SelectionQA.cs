@@ -70,6 +70,7 @@ namespace Epic.Query.Relational.Operations
             Assert.IsTrue (firstSelection.Condition.Equals (predicate));
             Assert.IsTrue (firstSelection.Condition.Equals (secondSelection.Condition));
 
+            Assert.IsTrue (firstSelection.Name.Equals (table.Name));
             Assert.IsTrue (secondSelection.Name.Equals (operationName));
             Assert.IsFalse (firstSelection.Equals (secondSelection));
         }
