@@ -1,5 +1,5 @@
 //
-//  SelectionVisitor.cs
+//  ConjunctionVisitor.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,33 +22,33 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 using System;
-using Epic.Query.Object.Expressions;
-using Epic.Query.Relational;
 using Epic.Query.Relational.Predicates;
+using Epic.Specifications;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
-    public sealed class SelectionVisitor<TEntity> : CompositeVisitor<Relation>.VisitorBase, 
-                                                    IVisitor<Relation, Selection<TEntity>>
+    public sealed class ConjunctionVisitor<TEntity> : CompositeVisitor<Predicate>.VisitorBase, 
+                                                      IVisitor<Predicate, Conjunction<TEntity>>
         where TEntity : class
     {
-        private readonly PredicateBuilder<TEntity> _predicateBuilder;
-        public SelectionVisitor (CompositeVisitor<Relation> composition, PredicateBuilder<TEntity> predicateBuilder)
+        public ConjunctionVisitor (CompositeVisitor<Predicate> composition)
             : base(composition)
         {
-            if(null == predicateBuilder)
-                throw new ArgumentNullException("predicateBuilder");
-            _predicateBuilder = predicateBuilder;
         }
 
         #region IVisitor implementation
-        public Relation Visit (Selection<TEntity> target, IVisitContext context)
+        public Predicate Visit (Conjunction<TEntity> target, IVisitContext context)
         {
-            Relation source = VisitInner(target.Source, context);
-            QueryBuilder builder = new QueryBuilder(source);
-            Predicate predicate = _predicateBuilder.Visit(target.Specification, context.With(builder));
-            // we have to add a constructor without the name argument to the Selection 
-            return new Selection("removeThisArgument", builder.ToRelation(), predicate);
+            Predicate[] predicates = new Predicate[target.Count()];
+            int i = 0;
+            foreach(ISpecification<TEntity> specification in target)
+            {
+                predicates[i++] = VisitInner(specification, context);
+            }
+            And
+            for(int i = 0; i < predicates.Length; ++i)
+            {
+            }
         }
         #endregion
     }

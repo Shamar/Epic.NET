@@ -64,6 +64,7 @@
     <Compile Include="Relational\Visitors\SourceVisitor.cs" />
     <Compile Include="Relational\PredicateBuilder.cs" />
     <Compile Include="Relational\Visitors\SelectionVisitor.cs" />
+    <Compile Include="Relational\Visitors\ConjunctionVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
