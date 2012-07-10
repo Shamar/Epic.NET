@@ -32,16 +32,14 @@ namespace Epic.Query.Relational.Predicates
             return new Not(predicate);
         }
 
-        public static And<TPredicate1, TPredicate2> And<TPredicate1, TPredicate2>(this TPredicate1 predicate, TPredicate2 other)
-            where TPredicate1: Predicate where TPredicate2: Predicate
+        public static And And(this Predicate predicate, Predicate other)
         {
-            return new And<TPredicate1, TPredicate2>(predicate, other);
+            return new And(predicate, other);
         }
 
-        public static Or<TPredicate1, TPredicate2> Or<TPredicate1, TPredicate2>(this TPredicate1 predicate, TPredicate2 other)
-            where TPredicate1: Predicate where TPredicate2: Predicate
+        public static Or Or(this Predicate predicate, Predicate other)
         {
-            return new Or<TPredicate1, TPredicate2>(predicate, other);
+            return new Or(predicate, other);
         }
 
         public static Equal Equal(this Scalar scalar, Scalar other)

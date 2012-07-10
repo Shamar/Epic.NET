@@ -86,7 +86,7 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = predicate1.And(predicate2);
+            And and = predicate1.And(predicate2);
 
             // assert:
             Assert.IsTrue (and.Left.Equals (predicate1));
@@ -101,7 +101,7 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            Or<FakePredicate, FakePredicate> or = predicate1.Or(predicate2);
+            Or or = predicate1.Or(predicate2);
 
             // assert:
             Assert.IsTrue (or.Left.Equals (predicate1));

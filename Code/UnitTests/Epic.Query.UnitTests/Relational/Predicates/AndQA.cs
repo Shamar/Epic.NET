@@ -42,8 +42,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate pred2 = null;
 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new And<FakePredicate, FakePredicate>(pred1, pred2));
-            Assert.Throws<ArgumentNullException>(() => new And<FakePredicate, FakePredicate>(pred2, pred1));
+            Assert.Throws<ArgumentNullException>(() => new And(pred1, pred2));
+            Assert.Throws<ArgumentNullException>(() => new And(pred2, pred1));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate pred2 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(pred1, pred2);
+            And and = new And(pred1, pred2);
 
             // assert:
             Assert.IsTrue(and.Left.Equals (pred1));
@@ -62,20 +62,16 @@ namespace Epic.Query.Relational.Predicates
         }
 
         [Test]
-        public void TwoPredicates_withDifferentGenericTypes_areNotEqual()
+        public void Equals_AgainstNull_isFalse()
         {
             // arrange:
-            FakePredicate pred1 = new FakePredicate();
-            FakePredicate pred2 = new FakePredicate();
-
-            // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(pred1, pred2);
-            And<Predicate, Predicate> and2 = new And<Predicate, Predicate>(pred1, pred2);
+            FakePredicate predicate1 = new FakePredicate();
+            FakePredicate predicate2 = new FakePredicate();
+            And and = new And(predicate1, predicate2);
 
             // assert:
-            Assert.IsFalse(and.Equals (and2));
-            Assert.AreNotEqual (and.GetHashCode (), and2.GetHashCode ());
-
+            Assert.IsFalse (and.Equals (null as Object));
+            Assert.IsFalse (and.Equals (null as And));
         }
 
         [Test]
@@ -86,8 +82,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
-            And<FakePredicate, FakePredicate> and2 = and;
+            And and = new And(predicate1, predicate2);
+            And and2 = and;
 
             // assert:
             Assert.IsTrue (and.Equals (and2));
@@ -102,8 +98,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
-            And<FakePredicate, FakePredicate> and2 = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
+            And and = new And(predicate1, predicate2);
+            And and2 = new And(predicate1, predicate2);
 
             // assert:
             Assert.IsTrue (and.Equals (and2));
@@ -119,8 +115,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate3 = new FakePredicate();
 
             // act:
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
-            And<FakePredicate, FakePredicate> and2 = new And<FakePredicate, FakePredicate>(predicate1, predicate3);
+            And and = new And(predicate1, predicate2);
+            And and2 = new And(predicate1, predicate3);
 
             // assert:
             Assert.IsFalse (and.Equals (and2));
@@ -133,10 +129,10 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
+            And and = new And(predicate1, predicate2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<And<FakePredicate,FakePredicate>>(and);
+            Stream stream = SerializationUtilities.Serialize<And>(and);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -148,11 +144,11 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
+            And and = new And(predicate1, predicate2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<And<FakePredicate,FakePredicate>>(and);
-            And<FakePredicate, FakePredicate> deserialized = SerializationUtilities.Deserialize<And<FakePredicate, FakePredicate>>(stream);
+            Stream stream = SerializationUtilities.Serialize<And>(and);
+            And deserialized = SerializationUtilities.Deserialize<And>(stream);
 
             // assert:
             // Assert.AreSame(and, deserialized);
@@ -167,10 +163,10 @@ namespace Epic.Query.Relational.Predicates
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            And<FakePredicate, FakePredicate> and = new And<FakePredicate, FakePredicate>(predicate1, predicate2);
+            And and = new And(predicate1, predicate2);
 
-            IVisitor<object, And<FakePredicate, FakePredicate>> andPredicateVisitor =
-                GenerateStrictMock<IVisitor<object, And<FakePredicate, FakePredicate>>>();
+            IVisitor<object, And> andPredicateVisitor =
+                GenerateStrictMock<IVisitor<object, And>>();
             andPredicateVisitor.Expect(v => v.Visit(and, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(and)).Return(andPredicateVisitor).Repeat.Once ();

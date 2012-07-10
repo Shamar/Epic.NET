@@ -30,12 +30,10 @@ namespace Epic.Query.Relational.Predicates
     /// <para>Examples are: <see cref="And"/>, <see cref="Or"/>.</para>
      /// </summary>
     [Serializable]
-    public abstract class BinaryPredicateBase<TPredicate1, TPredicate2>: Predicate, IEquatable<BinaryPredicateBase<TPredicate1, TPredicate2>>
-        where TPredicate1: Predicate
-        where TPredicate2: Predicate
+    public abstract class BinaryPredicateBase : Predicate, IEquatable<BinaryPredicateBase>
     {
-        TPredicate1 _left;
-        TPredicate2 _right;
+        private readonly Predicate _left;
+        private readonly Predicate _right;
 
         /// <summary>
         /// Initializes a new instance of the
@@ -50,7 +48,7 @@ namespace Epic.Query.Relational.Predicates
         /// <exception cref='ArgumentNullException'>
         /// This exception is thrown if any of the operand is <see langword="null"/>
         /// </exception>
-        protected BinaryPredicateBase (TPredicate1 leftOperand, TPredicate2 rightOperand)
+        protected BinaryPredicateBase (Predicate leftOperand, Predicate rightOperand)
         {
             if (null == leftOperand) throw new ArgumentNullException("leftOperand");
             if (null == rightOperand) throw new ArgumentNullException("rightOperand");
@@ -64,7 +62,7 @@ namespace Epic.Query.Relational.Predicates
         /// <value>
         /// The left operand.
         /// </value>
-        public TPredicate1 Left { get { return this._left; } }
+        public Predicate Left { get { return this._left; } }
 
         /// <summary>
         /// Gets the right operand of the predicate.
@@ -72,7 +70,7 @@ namespace Epic.Query.Relational.Predicates
         /// <value>
         /// The right operand.
         /// </value>
-        public TPredicate2 Right { get { return this._right; } }
+        public Predicate Right { get { return this._right; } }
 
         /// <summary>
         /// Determines whether the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>.
@@ -84,7 +82,7 @@ namespace Epic.Query.Relational.Predicates
         /// <c>true</c> if the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the
         /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>; otherwise, <c>false</c>.
         /// </returns>
-        public abstract bool Equals(BinaryPredicateBase<TPredicate1, TPredicate2> other);
+        public abstract bool Equals(BinaryPredicateBase other);
 
         /// <summary>
         /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>.
@@ -98,7 +96,7 @@ namespace Epic.Query.Relational.Predicates
         /// </returns>
         public override bool Equals (Predicate other)
         {
-            return Equals(other as BinaryPredicateBase<TPredicate1, TPredicate2>);
+            return Equals(other as BinaryPredicateBase);
         }
 
         /// <summary>

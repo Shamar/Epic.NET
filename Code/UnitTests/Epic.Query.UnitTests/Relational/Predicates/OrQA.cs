@@ -42,8 +42,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate pred2 = null;
 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new Or<FakePredicate, FakePredicate>(pred1, pred2));
-            Assert.Throws<ArgumentNullException>(() => new Or<FakePredicate, FakePredicate>(pred2, pred1));
+            Assert.Throws<ArgumentNullException>(() => new Or(pred1, pred2));
+            Assert.Throws<ArgumentNullException>(() => new Or(pred2, pred1));
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate pred2 = new FakePredicate();
 
             // act:
-            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(pred1, pred2);
+            Or or = new Or(pred1, pred2);
 
             // assert:
             Assert.IsTrue(or.Left.Equals (pred1));
@@ -62,21 +62,18 @@ namespace Epic.Query.Relational.Predicates
         }
 
         [Test]
-        public void TwoPredicates_withDifferentGenericTypes_areNotEqual()
+        public void Equals_AgainstNull_isFalse()
         {
             // arrange:
-            FakePredicate pred1 = new FakePredicate();
-            FakePredicate pred2 = new FakePredicate();
-
-            // act:
-            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(pred1, pred2);
-            Or<Predicate, Predicate> or2 = new Or<Predicate, Predicate>(pred1, pred2);
-
+            FakePredicate predicate1 = new FakePredicate();
+            FakePredicate predicate2 = new FakePredicate();
+            Or and = new Or(predicate1, predicate2);
+            
             // assert:
-            Assert.IsFalse(or.Equals (or2));
-            Assert.AreNotEqual (or.GetHashCode (), or2.GetHashCode ());
-
+            Assert.IsFalse (and.Equals (null as Object));
+            Assert.IsFalse (and.Equals (null as Or));
         }
+        
 
         [Test]
         public void Equals_AgainstSameObject_works()
@@ -86,8 +83,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
-            Or<FakePredicate, FakePredicate> or2 = or;
+            Or or = new Or(predicate1, predicate2);
+            Or or2 = or;
 
             // assert:
             Assert.IsTrue (or.Equals (or2));
@@ -102,8 +99,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate2 = new FakePredicate();
 
             // act:
-            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
-            Or<FakePredicate, FakePredicate> or2 = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or or = new Or(predicate1, predicate2);
+            Or or2 = new Or(predicate1, predicate2);
 
             // assert:
             Assert.IsTrue (or.Equals (or2));
@@ -119,8 +116,8 @@ namespace Epic.Query.Relational.Predicates
             FakePredicate predicate3 = new FakePredicate();
 
             // act:
-            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
-            Or<FakePredicate, FakePredicate> or2 = new Or<FakePredicate, FakePredicate>(predicate1, predicate3);
+            Or or = new Or(predicate1, predicate2);
+            Or or2 = new Or(predicate1, predicate3);
 
             // assert:
             Assert.IsFalse (or.Equals (or2));
@@ -133,10 +130,10 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or or = new Or(predicate1, predicate2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Or<FakePredicate,FakePredicate>>(or);
+            Stream stream = SerializationUtilities.Serialize<Or>(or);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -148,11 +145,11 @@ namespace Epic.Query.Relational.Predicates
             // arrange:
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or or = new Or(predicate1, predicate2);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<Or<FakePredicate,FakePredicate>>(or);
-            Or<FakePredicate, FakePredicate> deserialized = SerializationUtilities.Deserialize<Or<FakePredicate, FakePredicate>>(stream);
+            Stream stream = SerializationUtilities.Serialize<Or>(or);
+            Or deserialized = SerializationUtilities.Deserialize<Or>(stream);
 
             // assert:
             // Assert.AreSame(or, deserialized);
@@ -167,10 +164,10 @@ namespace Epic.Query.Relational.Predicates
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakePredicate predicate1 = new FakePredicate();
             FakePredicate predicate2 = new FakePredicate();
-            Or<FakePredicate, FakePredicate> or = new Or<FakePredicate, FakePredicate>(predicate1, predicate2);
+            Or or = new Or(predicate1, predicate2);
 
-            IVisitor<object, Or<FakePredicate, FakePredicate>> orPredicateVisitor =
-                GenerateStrictMock<IVisitor<object, Or<FakePredicate, FakePredicate>>>();
+            IVisitor<object, Or> orPredicateVisitor =
+                GenerateStrictMock<IVisitor<object, Or>>();
             orPredicateVisitor.Expect(v => v.Visit(or, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(or)).Return(orPredicateVisitor).Repeat.Once ();

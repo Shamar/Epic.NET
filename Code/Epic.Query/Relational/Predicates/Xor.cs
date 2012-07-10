@@ -29,10 +29,8 @@ namespace Epic.Query.Relational.Predicates
     /// Implementation of the Xor predicate. It is true if either operand is true, but not both of them.
     /// </summary>
     [Serializable]
-    public sealed class Xor<TPredicate1 , TPredicate2>: BinaryPredicateBase<TPredicate1, TPredicate2>,
-        IEquatable<Xor<TPredicate1 ,TPredicate2>>
-    where TPredicate1: Predicate
-    where TPredicate2: Predicate
+    public sealed class Xor : BinaryPredicateBase,
+        IEquatable<Xor>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/> class.
@@ -43,37 +41,38 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='rightOperand'>
         /// Right operand.
         /// </param>
-        public Xor (TPredicate1 leftOperand, TPredicate2 rightOperand): base(leftOperand, rightOperand)
+        public Xor (Predicate leftOperand, Predicate rightOperand)
+            : base(leftOperand, rightOperand)
         {
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
+        /// Determines whether the specified <see cref="BinaryPredicateBase"/> is equal to the
+        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
+        /// The <see cref="BinaryPredicateBase"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the
+        /// <c>true</c> if the specified <see cref="BinaryPredicateBase"/> is equal to the
         /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (BinaryPredicateBase<TPredicate1, TPredicate2> other)
+        public override bool Equals (BinaryPredicateBase other)
         {
-            return Equals (other as Xor<TPredicate1, TPredicate2>);
+            return Equals (other as Xor);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Xor<TPredicate1,TPredicate2>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
+        /// Determines whether the specified <see cref="Xor<Predicate,Predicate>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Xor<TPredicate1,TPredicate2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
+        /// The <see cref="Xor<Predicate,Predicate>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Xor<TPredicate1,TPredicate2>"/> is equal to the current
+        /// <c>true</c> if the specified <see cref="Xor<Predicate,Predicate>"/> is equal to the current
         /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals (Xor<TPredicate1, TPredicate2> other)
+        public bool Equals (Xor other)
         {
             if (null == other) return false;
             return this.Left.Equals (other.Left) && this.Right.Equals (other.Right);
