@@ -24,6 +24,7 @@
 using System;
 using Epic.Specifications;
 using Epic.Query.Relational.Predicates;
+using Epic.Query.Object.Relational.Visitors;
 
 namespace Epic.Query.Object.Relational
 {
@@ -33,6 +34,8 @@ namespace Epic.Query.Object.Relational
         public PredicateBuilder (string name)
             : base(name)
         {
+            new ConjunctionVisitor<TEntity>(this);
+            new DisjunctionVisitor<TEntity>(this);
         }
 
         #region implemented abstract members of Epic.CompositeVisitorBase
