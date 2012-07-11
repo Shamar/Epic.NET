@@ -36,6 +36,7 @@ namespace Epic.Query.Object.Relational
         {
             new ConjunctionVisitor<TEntity>(this);
             new DisjunctionVisitor<TEntity>(this);
+            new NegationVisitor<TEntity>(this);
         }
 
         #region implemented abstract members of Epic.CompositeVisitorBase
