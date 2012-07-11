@@ -1,5 +1,5 @@
 //
-//  ConjunctionVisitor.cs
+//  DisjunctionVisitor.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -27,17 +27,17 @@ using Epic.Specifications;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
-    public sealed class ConjunctionVisitor<TEntity> : CompositeVisitor<Predicate>.VisitorBase, 
-                                                      IVisitor<Predicate, Conjunction<TEntity>>
+    public sealed class DisjunctionVisitor<TEntity> : CompositeVisitor<Predicate>.VisitorBase, 
+                                                      IVisitor<Predicate, Disjunction<TEntity>>
         where TEntity : class
     {
-        public ConjunctionVisitor (CompositeVisitor<Predicate> composition)
+        public DisjunctionVisitor (CompositeVisitor<Predicate> composition)
             : base(composition)
         {
         }
-
+        
         #region IVisitor implementation
-        public Predicate Visit (Conjunction<TEntity> target, IVisitContext context)
+        public Predicate Visit (Disjunction<TEntity> target, IVisitContext context)
         {
             Predicate[] predicates = new Predicate[target.NumberOfSpecifications];
             int i = 0;

@@ -91,6 +91,17 @@ namespace Epic.Specifications
             _specifications = specifications.ToArray();
         }
 
+        /// <summary>
+        /// Number of specifications in the conjuction.
+        /// </summary>
+        public int NumberOfSpecifications
+        {
+            get
+            {
+                return _specifications.Length;
+            }
+        }
+
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 
         protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
