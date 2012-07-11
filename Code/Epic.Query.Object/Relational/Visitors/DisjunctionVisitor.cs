@@ -57,7 +57,7 @@ namespace Epic.Query.Object.Relational.Visitors
                     }
                     else
                     {
-                        result = new And(toAdd, result);
+                        result = new Or(toAdd, result);
                     }
                 }
             }
