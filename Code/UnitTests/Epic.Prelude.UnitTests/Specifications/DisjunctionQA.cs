@@ -177,7 +177,7 @@ namespace Epic.Specifications
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.AreEqual(4, toTest.NumberOfSpecifications);
+            Assert.AreEqual(4, result.NumberOfSpecifications);
             Assert.AreEqual(4, result.Count());
             Assert.AreSame(first, result.ElementAt(0));
             Assert.AreSame(second, result.ElementAt(1));
