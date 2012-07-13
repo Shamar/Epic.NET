@@ -36,12 +36,12 @@ namespace Epic.Query.Object.Relational
         where TIdentity : IEquatable<TIdentity>
     {
         private static MapperBase<TEntity, TIdentity> _instance;
-
         private readonly Relation _mainRelation;
+
         protected MapperBase (Relation mainRelation)
         {
             if (null == mainRelation)
-                throw new ArgumentNullException("mainRelation");
+                throw new ArgumentNullException ("mainRelation");
             _mainRelation = mainRelation;
             _instance = this;
         }
@@ -49,26 +49,32 @@ namespace Epic.Query.Object.Relational
         #region IMapping implementation
         TIdentity IMapping<TEntity, TIdentity>.ApplyTo (TEntity element)
         {
-            if(null == element)
-                throw new ArgumentNullException("element");
-            return Identify(element);
+            if (null == element)
+                throw new ArgumentNullException ("element");
+            return Identify (element);
         }
         #endregion
 
         #region IEntityLoader implementation
         IEnumerable<TEntity> IEntityLoader<TEntity, TIdentity>.Load (params TIdentity[] identities)
         {
-            if(null == identities || identities.Length == 0)
-                throw new ArgumentNullException("identities");
-            return Load(identities);
+            if (null == identities || identities.Length == 0)
+                throw new ArgumentNullException ("identities");
+            return Load (identities);
         }
         #endregion
         
-        protected abstract TIdentity Identify(TEntity entity);
+        protected abstract TIdentity Identify (TEntity entity);
         
         protected abstract TEntity[] Load (TIdentity[] identities);
         
-        protected void Map<TSpecification>(Relation relationToJoin, Func<TSpecification, Predicate> predicateBuilder)
+        protected void Map<TSpecification> (Func<TSpecification, Predicate> predicateBuilder, params Relation[] relationsToJoin)
+            where TSpecification : class, ISpecification<TEntity>
+        {
+                // wrong api: foreach relation we need a join condition
+        }
+
+        protected void Map<TSpecification> (Func<PredicateBuilder<TEntity>, IVisitor<Predicate, TSpecification>> visitorFactory)
             where TSpecification : class, ISpecification<TEntity>
         {
         }

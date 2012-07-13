@@ -33,14 +33,25 @@ namespace Epic.Query.Object.Relational
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
+        private readonly PredicateBuilder<TEntity> _predicateBuilder;
+
         public QueryBuilder (string name, Relation mainRelation)
             : base(name)
         {
+            _predicateBuilder = new PredicateBuilder<TEntity>(name);
+
             new SourceVisitor<TEntity, TIdentity>(this, mainRelation);
             
-            new SelectionVisitor<TEntity>(this, new PredicateBuilder<TEntity>(name));
+            new SelectionVisitor<TEntity>(this, _predicateBuilder);
         }
-
+        
+        public PredicateBuilder<TEntity> PredicateBuilder
+        {
+            get
+            {
+                return _predicateBuilder;
+            }
+        }
         #region implemented abstract members of Epic.CompositeVisitorBase
         protected override IVisitContext InitializeVisitContext (Expression<IEnumerable<TEntity>> target, IVisitContext context)
         {
