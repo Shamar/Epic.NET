@@ -45,9 +45,6 @@ namespace Epic.Query.Relational.Operations
             string name = "testName";
  
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new InnerJoin(null, fakeRelation2, predicate));
-            Assert.Throws<ArgumentNullException>(() => new InnerJoin(fakeRelation1, null, predicate));
-            Assert.Throws<ArgumentNullException>(() => new InnerJoin(fakeRelation1, fakeRelation2, null));
             Assert.Throws<ArgumentNullException>(() => new InnerJoin(null, fakeRelation2, predicate, name));
             Assert.Throws<ArgumentNullException>(() => new InnerJoin(fakeRelation1, null, predicate, name));
             Assert.Throws<ArgumentNullException>(() => new InnerJoin(fakeRelation1, fakeRelation2, null, name));
@@ -58,11 +55,12 @@ namespace Epic.Query.Relational.Operations
         public void Initialize_WithFakeArguments_Works()
         {
             // arrange:
-            string name = "testName";
+            string firstName = "firstName";
+            string secondName = "secondName";
  
             // act:
-            InnerJoin firstJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate);
-            InnerJoin secondJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
+            InnerJoin firstJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, firstName);
+            InnerJoin secondJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, secondName);
 
             // assert:
             Assert.IsTrue (firstJoin.LeftRelation.Equals (fakeRelation1));
@@ -74,8 +72,9 @@ namespace Epic.Query.Relational.Operations
             Assert.IsTrue (firstJoin.Predicate.Equals (predicate));
             Assert.IsTrue (firstJoin.Predicate.Equals (secondJoin.Predicate));
 
-            Assert.IsTrue (secondJoin.Name.Equals (name));
-            Assert.IsTrue (firstJoin.Equals (secondJoin));
+            Assert.IsTrue (firstJoin.Name.Equals (firstName));
+            Assert.IsTrue (secondJoin.Name.Equals (secondName));
+            Assert.IsFalse (firstJoin.Equals (secondJoin));
         }
 
         [Test]
@@ -110,15 +109,18 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string name = "testName";
+            string otherName = "otherTestName";
 
             // act:
             InnerJoin firstJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
             InnerJoin secondJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
+            InnerJoin thirdJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, otherName);
             Relation relation = secondJoin;
 
             // assert:
             Assert.IsTrue (firstJoin.Equals (secondJoin));
             Assert.IsTrue (firstJoin.Equals (relation));
+            Assert.IsFalse (firstJoin.Equals (thirdJoin));
             Assert.AreEqual (firstJoin.GetHashCode (), secondJoin.GetHashCode ());
         }
 

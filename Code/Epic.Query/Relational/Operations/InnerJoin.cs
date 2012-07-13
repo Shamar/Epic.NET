@@ -50,32 +50,6 @@ namespace Epic.Query.Relational.Operations
         /// <param name='predicate'>
         /// Predicate used to join the two Relations.
         /// </param>
-        /// <exception cref="ArgumentNullException">Thrown when any argument is <see langword="null"/></exception> 
-        public InnerJoin (Relation leftRelation, Relation rightRelation, Predicate predicate) :
-            base(RelationType.InnerJoin, getDefaultName(leftRelation))
-        {
-            if (null == rightRelation)
-                throw new ArgumentNullException("rightRelation");
-            if (null == predicate)
-                throw new ArgumentNullException("predicate");
-
-            this._leftRelation = leftRelation;
-            this._rightRelation = rightRelation;
-            this._predicate = predicate;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.InnerJoin"/> class.
-        /// </summary>
-        /// <param name='leftRelation'>
-        /// Left relation in the Join operation.
-        /// </param>
-        /// <param name='rightRelation'>
-        /// Right relation in the Join operation.
-        /// </param>
-        /// <param name='predicate'>
-        /// Predicate used to join the two Relations.
-        /// </param>
         /// <param name='name'>
         /// Name assigned to the join relation.
         /// </param>
@@ -151,7 +125,8 @@ namespace Epic.Query.Relational.Operations
 
             return this.LeftRelation.Equals (other.LeftRelation) &&
                 this.RightRelation.Equals (other.RightRelation) &&
-                    this.Predicate.Equals (other.Predicate);
+                this.Predicate.Equals (other.Predicate) &&
+                this.Name.Equals (other.Name);
         }
 
         /// <summary>
@@ -164,7 +139,7 @@ namespace Epic.Query.Relational.Operations
         public override int GetHashCode ()
         {
             return this.LeftRelation.GetHashCode () ^ this.RightRelation.GetHashCode () ^
-                this.Predicate.GetHashCode ();
+                this.Predicate.GetHashCode() ^ this.Name.GetHashCode();
         }
 
         /// <summary>
@@ -182,14 +157,6 @@ namespace Epic.Query.Relational.Operations
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
-        }
-
-        private static string getDefaultName (Relation relation)
-        {
-            if (null == relation) 
-                throw new ArgumentNullException("relation");
-
-            return relation.Name; 
         }
     }
 }

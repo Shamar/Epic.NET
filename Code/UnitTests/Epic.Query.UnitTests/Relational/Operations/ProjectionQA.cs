@@ -75,8 +75,9 @@ namespace Epic.Query.Relational.Operations
             Assert.IsTrue (firstProjection.Attributes.SequenceEqual (attributes));
             Assert.IsTrue (firstProjection.Attributes.SequenceEqual (secondProjection.Attributes));
 
+            Assert.IsTrue (firstProjection.Name.Equals (table.Name));
             Assert.IsTrue (secondProjection.Name.Equals (operationName));
-            Assert.IsTrue (firstProjection.Equals (secondProjection));
+            Assert.IsFalse (firstProjection.Equals (secondProjection));
         }
 
         [Test]
@@ -124,11 +125,13 @@ namespace Epic.Query.Relational.Operations
             // act:
             Projection firstProjection = new Projection(table, attributes, operationName);
             Projection secondProjection = new Projection(table, attributes,  operationName);
+            Projection thirdProjection = new Projection(table, attributes);
             Relation relation = secondProjection;
 
             // assert:
             Assert.IsTrue (firstProjection.Equals (secondProjection));
             Assert.IsTrue (firstProjection.Equals (relation));
+            Assert.IsFalse (firstProjection.Equals (thirdProjection));
             Assert.AreEqual (firstProjection.GetHashCode (), secondProjection.GetHashCode ());
         }
 
