@@ -66,7 +66,7 @@
     <Compile Include="Relational\Operations\Selection.cs" />
     <Compile Include="Relational\Operations\Rename.cs" />
     <Compile Include="Relational\Operations\InnerJoin.cs" />
-    <Compile Include="Relational\QueryBuilder.cs" />
+    <Compile Include="Relational\SourceRelationBuilder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

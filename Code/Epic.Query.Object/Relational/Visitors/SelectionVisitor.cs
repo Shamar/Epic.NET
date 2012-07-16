@@ -45,7 +45,7 @@ namespace Epic.Query.Object.Relational.Visitors
         public Relation Visit (Selection<TEntity> target, IVisitContext context)
         {
             Relation source = VisitInner(target.Source, context);
-            QueryBuilder builder = new QueryBuilder(source);
+            SourceRelationBuilder builder = new SourceRelationBuilder(source);
             Predicate predicate = _predicateBuilder.Visit(target.Specification, context.With(builder));
             // we have to add a constructor without the name argument to the Selection 
             return new Selection("removeThisArgument", builder.ToRelation(), predicate);

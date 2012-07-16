@@ -63,6 +63,11 @@ namespace Epic.Query.Object.Relational
             return Load (identities);
         }
         #endregion
+
+        protected Relation MainRelation
+        {
+            get { return _mainRelation; }
+        }
         
         protected abstract TIdentity Identify (TEntity entity);
         
