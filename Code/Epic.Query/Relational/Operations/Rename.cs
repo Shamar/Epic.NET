@@ -44,8 +44,10 @@ namespace Epic.Query.Relational.Operations
         /// The new name given to the relation.
         /// </param>
         public Rename (Relation relation, string newRelationName): 
-            base(RelationType.BaseRelation, getDefaultName (relation, newRelationName))
+            base(RelationType.BaseRelation, getDefaultName (relation))
         {
+            if (String.IsNullOrEmpty (newRelationName))
+                throw new ArgumentNullException("newRelationName");
             this.relation = relation;
             this.newRelationName = newRelationName;
         }
@@ -114,7 +116,7 @@ namespace Epic.Query.Relational.Operations
         /// </returns>
         public override int GetHashCode ()
         {
-            return this.relation.GetHashCode () ^ this.newRelationName.GetHashCode ();
+            return this.relation.GetHashCode () ^ this.newRelationName.GetHashCode () ^ this.Name.GetHashCode ();
         }
 
         /// <summary>
@@ -149,17 +151,16 @@ namespace Epic.Query.Relational.Operations
         public bool Equals (Rename other)
         {
             if (null == other) return false;
-            return this.relation.Equals (other.relation) && this.newRelationName.Equals (other.newRelationName);
+            return this.relation.Equals (other.relation) && this.newRelationName.Equals (other.newRelationName)
+                && this.Name.Equals (other.Name);
         }
         #endregion
 
-        private static string getDefaultName(Relation relation, string newRelationName)
+        private static string getDefaultName(Relation relation)
         {
             if(null == relation)
                 throw new ArgumentNullException("relation");
-            if(string.IsNullOrEmpty(newRelationName))
-                throw new ArgumentNullException("newRelationName");
-            return string.Format ("{0} as {1}", relation.Name, newRelationName);
+            return relation.Name;
         }
     }
 }

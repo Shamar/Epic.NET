@@ -69,8 +69,9 @@ namespace Epic.Query.Relational.Operations
             Assert.IsTrue (firstRename.NewRelationName.Equals (newRelationName));
             Assert.IsTrue (firstRename.NewRelationName.Equals (secondRename.NewRelationName));
 
+            Assert.IsTrue (firstRename.Name.Equals (table.Name));
             Assert.IsTrue (secondRename.Name.Equals (operationName));
-            Assert.IsTrue (firstRename.Equals (secondRename));
+            Assert.IsFalse (firstRename.Equals (secondRename));
         }
 
         [Test]

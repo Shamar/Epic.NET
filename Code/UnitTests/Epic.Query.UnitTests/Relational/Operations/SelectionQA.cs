@@ -70,8 +70,9 @@ namespace Epic.Query.Relational.Operations
             Assert.IsTrue (firstSelection.Condition.Equals (predicate));
             Assert.IsTrue (firstSelection.Condition.Equals (secondSelection.Condition));
 
+            Assert.IsTrue (firstSelection.Name.Equals (table.Name));
             Assert.IsTrue (secondSelection.Name.Equals (operationName));
-            Assert.IsTrue (firstSelection.Equals (secondSelection));
+            Assert.IsFalse (firstSelection.Equals (secondSelection));
         }
 
         [Test]
@@ -119,15 +120,18 @@ namespace Epic.Query.Relational.Operations
             // act:
             Selection firstSelection = new Selection(table, predicate, operationName);
             Selection secondSelection = new Selection(table, predicate,  operationName);
+            Selection thirdSelection = new Selection(table, predicate);
             Relation relation = secondSelection;
 
             // assert:
             Assert.IsTrue (firstSelection.Equals (secondSelection));
             Assert.IsTrue (firstSelection.Equals (relation));
             Assert.AreEqual (firstSelection.GetHashCode (), secondSelection.GetHashCode ());
+
+            Assert.IsFalse (firstSelection.Equals (thirdSelection));
         }
 
-                [Test]
+        [Test]
         public void Test_Serialization_Works()
         {
             // arrange:

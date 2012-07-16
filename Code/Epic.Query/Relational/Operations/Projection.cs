@@ -70,10 +70,10 @@ namespace Epic.Query.Relational.Operations
         /// The collection of <see cref="RelationAttributes"/> extracted
         /// </param>
         public Projection(Relation relation, IEnumerable<RelationAttribute> attributes):
-            base(RelationType.Projection, getDefaultName(relation, attributes))
+            base(RelationType.Projection, getDefaultName(relation))
         {
             // if (null == relation) throw new ArgumentNullException("relation");
-            // if (null == attributes) throw new ArgumentNullException("attributes");
+            if (null == attributes) throw new ArgumentNullException("attributes");
             this._relation = relation;
             this._attributes = attributes;
         }
@@ -123,7 +123,8 @@ namespace Epic.Query.Relational.Operations
         public bool Equals(Projection other)
         {
             if (null == other) return false;
-            return this.Relation.Equals (other.Relation) && this.Attributes.SequenceEqual(other.Attributes);
+            return this.Relation.Equals (other.Relation) && this.Attributes.SequenceEqual(other.Attributes)
+                && this.Name.Equals (other.Name);
         }
 
         /// <summary>
@@ -152,7 +153,7 @@ namespace Epic.Query.Relational.Operations
         /// </returns>
         public override int GetHashCode ()
         {
-            int hash = this.Relation.GetHashCode ();
+            int hash = this.Relation.GetHashCode () ^ this.Name.GetHashCode ();
             foreach (RelationAttribute attribute in this.Attributes)
                 hash ^= attribute.GetHashCode ();
             return hash;
@@ -170,17 +171,10 @@ namespace Epic.Query.Relational.Operations
         /// <param name='attributes'>
         /// The attributes to be extracted from the relation.
         /// </param>
-        private static string getDefaultName (Relation relation, IEnumerable<RelationAttribute> attributes)
+        private static string getDefaultName (Relation relation)
         {
             if (null == relation) throw new ArgumentNullException("relation");
-            if (null == attributes) throw new ArgumentNullException("attributes");
-            StringBuilder sb = new StringBuilder();
-            sb.Append("Take ");
-            foreach (RelationAttribute attribute in attributes)
-                sb.Append (attribute.Name).Append(",");
-            sb.Append (" from ");
-            sb.Append (relation.Name);
-            return sb.ToString ();
+            return relation.Name;
         }
 
     }
