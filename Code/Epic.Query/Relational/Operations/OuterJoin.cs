@@ -1,5 +1,5 @@
 //  
-//  InnerJoin.cs
+//  OuterJoin.cs
 //  
 //  Author:
 //       Marco Veglio <m.veglio@gmail.com>
@@ -28,18 +28,18 @@ using Epic.Query.Relational.Predicates;
 namespace Epic.Query.Relational.Operations
 {
     /// <summary>
-    /// This class models the Inner Join operation, which joins two relations and returns those
+    /// This class models the Outer Join operation, which joins two relations and returns those
     /// record matching a given condition.
     /// </summary>
     [Serializable]
-    public sealed class InnerJoin: Relation, IEquatable<InnerJoin>
+    public sealed class OuterJoin: Relation, IEquatable<OuterJoin>
     {
         private readonly Relation _leftRelation;
         private readonly Relation _rightRelation;
         private readonly Predicate _predicate;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.InnerJoin"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.OuterJoin"/> class.
         /// </summary>
         /// <param name='leftRelation'>
         /// Left relation in the Join operation.
@@ -54,8 +54,8 @@ namespace Epic.Query.Relational.Operations
         /// Name assigned to the join relation.
         /// </param>
         /// <exception cref="ArgumentNullException">Thrown when any argument is <see langword="null"/></exception> 
-        public InnerJoin (Relation leftRelation, Relation rightRelation, Predicate predicate, string name):
-            base(RelationType.InnerJoin, name)
+        public OuterJoin (Relation leftRelation, Relation rightRelation, Predicate predicate, string name):
+            base(RelationType.OuterJoin, name)
         {
             if (null == leftRelation)
                 throw new ArgumentNullException("leftRelation");
@@ -94,32 +94,32 @@ namespace Epic.Query.Relational.Operations
         public Predicate Predicate { get { return this._predicate; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>.
+        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>.
+        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Operations.InnerJoin"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.Operations.OuterJoin"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (Relation other)
         {
-            return Equals (other as InnerJoin);
+            return Equals (other as OuterJoin);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Epic.Query.Relational.Operations.InnerJoin"/> is equal to the
-        /// current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>.
+        /// Determines whether the specified <see cref="Epic.Query.Relational.Operations.OuterJoin"/> is equal to the
+        /// current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Epic.Query.Relational.Operations.InnerJoin"/> to compare with the current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>.
+        /// The <see cref="Epic.Query.Relational.Operations.OuterJoin"/> to compare with the current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Operations.InnerJoin"/> is equal to the
-        /// current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Operations.OuterJoin"/> is equal to the
+        /// current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals (InnerJoin other)
+        public bool Equals (OuterJoin other)
         {
             if (null == other) return false;
 
@@ -130,7 +130,7 @@ namespace Epic.Query.Relational.Operations
         }
 
         /// <summary>
-        /// Serves as a hash function for a <see cref="Epic.Query.Relational.Operations.InnerJoin"/> object.
+        /// Serves as a hash function for a <see cref="Epic.Query.Relational.Operations.OuterJoin"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a

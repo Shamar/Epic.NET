@@ -1,5 +1,5 @@
 //  
-//  InnerJoinQA.cs
+//  CrossProductQA.cs
 //  
 //  Author:
 //       Marco Veglio <m.veglio@gmail.com>
@@ -32,11 +32,10 @@ using Rhino.Mocks;
 namespace Epic.Query.Relational.Operations
 {
     [TestFixture]
-    public class InnerJoinQA: RhinoMocksFixtureBase
+    public class CrossProductQA: RhinoMocksFixtureBase
     {
         private readonly Relation fakeRelation1 = new Fakes.FakeRelation(RelationType.BaseRelation, "firstRelation");
         private readonly Relation fakeRelation2 = new Fakes.FakeRelation(RelationType.BaseRelation, "secondRelation");
-        private readonly Predicate predicate = new Fakes.FakePredicate();
 
         [Test]
         public void Initialize_WithEitherArgumentNull_Fails()
@@ -45,10 +44,9 @@ namespace Epic.Query.Relational.Operations
             string name = "testName";
  
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new InnerJoin(null, fakeRelation2, predicate, name));
-            Assert.Throws<ArgumentNullException>(() => new InnerJoin(fakeRelation1, null, predicate, name));
-            Assert.Throws<ArgumentNullException>(() => new InnerJoin(fakeRelation1, fakeRelation2, null, name));
-            Assert.Throws<ArgumentNullException>(() => new InnerJoin(fakeRelation1, fakeRelation2, predicate, null));
+            Assert.Throws<ArgumentNullException>(() => new CrossProduct(null, fakeRelation2, name));
+            Assert.Throws<ArgumentNullException>(() => new CrossProduct(fakeRelation1, null, name));
+            Assert.Throws<ArgumentNullException>(() => new CrossProduct(fakeRelation1, fakeRelation2, null));
         }
 
         [Test]
@@ -59,8 +57,8 @@ namespace Epic.Query.Relational.Operations
             string secondName = "secondName";
  
             // act:
-            InnerJoin firstJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, firstName);
-            InnerJoin secondJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, secondName);
+            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2, firstName);
+            CrossProduct secondJoin = new CrossProduct(fakeRelation1, fakeRelation2, secondName);
 
             // assert:
             Assert.IsTrue (firstJoin.LeftRelation.Equals (fakeRelation1));
@@ -68,9 +66,6 @@ namespace Epic.Query.Relational.Operations
 
             Assert.IsTrue (firstJoin.RightRelation.Equals (fakeRelation2));
             Assert.IsTrue (firstJoin.RightRelation.Equals (secondJoin.RightRelation));
-
-            Assert.IsTrue (firstJoin.Predicate.Equals (predicate));
-            Assert.IsTrue (firstJoin.Predicate.Equals (secondJoin.Predicate));
 
             Assert.IsTrue (firstJoin.Name.Equals (firstName));
             Assert.IsTrue (secondJoin.Name.Equals (secondName));
@@ -84,7 +79,7 @@ namespace Epic.Query.Relational.Operations
             string name = "testName";
 
             // act:
-            InnerJoin innerJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
+            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
 
             // assert:
             Assert.IsFalse(innerJoin.Equals (null));
@@ -97,8 +92,8 @@ namespace Epic.Query.Relational.Operations
             string name = "testName";
 
             // act:
-            InnerJoin firstJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
-            InnerJoin secondJoin = firstJoin;
+            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
+            CrossProduct secondJoin = firstJoin;
 
             // assert:
             Assert.IsTrue (firstJoin.Equals(secondJoin));
@@ -112,9 +107,9 @@ namespace Epic.Query.Relational.Operations
             string otherName = "otherTestName";
 
             // act:
-            InnerJoin firstJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
-            InnerJoin secondJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
-            InnerJoin thirdJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, otherName);
+            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
+            CrossProduct secondJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
+            CrossProduct thirdJoin = new CrossProduct(fakeRelation1, fakeRelation2, otherName);
             Relation relation = secondJoin;
 
             // assert:
@@ -129,10 +124,10 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string name = "testName";
-            InnerJoin innerJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
+            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<InnerJoin>(innerJoin);
+            Stream stream = SerializationUtilities.Serialize<CrossProduct>(innerJoin);
 
             // assert:
             Assert.IsNotNull (stream);
@@ -143,11 +138,11 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string name = "testName";
-            InnerJoin innerJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
+            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
 
             // act:
-            Stream stream = SerializationUtilities.Serialize<InnerJoin>(innerJoin);
-            InnerJoin deserialized = SerializationUtilities.Deserialize<InnerJoin>(stream);
+            Stream stream = SerializationUtilities.Serialize<CrossProduct>(innerJoin);
+            CrossProduct deserialized = SerializationUtilities.Deserialize<CrossProduct>(stream);
 
             // assert:
             // Assert.AreSame(and, deserialized);
@@ -161,10 +156,10 @@ namespace Epic.Query.Relational.Operations
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             string name = "testName";
-            InnerJoin innerJoin = new InnerJoin(fakeRelation1, fakeRelation2, predicate, name);
+            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
 
-            IVisitor<object, InnerJoin> selectionVisitor =
-            GenerateStrictMock<IVisitor<object, InnerJoin>>();
+            IVisitor<object, CrossProduct> selectionVisitor =
+            GenerateStrictMock<IVisitor<object, CrossProduct>>();
             selectionVisitor.Expect(v => v.Visit(innerJoin, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
             visitor.Expect(v => v.GetVisitor(innerJoin)).Return(selectionVisitor).Repeat.Once ();
