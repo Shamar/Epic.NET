@@ -29,8 +29,10 @@ namespace Epic.Query.Relational
     /// Base relation (in SQL database a table).
     /// </summary>
     [Serializable]
-    public sealed class BaseRelation : Relation
+    public sealed class BaseRelation : RelationalExpression, IEquatable<BaseRelation>
     {
+        private readonly string _name;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.BaseRelation"/> class.
         /// </summary>
@@ -38,24 +40,32 @@ namespace Epic.Query.Relational
         /// Name of the relation.
         /// </param>
         public BaseRelation (string name)
-            : base(RelationType.BaseRelation, name)
+            : base(RelationType.BaseRelation)
         {
+            if (string.IsNullOrEmpty (name))
+                throw new ArgumentNullException("name");
+            this._name = name;
         }
-        
-        private bool Equals(BaseRelation other)
-        {
-            return Name.Equals(other.Name);
-        }
+
+        public string Name { get { return this._name; } }
         
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Relation
-        public override bool Equals (Relation other)
+        public override bool Equals (RelationalExpression other)
         {
-            if(null == other)
-                return false;
-            return other.Type == RelationType.BaseRelation && Equals(other as BaseRelation);
+            return Equals (other as BaseRelation);
         }
         #endregion
-        
+
+        #region IEquatable implementation
+        public bool Equals (BaseRelation other)
+        {
+            if (null == other) return false;
+            return this.Name == other.Name;
+        }
+        #endregion
+
+
+
         /// <summary>
         /// Accept the specified visitor and context.
         /// </summary>

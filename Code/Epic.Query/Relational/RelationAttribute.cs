@@ -26,7 +26,7 @@ using System;
 namespace Epic.Query.Relational
 {
     /// <summary>
-    /// Relation attribute. Models one attribute of a <see cref="Relation"/> (e.g. a column in a database table)
+    /// Relation attribute. Models one attribute of a <see cref="RelationalExpression"/> (e.g. a column in a database table)
     /// </summary>
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
@@ -35,7 +35,7 @@ namespace Epic.Query.Relational
     public sealed class RelationAttribute: Scalar, IEquatable<RelationAttribute>
     {
         private readonly string _name;
-        private readonly Relation _relation;
+        private readonly RelationalExpression _relation;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/> class.
@@ -44,12 +44,12 @@ namespace Epic.Query.Relational
         /// Name of the attribute.
         /// </param>
         /// <param name='relation'>
-        /// The <see cref="Relation"/> the attribute is tied to.
+        /// The <see cref="RelationalExpression"/> the attribute is tied to.
         /// </param>
         /// <exception cref='ArgumentNullException'>
         /// Is thrown when either arguments are null.
         /// </exception>
-        public RelationAttribute (string name, Relation relation):base(ScalarType.Attribute)
+        public RelationAttribute (string name, RelationalExpression relation):base(ScalarType.Attribute)
         {
             if (null == name)
                 throw new ArgumentNullException("name");
@@ -73,7 +73,7 @@ namespace Epic.Query.Relational
         /// <value>
         /// The relation.
         /// </value>
-        public Relation Relation { get { return this._relation; } }
+        public RelationalExpression Relation { get { return this._relation; } }
         
         /// <summary>
         /// Serves as a hash function for a <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/> object.

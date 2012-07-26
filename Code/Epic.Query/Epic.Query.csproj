@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Relational\Relation.cs" />
     <Compile Include="Relational\RelationType.cs" />
     <Compile Include="Relational\BaseRelation.cs" />
     <Compile Include="Relational\Selection.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="Relational\Operations\CrossProduct.cs" />
     <Compile Include="Relational\Operations\OuterJoin.cs" />
     <Compile Include="Relational\Operations\ThetaJoin.cs" />
+    <Compile Include="Relational\RelationalExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -63,8 +63,8 @@ namespace Epic.Query.Relational
         public void RelationEquals_toBaseRelationWithTheSameName_isTrue(string name)
         {
             // arrange:
-            Relation rel1 = new BaseRelation(name);
-            Relation rel2 = new BaseRelation(name);
+            RelationalExpression rel1 = new BaseRelation(name);
+            RelationalExpression rel2 = new BaseRelation(name);
 
             // act:
             bool result = rel1.Equals(rel2);
@@ -79,8 +79,8 @@ namespace Epic.Query.Relational
         public void RelationEquals_toBaseRelationWithDifferentName_isFalse(string name1, string name2)
         {
             // arrange:
-            Relation rel1 = new BaseRelation(name1);
-            Relation rel2 = new BaseRelation(name2);
+            RelationalExpression rel1 = new BaseRelation(name1);
+            RelationalExpression rel2 = new BaseRelation(name2);
 
             // act:
             bool result = rel1.Equals(rel2);
@@ -94,8 +94,8 @@ namespace Epic.Query.Relational
         {
             // arrange:
             string name = "test";
-            Relation relation = new BaseRelation(name);
-            Relation nullRel = null;
+            RelationalExpression relation = new BaseRelation(name);
+            RelationalExpression nullRel = null;
 
             // act:
             bool result = relation.Equals(nullRel);
@@ -109,8 +109,8 @@ namespace Epic.Query.Relational
         {
             // arrange:
             string name = "test";
-            Relation relation = new BaseRelation(name);
-            Relation[] differentRelations = new Relation[] { 
+            RelationalExpression relation = new BaseRelation(name);
+            RelationalExpression[] differentRelations = new RelationalExpression[] { 
                 new FakeRelation(RelationType.CrossProduct, name),  
                 new FakeRelation(RelationType.Grouped, name),
                 new FakeRelation(RelationType.Projection, name),

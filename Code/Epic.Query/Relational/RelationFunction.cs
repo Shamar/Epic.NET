@@ -29,17 +29,22 @@ namespace Epic.Query.Relational
     /// Models a function which has a <see cref="Epic.Linq.Expressions.Relational.Relation"/> as output.
     /// </summary>
     [Serializable]
-    public abstract class RelationFunction: Relation
+    public abstract class RelationFunction: RelationalExpression
     {
+        private readonly string _name;
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/> class.
         /// </summary>
         /// <param name='name'>
         /// The function name.
         /// </param>
-        public RelationFunction (string name): base(RelationType.Function, name)
+        public RelationFunction (string name): base(RelationType.Function)
         {
+            if (string.IsNullOrEmpty (name)) throw new ArgumentNullException("name");
+            _name = name;
         }
+
+        public string Name { get { return this._name; } }
 
         /// <summary>
         /// Determines whether the specified <see cref="RelationFunction"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
@@ -57,16 +62,16 @@ namespace Epic.Query.Relational
         public abstract bool Equals (RelationFunction other);
 
         /// <summary>
-        /// Determines whether the specified <see cref="Relation"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
+        /// Determines whether the specified <see cref="RelationalExpression"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Relation"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
+        /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Relation"/> is equal to the current
+        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
         /// <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (Relation other)
+        public override bool Equals (RelationalExpression other)
         {
             RelationFunction function = other as RelationFunction;
             if (null != function) return this.Equals (function);

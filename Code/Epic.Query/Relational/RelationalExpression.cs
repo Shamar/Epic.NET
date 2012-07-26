@@ -1,5 +1,5 @@
 //  
-//  Relation.cs
+//  RelationalExpression.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -32,11 +32,10 @@ namespace Epic.Query.Relational
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
     [Serializable]
-    public abstract class Relation : VisitableBase, IEquatable<Relation>
+    public abstract class RelationalExpression : VisitableBase, IEquatable<RelationalExpression>
     {
         private readonly RelationType _type;
-        private readonly string _name;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Relation"/> class.
         /// </summary>
@@ -49,49 +48,26 @@ namespace Epic.Query.Relational
         /// <exception cref='ArgumentNullException'>
         /// Is thrown when <paramref name="name"/> is <see langword="null" /> or empty.
         /// </exception>
-        protected Relation (RelationType type, string name)
+        protected RelationalExpression (RelationType type)
         {
-            if(string.IsNullOrEmpty(name))
-               throw new ArgumentNullException("name");
             _type = type;
-            _name = name;
         }
-        
-        /// <summary>
-        /// Type of the relation.
-        /// </summary>
-        public RelationType Type
-        {
-            get
-            {
-                return _type;
-            }
-        }
-        
-        /// <summary>
-        /// Name of the relation.
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
+
+        public RelationType Type { get { return this._type; } }
 
         #region IEquatable[Relation] implementation
 
         /// <summary>
-        /// Determines whether the specified <see cref="Relation"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// Determines whether the specified <see cref="RelationalExpression"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Relation"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Relation"/> is equal to the current
+        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
         /// <see cref="Epic.Linq.Expressions.Relational.Relation"/>; otherwise, <c>false</c>.
         /// </returns>
-        public abstract bool Equals (Relation other);
+        public abstract bool Equals (RelationalExpression other);
         
         #endregion
 
@@ -107,7 +83,7 @@ namespace Epic.Query.Relational
         /// </returns>
         public override bool Equals (object obj)
         {
-            return Equals (obj as Relation);
+            return Equals (obj as RelationalExpression);
         }
 
         /// <summary>
@@ -119,7 +95,7 @@ namespace Epic.Query.Relational
         /// </returns>
         public override int GetHashCode ()
         {
-            return GetType().GetHashCode() ^ _name.GetHashCode() ;
+            return this.GetType ().GetHashCode ();
         }
     }
 }

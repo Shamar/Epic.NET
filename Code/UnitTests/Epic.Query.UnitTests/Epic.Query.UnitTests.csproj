@@ -55,7 +55,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Relational\RelationQA.cs" />
     <Compile Include="Relational\PredicateQA.cs" />
     <Compile Include="Relational\BaseRelationQA.cs" />
     <Compile Include="Relational\SelectionQA.cs" />
@@ -82,6 +81,7 @@
     <Compile Include="Relational\Operations\OuterJoinQA.cs" />
     <Compile Include="Relational\Operations\CrossProductQA.cs" />
     <Compile Include="Relational\Operations\ThetaJoinQA.cs" />
+    <Compile Include="Relational\RelationalExpressionQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fakes\" />

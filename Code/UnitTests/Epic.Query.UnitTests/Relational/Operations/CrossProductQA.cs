@@ -34,52 +34,33 @@ namespace Epic.Query.Relational.Operations
     [TestFixture]
     public class CrossProductQA: RhinoMocksFixtureBase
     {
-        private readonly Relation fakeRelation1 = new Fakes.FakeRelation(RelationType.BaseRelation, "firstRelation");
-        private readonly Relation fakeRelation2 = new Fakes.FakeRelation(RelationType.BaseRelation, "secondRelation");
+        private readonly RelationalExpression fakeRelation1 = new Fakes.FakeRelation(RelationType.BaseRelation, "firstRelation");
+        private readonly RelationalExpression fakeRelation2 = new Fakes.FakeRelation(RelationType.BaseRelation, "secondRelation");
 
         [Test]
         public void Initialize_WithEitherArgumentNull_Fails()
         {
-            // arrange:
-            string name = "testName";
- 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new CrossProduct(null, fakeRelation2, name));
-            Assert.Throws<ArgumentNullException>(() => new CrossProduct(fakeRelation1, null, name));
-            Assert.Throws<ArgumentNullException>(() => new CrossProduct(fakeRelation1, fakeRelation2, null));
+            Assert.Throws<ArgumentNullException>(() => new CrossProduct(null, fakeRelation2));
+            Assert.Throws<ArgumentNullException>(() => new CrossProduct(fakeRelation1, null));
         }
 
         [Test]
         public void Initialize_WithFakeArguments_Works()
         {
-            // arrange:
-            string firstName = "firstName";
-            string secondName = "secondName";
- 
             // act:
-            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2, firstName);
-            CrossProduct secondJoin = new CrossProduct(fakeRelation1, fakeRelation2, secondName);
+            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2);
 
             // assert:
             Assert.IsTrue (firstJoin.LeftRelation.Equals (fakeRelation1));
-            Assert.IsTrue (firstJoin.LeftRelation.Equals (secondJoin.LeftRelation));
-
             Assert.IsTrue (firstJoin.RightRelation.Equals (fakeRelation2));
-            Assert.IsTrue (firstJoin.RightRelation.Equals (secondJoin.RightRelation));
-
-            Assert.IsTrue (firstJoin.Name.Equals (firstName));
-            Assert.IsTrue (secondJoin.Name.Equals (secondName));
-            Assert.IsFalse (firstJoin.Equals (secondJoin));
         }
 
         [Test]
         public void Equals_ToNull_works()
         {
-            // arrange:
-            string name = "testName";
-
             // act:
-            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
+            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2);
 
             // assert:
             Assert.IsFalse(innerJoin.Equals (null));
@@ -88,11 +69,8 @@ namespace Epic.Query.Relational.Operations
         [Test]
         public void Equals_AgainstSameObject_works()
         {
-             // arrange:
-            string name = "testName";
-
             // act:
-            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
+            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2);
             CrossProduct secondJoin = firstJoin;
 
             // assert:
@@ -102,20 +80,16 @@ namespace Epic.Query.Relational.Operations
         [Test]
         public void Equals_AgainstEquivalentObject_works()
         {
-            // arrange:
-            string name = "testName";
-            string otherName = "otherTestName";
-
             // act:
-            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
-            CrossProduct secondJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
-            CrossProduct thirdJoin = new CrossProduct(fakeRelation1, fakeRelation2, otherName);
-            Relation relation = secondJoin;
+            CrossProduct firstJoin = new CrossProduct(fakeRelation1, fakeRelation2);
+            CrossProduct secondJoin = new CrossProduct(fakeRelation1, fakeRelation2);
+            RelationalExpression relation = secondJoin;
 
             // assert:
+            Assert.IsTrue (firstJoin.LeftRelation.Equals (secondJoin.LeftRelation));
+            Assert.IsTrue (firstJoin.RightRelation.Equals (secondJoin.RightRelation));
             Assert.IsTrue (firstJoin.Equals (secondJoin));
             Assert.IsTrue (firstJoin.Equals (relation));
-            Assert.IsFalse (firstJoin.Equals (thirdJoin));
             Assert.AreEqual (firstJoin.GetHashCode (), secondJoin.GetHashCode ());
         }
 
@@ -123,8 +97,7 @@ namespace Epic.Query.Relational.Operations
         public void Test_Serialization_Works()
         {
             // arrange:
-            string name = "testName";
-            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
+            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<CrossProduct>(innerJoin);
@@ -137,8 +110,7 @@ namespace Epic.Query.Relational.Operations
         public void Test_deserialization_Works()
         {
             // arrange:
-            string name = "testName";
-            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
+            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<CrossProduct>(innerJoin);
@@ -155,8 +127,7 @@ namespace Epic.Query.Relational.Operations
             // arrange:
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            string name = "testName";
-            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2, name);
+            CrossProduct innerJoin = new CrossProduct(fakeRelation1, fakeRelation2);
 
             IVisitor<object, CrossProduct> selectionVisitor =
             GenerateStrictMock<IVisitor<object, CrossProduct>>();

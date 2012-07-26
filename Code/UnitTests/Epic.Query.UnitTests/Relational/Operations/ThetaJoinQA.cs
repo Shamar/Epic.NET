@@ -34,57 +34,36 @@ namespace Epic.Query.Relational.Operations
     [TestFixture]
     public class ThetaJoinQA: RhinoMocksFixtureBase
     {
-        private readonly Relation fakeRelation1 = new Fakes.FakeRelation(RelationType.BaseRelation, "firstRelation");
-        private readonly Relation fakeRelation2 = new Fakes.FakeRelation(RelationType.BaseRelation, "secondRelation");
+        private readonly RelationalExpression fakeRelation1 = new Fakes.FakeRelation(RelationType.BaseRelation, "firstRelation");
+        private readonly RelationalExpression fakeRelation2 = new Fakes.FakeRelation(RelationType.BaseRelation, "secondRelation");
         private readonly Predicate predicate = new Fakes.FakePredicate();
 
         [Test]
         public void Initialize_WithEitherArgumentNull_Fails()
         {
-            // arrange:
-            string name = "testName";
- 
             // assert:
-            Assert.Throws<ArgumentNullException>(() => new ThetaJoin(null, fakeRelation2, predicate, name));
-            Assert.Throws<ArgumentNullException>(() => new ThetaJoin(fakeRelation1, null, predicate, name));
-            Assert.Throws<ArgumentNullException>(() => new ThetaJoin(fakeRelation1, fakeRelation2, null, name));
-            Assert.Throws<ArgumentNullException>(() => new ThetaJoin(fakeRelation1, fakeRelation2, predicate, null));
+            Assert.Throws<ArgumentNullException>(() => new ThetaJoin(null, fakeRelation2, predicate));
+            Assert.Throws<ArgumentNullException>(() => new ThetaJoin(fakeRelation1, null, predicate));
+            Assert.Throws<ArgumentNullException>(() => new ThetaJoin(fakeRelation1, fakeRelation2, null));
         }
 
         [Test]
         public void Initialize_WithFakeArguments_Works()
         {
-            // arrange:
-            string firstName = "firstName";
-            string secondName = "secondName";
- 
             // act:
-            ThetaJoin firstJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, firstName);
-            ThetaJoin secondJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, secondName);
+            ThetaJoin firstJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate);
 
             // assert:
             Assert.IsTrue (firstJoin.LeftRelation.Equals (fakeRelation1));
-            Assert.IsTrue (firstJoin.LeftRelation.Equals (secondJoin.LeftRelation));
-
             Assert.IsTrue (firstJoin.RightRelation.Equals (fakeRelation2));
-            Assert.IsTrue (firstJoin.RightRelation.Equals (secondJoin.RightRelation));
-
             Assert.IsTrue (firstJoin.Predicate.Equals (predicate));
-            Assert.IsTrue (firstJoin.Predicate.Equals (secondJoin.Predicate));
-
-            Assert.IsTrue (firstJoin.Name.Equals (firstName));
-            Assert.IsTrue (secondJoin.Name.Equals (secondName));
-            Assert.IsFalse (firstJoin.Equals (secondJoin));
         }
 
         [Test]
         public void Equals_ToNull_works()
         {
-            // arrange:
-            string name = "testName";
-
             // act:
-            ThetaJoin innerJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, name);
+            ThetaJoin innerJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate);
 
             // assert:
             Assert.IsFalse(innerJoin.Equals (null));
@@ -93,11 +72,8 @@ namespace Epic.Query.Relational.Operations
         [Test]
         public void Equals_AgainstSameObject_works()
         {
-             // arrange:
-            string name = "testName";
-
-            // act:
-            ThetaJoin firstJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, name);
+           // act:
+            ThetaJoin firstJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate);
             ThetaJoin secondJoin = firstJoin;
 
             // assert:
@@ -107,20 +83,17 @@ namespace Epic.Query.Relational.Operations
         [Test]
         public void Equals_AgainstEquivalentObject_works()
         {
-            // arrange:
-            string name = "testName";
-            string otherName = "otherTestName";
-
             // act:
-            ThetaJoin firstJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, name);
-            ThetaJoin secondJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, name);
-            ThetaJoin thirdJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, otherName);
-            Relation relation = secondJoin;
+            ThetaJoin firstJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate);
+            ThetaJoin secondJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate);
+            RelationalExpression relation = secondJoin;
 
             // assert:
+            Assert.IsTrue (firstJoin.LeftRelation.Equals (secondJoin.LeftRelation));
+            Assert.IsTrue (firstJoin.RightRelation.Equals (secondJoin.RightRelation));
+            Assert.IsTrue (firstJoin.Predicate.Equals (secondJoin.Predicate));
             Assert.IsTrue (firstJoin.Equals (secondJoin));
             Assert.IsTrue (firstJoin.Equals (relation));
-            Assert.IsFalse (firstJoin.Equals (thirdJoin));
             Assert.AreEqual (firstJoin.GetHashCode (), secondJoin.GetHashCode ());
         }
 
@@ -128,8 +101,7 @@ namespace Epic.Query.Relational.Operations
         public void Test_Serialization_Works()
         {
             // arrange:
-            string name = "testName";
-            ThetaJoin innerJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, name);
+            ThetaJoin innerJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<ThetaJoin>(innerJoin);
@@ -142,8 +114,7 @@ namespace Epic.Query.Relational.Operations
         public void Test_deserialization_Works()
         {
             // arrange:
-            string name = "testName";
-            ThetaJoin innerJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, name);
+           ThetaJoin innerJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<ThetaJoin>(innerJoin);
@@ -160,8 +131,7 @@ namespace Epic.Query.Relational.Operations
             // arrange:
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            string name = "testName";
-            ThetaJoin innerJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate, name);
+            ThetaJoin innerJoin = new ThetaJoin(fakeRelation1, fakeRelation2, predicate);
 
             IVisitor<object, ThetaJoin> selectionVisitor =
             GenerateStrictMock<IVisitor<object, ThetaJoin>>();

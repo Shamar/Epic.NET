@@ -37,16 +37,13 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             string newRelationName = "testTableRenamed";
 
             // assert:
             Assert.Throws<ArgumentNullException>(() => new Rename(table, null));
             Assert.Throws<ArgumentNullException>(() => new Rename(null, newRelationName));
             Assert.Throws<ArgumentNullException>(() => new Rename(null, null));
-            Assert.Throws<ArgumentNullException>(() => new Rename(table, newRelationName, null));
-            Assert.Throws<ArgumentNullException>(() => new Rename(null, newRelationName, tableName));
-            Assert.Throws<ArgumentNullException>(() => new Rename(table, null, tableName));
         }
 
         [Test]
@@ -54,24 +51,15 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             string newRelationName = "testTableRenamed";
-            string operationName = "testTable as testTableRenamed";
 
             // act:
             Rename firstRename = new Rename(table, newRelationName);
-            Rename secondRename = new Rename(table, newRelationName, operationName);
 
             // assert:
             Assert.IsTrue (firstRename.Relation.Equals (table));
-            Assert.IsTrue (firstRename.Relation.Equals (secondRename.Relation));
-
-            Assert.IsTrue (firstRename.NewRelationName.Equals (newRelationName));
-            Assert.IsTrue (firstRename.NewRelationName.Equals (secondRename.NewRelationName));
-
-            Assert.IsTrue (firstRename.Name.Equals (table.Name));
-            Assert.IsTrue (secondRename.Name.Equals (operationName));
-            Assert.IsFalse (firstRename.Equals (secondRename));
+            Assert.IsTrue (firstRename.Name.Equals (newRelationName));
         }
 
         [Test]
@@ -79,12 +67,11 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             string newRelationName = "testTableRenamed";
-            string operationName = "testTable as testTableRenamed";
 
             // act:
-            Rename firstRename = new Rename(table, newRelationName, operationName);
+            Rename firstRename = new Rename(table, newRelationName);
             Rename secondRename = firstRename;
 
             // assert:
@@ -96,18 +83,19 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             string newRelationName = "testTableRenamed";
-            string operationName = "testTable as testTableRenamed";
 
             // act:
-            Rename firstRename = new Rename(table, newRelationName, operationName);
-            Rename secondRename = new Rename(table, newRelationName,  operationName);
-            Relation relation = secondRename;
+            Rename firstRename = new Rename(table, newRelationName);
+            Rename secondRename = new Rename(table, newRelationName);
+            RelationalExpression relation = secondRename;
 
             // assert:
             Assert.IsTrue (firstRename.Equals (secondRename));
             Assert.IsTrue (firstRename.Equals (relation));
+            Assert.IsTrue (firstRename.Name.Equals (newRelationName));
+            Assert.IsTrue (secondRename.Name.Equals (newRelationName));
             Assert.AreEqual (firstRename.GetHashCode (), secondRename.GetHashCode ());
         }
 
@@ -116,12 +104,11 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             string newRelationName = "testTableRenamed";
-            string operationName = "testTable as testTableRenamed";
 
             // act:
-            Rename toTest = new Rename(table, newRelationName, operationName);
+            Rename toTest = new Rename(table, newRelationName);
 
             // assert:
             Assert.IsFalse (toTest.Equals (null));
@@ -132,10 +119,9 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             string newRelationName = "testTableRenamed";
-            string operationName = "testTable as testTableRenamed";
-            Rename selection = new Rename(table, newRelationName, operationName);
+            Rename selection = new Rename(table, newRelationName);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<Rename>(selection);
@@ -149,10 +135,9 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             string newRelationName = "testTableRenamed";
-            string operationName = "testTable as testTableRenamed";
-            Rename selection = new Rename(table, newRelationName, operationName);
+            Rename selection = new Rename(table, newRelationName);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<Rename>(selection);
@@ -170,10 +155,9 @@ namespace Epic.Query.Relational.Operations
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             string newRelationName = "testTableRenamed";
-            string operationName = "testTable as testTableRenamed";
-            Rename selection = new Rename(table, newRelationName, operationName);
+            Rename selection = new Rename(table, newRelationName);
 
             IVisitor<object, Rename> selectionVisitor =
             GenerateStrictMock<IVisitor<object, Rename>>();

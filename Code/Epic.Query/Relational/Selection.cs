@@ -27,12 +27,12 @@ using Epic.Query.Relational.Predicates;
 namespace Epic.Query.Relational
 { 
     [Serializable]
-    public sealed class Selection : Relation
+    public sealed class Selection : RelationalExpression
     {
-        private readonly Relation _source;
+        private readonly RelationalExpression _source;
         private readonly Predicate _condition;
-        public Selection (string name, Relation source, Predicate condition)
-            : base(RelationType.Selection, name)
+        public Selection (RelationalExpression source, Predicate condition)
+            : base(RelationType.Selection)
         {
             if(null == source)
                 throw new ArgumentNullException("source");
@@ -42,7 +42,7 @@ namespace Epic.Query.Relational
             _condition = condition;
         }
         
-        public Relation Source
+        public RelationalExpression Source
         {
             get
             {
@@ -64,7 +64,7 @@ namespace Epic.Query.Relational
         }
         
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Relation
-        public override bool Equals (Relation other)
+        public override bool Equals (RelationalExpression other)
         {
             if(null == other)
                 return false;

@@ -35,7 +35,7 @@ namespace Epic.Query.Relational.Operations
     [TestFixture]
     public class ProjectionQA:RhinoMocksFixtureBase
     {
-        private readonly Relation fakeRelation = new Fakes.FakeRelation(RelationType.BaseRelation, "test");
+        private readonly RelationalExpression fakeRelation = new Fakes.FakeRelation(RelationType.BaseRelation, "test");
         private string attributeName = "attribute";
 
         [Test]
@@ -43,16 +43,13 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
 
             // assert:
             Assert.Throws<ArgumentNullException>(() => new Projection(table, null));
             Assert.Throws<ArgumentNullException>(() => new Projection(null, attributes));
             Assert.Throws<ArgumentNullException>(() => new Projection(null, null));
-            Assert.Throws<ArgumentNullException>(() => new Projection(table, attributes, null));
-            Assert.Throws<ArgumentNullException>(() => new Projection(null, attributes, tableName));
-            Assert.Throws<ArgumentNullException>(() => new Projection(table, null, tableName));
         }
 
         [Test]
@@ -60,24 +57,15 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select fakeAttribute from testTable";
 
             // act:
             Projection firstProjection = new Projection(table, attributes);
-            Projection secondProjection = new Projection(table, attributes, operationName);
 
             // assert:
             Assert.IsTrue (firstProjection.Relation.Equals (table));
-            Assert.IsTrue (firstProjection.Relation.Equals (secondProjection.Relation));
-
             Assert.IsTrue (firstProjection.Attributes.SequenceEqual (attributes));
-            Assert.IsTrue (firstProjection.Attributes.SequenceEqual (secondProjection.Attributes));
-
-            Assert.IsTrue (firstProjection.Name.Equals (table.Name));
-            Assert.IsTrue (secondProjection.Name.Equals (operationName));
-            Assert.IsFalse (firstProjection.Equals (secondProjection));
         }
 
         [Test]
@@ -85,12 +73,11 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select * from testTable where 1 = 1";
 
             // act:
-            Projection firstProjection = new Projection(table, attributes, operationName);
+            Projection firstProjection = new Projection(table, attributes);
 
             // assert:
             Assert.IsFalse(firstProjection.Equals (null));
@@ -101,12 +88,11 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select * from testTable where 1 = 1";
 
             // act:
-            Projection firstProjection = new Projection(table, attributes, operationName);
+            Projection firstProjection = new Projection(table, attributes);
             Projection secondProjection = firstProjection;
 
             // assert:
@@ -118,20 +104,17 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select fakeAttribute from testTable";
 
             // act:
-            Projection firstProjection = new Projection(table, attributes, operationName);
-            Projection secondProjection = new Projection(table, attributes,  operationName);
-            Projection thirdProjection = new Projection(table, attributes);
-            Relation relation = secondProjection;
+            Projection firstProjection = new Projection(table, attributes);
+            Projection secondProjection = new Projection(table, attributes);
+            RelationalExpression relation = secondProjection;
 
             // assert:
             Assert.IsTrue (firstProjection.Equals (secondProjection));
             Assert.IsTrue (firstProjection.Equals (relation));
-            Assert.IsFalse (firstProjection.Equals (thirdProjection));
             Assert.AreEqual (firstProjection.GetHashCode (), secondProjection.GetHashCode ());
         }
 
@@ -140,10 +123,9 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select fakeAttribute from testTable";
-            Projection selection = new Projection(table, attributes, operationName);
+            Projection selection = new Projection(table, attributes);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<Projection>(selection);
@@ -157,10 +139,9 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select fakeAttribute from testTable";
-            Projection selection = new Projection(table, attributes, operationName);
+            Projection selection = new Projection(table, attributes);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<Projection>(selection);
@@ -178,10 +159,9 @@ namespace Epic.Query.Relational.Operations
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             IEnumerable<RelationAttribute> attributes = new [] { new RelationAttribute(attributeName, fakeRelation) };
-            string operationName = "select fakeAttribute from testTable";
-            Projection projection = new Projection(table, attributes, operationName);
+            Projection projection = new Projection(table, attributes);
 
             IVisitor<object, Projection> selectionVisitor =
             GenerateStrictMock<IVisitor<object, Projection>>();

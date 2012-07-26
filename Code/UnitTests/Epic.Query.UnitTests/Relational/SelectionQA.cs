@@ -34,31 +34,14 @@ namespace Epic.Query.Relational
     public class SelectionQA : RhinoMocksFixtureBase
     {
         [Test]
-        public void Initialize_withoutName_throwsArgumentNullException()
-        {
-            // arrange:
-            Relation source = GeneratePartialMock<Relation>(RelationType.BaseRelation, "test");
-            Predicate condition = GeneratePartialMock<Predicate>();
-
-            // assert:
-            Assert.Throws<ArgumentNullException>(delegate { 
-                new Selection(null, source, condition);
-            });
-            Assert.Throws<ArgumentNullException>(delegate { 
-                new Selection(string.Empty, source, condition);
-            });
-        }
-        
-        [Test]
         public void Initialize_withoutSourceRelation_throwsArgumentNullException()
         {
             // arrange:
-            string name = "test";
             Predicate condition = GeneratePartialMock<Predicate>();
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 
-                new Selection(name, null, condition);
+                new Selection(null, condition);
             });
         }
         
@@ -66,12 +49,11 @@ namespace Epic.Query.Relational
         public void Initialize_withoutPredicate_throwsArgumentNullException()
         {
             // arrange:
-            string name = "test";
-            Relation source = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 
-                new Selection(name, source, null);
+                new Selection(source, null);
             });
         }
         
@@ -79,15 +61,13 @@ namespace Epic.Query.Relational
         public void Initialize_withValidArguments_works()
         {
             // arrange:
-            string name = "test";
-            Relation source = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
             Predicate condition = GeneratePartialMock<Predicate>();
 
             // act:
-            Selection selection = new Selection(name, source, condition);
+            Selection selection = new Selection(source, condition);
 
             // assert:
-            Assert.AreEqual(name, selection.Name);
             Assert.AreEqual(RelationType.Selection, selection.Type);
             Assert.AreSame(source, selection.Source);
             Assert.AreSame(condition, selection.Condition);
@@ -97,11 +77,10 @@ namespace Epic.Query.Relational
         public void Equals_toNull_isFalse()
         {
             // arrange:
-            string name = "test";
-            Relation source = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
             Predicate condition = GeneratePartialMock<Predicate>();
-            Relation relation = new Selection(name, source, condition);
-            Relation nullRel = null;
+            RelationalExpression relation = new Selection(source, condition);
+            RelationalExpression nullRel = null;
 
             // act:
             bool result = relation.Equals(nullRel);
@@ -110,20 +89,17 @@ namespace Epic.Query.Relational
             Assert.IsFalse(result);
         }
         
-        [TestCase("test1", "TEST2")]
-        [TestCase("test2", "TEST3")]
-        [TestCase("test3", "test3")]
-        public void RelationEquals_toSelectionWithEqualConditionAndPredicate_isTrue(string name1, string name2)
+        public void RelationEquals_toSelectionWithEqualConditionAndPredicate_isTrue()
         {
             // arrange:
-            Relation source1 = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
-            Relation source2 = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source1 = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
+            RelationalExpression source2 = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
             source1.Expect(r => r.Equals(source2)).Return(true).Repeat.Once();
             Predicate condition1 = GeneratePartialMock<Predicate>();
             Predicate condition2 = GeneratePartialMock<Predicate>();
             condition1.Expect(c => c.Equals(condition2)).Return(true).Repeat.Once();
-            Relation rel1 = new Selection(name1, source1, condition1);
-            Relation rel2 = new Selection(name2, source2, condition2);
+            RelationalExpression rel1 = new Selection( source1, condition1);
+            RelationalExpression rel2 = new Selection( source2, condition2);
 
             // act:
             bool result = rel1.Equals(rel2);
@@ -132,19 +108,16 @@ namespace Epic.Query.Relational
             Assert.IsTrue(result);
         }
         
-        [TestCase("test1", "TEST2")]
-        [TestCase("test2", "TEST3")]
-        [TestCase("test3", "test3")]
-        public void RelationEquals_toSelectionWithDifferentRelations_isFalse(string name1, string name2)
+        public void RelationEquals_toSelectionWithDifferentRelations_isFalse()
         {
             // arrange:
-            Relation source1 = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
-            Relation source2 = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source1 = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source2 = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation, "testRelation");
             source1.Expect(r => r.Equals(source2)).Return(false).Repeat.Once();
             Predicate condition1 = GeneratePartialMock<Predicate>();
             Predicate condition2 = GeneratePartialMock<Predicate>();
-            Relation rel1 = new Selection(name1, source1, condition1);
-            Relation rel2 = new Selection(name2, source2, condition2);
+            RelationalExpression rel1 = new Selection(source1, condition1);
+            RelationalExpression rel2 = new Selection(source2, condition2);
 
             // act:
             bool result = rel1.Equals(rel2);
@@ -153,20 +126,17 @@ namespace Epic.Query.Relational
             Assert.IsFalse(result);
         }
         
-        [TestCase("test1", "TEST2")]
-        [TestCase("test2", "TEST3")]
-        [TestCase("test3", "test3")]
-        public void RelationEquals_toSelectionWithDifferentPredicates_isFalse(string name1, string name2)
+        public void RelationEquals_toSelectionWithDifferentPredicates_isFalse()
         {
             // arrange:
-            Relation source1 = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
-            Relation source2 = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source1 = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source2 = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation, "testRelation");
             source1.Expect(r => r.Equals(source2)).Return(true).Repeat.Once();
             Predicate condition1 = GeneratePartialMock<Predicate>();
             Predicate condition2 = GeneratePartialMock<Predicate>();
             condition1.Expect(c => c.Equals(condition2)).Return(false).Repeat.Once();
-            Relation rel1 = new Selection(name1, source1, condition1);
-            Relation rel2 = new Selection(name2, source2, condition2);
+            RelationalExpression rel1 = new Selection(source1, condition1);
+            RelationalExpression rel2 = new Selection(source2, condition2);
 
             // act:
             bool result = rel1.Equals(rel2);
@@ -180,10 +150,10 @@ namespace Epic.Query.Relational
         {
             // arrange:
             string name = "test";
-            Relation source = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
             Predicate condition = GeneratePartialMock<Predicate>();
-            Relation relation = new Selection(name, source, condition);
-            Relation[] differentRelations = new Relation[] { 
+            RelationalExpression relation = new Selection(source, condition);
+            RelationalExpression[] differentRelations = new RelationalExpression[] { 
                 new FakeRelation(RelationType.CrossProduct, name),  
                 new FakeRelation(RelationType.Grouped, name),
                 new FakeRelation(RelationType.Projection, name),
@@ -208,12 +178,11 @@ namespace Epic.Query.Relational
             // arrange:
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            string name = "test";
-            Relation source = GeneratePartialMock<Relation>(RelationType.BaseRelation, "testRelation");
+            RelationalExpression source = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
             source.Expect(r => r.Equals(source)).Return(true).Repeat.Any();                                 // Needed from Rhino
             Predicate condition = GeneratePartialMock<Predicate>();
             condition.Expect(c => c.Equals(condition)).Return(true).Repeat.Any();                           // Needed from Rhino
-            Selection relation = new Selection(name, source, condition);
+            Selection relation = new Selection(source, condition);
             IVisitor<object, Selection> selectionVisitor = GenerateStrictMock<IVisitor<object, Selection>>();
             selectionVisitor.Expect(v => v.Visit(relation, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
