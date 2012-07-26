@@ -1,5 +1,5 @@
 //  
-//  InnerJoin.cs
+//  ThetaJoin.cs
 //  
 //  Author:
 //       Marco Veglio <m.veglio@gmail.com>
