@@ -62,10 +62,20 @@ namespace Epic.Query.Relational
         Rename,
 
         /// <summary>
-        /// Inner Join.
+        /// Theta Join.
         /// </summary>
-        InnerJoin,
-        
+        ThetaJoin,
+
+        /// <summary>
+        /// Outer Join.
+        /// </summary>
+        OuterJoin,
+
+        /// <summary>
+        /// Sort.
+        /// </summary>
+        Sort,
+
         /// <summary>
         /// Grouped relation (in SQL, it's the effect of a group by)
         /// </summary>

@@ -82,7 +82,7 @@ namespace Epic.Query.Relational
                                        );
                 }
             }
-            return new InnerJoin(left, right, predicate, "deleteMe");
+            return new ThetaJoin(left, right, predicate, "deleteMe");
         }
 
         public Relation ToRelation()
