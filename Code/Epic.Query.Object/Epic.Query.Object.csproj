@@ -68,6 +68,8 @@
     <Compile Include="Relational\Visitors\DisjunctionVisitor.cs" />
     <Compile Include="Relational\Visitors\NegationVisitor.cs" />
     <Compile Include="Relational\Visitors\GenericSpecificationVisitor.cs" />
+    <Compile Include="Relational\Mappings\IIdentityMapping.cs" />
+    <Compile Include="Relational\Mappings\IdentityMapping.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -88,5 +90,6 @@
     <Folder Include="Expressions\" />
     <Folder Include="Relational\" />
     <Folder Include="Relational\Visitors\" />
+    <Folder Include="Relational\Mappings\" />
   </ItemGroup>
 </Project>

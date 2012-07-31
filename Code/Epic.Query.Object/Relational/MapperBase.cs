@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using Epic.Query.Relational;
 using Epic.Specifications;
 using Epic.Query.Relational.Predicates;
+using Epic.Query.Object.Relational.Mappings;
 
 namespace Epic.Query.Object.Relational
 {
@@ -35,15 +36,29 @@ namespace Epic.Query.Object.Relational
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
-        private static MapperBase<TEntity, TIdentity> _instance;
         private readonly Relation _mainRelation;
-
-        protected MapperBase (Relation mainRelation)
+        private IIdentityMapping<TIdentity> _identityMap;
+        
+        protected MapperBase (string mainRelation)
         {
-            if (null == mainRelation)
-                throw new ArgumentNullException ("mainRelation");
-            _mainRelation = mainRelation;
-            _instance = this;
+            _mainRelation = new BaseRelation(mainRelation);
+        }
+
+        protected void IdentityFrom<TAttribute>(string attributeName, Func<TAttribute, TIdentity> fromRelationalValue, Func<TIdentity, TAttribute> toRelationalValue)
+        {
+            _identityMap = new IdentityMapping<TIdentity, TAttribute>(
+                new RelationAttribute(attributeName, _mainRelation),
+                fromRelationalValue,
+                toRelationalValue
+            );
+        }
+
+        protected void IdentityFrom<TAttribute1, TAttribute2>(string attribute1Name, string attribute2Name, Func<TAttribute1, TAttribute2, TIdentity> identityInitialization)
+        {
+        }
+
+        protected void IdentityFrom<TAttribute1, TAttribute2, TAttribute3>(string attribute1Name, string attribute2Name, string attribute3Name, Func<TAttribute1, TAttribute2, TAttribute3, TIdentity> identityInitialization)
+        {
         }
 
         #region IMapping implementation
