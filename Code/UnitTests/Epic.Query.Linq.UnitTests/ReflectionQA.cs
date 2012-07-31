@@ -69,7 +69,7 @@ namespace Epic.Query.Linq
         public void VerifyKnownMethods()
         {
             Assert.AreEqual(14, ReflectionQA.AllEnumerableMethodsThatHaveNoEquivalentInQueryable.Count());
-            Assert.AreEqual(160, ReflectionQA.AllEnumerableMethodsThatHaveEquivalentInQueryable.Count());
+            Assert.AreEqual(161, ReflectionQA.AllEnumerableMethodsThatHaveEquivalentInQueryable.Count());
             Assert.AreEqual(110, ReflectionQA.QueryableEnumerableEquivantMethods.Count());
         }
         

@@ -3,8 +3,8 @@
     <!-- build-wide properties -->
 	<property name="build.verbosity" value="quiet" overwrite="false" />
     
-	<property name="nant.settings.currentframework" value="net-3.5" if="${platform::is-windows()}" />
-    <property name="nant.settings.currentframework" value="mono-3.5" if="${not platform::is-windows()}" />
+	<property name="nant.settings.currentframework" value="net-4.0" if="${platform::is-windows()}" />
+    <property name="nant.settings.currentframework" value="mono-4.0" if="${not platform::is-windows()}" />
 
 	<property name="repository.builddirectory" value="${path::combine(repository.rootdirectory, 'build')}"/>
 	<property name="repository.testdirectory" value="${path::combine(path::combine(repository.builddirectory, 'tests'), build.configuration)}" overwrite="false"/>
