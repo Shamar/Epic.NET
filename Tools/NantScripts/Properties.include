@@ -26,7 +26,6 @@
     <property name="MailLogger.failure.attachments" value="MailLogger.files" if="${property::exists('MailLogger.mailhost')}" />
     <property name="MailLogger.success.attachments" value="MailLogger.files" if="${property::exists('MailLogger.mailhost')}" />
 
-    
     <fileset id="MailLogger.files">
         <include name="${path::combine(repository.testdirectory, '*.QA.xml')}" />
         <include name="${path::combine(repository.testdirectory, '*.Coverage.xml')}" />
