@@ -684,6 +684,12 @@ namespace Epic.Query.Linq
                     GetGenericMethodInfoFromExpressionBody(() => q.Where((i, p) => true)),
                     GetGenericMethodInfoFromExpressionBody(() => e.Where((i, p) => true))
                     );
+
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => q.Zip(dummyEnumerable, (i, p) => true)),
+                    GetGenericMethodInfoFromExpressionBody(() => e.Zip(dummyEnumerable, (i, p) => true))
+                    );
+
             }
 
             /// <summary>
@@ -1445,6 +1451,11 @@ namespace Epic.Query.Linq
                 AddTranslation(
                     GetGenericMethodInfoFromExpressionBody(() => e.Where((i, p) => true)),
                     GetGenericMethodInfoFromExpressionBody(() => q.Where((i, p) => true))
+                    );
+
+                AddTranslation(
+                    GetGenericMethodInfoFromExpressionBody(() => e.Zip(dummyEnumerable, (i, p) => true)),
+                    GetGenericMethodInfoFromExpressionBody(() => q.Zip(dummyEnumerable, (i, p) => true))
                     );
             }
 
