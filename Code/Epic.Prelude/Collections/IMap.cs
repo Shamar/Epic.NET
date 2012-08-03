@@ -26,7 +26,7 @@ using System;
 namespace Epic.Collections
 {
     /// <summary>
-    /// A map that provide access to <typeparamref name="TValue"> 
+    /// A map that provide access to <typeparamref name="TValue"/> 
     /// given a <typeparamref name="TKey"/>.
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the map.</typeparam>

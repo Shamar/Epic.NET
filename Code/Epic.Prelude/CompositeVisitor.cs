@@ -32,7 +32,7 @@ namespace Epic
     /// Visitors' composition. It uses composition to handle the visit of any type of expression tree.
     /// </summary>
     /// <typeparam name="TResult">Type of the result produced by the visit.</typeparam>
-    /// <seealso cref="CompositeVisitorBase"/>
+    /// <seealso cref="CompositeVisitorBase{TResult, TExpression}"/>
     public abstract class CompositeVisitor<TResult> : IVisitor<TResult>
     {
         private readonly List<VisitorBase> _chain;
@@ -43,7 +43,7 @@ namespace Epic
         /// Initializes a new instance of a composition.
         /// </summary>
         /// <remarks>
-        /// This constructor is internal because clients have to derive <see cref="CompositeVisitorBase"/>.
+        /// This constructor is internal because clients have to derive <see cref="CompositeVisitorBase{TResult,TExpression}"/>.
         /// </remarks>
         /// <param name='name'>
         /// Name of the composition.
@@ -239,7 +239,7 @@ namespace Epic
 
             #region IVisitor[TResult] implementation
             /// <summary>
-            /// Return the visitor that can visit <paramref name="target">.
+            /// Return the visitor that can visit <paramref name="target"/>.
             /// </summary>
             /// <returns>
             /// The visitor.

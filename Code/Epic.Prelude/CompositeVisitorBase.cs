@@ -30,7 +30,7 @@ namespace Epic
     /// Visitors' composition base class. This class must be derived from concrete compositions.
     /// </summary>
     /// <typeparam name="TResult">The type of the result produced by the visit.</typeparam>
-    /// <typeparam name="TResult">The type of the expression to visit.</typeparam>
+    /// <typeparam name="TExpression">The type of the expression to visit.</typeparam>
     [DebuggerDisplay("CompositeVisitor<{typeof(TResult).Name, nq}, {typeof(TExpression).Name, nq}> {_name} ({_chain.Count} visitors)")]
     public abstract class CompositeVisitorBase<TResult, TExpression> : CompositeVisitor<TResult>, IVisitor<TResult, TExpression>
         where TExpression : class

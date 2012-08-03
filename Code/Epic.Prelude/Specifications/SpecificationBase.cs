@@ -29,6 +29,13 @@ namespace Epic.Specifications
     /// <summary>
     /// Base class for specifications.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The constructor grant that the instance produced is assignable from <typeparamref name="TSpecification"/>.
+    /// </para>
+    /// <para>Moreover, the type initializer throws <see cref="InvalidOperationException"/> if 
+    /// either <typeparamref name="TCandidate"/> is <see cref="System.Object"/> or <typeparamref name="TSpecification"/> is <see cref="ISpecification{TCandidate}"/></para>
+    /// </remarks> 
     /// <typeparam name="TSpecification">Type of the specification implemented.</typeparam>
     /// <typeparam name="TCandidate">Type of the candidates to satisfy the specification.</typeparam>
     [Serializable]
@@ -50,6 +57,9 @@ namespace Epic.Specifications
             }
         }
         
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.Specifications.SpecificationBase{TSpecification, TCandidate}"/> class.
+        /// </summary>
         protected SpecificationBase ()
         {
             if (!(this is TSpecification)) {
@@ -57,7 +67,16 @@ namespace Epic.Specifications
                 throw new InvalidOperationException (message);
             }
         }
-
+        
+        /// <summary>
+        /// Throws <see cref="ArgumentNullException"/> if <paramref name="other"/> is <c>null</c>.
+        /// </summary>
+        /// <param name='other'>
+        /// Other.
+        /// </param>
+        /// <typeparam name='T'>
+        /// The 1st type parameter.
+        /// </typeparam>
         protected static void ThrowIfNull<T> (ISpecification<T> other)
             where T : class
         {
@@ -66,6 +85,19 @@ namespace Epic.Specifications
         }
 
         #region implemented abstract members of Epic.VisitableBase
+        /// <summary>
+        /// Accept the specified visitor and context as a <typeparamref name="TSpecification"/>.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit result.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="visitor"/> or <paramref name="context"/> is <c>null</c>.</exception>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe<TResult, TSpecification> (this as TSpecification, visitor, context);
@@ -73,16 +105,43 @@ namespace Epic.Specifications
         #endregion
         
         #region IEquatable implementation
+        /// <summary>
+        /// Determines whether the specified <see cref="Epic.Specifications.ISpecification{TCandidate}"/> is equal to the
+        /// current <see cref="Epic.Specifications.SpecificationBase{TSpecification,TCandidate}"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Epic.Specifications.ISpecification{TCandidate}"/> to compare with the current instance.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Epic.Specifications.ISpecification{TCandidate}"/> is equal to the
+        /// current <see cref="Epic.Specifications.SpecificationBase{TSpecification,TCandidate}"/>; otherwise, <c>false</c>.
+        /// </returns>
         public bool Equals (ISpecification<TCandidate> other)
         {
             return Equals (other as TSpecification);
         }
-        
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="SpecificationBase{TSpecification,TCandidate}"/>.
+        /// </summary>
+        /// <param name='obj'>
+        /// The <see cref="System.Object"/> to compare with the current <see cref="SpecificationBase{TSpecification,TCandidate}"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="SpecificationBase{TSpecification,TCandidate}"/>; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals (object obj)
         {
             return Equals (obj as TSpecification);
         }
 
+        /// <summary>
+        /// Serves as a hash function for a <see cref="SpecificationBase{TSpecification,TCandidate}"/> object.
+        /// </summary>
+        /// <returns>
+        /// The hash code of <c>typeof(<typeparamref name="TSpecification"/>)</c>.
+        /// </returns>
         public override int GetHashCode ()
         {
             // The HashCode of the TSpecification should be enough: it's strange 
@@ -92,6 +151,17 @@ namespace Epic.Specifications
         #endregion
 
         #region IEquatable implementation
+        /// <summary>
+        /// Determines whether the specified <typeparamref name="TSpecification"/> is equal
+        /// to the current <see cref="SpecificationBase{TSpecification,TCandidate}"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <typeparamref name="TSpecification"/> to compare with the current <see cref="SpecificationBase{TSpecification,TCandidate}"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <typeparamref name="TSpecification"/> is equal to
+        /// the current <see cref="SpecificationBase{TSpecification,TCandidate}"/>; otherwise, <c>false</c>.
+        /// </returns>
         public bool Equals (TSpecification other)
         {
             if (null == other)
@@ -103,11 +173,32 @@ namespace Epic.Specifications
             return EqualsA (other);
         }
         
+        /// <summary>
+        /// Determines whether the specified <typeparamref name="TSpecification"/> is equal
+        /// to the current <see cref="SpecificationBase{TSpecification,TCandidate}"/>.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if this is equal to <paramref name="otherSpecification"/>, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='otherSpecification'>
+        /// Another specification instance, that is not <c>null</c> and has the same type
+        /// of this.
+        /// </param>
         protected abstract bool EqualsA (TSpecification otherSpecification);
         
         #endregion
 
         #region ISpecification implementation
+        /// <summary>
+        /// Check if the <typeparamref name="TCandidate"/> satisfy the specification. 
+        /// </summary>
+        /// <param name="candidate">
+        /// A <typeparamref name="TCandidate"/>.
+        /// </param>
+        /// <returns>
+        /// Returns <c>true</c> when <paramref name="candidate"/> satisfies the specification, <c>false</c> otherwise.
+        /// Note that <c>null</c> can not satisfy any specification.
+        /// </returns>
         public bool IsSatisfiedBy (TCandidate candidate)
         {
             if (null == candidate)
@@ -126,6 +217,15 @@ namespace Epic.Specifications
         /// </param>
         protected abstract bool IsSatisfiedByA (TCandidate candidate);
 
+        /// <summary>
+        /// Create a new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is satisfied.
+        /// </summary>
+        /// <param name="other">The other specification to evaluate.</param>
+        /// <returns>A new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is satisfied.</returns>
+        /// <remarks>This method calls <see cref="AndAlso"/> that can be overridden.</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
         public ISpecification<TCandidate> And (ISpecification<TCandidate> other)
         {
             ThrowIfNull (other);
@@ -136,11 +236,27 @@ namespace Epic.Specifications
             return AndAlso (other);
         }
 
+        /// <summary>
+        /// Create a new <see cref="Conjunction{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is satisfied.
+        /// </summary>
+        /// <param name="other">The other specification to evaluate (that will not be <c>null</c>).</param>
+        /// <returns>A new <see cref="Conjunction{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is satisfied.</returns>
         protected virtual ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
         {
             return new Conjunction<TCandidate> (this, other);
         }
 
+        /// <summary>
+        /// Create a new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is not satisfied.
+        /// </summary>
+        /// <param name="other">The other specification to evaluate.</param>
+        /// <returns>A new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is not satisfied.</returns>
+        /// <remarks>This method calls <see cref="OrElse"/> that can be overridden.</remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
         public ISpecification<TCandidate> Or (ISpecification<TCandidate> other)
         {
             ThrowIfNull (other);
@@ -150,7 +266,15 @@ namespace Epic.Specifications
                 return other;
             return OrElse (other);
         }
-
+        
+        /// <summary>
+        /// Create a new <see cref="Disjunction{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is not satisfied.
+        /// </summary>
+        /// <param name="other">The other specification to evaluate (that will not be <c>null</c>).</param>
+        /// <returns>A new <see cref="Disjunction{TCandidate}"/> that evaluates the <paramref name="other"/> 
+        /// only if the current specification is not satisfied.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
         protected virtual ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
         {
             return new Disjunction<TCandidate> (this, other);

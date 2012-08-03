@@ -32,11 +32,22 @@ namespace Epic.Organization
 	[Serializable]
 	public abstract class RoleBase : IDisposable
 	{
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.Organization.RoleBase"/> class.
+        /// </summary>
 		protected RoleBase ()
 		{
 		}
 
 		#region IDisposable implementation
+        /// <summary>
+        /// Releases the responsibilities reppresented by the <see cref="Epic.Organization.RoleBase"/> object.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="WorkingSessionBase"/> will call <see cref="Dispose"/> when 
+        /// the implemented role has been left with <see cref="IWorkingSession.Leave"/> 
+        /// as many time it has been achieved with <see cref="IWorkingSession.Achieve"/> .
+        /// </remarks>
 		public abstract void Dispose ();
 		#endregion
 	}

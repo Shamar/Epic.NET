@@ -34,7 +34,17 @@ namespace Epic.Environment
 	{
 		#region IEnvironment implementation
 		
-		public abstract TObject Get<TObject> (InstanceName<TObject> name);
+        /// <summary>
+        /// Provide a tool or information from the enterprise environment.
+        /// </summary>
+        /// <param name="name">
+        /// An identifier for the needed object.
+        /// </param>
+        /// <returns>
+        /// The required object.
+        /// </returns>
+        /// <exception cref="System.Collections.Generic.KeyNotFoundException">The provided <paramref name="name"/> do not match any property of the environment.</exception>
+        public abstract TObject Get<TObject> (InstanceName<TObject> name);
 
 		#endregion
 		
