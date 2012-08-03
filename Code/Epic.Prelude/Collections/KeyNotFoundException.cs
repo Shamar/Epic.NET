@@ -32,6 +32,7 @@ namespace Epic.Collections
     /// accessing an element in a <see cref="IMap{TKey,TValue}"/> does not match any 
     /// key in the map.
     /// </summary>
+    /// <typeparam name="TKey">The type of keys in the map.</typeparam>
     [Serializable]
     public sealed class KeyNotFoundException<TKey> : KeyNotFoundException
         where TKey : IEquatable<TKey>

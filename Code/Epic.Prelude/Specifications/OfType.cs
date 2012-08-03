@@ -25,6 +25,12 @@ using System;
 
 namespace Epic.Specifications
 {
+    /// <summary>
+    /// Specification that is satisfied by any <typeparamref name="TCandidate"/> that is a 
+    /// <typeparamref name="TInitial"/> satisfing the inner specification.
+    /// </summary>
+    /// <typeparam name="TCandidate">Type of the objects that can be tested with this specification.</typeparam>
+    /// <typeparam name="TInitial">Type of the objects that can be tested with inner specification.</typeparam>
     [Serializable]
     public sealed class OfType<TCandidate, TInitial> : SpecificationBase<OfType<TCandidate, TInitial>, TCandidate>,
                                                        IEquatable<OfType<TCandidate, TInitial>>

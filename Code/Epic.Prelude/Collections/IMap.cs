@@ -29,6 +29,8 @@ namespace Epic.Collections
     /// A map that provide access to <typeparamref name="TValue"> 
     /// given a <typeparamref name="TKey"/>.
     /// </summary>
+    /// <typeparam name="TKey">The type of keys in the map.</typeparam>
+    /// <typeparam name="TValue">The type of values in the map.</typeparam>
     public interface IMap<TKey, TValue>
         where TKey : IEquatable<TKey>
     {

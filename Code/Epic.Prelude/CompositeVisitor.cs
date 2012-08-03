@@ -31,6 +31,7 @@ namespace Epic
     /// <summary>
     /// Visitors' composition. It uses composition to handle the visit of any type of expression tree.
     /// </summary>
+    /// <typeparam name="TResult">Type of the result produced by the visit.</typeparam>
     /// <seealso cref="CompositeVisitorBase"/>
     public abstract class CompositeVisitor<TResult> : IVisitor<TResult>
     {

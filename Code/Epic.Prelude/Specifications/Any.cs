@@ -30,7 +30,7 @@ namespace Epic.Specifications
     /// <summary>
     /// Specification that is satisfied by any <typeparamref name="TCandidate"/>.
     /// </summary>
-    /// <typeparam name="TCandidate">Type of the objects that can be tested with this specification.</typeparam>
+    /// <typeparam name="TCandidate">The type of the objects that can be tested with this specification.</typeparam>
     [Serializable]
     public sealed class Any<TCandidate> : StatelessSpecificationBase<Any<TCandidate>, TCandidate>,
                                           IEquatable<Any<TCandidate>>,
