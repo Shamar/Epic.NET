@@ -282,12 +282,14 @@ namespace Epic.Specifications
             
             ISpecification<Candidate> ISpecification<Candidate>.Negate ()
             {
-                return NegateFirstCandidate();
+                ISpecification<Candidate> negated;
+                BuildNegation(out negated);
+                return negated;
             }
             
-            protected virtual ISpecification<Candidate> NegateFirstCandidate()
+            protected virtual void BuildNegation(out ISpecification<TCandidate> negatedSpecification)
             {
-                return new Negation<Candidate> (this);
+                negatedSpecification = new Negation<Candidate> (this);
             }
             
             public ISpecification<TOther> OfType<TOther> () where TOther : class

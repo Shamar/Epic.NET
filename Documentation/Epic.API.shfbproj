@@ -19,11 +19,11 @@
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <NamingMethod>MemberName</NamingMethod>
-    <Preliminary>True</Preliminary>
+    <Preliminary>False</Preliminary>
     <PresentationStyle>Epic.Prototype</PresentationStyle>
     <SyntaxFilters>CSharp</SyntaxFilters>
     <HelpFileFormat>Website</HelpFileFormat>
-    <DisableCodeBlockComponent>True</DisableCodeBlockComponent>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CopyrightText>
     </CopyrightText>
     <CopyrightHref>
@@ -78,6 +78,7 @@ Epic makes the scene.</ProjectSummary>
       <DocumentationSource sourceFile="..\Code\Epic.Query.Object\Epic.Query.Object.csproj" />
     </DocumentationSources>
     <RootNamespaceTitle>API</RootNamespaceTitle>
+    <BinaryTOC>False</BinaryTOC>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
