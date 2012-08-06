@@ -63,9 +63,9 @@ namespace Epic.Specifications
             return this;
         }
 
-        protected override ISpecification<TCandidate> NegateFirstCandidate()
+        protected override void BuildNegation(out ISpecification<TCandidate> negation)
         {
-            return No<TCandidate>.Specification;
+            negation = No<TCandidate>.Specification;
         }
 
         #endregion
