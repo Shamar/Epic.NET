@@ -112,8 +112,6 @@
         <property name="website.commit.msg" value="Update API documentation to ${build.vcs.number}."/>
         <property name="project.path" value="${path::combine(documentation.dir, 'Epic.API.shfbproj')}"/>
         <echo message="${project.path} /t:${build.target} /p:Configuration=${build.configuration} /v:${build.verbosity}"/>
-<!--
-        -->
         <exec program="${msbuild.path}"        
              workingdir="${documentation.dir}" >
              <arg value="${project.path}"/>
@@ -121,10 +119,9 @@
              <arg value="/p:Configuration=${build.configuration}"/>
              <arg value="/v:${build.verbosity}"/>
         </exec>
-        
         <exec program="cmd">
             <arg value="/c" />
-            <arg value="git clone git@github.com:bards/Epic.NET.git -b gh-pages &quot;${website.tmp.path}&quot;" />
+            <arg value="git clone git@ssh.github.com:bards/Epic.NET.git -b gh-pages &quot;${website.tmp.path}&quot;" />
         </exec>
         <delete if="${directory::exists(website.tmp.docApi.path)}" dir="${website.tmp.docApi.path}" />
         <copy todir="${website.tmp.docApi.path}">
