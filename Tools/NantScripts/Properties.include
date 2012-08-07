@@ -18,6 +18,12 @@
 	<property name="library.dir" value="${path::combine(repository.rootdirectory, '3rdParties')}" />
 	<property name="nunit.path" value="${path::combine(path::combine(library.dir, 'NUnit'), 'nunit-console.exe')}" overwrite="false" />
 	<property name="samples.dir" value="${path::combine(repository.rootdirectory, 'Challenges')}" />
+	
+	<property name="documentation.dir" value="${path::combine(repository.rootdirectory, 'Documentation')}"/>
+	<property name="build.tmp.dir" value="${path::combine(repository.builddirectory, 'tmp')}"/>
+    <property name="api.tmp.path" value="${path::combine(build.tmp.dir, 'api')}"/>
+    <property name="website.tmp.path" value="${path::combine(build.tmp.dir, 'website')}"/>
+    <property name="website.tmp.docApi.path" value="${path::combine(path::combine(website.tmp.path, 'doc'), 'api')}"/>
 
     <property name="MailLogger.failure.notify" value="true" if="${property::exists('MailLogger.mailhost')}" />
     <property name="MailLogger.success.notify" value="true" if="${property::exists('MailLogger.mailhost')}" />

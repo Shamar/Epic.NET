@@ -27,6 +27,7 @@ Thumbs.db
 *.lib
 *.sbr
 *.sdf
+*_bkp
 ipch/
 obj/
 [Bb]in
@@ -46,3 +47,5 @@ _ReSharper*/
 .svn
 
 Documentation/Epic.API.shfbproj_*
+
+

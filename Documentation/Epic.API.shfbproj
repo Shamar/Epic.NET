@@ -15,7 +15,7 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <OutputPath>..\build\doc\</OutputPath>
+    <OutputPath>..\build\tmp\api\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <NamingMethod>MemberName</NamingMethod>
@@ -30,18 +30,8 @@
     </CopyrightHref>
     <HelpTitle>Epic.NET</HelpTitle>
     <VisibleItems>Attributes, Protected, ProtectedInternalAsProtected, SealedProtected</VisibleItems>
-    <ProjectSummary>Epic is an open source framework designed to keep your domain model implementation fully focused on the enterprise business targeted by the application, with an infrastructure ignorant fashion.&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b
-It achieves a new kind of dependency inversion, where the domain model settles at the core: everything will depend on it %28even the infrastructure%29 while the domain model itself will be clean, mantainable and ready for reuse.&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b
-Such design comes from the consideration that an enterprise application evolves over different, indipendent axes:
-&amp;lt%3bul&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bthe tecnology changes with the skills of the developers involved %28and too often the marketing claims of few vendors%29&amp;lt%3b/li&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bthe customers&amp;#39%3b requirements change as their business evolves&amp;lt%3b/li&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bthe user interface evolves through the users feedback %28but always depends on the handled business%29&amp;lt%3b/li&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bthe storage tecniques change with the load requirements and the usage patterns&amp;lt%3b/li&amp;gt%3b
-&amp;lt%3bli&amp;gt%3bthe deploy depends on marketing strategies&amp;lt%3b/li&amp;gt%3b
-&amp;lt%3b/ul&amp;gt%3b
-Complex requirements lead to complex domain models. To keep such models clean and maintainable we have to decouple them from unrelated aspects such as presentation, logging, persistence and so on.&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b
-Epic makes the scene.</ProjectSummary>
+    <ProjectSummary>The Epic.NET code base consists of many different libraries that can work together in various combination, thanks to carefully designed responsibilities that lead to high cohesion and low coupling.&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b
+TThis is the reference documentation of such libraries %28whose objectives has been described in the &amp;lt%3ba href=&amp;quot%3bhttp://epic.tesio.it/doc/the_bellis_perennis.html&amp;quot%3b&amp;gt%3bsecond part of the manual&amp;lt%3b/a&amp;gt%3b%29. There&amp;#39%3bs no convention between DLL&amp;#39%3bs names and namespaces, so that for example you will not find an Epic.Prelude namespace: while each library&amp;#39%3bs name maps its usage pattern, namespaces express the logical organization of the modelled concepts.  </ProjectSummary>
     <ComponentConfigurations>
       <ComponentConfig id="API Token Resolution" enabled="True" xmlns="">
         <component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent" assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
@@ -79,6 +69,13 @@ Epic makes the scene.</ProjectSummary>
     </DocumentationSources>
     <RootNamespaceTitle>API</RootNamespaceTitle>
     <BinaryTOC>False</BinaryTOC>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="Epic" isDocumented="True">The &lt;b&gt;Epic&lt;/b&gt; namespace contains fundamental concepts that all Domain Driven applications built with the Epic's modeling patterns in mind will require.&lt;br/&gt;&lt;br/&gt;
+
+Epic.Prelude defines here &lt;a href="T_Epic_IVisitable.htm"&gt;IVisitable&lt;/a&gt; interface and the &lt;b&gt;Composite Visitor pattern&lt;/b&gt;. &lt;br/&gt;
+Epic.Core defines the &lt;a href="T_Epic_Enterprise.htm"&gt;Enterprise&lt;/a&gt; entry point to the domain model.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Collections" isDocumented="True">The &lt;b&gt;Epic.Collections&lt;/b&gt; namespace contains useful models of collections for DDD.&lt;br/&gt;
+It's defined in Epic.Prelude.</NamespaceSummaryItem></NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

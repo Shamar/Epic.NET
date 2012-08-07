@@ -30,6 +30,8 @@
     </target>
     
 	<target name="clean-builddirectory">
+        <delete if="${directory::exists(website.tmp.path)}" dir="${website.tmp.path}" />
+        <delete if="${directory::exists(api.tmp.path)}" dir="${api.tmp.path}" />
 	    <delete if="${directory::exists(repository.testdirectory)}">
 	        <fileset>
 	            <include name="${path::combine(path::combine(repository.testdirectory, '**'), '*.dll')}" />
@@ -107,6 +109,36 @@
     </target>
     
     <target name="api">
+        <property name="website.commit.msg" value="Update API documentation to ${build.vcs.number}."/>
+        <property name="project.path" value="${path::combine(documentation.dir, 'Epic.API.shfbproj')}"/>
+        <exec program="${msbuild.path}"        
+             commandline="${project.path} /t:${build.target} /p:Configuration=${build.configuration} /v:${build.verbosity}" 
+             workingdir="${documentation.dir}" />
+        <exec program="cmd">
+            <arg value="/c" />
+            <arg value="git clone git@github.com:bards/Epic.NET.git -b gh-pages ${website.tmp.path}" />
+        </exec>
+        <delete if="${directory::exists(website.tmp.docApi.path)}" dir="${website.tmp.docApi.path}" />
+        <copy todir="${website.tmp.docApi.path}">
+            <fileset basedir="${api.tmp.path}">
+                <include name="${path::combine('html', '*.htm')}" />
+                <include name="${path::combine('icons', '*.gif')}" />
+                <include name="${path::combine('scripts', '*.js')}" />
+                <include name="${path::combine('styles', '*.css')}" />
+            </fileset>
+        </copy>
+        <exec program="cmd" workingdir="${website.tmp.path}">
+            <arg value="/c" />
+            <arg value="git add ." />
+        </exec>
+        <exec program="cmd" workingdir="${website.tmp.path}">
+            <arg value="/c" />
+            <arg value="git commit -am '${website.commit.msg}'" />
+        </exec>
+        <exec program="cmd" workingdir="${website.tmp.path}">
+            <arg value="/c" />
+            <arg value="git push origin gh-pages" />
+        </exec>
     </target>
     
     <target name="manual">
