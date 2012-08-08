@@ -38,7 +38,7 @@ namespace Epic.Query.Relational
         private readonly string _name;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Relation"/> class.
+        /// Initializes a new instance of the <see cref="Relation"/> class.
         /// </summary>
         /// <param name='type'>
         /// Type of the relation.
@@ -82,28 +82,28 @@ namespace Epic.Query.Relational
         #region IEquatable[Relation] implementation
 
         /// <summary>
-        /// Determines whether the specified <see cref="Relation"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// Determines whether the specified <see cref="Relation"/> is equal to the current <see cref="Relation"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Relation"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// The <see cref="Relation"/> to compare with the current <see cref="Relation"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Relation"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Relation"/>; otherwise, <c>false</c>.
+        /// <see cref="Relation"/>; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals (Relation other);
         
         #endregion
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Relation"/>.
         /// </summary>
         /// <param name='obj'>
-        /// The <see cref="System.Object"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Relation"/>.
+        /// The <see cref="System.Object"/> to compare with the current <see cref="Relation"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Relation"/>; otherwise, <c>false</c>.
+        /// <see cref="Relation"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (object obj)
         {
@@ -111,7 +111,7 @@ namespace Epic.Query.Relational
         }
 
         /// <summary>
-        /// Serves as a hash function for a <see cref="Epic.Linq.Expressions.Relational.Relation"/> object.
+        /// Serves as a hash function for a <see cref="Relation"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a

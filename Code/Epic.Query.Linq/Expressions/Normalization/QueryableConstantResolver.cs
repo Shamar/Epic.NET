@@ -36,7 +36,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
     public sealed class QueryableConstantResolver  : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, ConstantExpression>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.QueryableConstantResolver"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Linq.Expressions.Normalization.QueryableConstantResolver"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that will own this visitor.

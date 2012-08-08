@@ -33,7 +33,7 @@ namespace Epic.Query.Linq.Fakes
     {
         /// <summary>
         /// Initializes a new instance of the 
-        /// <see cref="Epic.Linq.Fakes.DummyResultExpression"/> class 
+        /// <see cref="Epic.Query.Linq.Fakes.DummyResultExpression"/> class 
         /// with ExpressionType equal to <see cref="int.MinValue"/>.
         /// </summary>
         public DummyResultExpression()

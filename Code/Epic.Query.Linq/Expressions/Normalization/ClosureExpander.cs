@@ -31,11 +31,11 @@ namespace Epic.Query.Linq.Expressions.Normalization
     /// Closure expander. Replace a "closure" with its value. 
     /// Closures are defined _here_ as accesses to fields or properties of a <seealso cref="ConstantExpression"/>.
     /// </summary>
-    /// <seealso cref="http://stackoverflow.com/questions/4722562/heuristic-for-this-and-closures-ok-expression-trees"/>
+    /// <seealso href="http://stackoverflow.com/questions/4722562/heuristic-for-this-and-closures-ok-expression-trees"/>
     public sealed class ClosureExpander : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, MemberExpression>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ClosureExpander"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Linq.Expressions.Normalization.ClosureExpander"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that will own this visitor.

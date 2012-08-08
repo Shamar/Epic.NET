@@ -56,7 +56,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         IVisitor<Expression, TypeBinaryExpression>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ExpressionsInspector"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Linq.Expressions.Normalization.ExpressionsInspector"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that owns this visitor.
@@ -322,7 +322,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         /// Context.
         /// </param>
         /// <exception cref='NotSupportedException'>
-        /// Is thrown when the visit of the <see cref="ListInitExpressions.NewExpression"/> does not return a <see cref="NewExpression"/>.
+        /// Is thrown when the visit of the <see cref="ListInitExpression.NewExpression"/> does not return a <see cref="NewExpression"/>.
         /// </exception>
         public Expression Visit (ListInitExpression expression, IVisitContext context)
         {

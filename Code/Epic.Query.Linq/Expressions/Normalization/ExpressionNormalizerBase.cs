@@ -38,7 +38,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
     public abstract class ExpressionNormalizerBase : CompositeVisitorBase<Expression, Expression>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ExpressionNormalizerBase"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Linq.Expressions.Normalization.ExpressionNormalizerBase"/> class.
         /// </summary>
         protected ExpressionNormalizerBase (string name)
             : base(name)

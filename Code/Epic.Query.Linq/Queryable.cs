@@ -1,4 +1,4 @@
-//  
+//
 //  Queryable.cs
 //  
 //  Author:
@@ -41,7 +41,7 @@ namespace Epic.Query.Linq
 		private readonly System.Linq.Expressions.Expression _expression;
 		
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Epic.Linq.Queryable`1"/> class.
+		/// Initializes a new instance of the <see cref="Queryable{T}"/> class.
 		/// </summary>
 		/// <param name='provider'>
 		/// Provider.

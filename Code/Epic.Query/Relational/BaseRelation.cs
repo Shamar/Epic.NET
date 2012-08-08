@@ -32,7 +32,7 @@ namespace Epic.Query.Relational
     public sealed class BaseRelation : Relation
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.BaseRelation"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.BaseRelation"/> class.
         /// </summary>
         /// <param name='name'>
         /// Name of the relation.
@@ -41,13 +41,33 @@ namespace Epic.Query.Relational
             : base(RelationType.BaseRelation, name)
         {
         }
-        
+
+        /// <summary>
+        /// Determines whether the specified <see cref="Epic.Query.Relational.BaseRelation"/> is equal to the current <see cref="Epic.Query.Relational.BaseRelation"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Epic.Query.Relational.BaseRelation"/> to compare with the current <see cref="Epic.Query.Relational.BaseRelation"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.BaseRelation"/> has the same name of the current
+        /// <see cref="Epic.Query.Relational.BaseRelation"/>; otherwise, <c>false</c>.
+        /// </returns>
         private bool Equals(BaseRelation other)
         {
             return Name.Equals(other.Name);
         }
         
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Relation
+        /// <summary>
+        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.BaseRelation"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="Epic.Query.Relational.BaseRelation"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.BaseRelation"/>; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals (Relation other)
         {
             if(null == other)

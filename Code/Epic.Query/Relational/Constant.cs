@@ -1,4 +1,4 @@
-//  
+//
 //  Constant.cs
 //  
 //  Author:
@@ -20,7 +20,7 @@
 // 
 //  You should have received a copy of the GNU Affero General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//  
+//
 using System;
 using System.Collections.Generic;
 
@@ -29,6 +29,7 @@ namespace Epic.Query.Relational
     /// <summary>
     /// Constant value in a relational predicate.
     /// </summary>
+    /// <remarks>This abstract class cannot be inherited on its own: you must derive <see cref="Constant{TValue}"/>.</remarks>
     [Serializable]
     public abstract class Constant : Scalar, IEquatable<Constant>
     {
@@ -37,9 +38,29 @@ namespace Epic.Query.Relational
         }
 
         #region IEquatable[Constant] implementation
+        /// <summary>
+        /// Determines whether the specified <see cref="Epic.Query.Relational.Constant"/> is equal to the current <see cref="Epic.Query.Relational.Constant"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Epic.Query.Relational.Constant"/> to compare with the current <see cref="Epic.Query.Relational.Constant"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Constant"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Constant"/>; otherwise, <c>false</c>.
+        /// </returns>
         public abstract bool Equals (Constant other);
         #endregion
 
+        /// <summary>
+        /// Determines whether the specified <see cref="Epic.Query.Relational.Scalar"/> is equal to the current <see cref="Epic.Query.Relational.Constant"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Epic.Query.Relational.Scalar"/> to compare with the current <see cref="Epic.Query.Relational.Constant"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Scalar"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Constant"/>; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals (Scalar other)
         {
             return Equals (other as Constant);
@@ -55,7 +76,7 @@ namespace Epic.Query.Relational
         private readonly TValue _value;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Constant`1"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Constant{TValue}"/> class.
         /// </summary>
         /// <param name='value'>
         /// Value of the constant.
@@ -99,6 +120,20 @@ namespace Epic.Query.Relational
         #endregion
 
         #region IEquatable[Constant[TValue]] implementation
+        /// <summary>
+        /// Determines whether the specified <see cref="Constant{TValue}"/> is equal to the
+        /// current <see cref="Constant{TValue}"/>.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="EqualityComparer{TValue}.Default"/> is used to test the <see cref="Constant{TValue}.Value"/> for equality.
+        /// </remarks>            
+        /// <param name='other'>
+        /// The <see cref="Constant{TValue}"/> to compare with the current <see cref="Constant{TValue}"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Constant{TValue}"/> express the same value of the current
+        /// <see cref="Constant{TValue}"/>; otherwise, <c>false</c>.
+        /// </returns>
         public bool Equals (Constant<TValue> other)
         {
             if(null == other)
@@ -108,12 +143,30 @@ namespace Epic.Query.Relational
         #endregion
         
         #region IEquatable[Constant] implementation
+        /// <summary>
+        /// Determines whether the specified <see cref="Constant"/> express
+        /// the same value of the current <see cref="Constant{TValue}"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Epic.Query.Relational.Constant"/> to compare with the current <see cref="Constant{TValue}"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Constant"/> is equal to the current
+        /// <see cref="Constant{TValue}"/>; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals (Constant other)
         {
             return Equals(other as Constant<TValue>);
         }
         #endregion
-        
+
+        /// <summary>
+        /// Serves as a hash function for a <see cref="Constant{TValue}"/> object.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
+        /// hash table.
+        /// </returns>
         public override int GetHashCode ()
         {
             if(null == (object)_value)

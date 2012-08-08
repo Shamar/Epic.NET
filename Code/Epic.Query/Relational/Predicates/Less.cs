@@ -32,7 +32,7 @@ namespace Epic.Query.Relational.Predicates
     public sealed class Less : ScalarPredicateBase, IEquatable<Less>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Predicates.Less"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand.
@@ -48,14 +48,14 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Determines whether the specified <see cref="ScalarPredicateBase<Scalar,Scalar>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>.
+        /// current <see cref="Epic.Query.Relational.Predicates.Less"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarPredicateBase<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>.
+        /// The <see cref="ScalarPredicateBase<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Query.Relational.Predicates.Less"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="ScalarPredicateBase<Scalar,Scalar>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.Predicates.Less"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (ScalarPredicateBase other)
         {
@@ -63,14 +63,14 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Less<Scalar,Scalar>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>.
+        /// Determines whether the specified <see cref="Less<Scalar,Scalar>"/> is equal to the current <see cref="Epic.Query.Relational.Predicates.Less"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Less<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>.
+        /// The <see cref="Less<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Query.Relational.Predicates.Less"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Less<Scalar,Scalar>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Less"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.Predicates.Less"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals(Less other)
         {

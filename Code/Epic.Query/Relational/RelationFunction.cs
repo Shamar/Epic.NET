@@ -26,13 +26,13 @@ using System;
 namespace Epic.Query.Relational
 {
     /// <summary>
-    /// Models a function which has a <see cref="Epic.Linq.Expressions.Relational.Relation"/> as output.
+    /// Models a function which has a <see cref="Epic.Query.Relational.Relation"/> as output.
     /// </summary>
     [Serializable]
     public abstract class RelationFunction: Relation
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.RelationFunction"/> class.
         /// </summary>
         /// <param name='name'>
         /// The function name.
@@ -42,14 +42,14 @@ namespace Epic.Query.Relational
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="RelationFunction"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
+        /// Determines whether the specified <see cref="RelationFunction"/> is equal to the current <see cref="Epic.Query.Relational.RelationFunction"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="RelationFunction"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
+        /// The <see cref="RelationFunction"/> to compare with the current <see cref="Epic.Query.Relational.RelationFunction"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="RelationFunction"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.RelationFunction"/>; otherwise, <c>false</c>.
         /// </returns>
         /// <exception cref='NotImplementedException'>
         /// Is thrown when the not implemented exception.
@@ -57,14 +57,14 @@ namespace Epic.Query.Relational
         public abstract bool Equals (RelationFunction other);
 
         /// <summary>
-        /// Determines whether the specified <see cref="Relation"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
+        /// Determines whether the specified <see cref="Relation"/> is equal to the current <see cref="Epic.Query.Relational.RelationFunction"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Relation"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>.
+        /// The <see cref="Relation"/> to compare with the current <see cref="Epic.Query.Relational.RelationFunction"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Relation"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.RelationFunction"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.RelationFunction"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (Relation other)
         {

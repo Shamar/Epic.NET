@@ -28,15 +28,16 @@ namespace Epic.Query.Linq.Expressions.Normalization
 {
     /// <summary>
     /// Visitor that forward to the composition the visit of each 
-    /// <see cref="System.Expression"/> according to its type.
+    /// <see cref="System.Linq.Expressions.Expression"/> according to its type.
     /// </summary>
     /// <exception cref='ArgumentException'>
     /// Is thrown when the expression provided is not known.
     /// </exception>
+    // TODO: refactor for .NET 4.0
     internal sealed class ExpressionForwarder : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, Expression>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ExpressionForwarder"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Linq.Expressions.Normalization.ExpressionForwarder"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that will own this visitor.

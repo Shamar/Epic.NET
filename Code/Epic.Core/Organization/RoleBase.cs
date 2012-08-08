@@ -28,7 +28,6 @@ namespace Epic.Organization
 	/// <summary>
 	/// Base class for users' roles.
 	/// </summary>
-	// TODO: Verify if really needed, or it's better to replace it with IDisposable.
 	[Serializable]
 	public abstract class RoleBase : IDisposable
 	{
@@ -45,8 +44,8 @@ namespace Epic.Organization
         /// </summary>
         /// <remarks>
         /// <see cref="WorkingSessionBase"/> will call <see cref="Dispose"/> when 
-        /// the implemented role has been left with <see cref="IWorkingSession.Leave"/> 
-        /// as many time it has been achieved with <see cref="IWorkingSession.Achieve"/> .
+        /// the implemented role has been left with <see cref="IWorkingSession.Leave{TRole}"/> 
+        /// as many time it has been achieved with <see cref="IWorkingSession.Achieve{TRole}"/> .
         /// </remarks>
 		public abstract void Dispose ();
 		#endregion

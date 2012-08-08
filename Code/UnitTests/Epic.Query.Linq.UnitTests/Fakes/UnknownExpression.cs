@@ -33,7 +33,7 @@ namespace Epic.Query.Linq.Fakes
     {
         /// <summary>
         /// Initializes a new instance of the 
-        /// <see cref="Epic.Linq.Fakes.UnknownExpression"/> class 
+        /// <see cref="Epic.Query.Linq.Fakes.UnknownExpression"/> class 
         /// with ExpressionType equal to <see cref="int.MaxValue"/>.
         /// </summary>
         public UnknownExpression()

@@ -36,7 +36,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         IVisitor<Expression, MethodCallExpression>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.PartialEvaluator"/> class.
+        /// Initializes a new instance of the <see cref="PartialEvaluator"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that will own this visitor.

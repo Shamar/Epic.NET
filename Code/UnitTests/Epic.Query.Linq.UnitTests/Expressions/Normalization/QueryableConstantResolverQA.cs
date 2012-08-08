@@ -80,7 +80,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
             queryable.Expect(q => q.ElementType).Return(typeof(ICargo)).Repeat.Once();
             ConstantExpression expressionToVisit = Expression.Constant(queryable);
             FakeNormalizer normalizer = new FakeNormalizer();
-            QueryableConstantResolver visitor = new QueryableConstantResolver(normalizer);
+            new QueryableConstantResolver(normalizer);
 
             // act:
             Expression result = normalizer.Visit(expressionToVisit, context);
@@ -102,7 +102,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
             queryable.Expect(q => q.Expression).Return(Expression.Constant(queryable)).Repeat.Once();
             ConstantExpression expressionToVisit = Expression.Constant(queryable);
             FakeNormalizer normalizer = new FakeNormalizer();
-            QueryableConstantResolver visitor = new QueryableConstantResolver(normalizer);
+            new QueryableConstantResolver(normalizer);
 
             // act:
             Expression result = normalizer.Visit(expressionToVisit, context);
@@ -125,7 +125,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
             queryable.Expect(q => q.Expression).Return(dummyExpression).Repeat.Once();
             ConstantExpression expressionToVisit = Expression.Constant(queryable);
             FakeNormalizer normalizer = new FakeNormalizer();
-            QueryableConstantResolver visitor = new QueryableConstantResolver(normalizer);
+            new QueryableConstantResolver(normalizer);
             FakeVisitor<Expression, LambdaExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, LambdaExpression>>(normalizer);
             mockVisitor.Expect(v => v.CallAsVisitor(dummyExpression)).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit(dummyExpression, context)).Return(expectedResult).Repeat.Once();

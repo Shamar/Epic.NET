@@ -34,7 +34,7 @@ namespace Epic.Query.Relational
         private readonly ScalarType _type;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Scalar"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Scalar"/> class.
         /// </summary>
         /// <param name='name'>
         /// The scalar Name.
@@ -64,14 +64,14 @@ namespace Epic.Query.Relational
 
         #region IEquatable[Scalar] implementation
         /// <summary>
-        /// Determines whether the specified <see cref="Scalar"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Scalar"/>.
+        /// Determines whether the specified <see cref="Scalar"/> is equal to the current <see cref="Epic.Query.Relational.Scalar"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Scalar"/>.
+        /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Query.Relational.Scalar"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Scalar"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Scalar"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.Scalar"/>; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals (Scalar other);
         #endregion

@@ -52,6 +52,9 @@ namespace Epic.Specifications
         
         private readonly ISpecification<TInitial> _innerSpecification;
 
+        /// <summary>
+        /// The <see cref="ISpecification{TInitial}"/> that must be satisfied by <typeparamref name="TCandidate"/> for this specification.
+        /// </summary>
         public ISpecification<TInitial> InnerSpecification
         {
             get
@@ -59,7 +62,14 @@ namespace Epic.Specifications
                 return _innerSpecification;
             }
         }
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OfType{TCandidate, TInitial}"/> class.
+        /// </summary>
+        /// <param name='innerSpecification'>
+        /// Specification that must be satisfied by any <typeparamref name="TCandidate"/> to satisfy the current specification.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="innerSpecification"/> is <c>null</c>.</exception>
         public OfType (ISpecification<TInitial> innerSpecification)
         {
             if (null == innerSpecification)
@@ -68,21 +78,58 @@ namespace Epic.Specifications
         }
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
+        
+        /// <summary>
+        /// Determines whether the specified <see cref="OfType{TCandidate, TInitial}"/> is equal to the current one.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if <paramref name="otherSpecification"/> has the same <see cref="InnerSpecification"/> 
+        /// of the current instance, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='otherSpecification'>
+        /// Other specification.
+        /// </param>
         protected override bool EqualsA (OfType<TCandidate, TInitial> otherSpecification)
         {
             return _innerSpecification.Equals (otherSpecification._innerSpecification);
         }
-
+        
+        /// <summary>
+        /// Determines whether this specification is satisfied by a the specified <paramref name="candidate"/>.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if <paramref name="candidate"/> is a <typeparamref name="TInitial"/> that satisfy 
+        /// the <see cref="InnerSpecification"/>; otherwise, <c>false</c>.
+        /// </returns>
+        /// <param name='candidate'>
+        /// Candidate.
+        /// </param>
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
             return _innerSpecification.IsSatisfiedBy (candidate as TInitial);
         }
         
-        protected override ISpecification<TOther> OfAnotherType<TOther> ()
+        /// <summary>
+        /// Return the specification produced by the <see cref="ISpecification{TInitial}.OfType{Other}"/> method
+        /// of the <see cref="InnerSpecification"/>.
+        /// </summary>
+        /// <returns>
+        /// A specifications satisfied by <typeparamref name="Other"/> that
+        /// satisfy this specification.
+        /// </returns>
+        /// <typeparam name='Other'>
+        /// One of types admitted to satisfy the <see cref="InnerSpecification"/>.
+        /// </typeparam>
+        /// <exception cref="InvalidCastException">No instance of <typeparamref name="Other"/> can 
+        /// satisfy the <see cref="InnerSpecification"/>.</exception>
+        protected override ISpecification<Other> OfAnotherType<Other> ()
         {
-            return _innerSpecification.OfType<TOther> ();
+            return _innerSpecification.OfType<Other> ();
         }
-
+        
+        /// <summary>
+        /// <see cref="ISpecification{TInitial}.CandidateType"/>.
+        /// </summary>
         protected override Type FirstCandidateType {
             get {
                 return _innerSpecification.CandidateType;
