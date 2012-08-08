@@ -213,7 +213,7 @@
           <li><a href="/doc/manual.html">Documentation</a></li>
           <li><a href="http://github.com/Shamar/Epic.NET/archives/master">Download</a></li>
           <li><a href="/license.html">License</a></li>
-          <li><a href="https://groups.google.com/group/epic-net/">Support</a></li>
+          <li><a href="http://epic.tesio.it/credits.html">Bards</a></li>
         </ul>
       </xsl:if>
       <xsl:call-template name="user.header.navigation"/> 

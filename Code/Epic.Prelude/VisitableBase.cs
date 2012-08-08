@@ -34,6 +34,9 @@ namespace Epic
     [Serializable]
     public abstract class VisitableBase : IVisitable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.VisitableBase"/> class.
+        /// </summary>
         protected VisitableBase ()
         {
         }

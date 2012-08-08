@@ -28,6 +28,8 @@ namespace Epic.Specifications
     /// <summary>
     /// Base class for stateless specification.
     /// </summary>
+    /// <typeparam name="TSpecification">Type of the specification implemented.</typeparam>
+    /// <typeparam name="TCandidate">Type of the candidates to satisfy the specification.</typeparam>
     [Serializable]
     public abstract class StatelessSpecificationBase<TSpecification, TCandidate> : SpecificationBase<TSpecification, TCandidate>
         where TCandidate : class

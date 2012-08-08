@@ -29,11 +29,11 @@ namespace Epic
     /// Interface of visitors working together in a composition.
     /// </summary>
     /// <typeparam name="TResult">Type of the result of the visit.</typeparam>
-    /// <seealso cref="IVisitState"/>
+    /// <seealso cref="VisitContext"/>
     public interface IVisitor<TResult>
     {
         /// <summary>
-        /// Return the visitor that can visit <paramref name="target">.
+        /// Return the visitor that can visit <paramref name="target"/>.
         /// </summary>
         /// <returns>
         /// The visitor.
@@ -60,8 +60,8 @@ namespace Epic
         /// <param name='target'>
         /// Expression to visit.
         /// </param>
-        /// <param name='state'>
-        /// Visit state. The state can be provided from previous visitors.
+        /// <param name='context'>
+        /// Visit context. Contains the state produced by previous visitors.
         /// </param>
         /// <returns>Result of the visit.</returns>
         TResult Visit(TExpression target, IVisitContext context);

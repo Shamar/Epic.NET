@@ -44,10 +44,10 @@ namespace Epic.Specifications
         Type SpecificationType { get; }
 
         /// <summary>
-        /// Check if the <typeparamref name="TCandidate"> satisfy the specification. 
+        /// Check if the <typeparamref name="TCandidate"/> satisfy the specification. 
         /// </summary>
         /// <param name="candidate">
-        /// A <see cref="TCandidate"/>.
+        /// A <typeparamref name="TCandidate"/>.
         /// </param>
         /// <returns>
         /// Returns <c>true</c> when <paramref name="candidate"/> satisfies the specification, <c>false</c> otherwise.

@@ -77,6 +77,9 @@ namespace Epic.Organization
 			}
 		}
 		
+        /// <summary>
+        /// Throws <see cref="ObjectDisposedException"/> when the session has been disposition.
+        /// </summary>
 		protected void ThrowAfterDisposition()
 		{
 			if(_disposed)
@@ -92,7 +95,7 @@ namespace Epic.Organization
 		
 		/// <summary>
 		/// Determines whether the owner of the working session is allowed to achieve 
-		/// <typeparam name="TRole"/>.
+		/// <typeparamref name="TRole"/>.
 		/// </summary>
 		/// <returns>
 		/// <c>true</c> if the owner of the working session is allowed to achieve the role; 
@@ -201,7 +204,7 @@ namespace Epic.Organization
 		/// </summary>
 		/// <remarks>
 		/// <para>
-		/// The role will be disposed when the number of call to <see cref="Achieve{TRole}(TRole)"/>
+		/// The role will be disposed when the number of call to <see cref="Achieve{TRole}(out TRole)"/>
 		/// will be balanced with the calls to this method.
 		/// </para>
 		/// <para>

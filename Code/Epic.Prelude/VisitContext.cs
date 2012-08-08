@@ -103,7 +103,7 @@ namespace Epic
             private readonly TValue _state;
             
             /// <summary>
-            /// Initializes a new instance of the <see cref="Epic.VisitContext.State`1"/> class.
+            /// Initializes a new instance of the <see cref="Epic.VisitContext.State{TValue}"/> class.
             /// </summary>
             /// <param name='next'>
             /// Next context to be looked for states.

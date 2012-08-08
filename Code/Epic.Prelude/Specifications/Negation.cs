@@ -25,6 +25,10 @@ using System;
 
 namespace Epic.Specifications
 {
+    /// <summary>
+    /// Specification that is satisfied by any <typeparamref name="TCandidate"/> that doesn't satisfy the negated one.
+    /// </summary>
+    /// <typeparam name="TCandidate">The type of the objects that can be tested with this specification.</typeparam>
     [Serializable]
     public sealed class Negation<TCandidate> : SpecificationBase<Negation<TCandidate>, TCandidate>,
                                                IEquatable<Negation<TCandidate>>
@@ -57,9 +61,9 @@ namespace Epic.Specifications
             return !_negated.IsSatisfiedBy(candidate);
         }
 
-        protected override ISpecification<TCandidate> NegateFirstCandidate ()
+        protected override void BuildNegation (out ISpecification<TCandidate> negation)
         {
-            return _negated;
+            negation = _negated;
         }
 
 

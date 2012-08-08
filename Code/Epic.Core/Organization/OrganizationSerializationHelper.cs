@@ -29,9 +29,9 @@ namespace Epic.Organization
 	/// When deserialiing this object, return a reference to the <see cref="Enterprise.Organization"/>.
 	/// </summary>
 	[Serializable]
-	public sealed class OrganizationSerializationHelper : IObjectReference
+	internal sealed class OrganizationSerializationHelper : IObjectReference
 	{
-	    public Object GetRealObject(StreamingContext context) 
+        Object IObjectReference.GetRealObject(StreamingContext context) 
 	    {
 	        // When deserialiing this object, return a reference to 
 	        // the Enterprise.Organization.

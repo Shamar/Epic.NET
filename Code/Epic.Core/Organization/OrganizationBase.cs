@@ -134,7 +134,7 @@ namespace Epic.Organization
 		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <c>null</c>.</exception>
 		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not create a 
 		/// new <see cref="IWorkingSession"/>.</exception>
-		/// <seealso cref="OrganizationBase.StartWorkingSession(IPrincipal, WorkingSessionBase)"/>
+		/// <seealso cref="OrganizationBase.StartWorkingSession(IPrincipal, out WorkingSessionBase)"/>
 		public void StartWorkingSession (IPrincipal owner, out IWorkingSession workingSession)
 		{
 			if(null == owner)
@@ -178,7 +178,7 @@ namespace Epic.Organization
 		/// <remarks>
 		/// <para>
 		/// Before disposing the working session will call the 
-		/// <see cref="OrganizationBase.BeforeWorkingSessionEnd(IPrincipal, IWorkingSession)"/> so that
+        /// <see cref="OrganizationBase.BeforeWorkingSessionEnd(IPrincipal, WorkingSessionBase)"/> so that
 		/// derived class will be able to log the operation.
 		/// </para>
 		/// <para>

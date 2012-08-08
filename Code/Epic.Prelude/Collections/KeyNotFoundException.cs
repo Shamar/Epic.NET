@@ -32,6 +32,7 @@ namespace Epic.Collections
     /// accessing an element in a <see cref="IMap{TKey,TValue}"/> does not match any 
     /// key in the map.
     /// </summary>
+    /// <typeparam name="TKey">The type of keys in the map.</typeparam>
     [Serializable]
     public sealed class KeyNotFoundException<TKey> : KeyNotFoundException
         where TKey : IEquatable<TKey>
@@ -80,6 +81,15 @@ namespace Epic.Collections
             _key = (TKey)info.GetValue("K", typeof(TKey));
         }
 
+        /// <summary>
+        /// Gets the object data.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         public override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

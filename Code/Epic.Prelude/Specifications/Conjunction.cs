@@ -1,5 +1,5 @@
 //
-//  And.cs
+//  Conjunction.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -26,6 +26,11 @@ using System.Collections.Generic;
 
 namespace Epic.Specifications
 {
+    /// <summary>
+    /// Specification that is satisfied by any <typeparamref name="TCandidate"/> that is satisfied by all the
+    /// specifications.
+    /// </summary>
+    /// <typeparam name="TCandidate">The type of the objects that can be tested with this specification.</typeparam>
     [Serializable]
     public sealed class Conjunction<TCandidate> : SpecificationBase<Conjunction<TCandidate>, TCandidate>,
                                                   IEquatable<Conjunction<TCandidate>>,
