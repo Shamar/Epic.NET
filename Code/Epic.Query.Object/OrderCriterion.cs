@@ -68,14 +68,50 @@ namespace Epic.Query.Object
 
         #region IComparer implementation
 
+        /// <summary>
+        /// Compare the specified x and y.
+        /// </summary>
+        /// <param name='x'>
+        /// The x entity.
+        /// </param>
+        /// <param name='y'>
+        /// The y entity.
+        /// </param>
         public abstract int Compare (TEntity x, TEntity y);
 
         #endregion
 
         #region IEquatable implementation
 
+        /// <summary>
+        /// Determines whether the specified <see cref="OrderCriterion{TEntity}"/> is equal to the
+        /// current <see cref="OrderCriterion{TEntity}"/>, given that <see cref="Equals(OrderCriterion{TEntity})"/>
+        /// grant that it is not <see cref="null"/>, <see cref="this"/> and that it has the same type of the current instance.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if equals was safed, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='other'>
+        /// Other.
+        /// </param>
         protected abstract bool SafeEquals(OrderCriterion<TEntity> other);
 
+        /// <summary>
+        /// Determines whether the specified <see cref="OrderCriterion{TEntity}"/> is equal to the
+        /// current <see cref="OrderCriterion{TEntity}"/>.
+        /// </summary>
+        /// <remarks>
+        /// This is a template method thet test <paramref name="other"/> for reference equality with <see langword="null"/>
+        /// and <see langword="this"/> and than for type equality (<see cref="object.GetType()"/>).
+        /// If both tests fails, it delegates to the abstract method <see cref="SafeEquals"/> the equality determination.
+        /// </remarks>
+        /// <param name='other'>
+        /// The <see cref="OrderCriterion{TEntity}"/> to compare with the current <see cref="OrderCriterion{TEntity}"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="OrderCriterion{TEntity}"/> is equal to the current
+        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <c>false</c>.
+        /// </returns>
         public bool Equals (OrderCriterion<TEntity> other)
         {
             if(null == other)
@@ -87,11 +123,32 @@ namespace Epic.Query.Object
             return SafeEquals(other);
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to the current 
+        /// <see cref="OrderCriterion{TCandidate}"/>.
+        /// </summary>
+        /// <remarks>
+        /// Delegates the evaluation to <see cref="Equals(OrderCriterion{TCandidate})"/>.
+        /// </remarks>            
+        /// <param name='obj'>
+        /// The <see cref="System.Object"/> to compare with the current <see cref="OrderCriterion{TCandidate}"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="OrderCriterion{TCandidate}"/>; otherwise, <c>false</c>.
+        /// </returns>
         public sealed override bool Equals (object obj)
         {
             return Equals (obj as OrderCriterion<TEntity>);
         }
 
+        /// <summary>
+        /// Serves as a hash function for a <see cref="OrderCriterion{TCandidate}"/> object.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
+        /// hash table.
+        /// </returns>
         public sealed override int GetHashCode ()
         {
             return GetType().GetHashCode ();
@@ -108,6 +165,15 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("info");
         }
 
+        /// <summary>
+        /// Gets the object data to be serialized.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected abstract void GetObjectData (SerializationInfo info, StreamingContext context);
 
         void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
