@@ -41,7 +41,7 @@ namespace Epic.Query.Linq
     
     public sealed class DummyClassWithDifferentMembers
     {
-        public DummyClassWithDifferentMembers() { this.SampleEvent += delegate { }; }
+        public DummyClassWithDifferentMembers() { this.SampleEvent += delegate { }; SampleEvent(this, null);}
         public int IntProperty { get; set; }
         public string StringProperty { get; set; }
         public int IntField = 0;

@@ -61,14 +61,14 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Greater<Scalar,Scalar>"/> is equal to the current <see cref="Epic.Query.Relational.Predicates.Greater"/>.
+        /// Determines whether the specified <see cref="Greater"/> is equal to the current <see cref="Greater"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Greater<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Query.Relational.Predicates.Greater"/>.
+        /// The <see cref="Greater"/> to compare with the current <see cref="Greater"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Greater<Scalar,Scalar>"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Predicates.Greater"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Greater"/> is equal to the current
+        /// <see cref="Greater"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals(Greater other)
         {

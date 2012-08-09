@@ -39,7 +39,7 @@ namespace Epic.Query.Relational.Predicates
         /// <see cref="UnaryPredicateBase"/> class.
         /// </summary>
         /// <param name='operand'>
-        /// The operand of the predicate. Cannot be <see langword="null".
+        /// The operand of the predicate. Cannot be <see langword="null"/>.
         /// </param>
         /// <exception cref='ArgumentNullException'>
         /// This exception is thrown if any of the operand is <see langword="null"/>

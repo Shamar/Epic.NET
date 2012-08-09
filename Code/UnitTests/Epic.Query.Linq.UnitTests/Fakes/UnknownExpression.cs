@@ -37,8 +37,20 @@ namespace Epic.Query.Linq.Fakes
         /// with ExpressionType equal to <see cref="int.MaxValue"/>.
         /// </summary>
         public UnknownExpression()
-            : base((ExpressionType)int.MaxValue, typeof(string))
+            : base()
         {
+        }
+
+        public override ExpressionType NodeType {
+            get {
+                return (ExpressionType)int.MaxValue;
+            }
+        }
+
+        public override System.Type Type {
+            get {
+                return typeof(string);
+            }
         }
     }
 }

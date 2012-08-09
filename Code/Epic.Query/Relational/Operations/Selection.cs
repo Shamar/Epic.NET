@@ -162,9 +162,7 @@ namespace Epic.Query.Relational.Operations
         /// <param name='relation'>
         /// The <see cref="Relation"/> used as source for the selection.
         /// </param>
-        /// <param name='predicate'>
-        /// The condition against which the records are matched.
-        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="relation"/> is <c>null</c>.</exception>
         private static string getDefaultName(Relation relation)
         {
             if (null == relation) throw new ArgumentNullException("relation");
