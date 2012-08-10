@@ -39,7 +39,7 @@ namespace Epic.Query.Relational.Operations
         private readonly Predicate _predicate;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.InnerJoin"/> class.
+        /// Initializes a new instance of the <see cref="ThetaJoin"/> class.
         /// </summary>
         /// <param name='leftRelation'>
         /// Left relation in the Join operation.
@@ -94,14 +94,14 @@ namespace Epic.Query.Relational.Operations
         public Predicate Predicate { get { return this._predicate; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>.
+        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="ThetaJoin"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>.
+        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="ThetaJoin"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Operations.InnerJoin"/>; otherwise, <c>false</c>.
+        /// <see cref="ThetaJoin"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (Relation other)
         {
@@ -109,15 +109,15 @@ namespace Epic.Query.Relational.Operations
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Epic.Query.Relational.Operations.InnerJoin"/> is equal to the
-        /// current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>.
+        /// Determines whether the specified <see cref="ThetaJoin"/> is equal to the
+        /// current <see cref="ThetaJoin"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Epic.Query.Relational.Operations.InnerJoin"/> to compare with the current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>.
+        /// The <see cref="ThetaJoin"/> to compare with the current <see cref="ThetaJoin"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Operations.InnerJoin"/> is equal to the
-        /// current <see cref="Epic.Query.Relational.Operations.InnerJoin"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="ThetaJoin"/> is equal to the
+        /// current <see cref="ThetaJoin"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals (ThetaJoin other)
         {
@@ -130,7 +130,7 @@ namespace Epic.Query.Relational.Operations
         }
 
         /// <summary>
-        /// Serves as a hash function for a <see cref="Epic.Query.Relational.Operations.InnerJoin"/> object.
+        /// Serves as a hash function for a <see cref="ThetaJoin"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a

@@ -36,9 +36,6 @@ namespace Epic.Query.Relational
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Scalar"/> class.
         /// </summary>
-        /// <param name='name'>
-        /// The scalar Name.
-        /// </param>
         /// <param name='type'>
         /// The scalar <see cref="ScalarType"/>.
         /// </param>
@@ -55,8 +52,28 @@ namespace Epic.Query.Relational
         /// </value>
         public ScalarType Type { get { return this._type; } }
 
+        /// <summary>
+        /// Serves as a hash function for a <see cref="Epic.Query.Relational.Scalar"/> object.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
+        /// hash table.
+        /// </returns>
         public abstract override int GetHashCode ();
 
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Epic.Query.Relational.Scalar"/>.
+        /// </summary>
+        /// <remarks>
+        /// This method delegate the equality check to the abstract overload <see cref="Equals(Scalar)"/>.
+        /// </remarks>
+        /// <param name='obj'>
+        /// The <see cref="System.Object"/> to compare with the current <see cref="Epic.Query.Relational.Scalar"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Scalar"/>; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals (object obj)
         {
             return Equals (obj as Scalar);

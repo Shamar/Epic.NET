@@ -33,34 +33,34 @@ namespace Epic.Query.Relational.Predicates
     {
         #region IEquatable[Predicate] implementation
         /// <summary>
-        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Query.Relational.Predicate"/>.
+        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Predicate"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Predicate"/> to compare with the current <see cref="Epic.Query.Relational.Predicate"/>.
+        /// The <see cref="Predicate"/> to compare with the current <see cref="Predicate"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Predicate"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Predicate"/>; otherwise, <c>false</c>.
+        /// <see cref="Predicate"/>; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals (Predicate other);
         
         #endregion
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Epic.Query.Relational.Predicate"/>.
+        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Predicate"/>.
         /// </summary>
         /// <param name='obj'>
-        /// The <see cref="System.Object"/> to compare with the current <see cref="Epic.Query.Relational.Predicate"/>.
+        /// The <see cref="System.Object"/> to compare with the current <see cref="Predicate"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Predicate"/>; otherwise, <c>false</c>.
+        /// <see cref="Predicate"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (object obj)
         {
             return Equals (obj as Predicate);
         }
         /// <summary>
-        /// Serves as a hash function for a <see cref="Epic.Query.Relational.Predicate"/> object.
+        /// Serves as a hash function for a <see cref="Predicate"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a

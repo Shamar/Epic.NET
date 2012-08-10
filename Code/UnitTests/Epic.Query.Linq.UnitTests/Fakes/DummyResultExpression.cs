@@ -37,9 +37,21 @@ namespace Epic.Query.Linq.Fakes
         /// with ExpressionType equal to <see cref="int.MinValue"/>.
         /// </summary>
         public DummyResultExpression()
-            : base((ExpressionType)int.MinValue, typeof(string))
+            : base()
         {
         }
+
+        public override ExpressionType NodeType {
+            get {
+                return (ExpressionType)int.MinValue;
+            }
+        }
+
+        public override System.Type Type {
+            get {
+                return typeof(string);
+            }
+        } 
     }
 }
 

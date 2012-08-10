@@ -27,7 +27,7 @@ namespace Epic.Query.Relational.Predicates
 {
     /// <summary>
     /// <para>This is the base class for those predicates having two <see cref="Scalar"/> as operands.</para>
-    /// <para>Examples are: <see cref="Less"/>, <see cref="Greater"/>, <see cref="Equals"/>.</para>
+    /// <para>Examples are: <see cref="Less"/>, <see cref="Greater"/>, <see cref="Predicates.Equal"/>.</para>
     /// </summary>
     [Serializable]
     public abstract class ScalarPredicateBase : Predicate, IEquatable<ScalarPredicateBase>
@@ -73,26 +73,26 @@ namespace Epic.Query.Relational.Predicates
         public Scalar Right { get { return this._right; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="ScalarPredicateBase<Scalar,Scalar"/> is equal to the current <see cref="Epic.Query.Relational.Predicates.ScalarPredicateBase"/>.
+        /// Determines whether the specified <see cref="ScalarPredicateBase"/> is equal to the current <see cref="ScalarPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarPredicateBase<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Query.Relational.Predicates.ScalarPredicateBase"/>.
+        /// The <see cref="ScalarPredicateBase"/> to compare with the current <see cref="ScalarPredicateBase"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ScalarPredicateBase<Scalar,Scalar>"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Predicates.ScalarPredicateBase"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="ScalarPredicateBase"/> is equal to the current
+        /// <see cref="ScalarPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals(ScalarPredicateBase other);
 
         /// <summary>
-        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Query.Relational.Predicates.ScalarPredicateBase"/>.
+        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="ScalarPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Predicate"/> to compare with the current <see cref="Epic.Query.Relational.Predicates.ScalarPredicateBase"/>.
+        /// The <see cref="Predicate"/> to compare with the current <see cref="ScalarPredicateBase"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Predicate"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Predicates.ScalarPredicateBase"/>; otherwise, <c>false</c>.
+        /// <see cref="ScalarPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (Predicate other)
         {

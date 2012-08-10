@@ -46,7 +46,7 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="Relation"/> used as source for the projection.
         /// </param>
         /// <param name='attributes'>
-        /// The collection of <see cref="RelationAttributes"/> extracted
+        /// The collection of <see cref="RelationAttribute">relation attributes</see> extracted
         /// </param>
         /// <param name='name'>
         /// A user-defined name used to identify the Projection relation.
@@ -67,7 +67,7 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="Relation"/> used as source for the projection.
         /// </param>
         /// <param name='attributes'>
-        /// The collection of <see cref="RelationAttributes"/> extracted
+        /// The collection of <see cref="RelationAttribute">relation attributes</see> extracted
         /// </param>
         public Projection(Relation relation, IEnumerable<RelationAttribute> attributes):
             base(RelationType.Projection, getDefaultName(relation))
@@ -167,9 +167,6 @@ namespace Epic.Query.Relational.Operations
         /// </returns>
         /// <param name='relation'>
         /// the <see cref="Relation"/> used as source for the projection.
-        /// </param>
-        /// <param name='attributes'>
-        /// The attributes to be extracted from the relation.
         /// </param>
         private static string getDefaultName (Relation relation)
         {

@@ -30,7 +30,7 @@ namespace Epic.Query
 	/// A loader for <typeparamref name="TEntity"/>.
 	/// </summary>
 	/// <typeparam name="TEntity">Type of the entity that the loader can load.</typeparam>
-	/// <typeparam name="TIdentity">Type used to identify each <typeparamref name="TEntity">.</typeparam>
+	/// <typeparam name="TIdentity">Type used to identify each <typeparamref name="TEntity"/>.</typeparam>
 	public interface IEntityLoader<TEntity, TIdentity>
 		where TEntity : class
 		where TIdentity : IEquatable<TIdentity>
@@ -39,9 +39,9 @@ namespace Epic.Query
 		/// Load the specified entities.
 		/// </summary>
 		/// <param name='identities'>
-		/// Identifiers of the <typeparamref name="TEntity"> to load.
+		/// Identifiers of the <typeparamref name="TEntity"/> to load.
 		/// </param>
-		/// <exception cref="EpicException">One or more <typeparamref name="TEntity"> can not be loaded.</exception>
+		/// <exception cref="Epic.EpicException">One or more <typeparamref name="TEntity"/> can not be loaded.</exception>
 		IEnumerable<TEntity> Load(params TIdentity[] identities);
 	}
 }
