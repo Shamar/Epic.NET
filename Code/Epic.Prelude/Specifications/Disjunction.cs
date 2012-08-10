@@ -38,6 +38,10 @@ namespace Epic.Specifications
         where TCandidate : class
     {
         private readonly ISpecification<TCandidate>[] _specifications;
+
+        /// <summary>
+        /// Initialize a new <see cref="Disjunction{TCandidate}"/>.
+        /// </summary>
         public Disjunction(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
         {
             if (null == first)

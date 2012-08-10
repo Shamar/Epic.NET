@@ -35,10 +35,22 @@ namespace Epic.Specifications
         where TCandidate : class
         where TSpecification : class, ISpecification<TCandidate>, IEquatable<TSpecification>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatelessSpecificationBase{TSpecification, TCandidate}"/> class.
+        /// </summary>
         protected StatelessSpecificationBase ()
         {
         }
-
+        
+        /// <summary>
+        /// Returns <c>true</c> for any <typeparamref name="TSpecification"/>, since its has to be stateless.
+        /// </summary>
+        /// <returns>
+        /// Always <c>true</c>.
+        /// </returns>
+        /// <param name='otherSpecification'>
+        /// Other specification.
+        /// </param>
         protected override sealed bool EqualsA (TSpecification otherSpecification)
         {
             return true;

@@ -48,11 +48,29 @@ namespace Epic.Specifications
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 
+        /// <summary>
+        /// Determines that this specification cannot be satisfied by any candidate.
+        /// </summary>
+        /// <returns>
+        /// Always <c>false</c>.
+        /// </returns>
+        /// <param name='candidate'>
+        /// Candidate.
+        /// </param>
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
             return false;
         }
 
+        /// <summary>
+        /// Ands the also.
+        /// </summary>
+        /// <returns>
+        /// The also.
+        /// </returns>
+        /// <param name='other'>
+        /// Other.
+        /// </param>
         protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
         {
             return this;
