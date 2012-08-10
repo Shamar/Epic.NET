@@ -102,6 +102,16 @@ namespace Epic.Specifications
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 
+        /// <summary>
+        /// Returns a new <see cref="Disjunction{TCandidate}"/> that will be satisfied when either
+        /// the current specification or the <paramref name="other"/> are satisfied.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Disjunction{TCandidate}"/>.
+        /// </returns>
+        /// <param name='other'>
+        /// Another specification.
+        /// </param>
         protected override ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
         {
             Disjunction<TCandidate> otherOr = other as Disjunction<TCandidate>;
@@ -116,6 +126,17 @@ namespace Epic.Specifications
             return base.OrElse (other);
         }
 
+        /// <summary>
+        /// Determine whether the current <see cref="Disjunction{TCandidate}"/> is equal
+        /// to <paramref name="otherSpecification"/>.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if each of disjuncted specification are equal 
+        /// to the corresponding one in <paramref name="otherSpecification"/>, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='otherSpecification'>
+        /// Another specification.
+        /// </param>
         protected override bool EqualsA (Disjunction<TCandidate> otherSpecification)
         {
             if(_specifications.Length != otherSpecification._specifications.Length)
@@ -126,6 +147,16 @@ namespace Epic.Specifications
             return true;
         }
 
+        /// <summary>
+        /// Determines whether this specification is satisfied by <paramref name="candidate"/>.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c> if <paramref name="candidate"/> satisfies at least one of 
+        /// the disjuncted specifications; otherwise, <c>false</c>.
+        /// </returns>
+        /// <param name='candidate'>
+        /// Candidate.
+        /// </param>
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
             for(int i = 0; i < _specifications.Length; ++i)

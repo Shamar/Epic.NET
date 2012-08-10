@@ -51,18 +51,18 @@ namespace Epic.Query.Object
     /// Instead, their functionality is to build an 
     /// <see cref="Expression{TResult}"/> object, which is an expression tree that 
     /// represents the cumulative request. The methods then pass the new expression 
-    /// tree to either the <see cref="IDeferrer.Execute{TResult}"/> method or the 
+    /// tree to either the <see cref="IDeferrer.Evaluate{TResult}"/> method or the 
     /// <see cref="IDeferrer.Defer{TDeferred, TResult}"/>  method of the input 
     /// <see cref="IDeferred{TResult}"/>. 
     /// The method that is called depends on whether the <see cref="Searchable"/> 
     /// method returns an actual value, in which case 
-    /// <see cref="IDeferrer.Execute{TResult}"/> is called, or has deferred results, 
+    /// <see cref="IDeferrer.Evaluate{TResult}"/> is called, or has deferred results, 
     /// in which case <see cref="IDeferrer.Defer{TDeferred, TResult}"/> is called.
     /// </para>
     /// <para>
     /// The actual query execution on the target data is performed when the actual value
-    /// is needed. For example <see cref="Searchable.Count{TEntity, TIdentity}()"/> 
-    /// actually execute the count and <see cref="Searchable.Identify{TEntity, TIdentity}()"/> 
+    /// is needed. For example <see cref="Searchable.Count{TItem}"/> 
+    /// actually execute the count and <see cref="Searchable.Identify{TEntity, TIdentity}"/> 
     /// retrieves and returns the identities of the required entities.
     /// </para>
     /// </remarks>

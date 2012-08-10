@@ -73,6 +73,15 @@ namespace Epic.Query.Object.Expressions
             _source = (Expression<IEnumerable<TItem>>)info.GetValue("S", typeof(Expression<IEnumerable<TItem>>));
         }
 
+        /// <summary>
+        /// Gets the object data for serialization.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue("S", _source, typeof(Expression<IEnumerable<TItem>>));

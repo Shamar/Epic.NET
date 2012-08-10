@@ -551,7 +551,7 @@ namespace Epic.Specifications
         {
             return new Disjunction<Candidate2> (this, other);
         }
-                
+        
         ISpecification<Candidate2> ISpecification<Candidate2>.Negate ()
         {
             ISpecification<Candidate2> result = null;
