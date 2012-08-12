@@ -59,26 +59,22 @@ namespace Epic.Query.Object
         /// Chain the specified criterion after the current one.
         /// </summary>
         /// <param name='other'>
-        /// Another crierion.
+        /// Another criterion.
         /// </param>
         public override OrderCriterion<TEntity> Chain (OrderCriterion<TEntity> other)
         {
             return new OrderCriteria<TEntity>(this, other);
         }
 
+        /// <summary>
+        /// Reverse this criterion.
+        /// </summary>
+        /// <returns>
+        /// <see cref="Reversed"/> since it's the reverse of the current criterion.
+        /// </returns>
         public override OrderCriterion<TEntity> Reverse ()
         {
             return _toReverse;
-        }
-
-        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
-        {
-            return AcceptMe(this, visitor, context);
-        }
-
-        public override int Compare (TEntity x, TEntity y)
-        {
-            return _toReverse.Compare(y, x);
         }
 
         /// <summary>
@@ -93,7 +89,41 @@ namespace Epic.Query.Object
         /// <typeparam name='TResult'>
         /// The type of the visit's result.
         /// </typeparam>
-        protected override bool SafeEquals (OrderCriterion<TEntity> other)
+        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
+        {
+            return AcceptMe(this, visitor, context);
+        }
+
+        /// <summary>
+        /// Compare the specified entities.
+        /// </summary>
+        /// <param name='x'>
+        /// The first entity.
+        /// </param>
+        /// <param name='y'>
+        /// The second entity.
+        /// </param>
+        /// <remarks>
+        /// This calls the <see cref="Reversed"/>'s <c>Compare</c> 
+        /// method inverting the arguments (<c>Reversed.Compare(y, x)</c>).
+        /// </remarks>
+        public override int Compare (TEntity x, TEntity y)
+        {
+            return _toReverse.Compare(y, x);
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="OrderCriterion{TEntity}"/> is equal to the
+        /// current <see cref="ReverseOrder{TEntity}"/>, given that <see cref="EqualsA(OrderCriterion{TEntity})"/>
+        /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if the current criterion is equal to the <paramref name="other"/>, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='other'>
+        /// Another criterion.
+        /// </param>
+        protected override bool EqualsA (OrderCriterion<TEntity> other)
         {
             ReverseOrder<TEntity> reverseOther = other as ReverseOrder<TEntity>;
             return _toReverse.Equals(reverseOther._toReverse);

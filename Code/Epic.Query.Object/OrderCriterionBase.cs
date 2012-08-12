@@ -58,7 +58,7 @@ namespace Epic.Query.Object
 
         /// <summary>
         /// Determines whether the specified <see cref="OrderCriterion{TEntity}"/> is equal to the
-        /// current <see cref="OrderCriterion{TEntity}"/>, given that <see cref="SafeEquals(OrderCriterion{TEntity})"/>
+        /// current <see cref="OrderCriterion{TEntity}"/>, given that <see cref="EqualsA(OrderCriterion{TEntity})"/>
         /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
         /// </summary>
         /// <returns>
@@ -67,27 +67,27 @@ namespace Epic.Query.Object
         /// <param name='other'>
         /// Other.
         /// </param>
-        protected override sealed bool SafeEquals (OrderCriterion<TEntity> other)
+        protected override sealed bool EqualsA (OrderCriterion<TEntity> other)
         {
             TOrderCriterion otherCriterion = other as TOrderCriterion;
             // we don't need to check the cast again, since it's granted from the OrderCriterionBase 
             // constructor and the last OrderCriterion.Equals() check.
 
-            return SafeEquals(otherCriterion);
+            return EqualsA(otherCriterion);
         }
 
         /// <summary>
         /// Determines whether the specified <typeparamref name="TOrderCriterion"/> is equal to the
-        /// current <typeparamref name="TOrderCriterion"/>, given that <see cref="SafeEquals(OrderCriterion{TEntity})"/>
+        /// current <typeparamref name="TOrderCriterion"/>, given that <see cref="EqualsA(OrderCriterion{TEntity})"/>
         /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if equals was safed, <c>false</c> otherwise.
+        /// <c>true</c>, if the current criterion is equal to the <paramref name="other"/>, <c>false</c> otherwise.
         /// </returns>
         /// <param name='other'>
-        /// Other.
+        /// Another criterion.
         /// </param>
-        protected abstract bool SafeEquals (TOrderCriterion other);
+        protected abstract bool EqualsA (TOrderCriterion other);
 
         /// <summary>
         /// Accept the specified visitor and context as a <typeparamref name="TOrderCriterion"/>.

@@ -94,7 +94,7 @@ namespace Epic.Query.Object
         /// <param name='other'>
         /// Other.
         /// </param>
-        protected abstract bool SafeEquals(OrderCriterion<TEntity> other);
+        protected abstract bool EqualsA(OrderCriterion<TEntity> other);
 
         /// <summary>
         /// Determines whether the specified <see cref="OrderCriterion{TEntity}"/> is equal to the
@@ -103,7 +103,7 @@ namespace Epic.Query.Object
         /// <remarks>
         /// This is a template method thet test <paramref name="other"/> for reference equality with <see langword="null"/>
         /// and <see langword="this"/> and than for type equality (<see cref="object.GetType()"/>).
-        /// If both tests fails, it delegates to the abstract method <see cref="SafeEquals"/> the equality determination.
+        /// If both tests fails, it delegates to the abstract method <see cref="EqualsA"/> the equality determination.
         /// </remarks>
         /// <param name='other'>
         /// The <see cref="OrderCriterion{TEntity}"/> to compare with the current <see cref="OrderCriterion{TEntity}"/>.
@@ -120,7 +120,7 @@ namespace Epic.Query.Object
                 return true;
             if(!this.GetType().Equals(other.GetType()))
                 return false;
-            return SafeEquals(other);
+            return EqualsA(other);
         }
 
         /// <summary>

@@ -132,7 +132,18 @@ namespace Epic.Query.Object
         }
 
         #region implemented abstract members of Epic.Query.Object.OrderCriterion
-        protected override bool SafeEquals (OrderCriterion<TEntity> other)
+        /// <summary>
+        /// Determines whether the specified <see cref="OrderCriteria{TEntity}"/> is equal to the
+        /// current <see cref="OrderCriteria{TEntity}"/>, given that <see cref="EqualsA(OrderCriterion{TEntity})"/>
+        /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if the current criterion is equal to the <paramref name="other"/>, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='other'>
+        /// Another criterion.
+        /// </param>
+        protected override bool EqualsA (OrderCriterion<TEntity> other)
         {
             OrderCriteria<TEntity> others = other as OrderCriteria<TEntity>;
             if(_criteria.Length != others._criteria.Length)
@@ -154,6 +165,10 @@ namespace Epic.Query.Object
         /// <param name='y'>
         /// The second entity.
         /// </param>
+        /// <remarks>
+        /// The comparison is delegated to the criteria in the set in the order thay have been chained. 
+        /// The first order criterion that returns a non-zero result stop the chain.
+        /// </remarks>
         public override int Compare (TEntity x, TEntity y)
         {
             int comparison = 0;
