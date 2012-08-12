@@ -36,16 +36,18 @@
             </exec>
         </if>
 
-        <!-- list the uncovered members -->
+        <!-- list the uncovered members
         <style if="${file::exists(coverage-file + '.xml')}" verbose="true"
             style="${path::combine(nant.include.dir, 'coverage-txt.xsl')}"
             in="${coverage-file}.xml"
             out="${coverage-file}.txt"/>
-        <!-- build a detailed report of uncovered members (if any) -->
+        -->
+        <!-- build a detailed report of uncovered members (if any)
         <style if="${file::exists(coverage-file + '.xml') and (file::get-length(coverage-file + '.txt') &gt; 0)}"
             style="${path::combine(nant.include.dir, 'coverage.xsl')}"
             in="${coverage-file}.xml"
             out="${coverage-file}.html" />
+        -->
         <if test="${file::exists(coverage-file + '.xml')}">
             <if test="${file::get-length(coverage-file + '.txt') &gt; 0}">
                 <xmlpeek
@@ -56,14 +58,18 @@
                         file="${coverage-file}.xml"
                         xpath="count(//seqpnt[@visitcount!='0'])"
                         property="covered-seqpnt"/>
+                <!--        
                 <foreach item="Line" in="${coverage-file + '.txt'}" delim="," property="class,method">
                     <echo message="The '${method}' of '${class}' is not completelly covered." />
                 </foreach>
+                -->
                 <fail if="${int::parse(all-seqpnt) != int::parse(covered-seqpnt)}">Code coverage of ${component.name} is just ${double::parse(covered-seqpnt) * 100 / double::parse(all-seqpnt)} %. 
 See ${path::get-file-name(coverage-file)}.html for details.</fail>
             </if>
+            <!--
             <echo if="${not (file::get-length(coverage-file + '.txt') &gt; 0)}" 
                   message="Code coverage of ${component.name} is 100%" />
+            -->
         </if>
     </target>
 </project>
