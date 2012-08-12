@@ -84,11 +84,27 @@ namespace Epic.Query.Object
             _criteria = criteria;
         }
 
+        /// <summary>
+        /// Chain the specified criterion after the current chain.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="other"/> is a set of <see cref="OrderCriteria{TEntity}"/>, 
+        /// the contained criteria are merged after those in the current instance.
+        /// </remarks>
+        /// <param name='other'>
+        /// Another order criterion.
+        /// </param>
         public override OrderCriterion<TEntity> Chain (OrderCriterion<TEntity> other)
         {
             return new OrderCriteria<TEntity>(this, other);
         }
 
+        /// <summary>
+        /// Reverse this criterion producing a new set of <see cref="OrderCriteria{TEntity}"/>.
+        /// </summary>
+        /// <returns>
+        /// A set of <see cref="OrderCriteria{TEntity}"/> that is the reverse of this.
+        /// </returns>
         public override OrderCriterion<TEntity> Reverse ()
         {
             OrderCriterion<TEntity>[] criteria = new OrderCriterion<TEntity>[_criteria.Length];
@@ -98,6 +114,18 @@ namespace Epic.Query.Object
             return new OrderCriteria<TEntity>(criteria);
         }
 
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit's result.
+        /// </typeparam>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);
@@ -117,6 +145,15 @@ namespace Epic.Query.Object
         #endregion
 
         #region implemented abstract members of Epic.Query.Object.OrderCriterion
+        /// <summary>
+        /// Compare the specified entities.
+        /// </summary>
+        /// <param name='x'>
+        /// The first entity.
+        /// </param>
+        /// <param name='y'>
+        /// The second entity.
+        /// </param>
         public override int Compare (TEntity x, TEntity y)
         {
             int comparison = 0;
@@ -138,6 +175,12 @@ namespace Epic.Query.Object
         #endregion
 
         #region IEnumerable implementation
+        /// <summary>
+        /// Gets the enumerator of contained criteria.
+        /// </summary>
+        /// <returns>
+        /// The enumerator of <see cref="OrderCriterion{TEntity}"/>.
+        /// </returns>
         public IEnumerator<OrderCriterion<TEntity>> GetEnumerator ()
         {
             return (_criteria as IEnumerable<OrderCriterion<TEntity>>).GetEnumerator();
@@ -152,6 +195,15 @@ namespace Epic.Query.Object
             _criteria = (OrderCriterion<TEntity>[])info.GetValue("C", typeof(OrderCriterion<TEntity>[]));
         }
 
+        /// <summary>
+        /// Gets the object data to serialize.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue("C", _criteria, typeof(OrderCriterion<TEntity>[]));

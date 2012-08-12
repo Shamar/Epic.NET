@@ -86,7 +86,7 @@ namespace Epic.Query.Object
         /// <summary>
         /// Determines whether the specified <see cref="OrderCriterion{TEntity}"/> is equal to the
         /// current <see cref="OrderCriterion{TEntity}"/>, given that <see cref="Equals(OrderCriterion{TEntity})"/>
-        /// grant that it is not <see cref="null"/>, <see cref="this"/> and that it has the same type of the current instance.
+        /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
         /// </summary>
         /// <returns>
         /// <c>true</c>, if equals was safed, <c>false</c> otherwise.
@@ -128,7 +128,7 @@ namespace Epic.Query.Object
         /// <see cref="OrderCriterion{TCandidate}"/>.
         /// </summary>
         /// <remarks>
-        /// Delegates the evaluation to <see cref="Equals(OrderCriterion{TCandidate})"/>.
+        /// Delegates the evaluation to <see cref="OrderCriterion{TCandidate}.Equals(OrderCriterion{TCandidate})"/>.
         /// </remarks>            
         /// <param name='obj'>
         /// The <see cref="System.Object"/> to compare with the current <see cref="OrderCriterion{TCandidate}"/>.

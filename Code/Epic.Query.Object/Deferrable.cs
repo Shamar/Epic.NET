@@ -38,7 +38,7 @@ namespace Epic.Query.Object
         /// <param name='deferred'>
         /// A deferred <typeparamref name="TResult"/>.
         /// </param>
-        /// <typeparam name='TItem'>
+        /// <typeparam name='TResult'>
         /// The type of the results.
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="deferred"/> 

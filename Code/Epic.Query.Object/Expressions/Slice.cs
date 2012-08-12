@@ -66,8 +66,7 @@ namespace Epic.Query.Object.Expressions
         /// Number of <typeparamref name="TEntity"/> to bypass.
         /// </param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="toSkip"/> is <see cref="uint.MaxValue"/> 
-        /// or <paramref name="toTake"/> is <c>0</c>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="toSkip"/> is <see cref="uint.MaxValue"/>.</exception>
         public Slice (uint toSkip, Order<TEntity> source)
             : this(source, toSkip, uint.MaxValue)
         {
@@ -122,11 +121,32 @@ namespace Epic.Query.Object.Expressions
             get { return _toSkip; }
         }
 
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit's result.
+        /// </typeparam>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
         }
 
+        /// <summary>
+        /// Gets the object data to serialize.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("S", _source, typeof(Order<TEntity>));

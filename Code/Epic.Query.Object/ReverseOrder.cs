@@ -55,6 +55,12 @@ namespace Epic.Query.Object
             }
         }
 
+        /// <summary>
+        /// Chain the specified criterion after the current one.
+        /// </summary>
+        /// <param name='other'>
+        /// Another crierion.
+        /// </param>
         public override OrderCriterion<TEntity> Chain (OrderCriterion<TEntity> other)
         {
             return new OrderCriteria<TEntity>(this, other);
@@ -75,6 +81,18 @@ namespace Epic.Query.Object
             return _toReverse.Compare(y, x);
         }
 
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit's result.
+        /// </typeparam>
         protected override bool SafeEquals (OrderCriterion<TEntity> other)
         {
             ReverseOrder<TEntity> reverseOther = other as ReverseOrder<TEntity>;
@@ -88,6 +106,15 @@ namespace Epic.Query.Object
             _toReverse = (OrderCriterion<TEntity>)info.GetValue("C", typeof(OrderCriterion<TEntity>));
         }
 
+        /// <summary>
+        /// Gets the object data to serialize.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue("C", _toReverse, typeof(OrderCriterion<TEntity>));

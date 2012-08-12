@@ -37,7 +37,7 @@
         </if>
 
         <!-- list the uncovered members -->
-        <style if="${file::exists(coverage-file + '.xml')}"
+        <style if="${file::exists(coverage-file + '.xml')}" verbose="true"
             style="${path::combine(nant.include.dir, 'coverage-txt.xsl')}"
             in="${coverage-file}.xml"
             out="${coverage-file}.txt"/>
