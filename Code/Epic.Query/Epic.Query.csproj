@@ -40,7 +40,6 @@
     <Compile Include="Relational\Relation.cs" />
     <Compile Include="Relational\RelationType.cs" />
     <Compile Include="Relational\BaseRelation.cs" />
-    <Compile Include="Relational\Selection.cs" />
     <Compile Include="Relational\Constant.cs" />
     <Compile Include="Relational\RelationAttribute.cs" />
     <Compile Include="Relational\RelationFunction.cs" />

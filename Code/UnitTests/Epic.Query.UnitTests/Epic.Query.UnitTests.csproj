@@ -57,7 +57,6 @@
     <Compile Include="Relational\RelationQA.cs" />
     <Compile Include="Relational\PredicateQA.cs" />
     <Compile Include="Relational\BaseRelationQA.cs" />
-    <Compile Include="Relational\SelectionQA.cs" />
     <Compile Include="Relational\ConstantQA.cs" />
     <Compile Include="Relational\RelationAttributeQA.cs" />
     <Compile Include="Relational\RelationFunctionQA.cs" />
