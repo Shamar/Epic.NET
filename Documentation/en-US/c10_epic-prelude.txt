@@ -1,0 +1,27 @@
+[[epic-prelude]]
+Epic.Prelude
+---------
+The Epic.Prelude can be thought of as a preface for your domain model. 
+It provides a set of general purpose models distilled from our experience. 
+
+Indeed during some years of work in domain driven design we faced many different
+domains but we have found some common concepts in them
+(most of which are rooted in theorethical math). After some trials and errors we 
+realized an acceptable design that is proposed in this module.
+
+NOTE: You could object that while one of the core design targets of Epic is to 
+keep the domain model ignorant of the infrastructure, Epic.Prelude 
+imposes a dependency from Epic itself. It's right!
+You should carefully consider pro and cons of such dependency.
+However, since the Epic.Prelude models are actually usefull we decided to 
+provide them.
+
+WARNING: From a legal point of view, by referencing Epic.Prelude, your 
+domain model will be subjected to the licencing terms with which you obtained 
+Epic. In other words, if you obtained Epic under the 
+http://www.gnu.org/licenses/agpl-3.0.html[Affero GPLv3], 
+your whole domain must be distributed under the terms of such a license. 
+Note however that, this is already true for the rest of the application build 
+with Epic. mailto:giacomo@tesio.it[Contact the authors] to obtain 
+a linking exception if you want to write proprietary code.
+
