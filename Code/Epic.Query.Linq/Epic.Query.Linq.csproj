@@ -21,16 +21,18 @@
     <ConsolePause>False</ConsolePause>
     <GenerateDocumentation>True</GenerateDocumentation>
     <DocumentationFile>..\..\build\bin\Debug\Epic.Query.Linq.XML</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>True</Optimize>
     <OutputPath>..\..\build\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <GenerateDocumentation>True</GenerateDocumentation>
     <DocumentationFile>..\..\build\bin\Release\Epic.Query.Linq.XML</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

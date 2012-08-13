@@ -20,6 +20,7 @@
     <ConsolePause>False</ConsolePause>
     <GenerateDocumentation>True</GenerateDocumentation>
     <DocumentationFile>..\..\build\bin\Debug\Epic.Query.XML</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -30,6 +31,7 @@
     <ConsolePause>False</ConsolePause>
     <GenerateDocumentation>True</GenerateDocumentation>
     <DocumentationFile>..\..\build\bin\Release\Epic.Query.XML</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

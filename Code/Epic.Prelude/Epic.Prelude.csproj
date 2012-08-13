@@ -21,6 +21,7 @@
     <ConsolePause>False</ConsolePause>
     <GenerateDocumentation>True</GenerateDocumentation>
     <DocumentationFile>..\..\build\bin\Debug\Epic.Prelude.XML</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -31,6 +32,7 @@
     <ConsolePause>False</ConsolePause>
     <GenerateDocumentation>True</GenerateDocumentation>
     <DocumentationFile>..\..\build\bin\Release\Epic.Prelude.XML</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
