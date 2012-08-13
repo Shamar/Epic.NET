@@ -72,9 +72,35 @@ TThis is the reference documentation of such libraries %28whose objectives has b
     <NamespaceSummaries>
       <NamespaceSummaryItem name="Epic" isDocumented="True">The &lt;b&gt;Epic&lt;/b&gt; namespace contains fundamental concepts that all Domain Driven applications built with the Epic's modeling patterns in mind will require.&lt;br/&gt;&lt;br/&gt;
 
-Epic.Prelude defines here &lt;a href="T_Epic_IVisitable.htm"&gt;IVisitable&lt;/a&gt; interface and the &lt;b&gt;Composite Visitor pattern&lt;/b&gt;. &lt;br/&gt;
+Epic.Prelude defines here &lt;a href="T_Epic_IVisitable.htm"&gt;IVisitable&lt;/a&gt; interface and the &lt;b&gt;Composite Visitor pattern&lt;/b&gt;.
 Epic.Core defines the &lt;a href="T_Epic_Enterprise.htm"&gt;Enterprise&lt;/a&gt; entry point to the domain model.</NamespaceSummaryItem>
 <NamespaceSummaryItem name="Epic.Collections" isDocumented="True">The &lt;b&gt;Epic.Collections&lt;/b&gt; namespace contains useful models of collections for DDD.&lt;br/&gt;
+It's defined in Epic.Prelude.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Environment" isDocumented="True">Epic.Environment contains base implementations of &lt;a href="http://epic.tesio.it/doc/api/html/T_Epic_IEnvironment.htm"&gt;IEnvironment&lt;/a&gt;.&lt;br/&gt;
+It's defined in Epic.Core.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Events" isDocumented="True">The Epic.Events namespace contains common use EventArgs for domain models.&lt;br/&gt;
+It's defined in Epic.Core.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Math" isDocumented="True">The &lt;b&gt;Epic.Math&lt;/b&gt; namespace contains common mathematical abstractions such as &lt;a href="http://epic.tesio.it/doc/api/html/T_Epic_Math_IMapping_2.htm"&gt;Mappings&lt;/a&gt;, generic groups, abelian groups and rings.&lt;br/&gt;
+It is defined in Epic.Prelude.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Organization" isDocumented="True">The &lt;b&gt;Epic.Organization&lt;/b&gt; namespace contains base classes for the organization of the enterprise using the domain model.&lt;br/&gt;
+It's defined in Epic.Core.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Query" isDocumented="True">Epic.Query contains common tools used by all the query models available (Epic.Query.Object and Epic.Query.Linq).&lt;br/&gt;
+It is defined in Epic.Query.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Query.Linq" isDocumented="True">The &lt;b&gt;Epic.Query.Linq&lt;/b&gt; contains the interface and the base class of Linq based repositories.&lt;br/&gt;
+It's defined in Epic.Query.Linq.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Query.Linq.Expressions.Normalization" isDocumented="True">The Epic.Query.Linq.Expressions.Normalization namespace contains visitor that "normalize" an ExpressionTree.&lt;br/&gt;
+It's defined in Epic.Query.Linq.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Query.Object" isDocumented="True">The &lt;b&gt;Epic.Query.Object&lt;/b&gt; namespace provide a simplified alternative to Linq repositories based on a slightly modified &lt;a href="http://martinfowler.com/eaaCatalog/queryObject.html"&gt;QueryObject&lt;/a&gt; pattern. It allows entity lookups by specifications, sorting and slicing, but can be easily extended to produce custom projections and aggregations.&lt;br/&gt;
+It's defined in Epic.Query.Object.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Query.Object.Expressions" isDocumented="True">The Epic.Query.Object.Expressions contains the &lt;a href="http://epic.tesio.it/doc/api/html/T_Epic_IVisitable.htm"&gt;visitable&lt;/a&gt; expressions representing a query.&lt;br/&gt;
+It is defined in Epic.Query.Object.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Query.Relational" isDocumented="True">The &lt;b&gt;Epic.Query.Relational&lt;/b&gt; namespaces defines a tree of relational algebra expressions with bag semantics. It's used as an intermediate step from Epic.Query.Linq and Epic.Query.Object to any relational backend (read each specific SQL dialect).&lt;br/&gt;
+It's defined in Epic.Query.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Query.Relational.Operations" isDocumented="True">Epic.Query.Relational.Operations expresses relational operations (and some bag one, like sorting and grouping).&lt;br/&gt;
+It's defined in Epic.Query.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Query.Relational.Predicates" isDocumented="True">Epic.Query.Relational.Predicates express common relational predicates.&lt;br/&gt;
+It's defined in Epic.Query.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Specifications" isDocumented="True">The &lt;b&gt;Epic.Specifications&lt;/b&gt; namespace contains a general purpose framework for specifications. It provides a closure of operations over basic logical operators (conjunction, disjunction and negation) with some well designed extensions for handling inhteritance.&lt;br/&gt;
 It's defined in Epic.Prelude.</NamespaceSummaryItem></NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
