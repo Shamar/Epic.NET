@@ -128,14 +128,14 @@ namespace Epic.Query.Object
         /// <see cref="OrderCriterion{TCandidate}"/>.
         /// </summary>
         /// <remarks>
-        /// Delegates the evaluation to <see cref="OrderCriterion{TCandidate}.Equals(OrderCriterion{TCandidate})"/>.
+        /// Delegates the evaluation to <see cref="OrderCriterion{TEntity}.Equals(OrderCriterion{TEntity})"/>.
         /// </remarks>            
         /// <param name='obj'>
-        /// The <see cref="System.Object"/> to compare with the current <see cref="OrderCriterion{TCandidate}"/>.
+        /// The <see cref="System.Object"/> to compare with the current <see cref="OrderCriterion{TEntity}"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="OrderCriterion{TCandidate}"/>; otherwise, <c>false</c>.
+        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <c>false</c>.
         /// </returns>
         public sealed override bool Equals (object obj)
         {
