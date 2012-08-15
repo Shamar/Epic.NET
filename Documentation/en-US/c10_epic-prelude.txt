@@ -1,17 +1,17 @@
 [[epic-prelude]]
 Epic.Prelude
----------
+------------
 The Epic.Prelude can be thought of as a preface for your domain model. 
 It provides a set of general purpose models distilled from our experience. 
 
-Indeed during some years of work in domain driven design we faced many different
-domains but we have found some common concepts in them
-(most of which are rooted in theorethical math). After some trials and errors we 
-realized an acceptable design that is proposed in this module.
+Indeed during some years of domain driven design we faced many different 
+domains and we discovered some common concepts in them (most of which are 
+rooted in theorethical math). After some trials and errors we got a flexible 
+design that is proposed in this module.
 
 NOTE: You could object that while one of the core design targets of Epic is to 
 keep the domain model ignorant of the infrastructure, Epic.Prelude 
-imposes a dependency from Epic itself. It's right!
+imposes a dependency from Epic itself. You're right!
 You should carefully consider pro and cons of such dependency.
 However, since the Epic.Prelude models are actually usefull we decided to 
 provide them.
@@ -21,7 +21,39 @@ domain model will be subjected to the licencing terms with which you obtained
 Epic. In other words, if you obtained Epic under the 
 http://www.gnu.org/licenses/agpl-3.0.html[Affero GPLv3], 
 your whole domain must be distributed under the terms of such a license. 
-Note however that, this is already true for the rest of the application build 
+Note however that, this is already true for the rest of the application built 
 with Epic. mailto:giacomo@tesio.it[Contact the authors] to obtain 
 a linking exception if you want to write proprietary code.
 
+Epic itself depends on Prelude's models, so you will have to include such a 
+library into your runtime environment.
+
+Interpreting values
+~~~~~~~~~~~~~~~~~~~
+Many value objects serves two different purposes: to enforce a set of specific
+rules and to express such a rule. We call these two connected responsibilities
+**execution** and **interpretation**.
+
+While this could seem quite abstract, it looks perfectly reasonable when we
+looks to that particular value objects that work like mathematical functions.
+Specifications, for example, are predicates that can be both executed, to know
+whether a candidate satisfy them, or interpreted, translating them into a human
+readable sentence or into SQL queries.
+
+NOTE: A closer look shows that execution is actually a specific kind of 
+interpretation, done by the CLR.
+
+The need for value objects' interpretation poses a problem to software 
+maintenance: how can stick to the open-closed principle if we have to 
+interpret an ever growing number of value objects' types? 
+
+Most of interpretation techniques rely on the double dispatch design pattern 
+but in its basic form...
+
+Coming soon.
+
+
+Specifying qualities
+~~~~~~~~~~~~~~~~~~~~
+
+Coming soon.
