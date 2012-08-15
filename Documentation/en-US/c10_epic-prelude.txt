@@ -47,8 +47,9 @@ The need for value objects' interpretation poses a problem to software
 maintenance: how can we stick to the open-closed principle if we have to 
 interpret an ever growing number of value objects' types? 
 
-Most of interpretation techniques rely on the double dispatch design pattern 
-but in its basic form...
+Most of interpretation techniques rely on the Visitor design pattern 
+and its double dispatch mechanic. However both the classical and the acyclic
+visitor patterns suffer (http://objectmentor.com/resources/articles/visitor.pdf)
 
 Coming soon.
 
