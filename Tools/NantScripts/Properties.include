@@ -2,6 +2,7 @@
     
     <!-- build-wide properties -->
 	<property name="build.verbosity" value="quiet" overwrite="false" />
+	<property name="website.presentationstyle" value="Prototype" overwrite="false" />
     
 	<property name="nant.settings.currentframework" value="net-4.0" if="${platform::is-windows()}" />
     <property name="nant.settings.currentframework" value="mono-4.0" if="${not platform::is-windows()}" />
@@ -22,8 +23,10 @@
 	<property name="documentation.dir" value="${path::combine(repository.rootdirectory, 'Documentation')}"/>
 	<property name="build.tmp.dir" value="${path::combine(repository.builddirectory, 'tmp')}"/>
     <property name="api.tmp.path" value="${path::combine(build.tmp.dir, 'api')}"/>
+    <property name="manual.tmp.path" value="${path::combine(build.tmp.dir, 'manual.chunked')}"/>
     <property name="website.tmp.path" value="${path::combine(build.tmp.dir, 'website')}"/>
     <property name="website.tmp.docApi.path" value="${path::combine(path::combine(website.tmp.path, 'doc'), 'api')}"/>
+    <property name="website.tmp.docManual.path" value="${path::combine(path::combine(website.tmp.path, 'doc'), 'manual')}"/>
 
     <property name="MailLogger.failure.notify" value="true" if="${property::exists('MailLogger.mailhost')}" />
     <property name="MailLogger.success.notify" value="true" if="${property::exists('MailLogger.mailhost')}" />

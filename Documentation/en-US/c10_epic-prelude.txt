@@ -31,8 +31,8 @@ library into your runtime environment.
 Interpreting values
 ~~~~~~~~~~~~~~~~~~~
 Many value objects serves two different purposes: to enforce a set of specific
-rules and to express such a rule. We call these two connected responsibilities
-**execution** and **interpretation**.
+rules and to express such a rule. From the client point of view we can call
+these two connected responsibilities **execution** and **interpretation**.
 
 While this could seem quite abstract, it looks perfectly reasonable when we
 looks to that particular value objects that work like mathematical functions.
@@ -44,7 +44,7 @@ NOTE: A closer look shows that execution is actually a specific kind of
 interpretation, done by the CLR.
 
 The need for value objects' interpretation poses a problem to software 
-maintenance: how can stick to the open-closed principle if we have to 
+maintenance: how can we stick to the open-closed principle if we have to 
 interpret an ever growing number of value objects' types? 
 
 Most of interpretation techniques rely on the double dispatch design pattern 
