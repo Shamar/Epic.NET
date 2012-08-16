@@ -19,7 +19,7 @@
   <script src='script/shCore.js' type='text/javascript'></script> 
   <script src='script/shBrushCSharp.js' type='text/javascript'></script> 
 
-  <link rel="alternate" type="application/atom+xml" title="Development log"  href="atom.xml" />
+  <link rel="alternate" type="application/atom+xml" title="Development log"  href="/atom.xml" />
   <xsl:comment><![CDATA[[if !IE 7]>
     <style type="text/css">
 		#wrap {display:table;height:100%}
@@ -28,7 +28,7 @@
   <xsl:comment><![CDATA[[if lt IE 8]>
     <style type="text/css">
         #header {padding-top: 9px}
-    </xsl:element>
+    </style>
   <![endif]]]></xsl:comment>
   <xsl:comment><![CDATA[[if IE 8]>
     <style type="text/css">
@@ -199,7 +199,7 @@
 
   <div id="wrap">
     <div id="header">
-      <a href="http://github.com/Shamar/Epic.NET/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png" alt="Fork me on GitHub" /></a>
+      <a href="https://github.com/bards/Epic.NET"><img style="position: absolute; top: 0; left: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png" alt="Fork me on GitHub" /></a>
       <a class="title" href="/">Epic</a>
       <span>dominant domains</span>
     </div>
@@ -210,8 +210,8 @@
           <li><a href="/index.html">Overview</a></li>
           <li><a href="/roadmap.html">Roadmap</a></li>
           <li><a href="/blog.html" title="Development blog">Blog</a></li>
-          <li><a href="/doc/manual.html">Documentation</a></li>
-          <li><a href="http://github.com/Shamar/Epic.NET/archives/master">Download</a></li>
+          <li><a href="/doc/index.html">Documentation</a></li>
+          <li><a href="https://github.com/bards/Epic.NET/archives/master">Download</a></li>
           <li><a href="/license.html">License</a></li>
           <li><a href="http://epic.tesio.it/credits.html">Bards</a></li>
         </ul>
@@ -242,7 +242,7 @@
   </div>
 
   <div id="footer">
-    <div class="copyright">Copyright &#169; 2010-2011 Giacomo Tesio</div>
+    <div class="copyright">Copyright &#169; 2010-2012 Giacomo Tesio</div>
   </div>
      <xsl:call-template name="user.footer.navigation"/> 
   <script type='text/javascript'>SyntaxHighlighter.all()</script> 
