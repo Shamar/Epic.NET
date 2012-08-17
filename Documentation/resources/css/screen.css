@@ -3,7 +3,7 @@ body {
 }
 #header {
 	height : 150px;
-	background:url('logo.png') no-repeat 74% 23px;
+	background:url('/logo.png') no-repeat 74% 23px;
 	padding-top: 8px;
 }
 #header a.title {
