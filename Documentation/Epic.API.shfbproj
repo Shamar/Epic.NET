@@ -31,7 +31,7 @@
     <HelpTitle>Epic.NET</HelpTitle>
     <VisibleItems>Attributes, Protected, ProtectedInternalAsProtected, SealedProtected</VisibleItems>
     <ProjectSummary>The Epic.NET code base consists of many different libraries that can work together in various combination, thanks to carefully designed responsibilities that lead to high cohesion and low coupling.&amp;lt%3bbr/&amp;gt%3b&amp;lt%3bbr/&amp;gt%3b
-TThis is the reference documentation of such libraries %28whose objectives has been described in the &amp;lt%3ba href=&amp;quot%3bhttp://epic.tesio.it/doc/the_bellis_perennis.html&amp;quot%3b&amp;gt%3bsecond part of the manual&amp;lt%3b/a&amp;gt%3b%29. There&amp;#39%3bs no convention between DLL&amp;#39%3bs names and namespaces, so that for example you will not find an Epic.Prelude namespace: while each library&amp;#39%3bs name maps its usage pattern, namespaces express the logical organization of the modelled concepts.  </ProjectSummary>
+This is the reference documentation of such libraries %28whose objectives has been described in the &amp;lt%3ba href=&amp;quot%3bhttp://epic.tesio.it/doc/the_bellis_perennis.html&amp;quot%3b&amp;gt%3bsecond part of the manual&amp;lt%3b/a&amp;gt%3b%29. There&amp;#39%3bs no convention between DLL&amp;#39%3bs names and namespaces, so that for example you will not find an Epic.Prelude namespace: while each library&amp;#39%3bs name maps its usage pattern, namespaces express the logical organization of the modelled concepts.  </ProjectSummary>
     <ComponentConfigurations>
       <ComponentConfig id="API Token Resolution" enabled="True" xmlns="">
         <component id="API Token Resolution" type="Microsoft.Ddue.Tools.SharedContentComponent" assembly="{@SandcastlePath}ProductionTools\BuildComponents.dll">
@@ -72,7 +72,7 @@ TThis is the reference documentation of such libraries %28whose objectives has b
     <NamespaceSummaries>
       <NamespaceSummaryItem name="Epic" isDocumented="True">The &lt;b&gt;Epic&lt;/b&gt; namespace contains fundamental concepts that all Domain Driven applications built with the Epic's modeling patterns in mind will require.&lt;br/&gt;&lt;br/&gt;
 
-Epic.Prelude defines here &lt;a href="T_Epic_IVisitable.htm"&gt;IVisitable&lt;/a&gt; interface and the &lt;b&gt;Composite Visitor pattern&lt;/b&gt;.
+Epic.Prelude defines here &lt;a href="T_Epic_IVisitable.htm"&gt;IVisitable&lt;/a&gt; interface and the &lt;a href="http://epic.tesio.it/doc/manual/epic-prelude.html#about_interpreting_values"&gt;composite visitor pattern&lt;/a&gt;.
 Epic.Core defines the &lt;a href="T_Epic_Enterprise.htm"&gt;Enterprise&lt;/a&gt; entry point to the domain model.</NamespaceSummaryItem>
 <NamespaceSummaryItem name="Epic.Collections" isDocumented="True">The &lt;b&gt;Epic.Collections&lt;/b&gt; namespace contains useful models of collections for DDD.&lt;br/&gt;
 It's defined in Epic.Prelude.</NamespaceSummaryItem>
