@@ -29,16 +29,18 @@ questions and suggestions.
 The company, first
 ~~~~~~~~~~~~~~~~~~
 The first entity we encounter while working with Epic is the 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Enterprise.cs[Enterprise].
-It's a singleton, a static class that must be initialized before use.
+http://epic.tesio.it/doc/api/html/T_Epic_Enterprise.htm[Enterprise].
+It's a singleton, a static class that must be 
+http://epic.tesio.it/doc/api/html/M_Epic_Enterprise_Initialize.htm[initialized] 
+before use.
 
 In the initialization we have to provide an implementation of the abstract class
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/EnterpriseBase.cs[EnterpriseBase].
+http://epic.tesio.it/doc/api/html/T_Epic_EnterpriseBase.htm[EnterpriseBase].
 Such implementation will be tailored to the concrete application that 
 will use the domain, providing access to the 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/IEnvironment.cs[environment]
+http://epic.tesio.it/doc/api/html/T_Epic_IEnvironment.htm[environment]
 and to the
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/IOrganization.cs[corporate organization].
+http://epic.tesio.it/doc/api/html/T_Epic_IOrganization.htm[corporate organization].
 
 The abstract methods +RetrieveEnvironmentInstance()+ and 
 +RetrieveEnterpriseInstance()+ are not simple factories: they incapsulate both
@@ -46,8 +48,10 @@ the knowledge of the right types to use, their initialization techniques and
 their livecycle.
 
 Being a static class coupled with +EnterpriseBase+, +Enterprise+ is the trick to
-do things properly down to roles, since you have to use the base
-classes provided, with all the connected long term benefit.
+do things properly down to 
+http://epic.tesio.it/doc/api/html/T_Epic_Organization_RoleBase.htm[roles], 
+since you have to use the base
+classes provided, with all the connected long term benefits.
 
 The environment
 ~~~~~~~~~~~~~~~
@@ -67,7 +71,7 @@ domain entities, but how to retrieve such infrastructure? How to access the
 ADO.NET connection or the log4net.ILog to use?
 
 The 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/IEnvironment.cs[IEnvironment]
+http://epic.tesio.it/doc/api/html/T_Epic_IEnvironment.htm[IEnvironment]
 interface provide access to this kind of services. It's a sort of service
 locator but its use is only for entities' proxies and infrastructural code: no
 entity or value object should ever depend on +IEnvironment+.
@@ -78,22 +82,23 @@ initialization. +EnterpriseBase+ forces the environment to implement
 +EnvironmentBase+ that make it a 
 http://msdn.microsoft.com/it-it/library/system.runtime.serialization.iserializable.aspx#exampleToggle[serializable singleton].
 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Environment/EnvironmentsChain.cs[EnvironmentsChain]
+http://epic.tesio.it/doc/api/html/T_Epic_Environment_EnvironmentsChain.htm[EnvironmentsChain]
 and
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Environment/EnvironmentChainLinkBase.cs[EnvironmentChainLinkBase]
+http://epic.tesio.it/doc/api/html/T_Epic_Environment_EnvironmentChainLinkBase.htm[EnvironmentChainLinkBase]
 are building block for environment's configuration, although it is perfectly 
-legitimate to derive +EnvironmentBase+ directly. 
+legitimate to derive 
+http://epic.tesio.it/doc/api/html/T_Epic_Environment_EnvironmentBase.htm[EnvironmentBase] directly. 
 
 The corporate organization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 To access the domain models, each corporate member has to enter in the 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/IOrganization.cs[organization]. 
+http://epic.tesio.it/doc/api/html/T_Epic_IOrganization.htm[organization]. 
 After the authentication, the users start their own 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/IWorkingSession.cs[working sessions]
+http://epic.tesio.it/doc/api/html/T_Epic_IWorkingSession.htm[working sessions]
 and begin to achieve their roles.
 
 The abstract class 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Organization/OrganizationBase.cs[OrganizationBase] 
+http://epic.tesio.it/doc/api/html/T_Epic_Organization_OrganizationBase.htm[OrganizationBase] 
 helps with the implementation of 
 the +IOrganization+ interface, providing a set of template methods to handle 
 working sessions lifetime.
@@ -108,7 +113,7 @@ to complete a set of tasks. Most resources require exclusive control for
 an amount of time (did you say "the bathroom"?) but a few (hopefully very few) 
 require concurrent access and realtime synchronization.
 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Organization/WorkingSessionBase.cs[WorkingSessionBase]
+http://epic.tesio.it/doc/api/html/T_Epic_Organization_WorkingSessionBase.htm[WorkingSessionBase]
 is the base class to extend for describing working sessions.
 It defines a set of template methods that enforce some important invariants.
 
@@ -117,9 +122,9 @@ to do +BeforeDispose()+. But the most important abstract method that we must
 implement is +GetRoleBuilder()+. It returns a +RoleBuilder+ that will create 
 the required role for the user performing the working session.
 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Organization/RoleBuilder.cs[RoleBuilder]
+http://epic.tesio.it/doc/api/html/T_Epic_Organization_RoleBuilder_1.htm[RoleBuilder]
 is an abstract class that can not be derived directly, but through 
-https://github.com/Shamar/Epic.NET/blob/devel/Code/Epic.Core/Organization/RoleBuilderBase.cs[RoleBuilderBase].
+http://epic.tesio.it/doc/api/html/T_Epic_Organization_RoleBuilderBase_2.htm[RoleBuilderBase].
 These two classes enforce a controversial rule: the clients must use the roles
 through pure interfaces designed without any constraint, but all concrete 
 roles must derive +RoleBase+, that is an abstract class serializable and 
