@@ -48,10 +48,44 @@ maintenance: how can we stick to the open-closed principle if we have to
 interpret an ever growing number of value objects' types? 
 
 Most of interpretation techniques rely on the Visitor design pattern 
-and its double dispatch mechanic. However both the classical and the acyclic
-visitor patterns suffer (http://objectmentor.com/resources/articles/visitor.pdf)
+and its underlying mechanism known as "double dispatch". 
+However both the http://en.wikipedia.org/wiki/Visitor_pattern[classical] and 
+the http://objectmentor.com/resources/articles/visitor.pdf[acyclic] version of
+the visitor patterns suffers of a 
+http://c2.com/cgi/wiki?VisitorPattern[well known limitation]: whenever you 
+want to add a new element to the visited class hierarchy you have to 
+change all the visitors.
 
-Coming soon.
+To address this issue we developed the **composite visitor** pattern that 
+actually is just an acyclic visitor that replaces inheritance with composition.
+
+The base interface for visitable objects is the 
+http://epic.tesio.it/doc/api/html/T_Epic_IVisitable.htm[IVisitable] interface
+that defines the http://epic.tesio.it/doc/api/html/M_Epic_IVisitable_Accept__1.htm[Accept]
+method. footnote:[To reduce the effort of implementing the IVisitable interface, 
+a http://epic.tesio.it/doc/api/html/T_Epic_VisitableBase.htm[base class] exists. 
+Moreover, a set of extension methods is provided for well known class hierarchy 
+such as Exceptions, EventArgs and Expressions.] 
+
+The first difference from the classical pattern is that Accept takes a 
+http://epic.tesio.it/doc/api/html/T_Epic_IVisitor_1.htm[visitor] and a 
+http://epic.tesio.it/doc/api/html/T_Epic_IVisitContext.htm[context for the visit]
+decoupling the visitor from its mutable state. footnote:[We want the visitors to
+be stateless so that we can initialize each of them only once, at application 
+start up, and then use the computation they express in parallel from different 
+threads.] 
+
+Moreover, the visitor take controls over it's own cast to the specialized 
+visitor type footnote:[We called this technique "managed cast". It consists 
+into delegating a cast to the object that you want to cast, so that it has 
+control on the casting behaviour according to runtime conditions.] through
+the method http://epic.tesio.it/doc/api/html/M_Epic_IVisitor_1_GetVisitor__1.htm[GetVisitor<TExpression>].
+
+Thus, when the visitor is an instance of a class that extends the
+http://epic.tesio.it/doc/api/html/T_Epic_CompositeVisitorBase_2.htm[CompositeVisitorBase<TResult, TExpression>]
+abstract class, the composition will be able to returns a specialized visitor
+that designed to interpret that specific expression.
+
 
 
 Specifying qualities
