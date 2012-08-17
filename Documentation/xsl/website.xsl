@@ -16,8 +16,8 @@
   <meta charset='utf-8'/>
 
   <link rel="icon" href="/favicon.ico" />
-  <script src='script/shCore.js' type='text/javascript'></script> 
-  <script src='script/shBrushCSharp.js' type='text/javascript'></script> 
+  <script src='../script/shCore.js' type='text/javascript'></script> 
+  <script src='../script/shBrushCSharp.js' type='text/javascript'></script> 
 
   <link rel="alternate" type="application/atom+xml" title="Development log"  href="/atom.xml" />
   <xsl:comment><![CDATA[[if !IE 7]>
