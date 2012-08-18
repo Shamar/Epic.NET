@@ -18,6 +18,7 @@
 	
 	<property name="library.dir" value="${path::combine(repository.rootdirectory, '3rdParties')}" />
 	<property name="nunit.path" value="${path::combine(path::combine(library.dir, 'NUnit'), 'nunit-console.exe')}" overwrite="true" />
+	<property name="nunit2.path" value="${path::combine(path::combine(library.dir, 'NUnit'), 'nunit-console.exe')}" overwrite="true" />
 	<property name="samples.dir" value="${path::combine(repository.rootdirectory, 'Challenges')}" />
 	
 	<property name="documentation.dir" value="${path::combine(repository.rootdirectory, 'Documentation')}"/>
