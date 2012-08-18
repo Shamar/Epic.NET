@@ -6,7 +6,7 @@
         <property name="working.dir" value="${working.dir}" overwrite="false"/>
 
              <exec workingdir="${working.dir}"
-                  program="${nunit.path}">
+                  program="${nunit2.path}">
                 <arg line="${tests.to.run}" /> 
                 <arg value="-nologo" />
                 <arg value="-xml=${results-file}.xml" />
