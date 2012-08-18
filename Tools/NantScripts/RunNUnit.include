@@ -5,6 +5,17 @@
         <property name="results-file" value="${path::combine(repository.testdirectory, component.name + '.QA')}"/>
         <property name="working.dir" value="${working.dir}" overwrite="false"/>
 
+             <exec workingdir="${working.dir}"
+                  program="${nunit.path}">
+                <arg line="${tests.to.run}" /> 
+                <arg value="-nologo" />
+                <arg value="-xml=${results-file}.xml" />
+                <environment>
+                    <variable name="ProfAPI_ProfilerCompatibilitySetting" value="EnableV2Profiler"/>
+                    <variable name="COMPLUS_ProfAPI_ProfilerCompatibilitySetting" value="EnableV2Profiler"/>
+                </environment>
+            </exec>
+       <!-- run tests
         <if test="${not property::exists('ncover.path')}">
             <exec workingdir="${working.dir}"
                   program="${nunit.path}">
@@ -35,6 +46,7 @@
                 </environment>
             </exec>
         </if>
+        -->
 
         <!-- list the uncovered members
         -->
@@ -43,7 +55,6 @@
             in="${coverage-file}.xml"
             out="${coverage-file}.txt"/>
         <!-- build a detailed report of uncovered members (if any)
-        -->
         <style if="${file::exists(coverage-file + '.xml') and (file::get-length(coverage-file + '.txt') &gt; 0)}"
             style="${path::combine(nant.include.dir, 'coverage.xsl')}"
             in="${coverage-file}.xml"
@@ -67,5 +78,6 @@ See ${path::get-file-name(coverage-file)}.html for details.</fail>
             <echo if="${not (file::get-length(coverage-file + '.txt') &gt; 0)}" 
                   message="Code coverage of ${component.name} is 100%" />
         </if>
+        -->
     </target>
 </project>
