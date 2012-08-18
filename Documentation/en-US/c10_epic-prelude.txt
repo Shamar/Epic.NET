@@ -26,7 +26,7 @@ with Epic. mailto:giacomo@tesio.it[Contact the authors] to obtain
 a linking exception if you want to write proprietary code.
 
 Epic itself depends on Prelude's models, so you will have to include such a 
-library into your runtime environment.
+library into the runtime environment of applications using Epic.
 
 Interpreting values
 ~~~~~~~~~~~~~~~~~~~
@@ -38,10 +38,10 @@ While this could seem quite abstract, it looks perfectly reasonable when we
 looks to that particular value objects that work like mathematical functions.
 Specifications, for example, are predicates that can be both executed, to know
 whether a candidate satisfy them, or interpreted, translating them into a human
-readable sentence or into SQL queries.
-
-NOTE: A closer look shows that execution is actually a specific kind of 
-interpretation, done by the CLR.
+readable sentence or into SQL queries. footnote[A closer look shows that execution 
+is actually a specific kind of interpretation, done by the CLR. Indeed, some stacktraces
+from http://msdn.microsoft.com/en-us/library/bb345362[Expression<TDelegate>.Compile]
+show that expression tree compilation is done by a visitor producing the executable IL code.]
 
 The need for value objects' interpretation poses a problem to software 
 maintenance: how can we stick to the open-closed principle if we have to 
