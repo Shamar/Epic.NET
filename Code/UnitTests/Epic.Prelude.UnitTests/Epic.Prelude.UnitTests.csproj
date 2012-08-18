@@ -68,6 +68,7 @@
     <Compile Include="Specifications\ConjunctionQA.cs" />
     <Compile Include="IObject.cs" />
     <Compile Include="Specifications\DisjunctionQA.cs" />
+    <Compile Include="VisitableExceptionsQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fakes\" />

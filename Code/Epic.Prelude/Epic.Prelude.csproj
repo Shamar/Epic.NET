@@ -66,6 +66,8 @@
     <Compile Include="Specifications\Disjunction.cs" />
     <Compile Include="Specifications\Conjunction.cs" />
     <Compile Include="Specifications\StatelessSpecificationBase.cs" />
+    <Compile Include="VisitableExceptions.cs" />
+    <Compile Include="UnvisitableWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Specifications\" />
