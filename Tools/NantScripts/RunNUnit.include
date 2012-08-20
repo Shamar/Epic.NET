@@ -5,21 +5,9 @@
         <property name="results-file" value="${path::combine(repository.testdirectory, component.name + '.QA')}"/>
         <property name="working.dir" value="${working.dir}" overwrite="false"/>
 
-       <!-- run tests
-             <exec workingdir="${working.dir}"
-                  program="${nunit2.path}">
-                <arg line="${tests.to.run}" /> 
-                <arg value="-nologo" />
-                <arg value="-xml=${results-file}.xml" />
-                <environment>
-                    <variable name="ProfAPI_ProfilerCompatibilitySetting" value="EnableV2Profiler"/>
-                    <variable name="COMPLUS_ProfAPI_ProfilerCompatibilitySetting" value="EnableV2Profiler"/>
-                </environment>
-            </exec>
-        -->
         <if test="${not property::exists('ncover.path')}">
             <exec workingdir="${working.dir}"
-                  program="${nunit2.path}">
+                  program="${nunit.path}">
                 <arg line="${tests.to.run}" /> 
                 <arg value="-nologo" />
                 <arg value="-xml=${results-file}.xml" />
@@ -37,7 +25,7 @@
                 <arg line="//w &quot;${working.dir}&quot;" />
                 <arg line="//x &quot;${coverage-file}.xml&quot;" /> 
                 <arg line="//a ${string::replace(string::replace(tests.to.run, '.UnitTests.dll', ';'), ' ', '')}" />
-                <arg value="${nunit2.path}"/>
+                <arg value="${nunit.path}"/>
                 <arg line="${tests.to.run}" /> 
                 <arg value="-nologo" />
                 <arg value="-xml=${results-file}.xml" /> 
