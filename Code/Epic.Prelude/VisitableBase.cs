@@ -81,7 +81,7 @@ namespace Epic
         /// <exception cref='InvalidOperationException'>
         /// Is thrown when called from a non leaf in the hierachy tree.
         /// </exception>
-        protected TResult AcceptMe<TResult, TVisitable>(TVisitable visitable, IVisitor<TResult> visitor, IVisitContext context) where TVisitable : IVisitable
+        protected TResult AcceptMe<TResult, TVisitable>(TVisitable visitable, IVisitor<TResult> visitor, IVisitContext context) where TVisitable : class, IVisitable
         {
             if(!object.ReferenceEquals(this, visitable))
             {

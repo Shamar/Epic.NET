@@ -68,6 +68,7 @@
     <Compile Include="Specifications\StatelessSpecificationBase.cs" />
     <Compile Include="VisitableExceptions.cs" />
     <Compile Include="UnvisitableWrapper.cs" />
+    <Compile Include="AcceptCaller.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Specifications\" />

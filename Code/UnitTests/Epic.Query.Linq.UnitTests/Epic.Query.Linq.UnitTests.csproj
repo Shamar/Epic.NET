@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,7 +36,7 @@
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f">
       <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="System.Core"/>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Challenge00.DDDSample">
@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Expressions\Normalization\PartialEvaluatorQA.cs" />
     <Compile Include="Expressions\Normalization\QueryableConstantResolverQA.cs" />
+    <Compile Include="Fakes\EchoVisitor.cs" />
     <Compile Include="Fakes\UnknownExpression.cs" />
     <Compile Include="QueryableQA.cs" />
     <Compile Include="ReflectionQA.cs" />

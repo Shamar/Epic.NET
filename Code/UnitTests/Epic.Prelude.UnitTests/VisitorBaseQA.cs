@@ -37,7 +37,7 @@ namespace Epic
         {
             // assert:
             Assert.Throws<ArgumentNullException>(delegate { 
-                new FakeVisitor<string, int>(null);
+                new FakeVisitor<string, string>(null);
             });
         }
         

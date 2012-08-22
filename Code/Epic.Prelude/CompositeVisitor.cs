@@ -78,7 +78,8 @@ namespace Epic
         }
 
         /// <summary>
-        /// Returns the next visitor able to visit <paramref name="target"/>.
+        /// Enables <see cref="VisitorFinder{TExpression}"/> and <see cref="VisitorFinder{TExpression,TDerivedExpression}"/> 
+        /// to lookup for the next visitor able to visit <paramref name="target"/>.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -101,7 +102,7 @@ namespace Epic
         /// <exception cref='ArgumentException'>
         /// Is thrown when no registered visitor is able to visit <paramref name="target"/>.
         /// </exception>
-        private IVisitor<TResult, TExpression> GetNextVisitor<TExpression>(TExpression target, int callerPosition)
+        private IVisitor<TResult, TExpression> FindNextVisitor<TExpression>(TExpression target, int callerPosition) where TExpression : class
         {
             IVisitor<TResult, TExpression> foundVisitor = null;
             
@@ -113,10 +114,31 @@ namespace Epic
                 if(null != foundVisitor)
                     return foundVisitor;
             }
-            string message = string.Format("No visitor available for the expression {0} in the composition \"{1}\".", target, _name);
+            string message = string.Format("No visitor available for the expression {0} (of type: {2}) in the composition \"{1}\".", target, _name, typeof(TExpression));
             throw new ArgumentException(message);
         }
-  
+
+        /// <summary>
+        /// Returns the next visitor in the composition after <paramref name="callerPosition"/> that can visit <paramref name="target"/>.
+        /// </summary>
+        /// <returns>
+        /// The next visitor that can visit <paramref name="target"/> (the one that was registered just before the one registered at <paramref name="callerPosition"/>).
+        /// </returns>
+        /// <param name='target'>
+        /// Expression to visit.
+        /// </param>
+        /// <param name='callerPosition'>
+        /// Caller position.
+        /// </param>
+        /// <typeparam name='TExpression'>
+        /// Type of the object to visit.
+        /// </typeparam>
+        private IVisitor<TResult, TExpression> GetNextVisitor<TExpression>(TExpression target, int callerPosition) where TExpression : class
+        {
+            // the visit context is ignored from VisitorFinder<TExpression>: we can simply send null
+            return AcceptCaller<TExpression, IVisitor<TResult, TExpression>>.CallAccept(target, new VisitorFinder<TExpression>(this, callerPosition), null);
+        }
+
         /// <summary>
         /// Returns the first visitor in the composition that can visit <paramref name="target"/>.
         /// </summary>
@@ -135,7 +157,7 @@ namespace Epic
         /// <typeparam name='TExpression'>
         /// Type of the object to visit.
         /// </typeparam>
-        internal IVisitor<TResult, TExpression> GetFirstVisitor<TExpression> (TExpression target)
+        internal IVisitor<TResult, TExpression> GetFirstVisitor<TExpression> (TExpression target) where TExpression : class
         {
             return GetNextVisitor<TExpression>(target, _chain.Count);
         }
@@ -155,7 +177,7 @@ namespace Epic
         /// <typeparam name='TExpression'>
         /// Type of the object to visit.
         /// </typeparam>
-        public IVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target)
+        public IVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : class
         {
             return this as IVisitor<TResult, TExpression>;
         }
@@ -192,32 +214,12 @@ namespace Epic
             /// Continues the visit of an <typeparamref name="TExpression"/> created (or at least already visited) by the current visitor.
             /// The expression provided will be given to the next appropriate visitor in the composition (when this exists).
             /// </summary>
+            /// <remarks>
+            /// If <paramref name="target"/> is <see langword="null"/> no further visitor will be invoked 
+            /// and <c>default(<typeparamref name="TResult"/>)</c> will be returned.
+            /// </remarks>
             /// <returns>
             /// The <typeparamref name="TResult"/> generated from the visit of the expression.
-            /// </returns>
-            /// <param name='target'>
-            /// Target.
-            /// </param>
-            /// <param name='context'>
-            /// Context.
-            /// </param>
-            /// <typeparam name='TExpression'>
-            /// The 1st type parameter.
-            /// </typeparam>
-            /// <exception cref='ArgumentException'>
-            /// Is thrown when no registered visitor is able to visit <paramref name="target"/>.
-            /// </exception>
-            protected TResult ContinueVisit<TExpression>(TExpression target, IVisitContext context)
-            {
-                IVisitor<TResult, TExpression> next = _composition.GetNextVisitor<TExpression>(target, _position);
-                return next.Visit(target, context);
-            }
-            
-            /// <summary>
-            /// Visits an inner expression. This should be called to delegate the transformation to the chain for an unvisited node.
-            /// </summary>
-            /// <returns>
-            /// The <typeparamref name="TResult"/> generated from the visit of the inner expression.
             /// </returns>
             /// <param name='target'>
             /// Object to visit.
@@ -231,8 +233,40 @@ namespace Epic
             /// <exception cref='ArgumentException'>
             /// Is thrown when no registered visitor is able to visit <paramref name="target"/>.
             /// </exception>
-            protected TResult VisitInner<TExpression>(TExpression target, IVisitContext context)
+            protected TResult ContinueVisit<TExpression>(TExpression target, IVisitContext context) where TExpression : class
             {
+                if (null == target)
+                    return default(TResult);
+                IVisitor<TResult, TExpression> next = _composition.GetNextVisitor<TExpression>(target, _position);
+                return next.Visit(target, context);
+            }
+            
+            /// <summary>
+            /// Visits an inner expression. This should be called to delegate the transformation to the chain for an unvisited node.
+            /// </summary>
+            /// <returns>
+            /// <remarks>
+            /// If <paramref name="target"/> is <see langword="null"/> no further visitor will be invoked 
+            /// and <c>default(<typeparamref name="TResult"/>)</c> will be returned.
+            /// </remarks>
+            /// The <typeparamref name="TResult"/> generated from the visit of the inner expression.
+            /// </returns>
+            /// <param name='target'>
+            /// Object to visit.
+            /// </param>
+            /// <param name='context'>
+            /// Context of the visit.
+            /// </param>
+            /// <typeparam name='TExpression'>
+            /// The type of the object to visit.
+            /// </typeparam>
+            /// <exception cref='ArgumentException'>
+            /// No registered visitor is able to visit <paramref name="target"/>.
+            /// </exception>
+            protected TResult VisitInner<TExpression>(TExpression target, IVisitContext context) where TExpression : class
+            {
+                if (null == target)
+                    return default(TResult);
                 IVisitor<TResult, TExpression> next = _composition.GetFirstVisitor<TExpression>(target);
                 return next.Visit(target, context);
             }
@@ -250,7 +284,7 @@ namespace Epic
             /// <typeparam name='TExpression'>
             /// Type of the expression that will be visited from the provided visitor.
             /// </typeparam>
-            public IVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target)
+            public IVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : class
             {
                 return _composition.GetFirstVisitor<TExpression>(target);
             }
@@ -271,11 +305,114 @@ namespace Epic
             /// <typeparam name='TExpression'>
             /// The type of the object to visit.
             /// </typeparam>
-            protected internal virtual IVisitor<TResult, TExpression> AsVisitor<TExpression>(TExpression target)
+            protected internal virtual IVisitor<TResult, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class
             {
                 return this as IVisitor<TResult, TExpression>;
             }
         }
+
+        private struct VisitorFinder<TExpression> : IVisitor<IVisitor<TResult, TExpression>, TExpression>
+            where TExpression : class
+        {
+            private readonly CompositeVisitor<TResult> _composition;
+            private readonly int _startingPosition;
+
+            public VisitorFinder(CompositeVisitor<TResult> composition, int startingPosition)
+            {
+                _composition = composition;
+                _startingPosition = startingPosition;
+            }
+
+            #region IVisitor implementation
+
+            public IVisitor<TResult, TExpression> Visit (TExpression target, IVisitContext context)
+            {
+                return _composition.FindNextVisitor<TExpression>(target, _startingPosition);
+            }
+
+            #endregion
+
+            #region IVisitor implementation
+
+            public IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression> GetVisitor<TDerivedExpression> (TDerivedExpression target) where TDerivedExpression : class
+            {
+                IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression> visitor = this as IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression>;
+
+                if(null == visitor || typeof(TDerivedExpression) != typeof(TExpression))
+                {
+                    visitor = new VisitorFinder<TExpression, TDerivedExpression>(_composition, _startingPosition);
+                }
+
+                return visitor;
+            }
+
+            #endregion
+        }
+
+        private struct VisitorFinder<TExpression, TDerivedExpression> : IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression>
+            where TExpression : class
+            where TDerivedExpression : class
+        {
+            private readonly CompositeVisitor<TResult> _composition;
+            private readonly int _startingPosition;
+            
+            public VisitorFinder(CompositeVisitor<TResult> composition, int startingPosition)
+            {
+                _composition = composition;
+                _startingPosition = startingPosition;
+            }
+            
+            #region IVisitor implementation
+            
+            public IVisitor<TResult, TExpression> Visit (TDerivedExpression target, IVisitContext context)
+            {
+                IVisitor<TResult, TDerivedExpression> visitor = _composition.FindNextVisitor<TDerivedExpression>(target, _startingPosition);
+                return new CovariantVisitor<TExpression, TDerivedExpression>(visitor);
+            }
+            
+            #endregion
+            
+            #region IVisitor implementation
+            
+            public IVisitor<IVisitor<TResult, TExpression>, TOtherDerivedExpression> GetVisitor<TOtherDerivedExpression> (TOtherDerivedExpression target) where TOtherDerivedExpression : class
+            {
+                IVisitor<IVisitor<TResult, TExpression>, TOtherDerivedExpression> visitor = this as IVisitor<IVisitor<TResult, TExpression>, TOtherDerivedExpression>;
+
+                if (null == visitor || typeof(TDerivedExpression) != typeof(TExpression))
+                {
+                    visitor = new VisitorFinder<TExpression, TOtherDerivedExpression>(_composition, _startingPosition);
+                }
+                
+                return visitor;
+            }
+            
+            #endregion
+        }
+
+        private struct CovariantVisitor<TExpression, TDerivedExpression> : IVisitor<TResult, TExpression>
+            where TExpression : class
+            where TDerivedExpression : class
+        {
+            private readonly IVisitor<TResult, TDerivedExpression> _inner;
+            public CovariantVisitor(IVisitor<TResult, TDerivedExpression> inner)
+            {
+                _inner = inner;
+            }
+
+            #region IVisitor implementation
+            public TResult Visit (TExpression target, IVisitContext context)
+            {
+                return _inner.Visit(target as TDerivedExpression, context);
+            }
+            #endregion
+            #region IVisitor implementation
+            public IVisitor<TResult, TOtherExpression> GetVisitor<TOtherExpression> (TOtherExpression target) where TOtherExpression : class
+            {
+                return _inner.GetVisitor<TOtherExpression>(target);
+            }
+            #endregion
+        }
+
     }
 
 }

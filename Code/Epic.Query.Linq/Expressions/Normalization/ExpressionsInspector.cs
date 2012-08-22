@@ -351,6 +351,8 @@ namespace Epic.Query.Linq.Expressions.Normalization
         /// </param>
         private Expression VisitExpression (Expression expression, IVisitContext context)
         {
+            if (null == expression)
+                return null;
             return VisitInner(expression, context);
         }
         

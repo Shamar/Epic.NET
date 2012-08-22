@@ -26,6 +26,7 @@ using System;
 namespace Epic.Fakes
 {
     public class FakeVisitor<TResult, TExpression> : CompositeVisitor<TResult>.VisitorBase, IVisitor<TResult, TExpression>
+        where TExpression : class
     {
         public FakeVisitor (CompositeVisitor<TResult> composition)
             : base(composition)
@@ -46,17 +47,17 @@ namespace Epic.Fakes
         
         #region templates for tests
         
-        public TResult CallContinueVisit<TRequested>(TRequested target, IVisitContext context)
+        public TResult CallContinueVisit<TRequested>(TRequested target, IVisitContext context) where TRequested : class
         {
             return base.ContinueVisit(target, context);
         }
 
-        public TResult CallVisitInner<TRequested>(TRequested target, IVisitContext context)
+        public TResult CallVisitInner<TRequested>(TRequested target, IVisitContext context) where TRequested : class
         {
             return base.VisitInner(target, context);
         }
         
-        public virtual IVisitor<TResult, TRequested> CallAsVisitor<TRequested> (TRequested target)
+        public virtual IVisitor<TResult, TRequested> CallAsVisitor<TRequested> (TRequested target) where TRequested : class
         {
             return base.AsVisitor (target);
         }

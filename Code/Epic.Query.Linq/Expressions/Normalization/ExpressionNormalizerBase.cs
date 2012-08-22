@@ -43,7 +43,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         protected ExpressionNormalizerBase (string name)
             : base(name)
         {
-            new ExpressionForwarder(this);
+            //new ExpressionForwarder(this);
             new ExpressionsInspector(this);
         }
 

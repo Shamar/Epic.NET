@@ -50,10 +50,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
             where TArgument : Expression
         {
             TArgument argumentToReturn = (TArgument)callExression.Arguments[argumentIndex];
-            FakeVisitor<Expression, TArgument> mockEchoVisitor = GeneratePartialMock<FakeVisitor<Expression, TArgument>>(composition);
-            Func<TArgument, IVisitor<Expression, TArgument>> impl = a => object.ReferenceEquals(a, argumentToReturn) ? mockEchoVisitor : null;// .Return(mockEchoVisitor);
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<TArgument>(argumentToReturn)).IgnoreArguments().Do(impl).Repeat.Once();
-            mockEchoVisitor.Expect(v => v.Visit(argumentToReturn, context)).Return(argumentToReturn).Repeat.Once();
+            new EchoVisitor<TArgument>(composition, argumentToReturn);
         }
 
         [Test, TestCaseSource(typeof(Samples), "ReduceableQueryableMethodCallExpressions")]
@@ -64,7 +61,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
             FakeNormalizer composition = new FakeNormalizer();
             new QueryableMethodsReducer(composition);
             FakeVisitor<Expression, MethodCallExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MethodCallExpression>>(composition);
-            mockVisitor.Expect(v => v.CallAsVisitor((MethodCallExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            //mockVisitor.Expect(v => v.CallAsVisitor((MethodCallExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MethodCallExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
             mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
             mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();

@@ -44,7 +44,7 @@ namespace Epic
         /// <typeparam name='TExpression'>
         /// Type of the expression that will be visited from the provided visitor.
         /// </typeparam>
-        IVisitor<TResult, TExpression> GetVisitor<TExpression>(TExpression target);
+        IVisitor<TResult, TExpression> GetVisitor<TExpression>(TExpression target) where TExpression : class;
     }
     
     /// <summary>
@@ -52,7 +52,8 @@ namespace Epic
     /// </summary>
     /// <typeparam name="TResult">Type of the result of the visit.</typeparam>
     /// <typeparam name="TExpression">Expression to visit.</typeparam>
-    public interface IVisitor<TResult, TExpression> : IVisitor<TResult>
+    public interface IVisitor<TResult, in TExpression> : IVisitor<TResult>
+        where TExpression : class
     {
         /// <summary>
         /// Visit the specified expression.
