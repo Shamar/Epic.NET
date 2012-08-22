@@ -47,6 +47,31 @@ namespace Epic
             return specializedVisitor.Visit(expression, context);
         }
 
+        /// <summary>
+        /// Gets the first visitable type for an instance of <paramref name="type"/>.
+        /// </summary>
+        /// <returns>
+        /// The first visitable type for <paramref name="type"/>.
+        /// </returns>
+        /// <param name='type'>
+        /// Type of the instance to visit.
+        /// </param>
+        private static Type GetFirstVisitableTypeFor(Type type)
+        {
+            if(type.IsPublic || (type.IsNested && type.IsNestedPublic))
+                return type;
+            while(!type.Equals(typeof(object)) && !(type.IsPublic || (type.IsNested && type.IsNestedPublic)))
+            {
+                type = type.BaseType;
+            }
+            if (type.Equals(typeof(object)))
+            {
+                string message = string.Format("The type {0} is not public and it has no public ancestor up to System.Object in its own type hierarchy. This make it unvisitable.", type.AssemblyQualifiedName);
+                throw new ArgumentException(message, "type");
+            }
+            return type;
+        }
+
         internal static TResult Accept(TUnvisitable unvisitable, IVisitor<TResult> visitor, IVisitContext context)
         {
             Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult> del = null;
@@ -57,7 +82,7 @@ namespace Epic
                 ParameterExpression contextP = Expression.Parameter(typeof(IVisitContext), "context");
                 Expression<Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult>> delegateBuilder = 
                     Expression.Lambda<Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult>>(
-                        Expression.Call(_acceptAs.MakeGenericMethod(unvisitable.GetType ()),
+                        Expression.Call(_acceptAs.MakeGenericMethod(GetFirstVisitableTypeFor(unvisitable.GetType ())),
                                         unvisitableP, 
                                         visitorP, 
                                         contextP),
