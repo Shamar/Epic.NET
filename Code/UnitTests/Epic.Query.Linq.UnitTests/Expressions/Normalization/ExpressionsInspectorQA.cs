@@ -47,8 +47,8 @@ namespace Epic.Query.Linq.Expressions.Normalization
         private ExpressionsInspector BuildCompositionWithMockableInterceptor(out IVisitor<Expression, Expression> mockableInterceptor)
         {
             FakeCompositeVisitor<Expression, Expression> composition = new FakeCompositeVisitor<Expression, Expression>("TEST");
-            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, Expression>>(composition);
             ExpressionsInspector inspector = new ExpressionsInspector(composition);
+            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, Expression>>(composition);
             mockableInterceptor = mockable as IVisitor<Expression, Expression>;
             return inspector;
         }
@@ -129,7 +129,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
             interceptor.Expect(v => v.Visit(expressionToVisit.Left, context)).Return(expressionToVisit.Left).Repeat.Once();
             interceptor.Expect(v => v.Visit(expressionToVisit.Right, context)).Return(expressionToVisit.Right).Repeat.Once();
-            interceptor.Expect(v => v.Visit(expressionToVisit.Conversion, context)).Return(expressionToVisit.Conversion).Repeat.Once();
 
             // act:
             Expression result = inspector.Visit(expressionToVisit, context);
@@ -147,7 +146,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
             interceptor.Expect(v => v.Visit(expressionToVisit.Left, context)).Return(differentExpression.Left).Repeat.Once();
             interceptor.Expect(v => v.Visit(expressionToVisit.Right, context)).Return(differentExpression.Right).Repeat.Once();
-            interceptor.Expect(v => v.Visit(expressionToVisit.Conversion, context)).Return(differentExpression.Conversion).Repeat.Once();
 
             // act:
             Expression result = inspector.Visit(expressionToVisit, context);

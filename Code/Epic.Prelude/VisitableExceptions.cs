@@ -55,7 +55,7 @@ namespace Epic
                 throw new ArgumentNullException("visitor");
             if (null == context)
                 throw new ArgumentNullException("context");
-            return UnvisitableWrapper<Exception, TResult>.Accept(exception, visitor, context);
+            return UnvisitableWrapper<Exception, TResult>.SimulateAccept(exception, visitor, context);
         }
     }
 }

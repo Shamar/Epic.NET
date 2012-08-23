@@ -25,10 +25,17 @@ using System;
 
 namespace Epic
 {
+    /// <summary>
+    /// This class is used by <see cref="CompositeVisitor{TResult}"/> to unify the calls to visitors
+    /// for both visitable and unvisitable targets. It's designed to be as fast as possible.
+    /// </summary>
+    /// <typeparam name="TToVisit">Type of the object (as known to <see cref="CompositeVisitor{TResult}"/> when it calls <see cref="CallAccept"/>)
+    /// that the <see cref="CompositeVisitor{TResult}"/> want to visit.</typeparam>
+    /// <typeparam name="TResult">Type of the result that the <see cref="CompositeVisitor{TResult}"/> is able to produce.</typeparam>
     internal sealed class AcceptCaller<TToVisit, TResult>
         where TToVisit : class
     {
-        private static readonly Func<TToVisit, IVisitor<TResult, TToVisit>, IVisitContext, TResult> _accept;
+        private static readonly Func<TToVisit, IVisitor<TResult>, IVisitContext, TResult> _accept;
         static AcceptCaller ()
         {
             if(typeof(IVisitable).IsAssignableFrom(typeof(TToVisit)))
@@ -37,14 +44,22 @@ namespace Epic
             }
             else
             {
-                _accept = UnvisitableWrapper<TToVisit, TResult>.Accept;
+                _accept = UnvisitableWrapper<TToVisit, TResult>.SimulateAccept;
             }
         }
 
-        public static TResult CallAccept(TToVisit toVisit, IVisitor<TResult, TToVisit> visitor, IVisitContext context)
+        /// <summary>
+        /// Enable <paramref name="visitor"/> to visit <paramref name="toVisit"/> by either
+        /// calling <see cref="IVisitable.Accept"/> or calling 
+        /// <see cref="UnvisitableWrapper{TUnvisitable, TResult}.SimulateAccept"/>, as appropriate for <typeparamref name="TToVisit"/>.
+        /// </summary>
+        /// <param name="toVisit">Object to be visited.</param>
+        /// <param name="visitor">Visitor.</param>
+        /// <param name="context">Context of the visit.</param>
+        /// <returns>Result produced by the visit.</returns>
+        /// <exception>It does not block any exception produced by the visit.</exception>
+        public static TResult CallAccept(TToVisit toVisit, IVisitor<TResult> visitor, IVisitContext context)
         {
-            if (null == toVisit)
-                return default(TResult);
             return _accept(toVisit, visitor, context);
         }
     }

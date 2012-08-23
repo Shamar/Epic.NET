@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,6 +40,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="AcceptCallerQA.cs" />
     <Compile Include="CompositeVisitorBaseQA.cs" />
     <Compile Include="CompositeVisitorQA.cs" />
     <Compile Include="VisitableBaseQA.cs" />
@@ -69,13 +70,9 @@
     <Compile Include="IObject.cs" />
     <Compile Include="Specifications\DisjunctionQA.cs" />
     <Compile Include="VisitableExceptionsQA.cs" />
+    <Compile Include="UnvisitableWrapperQA.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Fakes\" />
-    <Folder Include="Collections\" />
-    <Folder Include="Math\" />
-    <Folder Include="Specifications\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Prelude\Epic.Prelude.csproj">
       <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>

@@ -76,7 +76,6 @@
     <Compile Include="QueryProviderQA.cs" />
     <Compile Include="RepositoryBaseQA.cs" />
     <Compile Include="Fakes\FakeRepository.cs" />
-    <Compile Include="Expressions\Normalization\ExpressionForwarderQA.cs" />
     <Compile Include="Expressions\Normalization\ExpressionsInspectorQA.cs" />
     <Compile Include="Expressions\Samples.cs" />
     <Compile Include="Fakes\IDerivedExpressionsVisitor.cs" />

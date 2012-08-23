@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -48,7 +48,6 @@
     <Compile Include="QueryProvider.cs" />
     <Compile Include="Reflection.cs" />
     <Compile Include="RepositoryBase.cs" />
-    <Compile Include="Expressions\Normalization\ExpressionForwarder.cs" />
     <Compile Include="Expressions\Normalization\ExpressionsInspector.cs" />
     <Compile Include="Expressions\Normalization\ExpressionNormalizerBase.cs" />
     <Compile Include="Expressions\Normalization\ClosureExpander.cs" />

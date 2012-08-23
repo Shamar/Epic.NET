@@ -115,8 +115,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         public void Visit_aQueryableThatCanBeReplacedWithItsExpression_returnsTheExpression()
         {
             IQueryProvider currentQueryProvider = GenerateStrictMock<IQueryProvider>();
-            Expression<Func<IQueryable<ICargo>>> dummyExpressionOrig = () => Enumerable.Empty<ICargo>().AsQueryable();
-            LambdaExpression dummyExpression = dummyExpressionOrig;
+            Expression<Func<IQueryable<ICargo>>> dummyExpression = () => Enumerable.Empty<ICargo>().AsQueryable();
             Expression expectedResult = new DummyResultExpression();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             context.Expect(c => c.Get<IQueryProvider>()).Return(currentQueryProvider).Repeat.Once();
