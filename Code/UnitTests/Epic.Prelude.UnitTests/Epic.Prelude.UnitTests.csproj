@@ -71,6 +71,7 @@
     <Compile Include="Specifications\DisjunctionQA.cs" />
     <Compile Include="VisitableExceptionsQA.cs" />
     <Compile Include="UnvisitableWrapperQA.cs" />
+    <Compile Include="EchoingVisitorQA.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

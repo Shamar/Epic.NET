@@ -1,5 +1,5 @@
 //  
-//  ICompositeVisitor.cs
+//  IVisitor.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -30,7 +30,7 @@ namespace Epic
     /// </summary>
     /// <typeparam name="TResult">Type of the result of the visit.</typeparam>
     /// <seealso cref="VisitContext"/>
-    public interface IVisitor<TResult>
+    public interface IVisitor<out TResult>
     {
         /// <summary>
         /// Return the visitor that can visit <paramref name="target"/>.
@@ -52,7 +52,7 @@ namespace Epic
     /// </summary>
     /// <typeparam name="TResult">Type of the result of the visit.</typeparam>
     /// <typeparam name="TExpression">Expression to visit.</typeparam>
-    public interface IVisitor<TResult, in TExpression> : IVisitor<TResult>
+    public interface IVisitor<out TResult, in TExpression> : IVisitor<TResult>
         where TExpression : class
     {
         /// <summary>

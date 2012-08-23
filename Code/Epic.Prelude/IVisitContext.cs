@@ -1,5 +1,5 @@
 //  
-//  IVisitState.cs
+//  IVisitContext.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>

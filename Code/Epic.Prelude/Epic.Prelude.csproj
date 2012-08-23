@@ -69,6 +69,7 @@
     <Compile Include="VisitableExceptions.cs" />
     <Compile Include="UnvisitableWrapper.cs" />
     <Compile Include="AcceptCaller.cs" />
+    <Compile Include="EchoingVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Specifications\" />
