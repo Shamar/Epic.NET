@@ -356,7 +356,7 @@ namespace Epic.Query.Object.UnitTests
             IVisitor<object, OrderCriteria<ICargo>> expressionVisitor = GenerateStrictMock<IVisitor<object, OrderCriteria<ICargo>>>();
             expressionVisitor.Expect(v => v.Visit(toTest, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(toTest)).Return(expressionVisitor).Repeat.Once ();
+            visitor.Expect(v => v.AsVisitor(toTest)).Return(expressionVisitor).Repeat.Once ();
 
             // act:
             object result = toTest.Accept(visitor, context);

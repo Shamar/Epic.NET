@@ -38,7 +38,7 @@ namespace Epic
             ArgumentOutOfRangeException exception = new ArgumentOutOfRangeException("param");
             IVisitor<string> visitor = GenerateStrictMock<IVisitor<string>>();
             IVisitor<string, ArgumentOutOfRangeException> specializedVisitor = GenerateStrictMock<IVisitor<string, ArgumentOutOfRangeException>>();
-            visitor.Expect(v => v.GetVisitor<ArgumentOutOfRangeException>(exception)).Return(specializedVisitor).Repeat.Once();
+            visitor.Expect(v => v.AsVisitor<ArgumentOutOfRangeException>(exception)).Return(specializedVisitor).Repeat.Once();
             specializedVisitor.Expect(v => v.Visit(exception, context)).Return ("test").Repeat.Once();
 
             // act:
@@ -58,8 +58,8 @@ namespace Epic
             IVisitor<string> visitor = GenerateStrictMock<IVisitor<string>>();
             IVisitor<string, ArgumentException> aeVisitor = GenerateStrictMock<IVisitor<string, ArgumentException>>();
             IVisitor<string, ArgumentNullException> aneVisitor = GenerateStrictMock<IVisitor<string, ArgumentNullException>>();
-            visitor.Expect(v => v.GetVisitor<ArgumentException>(ae)).Return(aeVisitor).Repeat.Once();
-            visitor.Expect(v => v.GetVisitor<ArgumentNullException>(ane)).Return(aneVisitor).Repeat.Once();
+            visitor.Expect(v => v.AsVisitor<ArgumentException>(ae)).Return(aeVisitor).Repeat.Once();
+            visitor.Expect(v => v.AsVisitor<ArgumentNullException>(ane)).Return(aneVisitor).Repeat.Once();
             aeVisitor.Expect(v => v.Visit(ae, context)).Return ("Argument").Repeat.Once();
             aneVisitor.Expect(v => v.Visit(ane, context)).Return ("Null").Repeat.Once();
 

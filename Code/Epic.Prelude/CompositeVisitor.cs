@@ -32,13 +32,13 @@ namespace Epic
     /// Visitors' composition. It uses composition to handle the visit of any type of expression tree.
     /// </summary>
     /// <typeparam name="TResult">Type of the result produced by the visit.</typeparam>
+    /// <seealso cref="CompositeVisitor{TResult}.VisitorBase"/>
     /// <seealso cref="CompositeVisitorBase{TResult, TExpression}"/>
     public abstract class CompositeVisitor<TResult> : IVisitor<TResult>
     {
         private readonly List<VisitorBase> _chain;
         private readonly string _name;
 
-        
         /// <summary>
         /// Initializes a new instance of a composition.
         /// </summary>
@@ -110,7 +110,7 @@ namespace Epic
             {
                 --callerPosition;
                 VisitorBase visitor = _chain[callerPosition];
-                foundVisitor = visitor.AsVisitor<TExpression>(target);
+                foundVisitor = visitor.ToVisitor<TExpression>(target);
                 if(null != foundVisitor)
                     return foundVisitor;
             }
@@ -177,7 +177,7 @@ namespace Epic
         /// <typeparam name='TExpression'>
         /// Type of the object to visit.
         /// </typeparam>
-        public IVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : class
+        public IVisitor<TResult, TExpression> AsVisitor<TExpression> (TExpression target) where TExpression : class
         {
             return this as IVisitor<TResult, TExpression>;
         }
@@ -288,7 +288,7 @@ namespace Epic
             /// <typeparam name='TExpression'>
             /// Type of the expression that will be visited from the provided visitor.
             /// </typeparam>
-            public IVisitor<TResult, TExpression> GetVisitor<TExpression> (TExpression target) where TExpression : class
+            public IVisitor<TResult, TExpression> AsVisitor<TExpression> (TExpression target) where TExpression : class
             {
                 return _composition.GetFirstVisitor<TExpression>(target);
             }
@@ -309,7 +309,7 @@ namespace Epic
             /// <typeparam name='TExpression'>
             /// The type of the object to visit.
             /// </typeparam>
-            protected internal virtual IVisitor<TResult, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class
+            protected internal virtual IVisitor<TResult, TExpression> ToVisitor<TExpression>(TExpression target) where TExpression : class
             {
                 return this as IVisitor<TResult, TExpression>;
             }
@@ -338,7 +338,7 @@ namespace Epic
 
             #region IVisitor implementation
 
-            public IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression> GetVisitor<TDerivedExpression> (TDerivedExpression target) where TDerivedExpression : class
+            public IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression> AsVisitor<TDerivedExpression> (TDerivedExpression target) where TDerivedExpression : class
             {
                 IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression> visitor = this as IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression>;
 
@@ -391,9 +391,9 @@ namespace Epic
             }
             #endregion
             #region IVisitor implementation
-            public IVisitor<TResult, TOtherExpression> GetVisitor<TOtherExpression> (TOtherExpression target) where TOtherExpression : class
+            public IVisitor<TResult, TOtherExpression> AsVisitor<TOtherExpression> (TOtherExpression target) where TOtherExpression : class
             {
-                return _inner.GetVisitor<TOtherExpression>(target);
+                return _inner.AsVisitor<TOtherExpression>(target);
             }
             #endregion
         }

@@ -61,9 +61,9 @@ namespace Epic.Query.Linq.Expressions.Normalization
         /// <typeparam name='TExpression'>
         /// Type of the expression to be visited.
         /// </typeparam>
-        protected override IVisitor<Expression, TExpression> AsVisitor<TExpression>(TExpression target)
+        protected override IVisitor<Expression, TExpression> ToVisitor<TExpression>(TExpression target)
         {
-            IVisitor<Expression, TExpression> visitor = base.AsVisitor (target);
+            IVisitor<Expression, TExpression> visitor = base.ToVisitor (target);
 
             if(null != visitor)
             {

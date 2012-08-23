@@ -126,7 +126,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
             FakeNormalizer normalizer = new FakeNormalizer();
             new QueryableConstantResolver(normalizer);
             FakeVisitor<Expression, LambdaExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, LambdaExpression>>(normalizer);
-            mockVisitor.Expect(v => v.CallAsVisitor(dummyExpression)).Return(mockVisitor).Repeat.Once();
+            mockVisitor.Expect(v => v.CallToVisitor(dummyExpression)).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit(dummyExpression, context)).Return(expectedResult).Repeat.Once();
 
             // act:

@@ -40,9 +40,9 @@ namespace Epic.Fakes
         }
         #endregion IVisitor[TResult,TExpression] implementation
         
-        protected internal override IVisitor<TResult, TRequested> AsVisitor<TRequested> (TRequested target)
+        protected internal override IVisitor<TResult, TRequested> ToVisitor<TRequested> (TRequested target)
         {
-            return CallAsVisitor(target);
+            return CallToVisitor(target);
         }
         
         #region templates for tests
@@ -57,9 +57,9 @@ namespace Epic.Fakes
             return base.VisitInner(target, context);
         }
         
-        public virtual IVisitor<TResult, TRequested> CallAsVisitor<TRequested> (TRequested target) where TRequested : class
+        public virtual IVisitor<TResult, TRequested> CallToVisitor<TRequested> (TRequested target) where TRequested : class
         {
-            return base.AsVisitor (target);
+            return base.ToVisitor (target);
         }
         
         #endregion templates for tests

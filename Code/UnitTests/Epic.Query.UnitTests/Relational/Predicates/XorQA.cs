@@ -169,7 +169,7 @@ namespace Epic.Query.Relational.Predicates
                 GenerateStrictMock<IVisitor<object, Xor>>();
             orPredicateVisitor.Expect(v => v.Visit(or, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(or)).Return(orPredicateVisitor).Repeat.Once ();
+            visitor.Expect(v => v.AsVisitor(or)).Return(orPredicateVisitor).Repeat.Once ();
 
             // act:
             object result = or.Accept(visitor, context);

@@ -167,7 +167,7 @@ namespace Epic.Query.Relational.Operations
             GenerateStrictMock<IVisitor<object, ThetaJoin>>();
             selectionVisitor.Expect(v => v.Visit(innerJoin, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(innerJoin)).Return(selectionVisitor).Repeat.Once ();
+            visitor.Expect(v => v.AsVisitor(innerJoin)).Return(selectionVisitor).Repeat.Once ();
 
             // act:
             object result = innerJoin.Accept(visitor, context);

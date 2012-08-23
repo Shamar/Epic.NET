@@ -60,7 +60,7 @@ namespace Epic
             PublicUnvisitable unvisitable = new PublicUnvisitable();
             IVisitor<object, PublicUnvisitable> visitor = GenerateStrictMock<IVisitor<object, PublicUnvisitable>>();
             IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
-            visitorComposition.Expect(v => v.GetVisitor<PublicUnvisitable>(unvisitable)).Return(visitor).Repeat.Once();
+            visitorComposition.Expect(v => v.AsVisitor<PublicUnvisitable>(unvisitable)).Return(visitor).Repeat.Once();
             visitor.Expect(v => v.Visit(unvisitable, context)).Return(visitResult).Repeat.Once();
 
             // act:

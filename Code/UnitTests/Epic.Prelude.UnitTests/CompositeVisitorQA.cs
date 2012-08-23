@@ -57,7 +57,7 @@ namespace Epic
 
             // assert:
             Assert.IsNotNull(visitor);
-            Assert.IsNull (visitor.GetVisitor<Expression>(target));
+            Assert.IsNull (visitor.AsVisitor<Expression>(target));
         }
         
         [Test]
@@ -156,17 +156,17 @@ namespace Epic
             }
 
             [Test]
-            public void GetVisitor_everyTime_callsTheInnerVisitor()
+            public void AsVisitor_everyTime_callsTheInnerVisitor()
             {
                 // arrange:
                 string target = "test";
                 IVisitor<string, string> otherVisitor = GenerateStrictMock<IVisitor<string, string>>();
                 IVisitor<string, string> inner = GenerateStrictMock<IVisitor<string, string>>();
-                inner.Expect(v => v.GetVisitor(target)).Return(otherVisitor).Repeat.Once();
+                inner.Expect(v => v.AsVisitor(target)).Return(otherVisitor).Repeat.Once();
                 IVisitor<string, object> toTest = new CompositeVisitor<string>.CovariantVisitor<object, string>(inner);
 
                 // act:
-                IVisitor<string, string> result = toTest.GetVisitor(target);
+                IVisitor<string, string> result = toTest.AsVisitor(target);
 
                 // assert:
                 Assert.AreSame(otherVisitor, result);

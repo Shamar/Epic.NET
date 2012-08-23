@@ -48,7 +48,7 @@ namespace Epic
             where TSpecific : class, TUnvisitable
         {
             TSpecific expression = unvisitable as TSpecific;
-            IVisitor<TResult, TSpecific> specializedVisitor = visitor.GetVisitor<TSpecific>(expression);
+            IVisitor<TResult, TSpecific> specializedVisitor = visitor.AsVisitor<TSpecific>(expression);
             return specializedVisitor.Visit(expression, context);
         }
 

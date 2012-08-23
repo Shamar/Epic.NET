@@ -209,7 +209,7 @@ namespace Epic.Query.Relational
             relationAttributeVisitor.Expect(v => v.Visit(attribute, context)).Return(expectedResult).Repeat.Once();
             
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect (v => v.GetVisitor(attribute)).Return(relationAttributeVisitor).Repeat.Once();
+            visitor.Expect (v => v.AsVisitor(attribute)).Return(relationAttributeVisitor).Repeat.Once();
 
             // act:
             object result = attribute.Accept(visitor, context);

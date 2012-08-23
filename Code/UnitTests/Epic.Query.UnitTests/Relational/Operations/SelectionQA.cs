@@ -183,7 +183,7 @@ namespace Epic.Query.Relational.Operations
             GenerateStrictMock<IVisitor<object, Selection>>();
             selectionVisitor.Expect(v => v.Visit(selection, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(selection)).Return(selectionVisitor).Repeat.Once ();
+            visitor.Expect(v => v.AsVisitor(selection)).Return(selectionVisitor).Repeat.Once ();
 
             // act:
             object result = selection.Accept(visitor, context);

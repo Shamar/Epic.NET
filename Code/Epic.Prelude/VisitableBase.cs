@@ -98,7 +98,7 @@ namespace Epic
             if(null == context)
                 throw new ArgumentNullException("context");
             
-            var myVisitor = visitor.GetVisitor(visitable);
+            var myVisitor = visitor.AsVisitor(visitable);
             return myVisitor.Visit(visitable, context);
         }
     }

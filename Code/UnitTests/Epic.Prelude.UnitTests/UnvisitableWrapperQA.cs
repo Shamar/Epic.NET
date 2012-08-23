@@ -39,7 +39,7 @@ namespace Epic
             #region IVisitable implementation
             public TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
             {
-                IVisitor<TResult, ArgumentException> typedVisitor = visitor.GetVisitor<ArgumentException>(this);
+                IVisitor<TResult, ArgumentException> typedVisitor = visitor.AsVisitor<ArgumentException>(this);
                 return typedVisitor.Visit(this, context);
             }
             #endregion
@@ -59,7 +59,7 @@ namespace Epic
             ArgumentNullException unvisitable = new ArgumentNullException();
             IVisitor<object, ArgumentNullException> visitor = GenerateStrictMock<IVisitor<object, ArgumentNullException>>();
             IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
-            visitorComposition.Expect(v => v.GetVisitor<ArgumentNullException>(unvisitable)).Return(visitor).Repeat.Once();
+            visitorComposition.Expect(v => v.AsVisitor<ArgumentNullException>(unvisitable)).Return(visitor).Repeat.Once();
             visitor.Expect(v => v.Visit(unvisitable, context)).Return(visitResult).Repeat.Once();
 
             // act:
@@ -78,7 +78,7 @@ namespace Epic
             PrivateInvalidOperationException unvisitable = new PrivateInvalidOperationException();
             IVisitor<object, InvalidOperationException> visitor = GenerateStrictMock<IVisitor<object, InvalidOperationException>>();
             IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
-            visitorComposition.Expect(v => v.GetVisitor<InvalidOperationException>(unvisitable)).Return(visitor).Repeat.Once();
+            visitorComposition.Expect(v => v.AsVisitor<InvalidOperationException>(unvisitable)).Return(visitor).Repeat.Once();
             visitor.Expect(v => v.Visit(unvisitable, context)).Return(visitResult).Repeat.Once();
 
             // act:
@@ -112,7 +112,7 @@ namespace Epic
             PublicAndVisitableArgumentNullException unvisitable = new PublicAndVisitableArgumentNullException();
             IVisitor<object, ArgumentException> visitor = GenerateStrictMock<IVisitor<object, ArgumentException>>();
             IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
-            visitorComposition.Expect(v => v.GetVisitor<ArgumentException>(unvisitable)).Return(visitor).Repeat.Once();
+            visitorComposition.Expect(v => v.AsVisitor<ArgumentException>(unvisitable)).Return(visitor).Repeat.Once();
             visitor.Expect(v => v.Visit(unvisitable, context)).Return(visitResult).Repeat.Once();
 
             // act:

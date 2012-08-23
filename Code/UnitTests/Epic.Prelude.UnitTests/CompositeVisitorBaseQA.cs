@@ -88,7 +88,7 @@ namespace Epic
             FakeCompositeVisitor<object, Expression> composition = GeneratePartialMock<FakeCompositeVisitor<object, Expression>>(name);
             composition.Expect(c => c.CallInitializeVisitContext(expression, initialContext)).Return(initializedContext).Repeat.Once();
             FakeVisitor<object, ConstantExpression> registered = GeneratePartialMock<FakeVisitor<object, ConstantExpression>>(composition);
-            registered.Expect(v => v.CallAsVisitor(expression)).Return(registered).Repeat.Once();
+            registered.Expect(v => v.CallToVisitor(expression)).Return(registered).Repeat.Once();
             registered.Expect(v => v.Visit(expression, initializedContext)).Return(expectedResult).Repeat.Once();
 
             // act:
