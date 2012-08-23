@@ -315,11 +315,11 @@ namespace Epic
             }
         }
 
-        private struct VisitorFinder<TExpression> : IVisitor<IVisitor<TResult, TExpression>, TExpression>
+        private class VisitorFinder<TExpression> : IVisitor<IVisitor<TResult, TExpression>, TExpression>
             where TExpression : class
         {
-            private readonly CompositeVisitor<TResult> _composition;
-            private readonly int _startingPosition;
+            protected readonly CompositeVisitor<TResult> _composition;
+            protected readonly int _startingPosition;
 
             public VisitorFinder(CompositeVisitor<TResult> composition, int startingPosition)
             {
@@ -353,17 +353,14 @@ namespace Epic
             #endregion
         }
 
-        private struct VisitorFinder<TExpression, TDerivedExpression> : IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression>
+        private class VisitorFinder<TExpression, TDerivedExpression> : VisitorFinder<TExpression>, IVisitor<IVisitor<TResult, TExpression>, TDerivedExpression>
             where TExpression : class
             where TDerivedExpression : class
         {
-            private readonly CompositeVisitor<TResult> _composition;
-            private readonly int _startingPosition;
             
             public VisitorFinder(CompositeVisitor<TResult> composition, int startingPosition)
+                : base(composition, startingPosition)
             {
-                _composition = composition;
-                _startingPosition = startingPosition;
             }
             
             #region IVisitor implementation
@@ -372,22 +369,6 @@ namespace Epic
             {
                 IVisitor<TResult, TDerivedExpression> visitor = _composition.FindNextVisitor<TDerivedExpression>(target, _startingPosition);
                 return new CovariantVisitor<TExpression, TDerivedExpression>(visitor);
-            }
-            
-            #endregion
-            
-            #region IVisitor implementation
-            
-            public IVisitor<IVisitor<TResult, TExpression>, TOtherDerivedExpression> GetVisitor<TOtherDerivedExpression> (TOtherDerivedExpression target) where TOtherDerivedExpression : class
-            {
-                IVisitor<IVisitor<TResult, TExpression>, TOtherDerivedExpression> visitor = this as IVisitor<IVisitor<TResult, TExpression>, TOtherDerivedExpression>;
-
-                if (null == visitor || typeof(TDerivedExpression) != typeof(TExpression))
-                {
-                    visitor = new VisitorFinder<TExpression, TOtherDerivedExpression>(_composition, _startingPosition);
-                }
-                
-                return visitor;
             }
             
             #endregion
