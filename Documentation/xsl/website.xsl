@@ -303,6 +303,32 @@
   </xsl:call-template>
 </xsl:template>
 
+<xsl:template match="footnoteref">
+  <xsl:variable name="targets" select="key('id',@linkend)"/>
+  <xsl:variable name="footnote" select="$targets[1]"/>
+
+  <xsl:variable name="target.href">
+    <xsl:call-template name="href.target">
+      <xsl:with-param name="object" select="$footnote"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:variable name="href">
+    <xsl:value-of select="substring-before($target.href, '#')"/>
+    <xsl:text>#ftn.</xsl:text>
+    <xsl:value-of select="substring-after($target.href, '#')"/>
+  </xsl:variable>
+
+  <sup>
+    <xsl:text>[</xsl:text>
+    <a href="{$href}">
+      <xsl:apply-templates select="." mode="class.attribute"/>
+      <xsl:apply-templates select="$footnote" mode="footnote.number"/>
+    </a>
+    <xsl:text>]</xsl:text>
+  </sup>
+</xsl:template>
+
 <xsl:include href="http://docbook.sourceforge.net/release/xsl/current/xhtml/chunk-code.xsl"/>
 
 </xsl:stylesheet>

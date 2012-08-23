@@ -38,7 +38,7 @@ While this could seem quite abstract, it looks perfectly reasonable when we
 looks to that particular value objects that work like mathematical functions.
 Specifications, for example, are predicates that can be both executed, to know
 whether a candidate satisfy them, or interpreted, translating them into a human
-readable sentence or into SQL queries. footnote[A closer look shows that execution 
+readable sentence or into SQL queries. footnote:[A closer look shows that execution 
 is actually a specific kind of interpretation, done by the CLR. Indeed, some stacktraces
 from http://msdn.microsoft.com/en-us/library/bb345362[Expression<TDelegate>.Compile]
 show that expression tree compilation is done by a visitor producing the executable IL code.]
