@@ -34,6 +34,18 @@ namespace Epic
         {
         }
 
+        public class PublicAndVisitableArgumentNullException : ArgumentNullException, IVisitable
+        {
+            #region IVisitable implementation
+            public TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
+            {
+                IVisitor<TResult, ArgumentException> typedVisitor = visitor.GetVisitor<ArgumentException>(this);
+                return typedVisitor.Visit(this, context);
+            }
+            #endregion
+        }
+
+
         private class PrivateObject : Object
         {
         }
@@ -88,6 +100,34 @@ namespace Epic
             // assert:
             Assert.Throws<ArgumentException>(delegate {
                 UnvisitableWrapper<object, object>.SimulateAccept(unvisitable, visitorComposition, context);
+            });
+        }
+
+        [Test]
+        public void SimulateAccept_onAPublicExceptionThatImplementsIVisitable_fulfillTheIVisitableInterface ()
+        {
+            // arrange:
+            object visitResult = new object();
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            PublicAndVisitableArgumentNullException unvisitable = new PublicAndVisitableArgumentNullException();
+            IVisitor<object, ArgumentException> visitor = GenerateStrictMock<IVisitor<object, ArgumentException>>();
+            IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
+            visitorComposition.Expect(v => v.GetVisitor<ArgumentException>(unvisitable)).Return(visitor).Repeat.Once();
+            visitor.Expect(v => v.Visit(unvisitable, context)).Return(visitResult).Repeat.Once();
+
+            // act:
+            object result = UnvisitableWrapper<Exception, object>.SimulateAccept(unvisitable, visitorComposition, context);
+            
+            // assert:
+            Assert.AreSame(visitResult, result);
+        }
+
+        [Test]
+        public void TypeInitialization_withABaseClassThatImplementsIVisitable_fails ()
+        {
+            // assert:
+            Assert.Throws<TypeInitializationException>(delegate {
+                UnvisitableWrapper<PublicAndVisitableArgumentNullException, object>.SimulateAccept(null, null, null);
             });
         }
     }
