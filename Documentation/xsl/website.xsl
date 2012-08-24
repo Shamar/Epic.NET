@@ -303,30 +303,71 @@
   </xsl:call-template>
 </xsl:template>
 
-<xsl:template match="footnoteref">
-  <xsl:variable name="targets" select="key('id',@linkend)"/>
-  <xsl:variable name="footnote" select="$targets[1]"/>
+<xsl:template match="footnote">
+ <xsl:variable name="name">
+   <xsl:call-template name="object.id"/>
+ </xsl:variable>
+ <xsl:variable name="href">
+   <xsl:text>#ftn.</xsl:text>
+   <xsl:call-template name="object.id"/>
+ </xsl:variable>
+ 
+ <xsl:choose>
+   <xsl:when test="ancestor::tgroup">
+     <sup class="footnoteref">
+       <xsl:text>[</xsl:text>
+       <a name="{$name}" href="{$href}">
+         <xsl:apply-templates select="." mode="class.attribute"/>
+         <xsl:apply-templates select="." mode="footnote.number"/>
+       </a>
+       <xsl:text>]</xsl:text>
+     </sup>
+   </xsl:when>
+   <xsl:otherwise>
+     <sup class="footnoteref">
+       <xsl:text>[</xsl:text>
+       <a name="{$name}" href="{$href}">
+         <xsl:apply-templates select="." mode="class.attribute"/>
+         <xsl:apply-templates select="." mode="footnote.number"/>
+       </a>
+       <xsl:text>]</xsl:text>
+     </sup>
+   </xsl:otherwise>
+ </xsl:choose>
+</xsl:template>
 
-  <xsl:variable name="target.href">
-    <xsl:call-template name="href.target">
-      <xsl:with-param name="object" select="$footnote"/>
-    </xsl:call-template>
-  </xsl:variable>
-
-  <xsl:variable name="href">
-    <xsl:value-of select="substring-before($target.href, '#')"/>
-    <xsl:text>#ftn.</xsl:text>
-    <xsl:value-of select="substring-after($target.href, '#')"/>
-  </xsl:variable>
-
-  <sup>
-    <xsl:text>[</xsl:text>
-    <a href="{$href}">
-      <xsl:apply-templates select="." mode="class.attribute"/>
-      <xsl:apply-templates select="$footnote" mode="footnote.number"/>
-    </a>
-    <xsl:text>]</xsl:text>
-  </sup>
+<xsl:template match="footnote/para[1]|footnote/simpara[1]" priority="2">
+ <!-- this only works if the first thing in a footnote is a para, -->
+ <!-- which is ok, because it usually is. -->
+ <xsl:variable name="name">
+   <xsl:text>ftn.</xsl:text>
+   <xsl:call-template name="object.id">
+     <xsl:with-param name="object" select="ancestor::footnote"/>
+   </xsl:call-template>
+ </xsl:variable>
+ <xsl:variable name="href">
+   <xsl:text>#</xsl:text>
+   <xsl:call-template name="object.id">
+     <xsl:with-param name="object" select="ancestor::footnote"/>
+   </xsl:call-template>
+ </xsl:variable>
+ <p>
+   <xsl:if test="@role and $para.propagates.style != 0">
+     <xsl:apply-templates select="." mode="class.attribute">
+       <xsl:with-param name="class" select="@role"/>
+     </xsl:apply-templates>
+   </xsl:if>
+   <sup class="footnote">
+     <xsl:text>[</xsl:text>
+     <a name="{$name}" href="{$href}">
+       <xsl:apply-templates select="." mode="class.attribute"/>
+       <xsl:apply-templates select="ancestor::footnote"
+                            mode="footnote.number"/>
+     </a>
+     <xsl:text>] </xsl:text>
+   </sup>
+   <xsl:apply-templates/>
+ </p>
 </xsl:template>
 
 <xsl:include href="http://docbook.sourceforge.net/release/xsl/current/xhtml/chunk-code.xsl"/>
