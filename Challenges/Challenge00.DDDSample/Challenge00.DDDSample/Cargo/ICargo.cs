@@ -105,7 +105,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <param name="routeSpecification">
 		/// A <see cref="IRouteSpecification"/>. May not be null.
 		/// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="routeSpecification"/> is <value>null</value></exception>
+		/// <exception cref="ArgumentNullException"><paramref name="routeSpecification"/> is <see langword="null"/></exception>
 		/// <exception cref="AlreadyClaimedException">The cargo has already be claimed by the customer.</exception>
 		void SpecifyNewRoute (IRouteSpecification routeSpecification);
 
@@ -117,7 +117,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <param name="itinerary">
 		/// A <see cref="IItinerary"/>. May not be null.
 		/// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="itinerary"/> is <value>null</value></exception>
+		/// <exception cref="ArgumentNullException"><paramref name="itinerary"/> is <see langword="null"/></exception>
 		/// <exception cref="AlreadyClaimedException">The cargo has already be claimed by the customer.</exception>
 		void AssignToRoute (IItinerary itinerary);
 
@@ -130,7 +130,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// A <see cref="ILocation"/>. May not be null.
 		/// </param>
 		/// <param name="date">Date of occurence.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value></exception>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/></exception>
 		/// <exception cref="RountingException">The cargo is either not routed or misrouted.</exception>
 		/// <exception cref="AlreadyClaimedException">The cargo has already be claimed by the customer.</exception>
 		void Recieve(ILocation location, DateTime date);
@@ -146,7 +146,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <param name="date">
 		/// A <see cref="DateTime"/> 
 		/// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value></exception>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/></exception>
 		/// <exception cref="AlreadyClaimedException">The cargo has already be claimed by the customer.</exception>
 		void ClearCustoms(ILocation location, DateTime date);
 		
@@ -159,7 +159,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// A <see cref="ILocation"/>. May not be null.
 		/// </param>
 		/// <param name="date">Date of occurence.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value></exception>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/></exception>
 		/// <exception cref="AlreadyClaimedException">The cargo has already be claimed by the customer.</exception>
 		void Claim(ILocation location, DateTime date);
 		
@@ -172,7 +172,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// A <see cref="IVoyage"/>. May not be null. 
 		/// </param>
 		/// <param name="date">Date of occurence.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="voyage"/> is <value>null</value></exception>
+		/// <exception cref="ArgumentNullException"><paramref name="voyage"/> is <see langword="null"/></exception>
 		/// <exception cref="AlreadyClaimedException">The cargo has already be claimed by the customer.</exception>
 		void LoadOn(IVoyage voyage, DateTime date);
 		
@@ -185,7 +185,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// A <see cref="IVoyage"/>. May not be null. 
 		/// </param>
 		/// <param name="date">Date of occurence.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="voyage"/> is <value>null</value></exception>
+		/// <exception cref="ArgumentNullException"><paramref name="voyage"/> is <see langword="null"/></exception>
 		/// <exception cref="AlreadyClaimedException">The cargo has already be claimed by the customer.</exception>
 		void Unload(IVoyage voyage, DateTime date);
 		
