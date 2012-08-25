@@ -56,7 +56,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// A new <see cref="IItinerary"/>
 		/// </returns>
 		/// <exception cref="ArgumentNullException"><paramref name="leg"/> is <value>null</value>.</exception>
-		/// <exception cref="ArgumentException">The <see cref="ILeg.LoadLocation"/> do not match the last leg 
+		/// <exception cref="WrongLocationException">The <see cref="ILeg.LoadLocation"/> do not match the last leg 
 		/// <see cref="UnloadLocation"/>.</exception>
 		IItinerary Append(ILeg leg);
 		

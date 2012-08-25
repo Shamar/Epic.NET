@@ -108,7 +108,7 @@ namespace DefaultImplementation.Voyage
 		}
 		
 		[Test]
-		[ExpectedException(typeof(ArgumentException))]
+		[ExpectedException(typeof(WrongLocationException))]
 		public void Append_04()
 		{
 			// arrange:

@@ -50,7 +50,7 @@ namespace Challenge00.DDDSample.Cargo
 			if(_legs.Length > 0)
 			{
 				if(leg.LoadLocation != _legs[_legs.Length - 1].UnloadLocation)
-					throw new ArgumentException("Invalid load location.", "leg");
+					throw new WrongLocationException("leg", "Invalid load location.", _legs[_legs.Length - 1].UnloadLocation, leg.LoadLocation);
 				if(leg.LoadTime < _legs[_legs.Length - 1].UnloadTime)
 					throw new ArgumentException("Invalid load time.", "leg");
 			}

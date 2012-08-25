@@ -56,28 +56,28 @@ namespace Challenge00.DDDSample.Cargo
 		public override CargoState SpecifyNewRoute (IRouteSpecification routeSpecification)
 		{
 			string message = string.Format("The cargo {0} has been claimed.", Identifier);
-			throw new System.InvalidOperationException(message);
+			throw new AlreadyClaimedException(Identifier, message);
 		}
 		
 		
 		public override CargoState AssignToRoute (IItinerary itinerary)
 		{
 			string message = string.Format("The cargo {0} has been claimed.", Identifier);
-			throw new System.InvalidOperationException(message);
+			throw new AlreadyClaimedException(Identifier, message);
 		}
 		
 		
 		public override CargoState Recieve (ILocation location, DateTime date)
 		{
 			string message = string.Format("The cargo {0} has been claimed.", Identifier);
-			throw new System.InvalidOperationException(message);
+			throw new AlreadyClaimedException(Identifier, message);
 		}
 		
 		
 		public override CargoState ClearCustoms (ILocation location, DateTime date)
 		{
 			string message = string.Format("The cargo {0} has been claimed.", Identifier);
-			throw new System.InvalidOperationException(message);
+			throw new AlreadyClaimedException(Identifier, message);
 		}
 		
 		
@@ -88,21 +88,21 @@ namespace Challenge00.DDDSample.Cargo
 			if(location.UnLocode.Equals(LastKnownLocation) && date == _claimDate)
 				return this;
 			string message = string.Format("The cargo {0} has been claimed.", Identifier);
-			throw new System.InvalidOperationException(message);
+			throw new AlreadyClaimedException(Identifier, message);
 		}
 		
 		
 		public override CargoState LoadOn (IVoyage voyage, DateTime date)
 		{
 			string message = string.Format("The cargo {0} has been claimed.", Identifier);
-			throw new System.InvalidOperationException(message);
+			throw new AlreadyClaimedException(Identifier, message);
 		}
 		
 		
 		public override CargoState Unload (IVoyage voyage, DateTime date)
 		{
 			string message = string.Format("The cargo {0} has been claimed.", Identifier);
-			throw new System.InvalidOperationException(message);
+			throw new AlreadyClaimedException(Identifier, message);
 		}
 		
 		

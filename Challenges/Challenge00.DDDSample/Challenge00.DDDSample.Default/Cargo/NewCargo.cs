@@ -69,16 +69,7 @@ namespace Challenge00.DDDSample.Cargo
 				throw new ArgumentNullException("location");
 			if(RoutingStatus.Routed != this.RoutingStatus)
 			{
-				string message = string.Empty;
-				if(this.RoutingStatus == RoutingStatus.Misrouted)
-				{
-					message = string.Format("The cargo {0} is misrouted.", Identifier);
-				}
-				else
-				{
-					message = string.Format("The cargo {0} is not routed.", Identifier);
-				}
-				throw new InvalidOperationException(message);
+				throw new RoutingException(Identifier, this.RoutingStatus);
 			}
 			if(!this.Itinerary.InitialDepartureLocation.Equals(location.UnLocode))
 			{

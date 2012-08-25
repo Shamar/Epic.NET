@@ -195,14 +195,14 @@ namespace DefaultImplementation.Cargo
 			// assert:
 			Assert.AreSame(state, newState);
 			Assert.Throws<ArgumentNullException>(delegate { state.Claim(null, DateTime.UtcNow); });
-			Assert.Throws<InvalidOperationException>(delegate { state.Claim(finalLocation, DateTime.UtcNow + TimeSpan.FromSeconds(10)); });
-			Assert.Throws<InvalidOperationException>(delegate { state.Claim(otherLocation, claimDate); });
-			Assert.Throws<InvalidOperationException>(delegate { state.LoadOn(voyage, DateTime.UtcNow + TimeSpan.FromSeconds(10)); });
-			Assert.Throws<InvalidOperationException>(delegate { state.Unload(voyage, DateTime.UtcNow + TimeSpan.FromSeconds(10)); });
-			Assert.Throws<InvalidOperationException>(delegate { state.SpecifyNewRoute(MockRepository.GenerateStrictMock<IRouteSpecification>()); });
-			Assert.Throws<InvalidOperationException>(delegate { state.AssignToRoute(MockRepository.GenerateStrictMock<IItinerary>()); });
-			Assert.Throws<InvalidOperationException>(delegate { state.Recieve(MockRepository.GenerateStrictMock<ILocation>(), DateTime.UtcNow + TimeSpan.FromSeconds(10) + TimeSpan.FromSeconds(10)); });
-			Assert.Throws<InvalidOperationException>(delegate { state.ClearCustoms(MockRepository.GenerateStrictMock<ILocation>(), DateTime.UtcNow + TimeSpan.FromSeconds(10)); });
+			Assert.Throws<AlreadyClaimedException>(delegate { state.Claim(finalLocation, DateTime.UtcNow + TimeSpan.FromSeconds(10)); });
+			Assert.Throws<AlreadyClaimedException>(delegate { state.Claim(otherLocation, claimDate); });
+			Assert.Throws<AlreadyClaimedException>(delegate { state.LoadOn(voyage, DateTime.UtcNow + TimeSpan.FromSeconds(10)); });
+			Assert.Throws<AlreadyClaimedException>(delegate { state.Unload(voyage, DateTime.UtcNow + TimeSpan.FromSeconds(10)); });
+			Assert.Throws<AlreadyClaimedException>(delegate { state.SpecifyNewRoute(MockRepository.GenerateStrictMock<IRouteSpecification>()); });
+			Assert.Throws<AlreadyClaimedException>(delegate { state.AssignToRoute(MockRepository.GenerateStrictMock<IItinerary>()); });
+			Assert.Throws<AlreadyClaimedException>(delegate { state.Recieve(MockRepository.GenerateStrictMock<ILocation>(), DateTime.UtcNow + TimeSpan.FromSeconds(10) + TimeSpan.FromSeconds(10)); });
+			Assert.Throws<AlreadyClaimedException>(delegate { state.ClearCustoms(MockRepository.GenerateStrictMock<ILocation>(), DateTime.UtcNow + TimeSpan.FromSeconds(10)); });
 			itinerary.VerifyAllExpectations();
 			specification.VerifyAllExpectations();
 		}

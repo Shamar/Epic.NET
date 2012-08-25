@@ -79,13 +79,18 @@ Moreover, the visitor take controls over it's own cast to the specialized
 visitor type footnote:[We called this technique "managed cast". It consists 
 into delegating a cast to the object that you want to cast, so that it has 
 control on the casting behaviour according to runtime conditions.] through
-the method http://epic.tesio.it/doc/api/html/M_Epic_IVisitor_1_GetVisitor__1.htm[GetVisitor<TExpression>].
+the method http://epic.tesio.it/doc/api/html/M_Epic_IVisitor_1_AsVisitor__1.htm[AsVisitor<TExpression>(TExpression)].
 
 Thus, when the visitor is an instance of a class that extends the
 http://epic.tesio.it/doc/api/html/T_Epic_CompositeVisitorBase_2.htm[CompositeVisitorBase<TResult, TExpression>]
 abstract class, the composition will be able to returns a specialized visitor
 that designed to interpret that specific expression.
 
+Lets see an example. Whenever the domain model can't fulfill the user's requests 
+the UI have to explain them what happens. So you have correctly modeled a
+hundred types of exceptions that the domain objects throw whenever they
+need to.
+However your users works all over the world, talking different language. 
 
 
 Specifying qualities

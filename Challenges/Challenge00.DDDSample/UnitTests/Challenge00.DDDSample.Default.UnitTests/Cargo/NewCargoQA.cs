@@ -379,7 +379,7 @@ namespace DefaultImplementation.Cargo
 			CargoState state = new NewCargo(id, specification);
 		
 			// assert:
-			Assert.Throws<InvalidOperationException>(delegate {state.Recieve(location, DateTime.UtcNow);});
+			Assert.Throws<RoutingException>(delegate {state.Recieve(location, DateTime.UtcNow);});
 			location.VerifyAllExpectations();
 			specification.VerifyAllExpectations();
 		}
@@ -409,7 +409,7 @@ namespace DefaultImplementation.Cargo
 			Assert.AreEqual(routedState.GetType(), misroutedState.GetType());
 			Assert.AreNotSame(routedState, misroutedState);
 			Assert.IsTrue(RoutingStatus.Misrouted == misroutedState.RoutingStatus);
-			Assert.Throws<InvalidOperationException>(delegate {misroutedState.Recieve(location, DateTime.UtcNow);});
+			Assert.Throws<RoutingException>(delegate {misroutedState.Recieve(location, DateTime.UtcNow);});
 			location.VerifyAllExpectations();
 			specification.VerifyAllExpectations();
 			specification2.VerifyAllExpectations();
