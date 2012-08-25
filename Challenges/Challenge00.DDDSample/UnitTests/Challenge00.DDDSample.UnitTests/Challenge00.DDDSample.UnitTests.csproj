@@ -64,6 +64,7 @@
     <Compile Include="Cargo\RoutingExceptionQA.cs" />
     <Compile Include="Cargo\AlreadyClaimedExceptionQA.cs" />
     <Compile Include="Location\WrongLocationExceptionQA.cs" />
+    <Compile Include="Voyage\VoyageCompletedExceptionQA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

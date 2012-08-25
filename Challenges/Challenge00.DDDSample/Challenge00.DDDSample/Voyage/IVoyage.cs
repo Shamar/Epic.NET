@@ -61,8 +61,8 @@ namespace Challenge00.DDDSample.Voyage
 		/// </summary>
 		/// <param name="location">Location reached.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/>.</exception>
-		/// <exception cref="ArgumentException"><paramref name="location"/> is not the correct location.</exception>
-		/// <exception cref="InvalidOperationException">The voyage has already be completed.</exception>
+		/// <exception cref="WrongLocationException"><paramref name="location"/> is not the correct location.</exception>
+		/// <exception cref="VoyageCompletedException">The voyage has already be completed.</exception>
 		void StopOverAt(ILocation location);
 		
 		event EventHandler<VoyageEventArgs> Stopped;
@@ -72,8 +72,8 @@ namespace Challenge00.DDDSample.Voyage
 		/// </summary>
 		/// <param name="location">Location leave.</param>
 		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/></exception>
-		/// <exception cref="ArgumentException"><paramref name="location"/> is not the correct location.</exception>
-		/// <exception cref="InvalidOperationException">The voyage has already be completed.</exception>
+		/// <exception cref="WrongLocationException"><paramref name="location"/> is not the correct location.</exception>
+		/// <exception cref="VoyageCompletedException">The voyage has already be completed.</exception>
 		void DepartFrom(ILocation location);
 		
 		event EventHandler<VoyageEventArgs> Departed;

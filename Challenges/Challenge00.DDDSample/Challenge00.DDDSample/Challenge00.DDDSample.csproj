@@ -68,6 +68,7 @@
     <Compile Include="Cargo\RoutingException.cs" />
     <Compile Include="Cargo\AlreadyClaimedException.cs" />
     <Compile Include="Location\WrongLocationException.cs" />
+    <Compile Include="Voyage\VoyageCompletedException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cargo\" />

@@ -1,5 +1,5 @@
 //
-//  RoutingExceptionQA.cs
+//  VoyageCompletedExceptionQA.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -23,26 +23,26 @@
 //
 using System;
 using NUnit.Framework;
-using Challenge00.DDDSample.Cargo;
+using Challenge00.DDDSample.Voyage;
 
-namespace Contracts.Cargo
+namespace Contracts.Voyage
 {
 	[TestFixture]
-	public class RoutingExceptionQA
+	public class VoyageCompletedExceptionQA
 	{
 		[Test]
 		public void Initialization_works ()
 		{
 			// arrange:
-			TrackingId cargo = new TrackingId("test");
-			RoutingStatus status = RoutingStatus.Misrouted;
+			string message = "Test message.";
+			VoyageNumber voyage = new VoyageNumber("test");
 
 			// act:
-			RoutingException toTest = new RoutingException(cargo, status);
+			var toTest = new VoyageCompletedException(voyage, message);
 
 			// assert:
-            Assert.AreSame(cargo, toTest.Cargo);
-			Assert.AreEqual(status, toTest.RoutingStatus);
+			Assert.AreSame(message, toTest.Message);
+			Assert.AreSame(voyage, toTest.Voyage);
 		}
 	}
 }

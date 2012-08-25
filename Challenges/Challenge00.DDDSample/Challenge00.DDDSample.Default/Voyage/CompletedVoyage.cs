@@ -37,14 +37,14 @@ namespace Challenge00.DDDSample.Voyage
 		public override VoyageState StopOverAt (ILocation location)
 		{
 			string message = string.Format("The voyage {0} has been completed.", Number);
-			throw new InvalidOperationException(message);
+			throw new VoyageCompletedException(Number, message);
 		}
 		
 		
 		public override VoyageState DepartFrom (ILocation location)
 		{
 			string message = string.Format("The voyage {0} has been completed.", Number);
-			throw new InvalidOperationException(message);
+			throw new VoyageCompletedException(Number, message);
 		}
 		
 		public override UnLocode LastKnownLocation 

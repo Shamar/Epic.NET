@@ -124,7 +124,7 @@ namespace DefaultImplementation.Voyage
 			CompletedVoyage state = new CompletedVoyage(number, schedule);
 			
 			// assert:
-			Assert.Throws<InvalidOperationException>(delegate {state.StopOverAt(MockRepository.GenerateStrictMock<ILocation>());});
+			Assert.Throws<VoyageCompletedException>(delegate {state.StopOverAt(MockRepository.GenerateStrictMock<ILocation>());});
 			schedule.VerifyAllExpectations();
 		}
 		
@@ -139,7 +139,7 @@ namespace DefaultImplementation.Voyage
 			CompletedVoyage state = new CompletedVoyage(number, schedule);
 			
 			// assert:
-			Assert.Throws<InvalidOperationException>(delegate {state.DepartFrom(MockRepository.GenerateStrictMock<ILocation>());});
+			Assert.Throws<VoyageCompletedException>(delegate {state.DepartFrom(MockRepository.GenerateStrictMock<ILocation>());});
 			schedule.VerifyAllExpectations();
 
 		} 

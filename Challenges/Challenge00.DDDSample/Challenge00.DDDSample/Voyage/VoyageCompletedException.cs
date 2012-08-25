@@ -1,5 +1,5 @@
 //
-//  RoutingExceptionQA.cs
+//  VoyageCompletedException.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -22,27 +22,40 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 using System;
-using NUnit.Framework;
-using Challenge00.DDDSample.Cargo;
 
-namespace Contracts.Cargo
+namespace Challenge00.DDDSample.Voyage
 {
-	[TestFixture]
-	public class RoutingExceptionQA
+	/// <summary>
+	/// Voyage completed exception.
+	/// </summary>
+	[Serializable]
+	public sealed class VoyageCompletedException : InvalidOperationException
 	{
-		[Test]
-		public void Initialization_works ()
+		private readonly VoyageNumber _voyage;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Challenge00.DDDSample.Voyage.VoyageCompletedException"/> class.
+		/// </summary>
+		/// <param name='voyage'>
+		/// Voyage.
+		/// </param>
+		/// <param name='message'>
+		/// Message.
+		/// </param>
+		public VoyageCompletedException (VoyageNumber voyage, string message)
+			: base(message)
 		{
-			// arrange:
-			TrackingId cargo = new TrackingId("test");
-			RoutingStatus status = RoutingStatus.Misrouted;
+			_voyage = voyage;
+		}
 
-			// act:
-			RoutingException toTest = new RoutingException(cargo, status);
-
-			// assert:
-            Assert.AreSame(cargo, toTest.Cargo);
-			Assert.AreEqual(status, toTest.RoutingStatus);
+		/// <summary>
+		/// Gets the voyage.
+		/// </summary>
+		public VoyageNumber Voyage
+		{
+			get
+			{
+				return _voyage;
+			}
 		}
 	}
 }
