@@ -65,14 +65,13 @@ namespace Epic
             string name = "test";
             Expression expression = Expression.Constant(1);
             IVisitor<object, Expression> visitor = new FakeCompositeVisitor<object, Expression>(name);
-            object result = null;
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-                result = visitor.Visit(null, VisitContext.New);
+                visitor.Visit(null, VisitContext.New);
             });
             Assert.Throws<ArgumentNullException>(delegate {
-                result = visitor.Visit(expression, null);
+                visitor.Visit(expression, null);
             });
         }
         

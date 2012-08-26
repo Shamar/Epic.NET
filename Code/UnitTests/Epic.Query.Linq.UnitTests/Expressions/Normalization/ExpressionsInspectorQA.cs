@@ -435,7 +435,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
 
             // assert:
             Assert.Throws<InvalidOperationException>(delegate {
-                Expression result = inspector.Visit(expressionToVisit, context);
+                inspector.Visit(expressionToVisit, context);
             });
         }
         
@@ -472,7 +472,7 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.Throws<NotSupportedException>(delegate {
-                Expression result = inspector.Visit(expressionToVisit, context);
+                inspector.Visit(expressionToVisit, context);
             });
         }
 
@@ -783,7 +783,7 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.Throws<NotSupportedException>(delegate {
-                Expression result = inspector.Visit(expressionToVisit, context);
+                inspector.Visit(expressionToVisit, context);
             });
         }
         

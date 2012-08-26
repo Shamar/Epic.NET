@@ -288,7 +288,7 @@ namespace Epic
             /// <typeparam name='TExpression'>
             /// Type of the expression that will be visited from the provided visitor.
             /// </typeparam>
-            public IVisitor<TResult, TExpression> AsVisitor<TExpression> (TExpression target) where TExpression : class
+            IVisitor<TResult, TExpression> IVisitor<TResult>.AsVisitor<TExpression> (TExpression target)
             {
                 return _composition.GetFirstVisitor<TExpression>(target);
             }

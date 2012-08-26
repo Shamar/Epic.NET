@@ -92,7 +92,6 @@ namespace Epic
         public void SimulateAccept_onAPrivateObjectDirectlyDerivedFromObject_throwsArgumentException()
         {
             // arrange:
-            object visitResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             object unvisitable = new PrivateObject();
             IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();

@@ -142,7 +142,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
         public void Visit_aQueryableMethodOverAnNotExecutedQueryable_returnsAMethodCallToTheSameMethod(MethodCallExpression expressionToVisit, object dummy1, object dummy2)
         {
             // arrange:
-            IEnumerable<string> enumerableToReturn = Enumerable.Empty<string>();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeNormalizer composition = new FakeNormalizer();
             new QueryableMethodsReducer(composition);

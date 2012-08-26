@@ -52,8 +52,8 @@ namespace Epic
             lastRegistered.Expect(v => v.CallToVisitor(expression)).Return(lastRegistered).Repeat.Times(3);
 
             // act:
-            IVisitor<int, ConstantExpression> returnedFromFirstVisitor = firstRegistered.AsVisitor(expression);
-            IVisitor<int, ConstantExpression> returnedFromLastVisitor = lastRegistered.AsVisitor(expression);
+            IVisitor<int, ConstantExpression> returnedFromFirstVisitor = (firstRegistered as IVisitor<int>).AsVisitor(expression);
+            IVisitor<int, ConstantExpression> returnedFromLastVisitor = (lastRegistered as IVisitor<int>).AsVisitor(expression);
             IVisitor<int, ConstantExpression> returnedFromComposition = composition.GetFirstVisitor(expression);
 
             // assert:
@@ -88,7 +88,7 @@ namespace Epic
             visitor.Expect(v => v.CallToVisitor(expression)).Return(visitor).Repeat.Twice ();
 
             // act:
-            IVisitor<int, ConstantExpression> returnedFromVisitor = visitor.AsVisitor(expression);
+            IVisitor<int, ConstantExpression> returnedFromVisitor = (visitor as IVisitor<int>).AsVisitor(expression);
             IVisitor<int, ConstantExpression> returnedFromComposition = composition.GetFirstVisitor(expression);
 
             // assert:
@@ -134,6 +134,7 @@ namespace Epic
 
             // assert:
             Assert.AreEqual(resultReturnedFromTheVisitorThatWillContinue, visitResult);
+            Assert.IsNotNull(visitorNotReached);
         }
         
         [Test]
@@ -157,6 +158,7 @@ namespace Epic
 
             // assert:
             Assert.AreEqual(resultReturnedFromTheVisitorThatWillContinue, visitResult);
+            Assert.IsNotNull(visitorNotReached);
         }
     }
 }
