@@ -91,5 +91,6 @@
     <Compile Include="Expressions\Normalization\QueryableMethodsReducerQA.cs" />
     <Compile Include="Expressions\Normalization\DefaultNormalizerQA.cs" />
     <Compile Include="MissingMethods.cs" />
+    <Compile Include="Fakes\MockableVisitor.cs" />
   </ItemGroup>
 </Project>

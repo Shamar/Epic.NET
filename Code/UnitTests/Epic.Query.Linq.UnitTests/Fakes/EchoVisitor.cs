@@ -16,9 +16,9 @@ namespace Epic.Query.Linq.Fakes
             _expression = expression;
         }
 
-        protected override IVisitor<Expression, TExpression> ToVisitor<TExpression>(TExpression target)
+        protected override IVisitor<Expression, TExpression> AsVisitor<TExpression>(TExpression target)
         {
-            IVisitor<Expression, TExpression> visitor = base.ToVisitor<TExpression>(target);
+            IVisitor<Expression, TExpression> visitor = base.AsVisitor<TExpression>(target);
             if (object.ReferenceEquals(target, _expression))
                 return visitor;
             return null;

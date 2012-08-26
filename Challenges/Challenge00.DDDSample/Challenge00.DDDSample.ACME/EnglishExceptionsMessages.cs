@@ -78,7 +78,7 @@ namespace Challenge00.DDDSample.ACME
 			_acceptanceRule = acceptanceRule;
 		}
 
-		protected override IVisitor<string, TExpression> ToVisitor<TExpression> (TExpression target)
+		protected override IVisitor<string, TExpression> AsVisitor<TExpression> (TExpression target)
 		{
 			IVisitor<string, TExpression> visitor = base.ToVisitor (target);
 

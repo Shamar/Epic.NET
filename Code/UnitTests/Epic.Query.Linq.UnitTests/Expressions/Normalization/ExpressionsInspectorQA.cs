@@ -48,7 +48,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         {
             FakeCompositeVisitor<Expression, Expression> composition = new FakeCompositeVisitor<Expression, Expression>("TEST");
             ExpressionsInspector inspector = new ExpressionsInspector(composition);
-            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, Expression>>(composition);
+            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<MockableVisitor<Expression>>(composition);
             mockableInterceptor = mockable as IVisitor<Expression, Expression>;
             return inspector;
         }

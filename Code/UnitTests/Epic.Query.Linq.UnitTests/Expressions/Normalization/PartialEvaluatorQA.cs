@@ -213,8 +213,8 @@ namespace Epic.Query.Linq.Expressions.Normalization
             Expression<Func<ClassWithFieldAndProperty, string>> dummy = c => c.Property;
             MemberExpression expressionToVisit = (MemberExpression)dummy.Body;
             FakeNormalizer normalizer = new FakeNormalizer();
-            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<CompositeVisitor<Expression>.VisitorBase, IDerivedExpressionsVisitor>(normalizer);
-            IDerivedExpressionsVisitor mockableInterceptor = mockable as IDerivedExpressionsVisitor;
+            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<MockableVisitor<Expression>>(normalizer);
+            MockableVisitor<Expression> mockableInterceptor = mockable as MockableVisitor<Expression>;
             mockableInterceptor.Expect(v => v.Visit(dummy.Parameters[0], context)).Return(newParameter).Repeat.Once();
             new PartialEvaluator(normalizer);
 
@@ -259,8 +259,8 @@ namespace Epic.Query.Linq.Expressions.Normalization
             Expression<Func<string, string>> dummy = s => s.ToLower();
             MethodCallExpression expressionToVisit = (MethodCallExpression)dummy.Body;
             FakeNormalizer normalizer = new FakeNormalizer();
-            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<CompositeVisitor<Expression>.VisitorBase, IDerivedExpressionsVisitor>(normalizer);
-            IDerivedExpressionsVisitor mockableInterceptor = mockable as IDerivedExpressionsVisitor;
+            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<MockableVisitor<Expression>>(normalizer);
+            MockableVisitor<Expression> mockableInterceptor = mockable as MockableVisitor<Expression>;
             mockableInterceptor.Expect(v => v.Visit(dummy.Parameters[0], context)).Return(newParameter).Repeat.Once();
             new PartialEvaluator(normalizer);
 

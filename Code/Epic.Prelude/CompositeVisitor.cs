@@ -293,7 +293,12 @@ namespace Epic
                 return _composition.GetFirstVisitor<TExpression>(target);
             }
             #endregion
-            
+
+            internal IVisitor<TResult, TExpression> ToVisitor<TExpression> (TExpression target) where TExpression : class
+            {
+                return AsVisitor<TExpression>(target);
+            }
+
             /// <summary>
             /// Returns the current instance if and only if it's able to visit <paramref name="target"/>,
             /// <c>null</c> otherwise.
@@ -309,7 +314,7 @@ namespace Epic
             /// <typeparam name='TExpression'>
             /// The type of the object to visit.
             /// </typeparam>
-            protected internal virtual IVisitor<TResult, TExpression> ToVisitor<TExpression>(TExpression target) where TExpression : class
+            protected virtual IVisitor<TResult, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class
             {
                 return this as IVisitor<TResult, TExpression>;
             }
