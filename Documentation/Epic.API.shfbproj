@@ -101,6 +101,8 @@ It's defined in Epic.Query.</NamespaceSummaryItem>
 <NamespaceSummaryItem name="Epic.Query.Relational.Predicates" isDocumented="True">Epic.Query.Relational.Predicates express common relational predicates.&lt;br/&gt;
 It's defined in Epic.Query.</NamespaceSummaryItem>
 <NamespaceSummaryItem name="Epic.Specifications" isDocumented="True">The &lt;b&gt;Epic.Specifications&lt;/b&gt; namespace contains a general purpose framework for specifications. It provides a closure of operations over basic logical operators (conjunction, disjunction and negation) with some well designed extensions for handling inhteritance.&lt;br/&gt;
+It's defined in Epic.Prelude.</NamespaceSummaryItem>
+<NamespaceSummaryItem name="Epic.Visitors" isDocumented="True">The Epic.Visitors namespace contains a set of general purpose visitors.&lt;br/&gt;
 It's defined in Epic.Prelude.</NamespaceSummaryItem></NamespaceSummaries>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
