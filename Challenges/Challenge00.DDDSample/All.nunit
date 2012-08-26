@@ -1,8 +1,13 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Debug" />
   <Config name="Debug" binpathtype="Auto">
+    <assembly path="../../build/tests/Debug/Challenge00.DDDSample.ACME.UnitTests.dll" />
     <assembly path="../../build/tests/Debug/Challenge00.DDDSample.Default.UnitTests.dll" />
     <assembly path="../../build/tests/Debug/Challenge00.DDDSample.UnitTests.dll" />
   </Config>
-  <Config name="Release" binpathtype="Auto" />
+  <Config name="Release" binpathtype="Auto" >
+    <assembly path="../../build/tests/Release/Challenge00.DDDSample.ACME.UnitTests.dll" />
+    <assembly path="../../build/tests/Release/Challenge00.DDDSample.Default.UnitTests.dll" />
+    <assembly path="../../build/tests/Release/Challenge00.DDDSample.UnitTests.dll" />
+  </Config>
 </NUnitProject>
