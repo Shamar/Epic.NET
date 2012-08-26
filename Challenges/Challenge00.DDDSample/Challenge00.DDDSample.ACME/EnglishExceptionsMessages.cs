@@ -59,12 +59,8 @@ namespace Challenge00.DDDSample.ACME
 		private readonly Func<TException, string> _format;
 		private readonly Func<TException, bool> _acceptanceRule;
 		public Format(CompositeVisitor<string> composition, Func<TException, string> format)
-			: base(composition)
+			: this(composition, format, e => true)
 		{
-			if(null == format)
-				throw new ArgumentNullException("format");
-			_format = format;
-			_acceptanceRule = e => true;
 		}
 
 		public Format(CompositeVisitor<string> composition, Func<TException, string> format, Func<TException, bool> acceptanceRule)

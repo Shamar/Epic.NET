@@ -71,7 +71,7 @@
     <Compile Include="Specifications\DisjunctionQA.cs" />
     <Compile Include="VisitableExceptionsQA.cs" />
     <Compile Include="UnvisitableWrapperQA.cs" />
-    <Compile Include="EchoingVisitorQA.cs" />
+    <Compile Include="Visitors\EchoingVisitorQA.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -79,5 +79,8 @@
       <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
       <Name>Epic.Prelude</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Visitors\" />
   </ItemGroup>
 </Project>

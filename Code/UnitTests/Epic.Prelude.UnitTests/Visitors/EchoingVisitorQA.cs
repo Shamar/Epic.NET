@@ -27,7 +27,7 @@ using Epic.Fakes;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Epic
+namespace Epic.Visitors
 {
     [TestFixture]
     public class EchoingVisitorQA : RhinoMocksFixtureBase

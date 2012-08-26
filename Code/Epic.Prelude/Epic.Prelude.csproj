@@ -69,11 +69,12 @@
     <Compile Include="VisitableExceptions.cs" />
     <Compile Include="UnvisitableWrapper.cs" />
     <Compile Include="AcceptCaller.cs" />
-    <Compile Include="EchoingVisitor.cs" />
+    <Compile Include="Visitors\EchoingVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Specifications\" />
     <Folder Include="Collections\" />
     <Folder Include="Math\" />
+    <Folder Include="Visitors\" />
   </ItemGroup>
 </Project>
