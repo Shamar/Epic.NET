@@ -33,7 +33,7 @@ namespace Epic
     /// Indeed such kind of visitors both visit and returns the same type of object.
     /// Thus by registering the <see cref="EchoingVisitor{TEcho}"/> as the 
     /// first one in such kind of compositions all subsequent visitors will be able
-    /// to transform their own nodes or to simply <see cref="CompositeVisitor{TResult}.VisitorBase.ContinueVisit"/>
+    /// to transform their own nodes or to simply ContinueVisit
     /// on those node that they don't treat.
     /// </remarks>
     /// <typeparam name="TEcho">Type of the objects that this visitor will recieve and return.</typeparam>

@@ -78,7 +78,7 @@ namespace Epic
         }
 
         /// <summary>
-        /// Simulates the <see cref="IVisitable.Accept"/> method on a class
+        /// Simulates the <see cref="IVisitable.Accept{TResult}"/> method on a class
         /// hierarchy that does not provide such interface.
         /// </summary>
         /// <returns>

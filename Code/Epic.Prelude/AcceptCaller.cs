@@ -50,7 +50,7 @@ namespace Epic
 
         /// <summary>
         /// Enable <paramref name="visitor"/> to visit <paramref name="toVisit"/> by either
-        /// calling <see cref="IVisitable.Accept"/> or calling 
+        /// calling <see cref="IVisitable.Accept{TResult}"/> or calling 
         /// <see cref="UnvisitableWrapper{TUnvisitable, TResult}.SimulateAccept"/>, as appropriate for <typeparamref name="TToVisit"/>.
         /// </summary>
         /// <param name="toVisit">Object to be visited.</param>
