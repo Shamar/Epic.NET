@@ -80,7 +80,7 @@ namespace Challenge00.DDDSample.ACME
 
 		protected override IVisitor<string, TExpression> AsVisitor<TExpression> (TExpression target)
 		{
-			IVisitor<string, TExpression> visitor = base.ToVisitor (target);
+			IVisitor<string, TExpression> visitor = base.AsVisitor (target);
 
 			if(null == visitor || !_acceptanceRule(target as TException))
 				return null;
