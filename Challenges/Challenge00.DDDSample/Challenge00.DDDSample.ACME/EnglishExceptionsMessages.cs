@@ -31,9 +31,26 @@ namespace Challenge00.DDDSample.ACME
 		public EnglishExceptionsMessages ()
 			: base("EnglishExceptionsMessages")
 		{
+			new Format<Exception>(this, 
+			                      e => "An unexpected error occurred. Please contact the administrator.");
+			new Format<Location.WrongLocationException>(this,
+			                                            e => string.Format("Cannot perform the operation requested, becouse the location provided ({0}) is not the expected one ({1}).", e.ActualLocation, e.ExpectedLocation));
+			new Format<Voyage.VoyageCompletedException>(this,
+			                                            e => string.Format("The voyage '{0}' has already reached its own destintation.", e.Voyage));
+			new Format<Cargo.AlreadyClaimedException>(this,
+			                                          e => string.Format("Cannot perform the operation requested becouse the cargo '{0}' has been claimed.", e.Cargo));
+			new Format<Cargo.RoutingException>(this,
+			                                   e => string.Format ("Cannot perform the operation requested becouse the cargo '{0}' has been misrouted.", e.Cargo),
+			                                   e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.Misrouted);
+			new Format<Cargo.RoutingException>(this,
+			                                   e => string.Format ("Cannot perform the operation requested becouse the cargo '{0}' is still not routed.", e.Cargo),
+			                                   e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.NotRouted);
 		}
 
-
+		protected override IVisitContext InitializeVisitContext (Exception target, IVisitContext context)
+		{
+			return context;
+		}
 	}
 
 	public sealed class Format<TException> : CompositeVisitor<string>.VisitorBase, IVisitor<string, TException>
@@ -65,12 +82,11 @@ namespace Challenge00.DDDSample.ACME
 		{
 			IVisitor<string, TExpression> visitor = base.ToVisitor (target);
 
-			if(!_acceptanceRule(target))
+			if(null == visitor || !_acceptanceRule(target as TException))
 				return null;
 
 			return visitor;
 		}
-
 
 		#region IVisitor implementation
 		public string Visit (TException target, IVisitContext context)

@@ -1,11 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{996EBBBC-2904-44E6-8ADD-11A6C0958FE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.UnitTests", "UnitTests\Challenge00.DDDSample.UnitTests\Challenge00.DDDSample.UnitTests.csproj", "{C63A1855-8414-4711-B4DF-D3372ACD7069}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.Default.UnitTests", "UnitTests\Challenge00.DDDSample.Default.UnitTests\Challenge00.DDDSample.Default.UnitTests.csproj", "{E26B8AEF-2856-4040-BE65-97B7735ADABE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.ACME.UnitTests", "UnitTests\Challenge00.DDDSample.ACME.UnitTests\Challenge00.DDDSample.ACME.UnitTests.csproj", "{8A174BD0-1139-4442-9452-856FC36CC1CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample", "Challenge00.DDDSample\Challenge00.DDDSample.csproj", "{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}"
 EndProject
@@ -27,6 +29,10 @@ Global
 		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A174BD0-1139-4442-9452-856FC36CC1CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A174BD0-1139-4442-9452-856FC36CC1CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A174BD0-1139-4442-9452-856FC36CC1CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A174BD0-1139-4442-9452-856FC36CC1CA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -43,6 +49,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C63A1855-8414-4711-B4DF-D3372ACD7069} = {996EBBBC-2904-44E6-8ADD-11A6C0958FE4}
 		{E26B8AEF-2856-4040-BE65-97B7735ADABE} = {996EBBBC-2904-44E6-8ADD-11A6C0958FE4}
+		{8A174BD0-1139-4442-9452-856FC36CC1CA} = {996EBBBC-2904-44E6-8ADD-11A6C0958FE4}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = UnitTests\Challenge00.DDDSample.UnitTests\Challenge00.DDDSample.UnitTests.csproj
