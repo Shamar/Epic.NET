@@ -350,7 +350,7 @@ namespace Epic.Specifications
         /// abstraction nor a specialization of <typeparamref name="Candidate"/>.</exception>
         protected virtual ISpecification<Other> OfAnotherType<Other> () where Other : class
         {
-            return new Variant<Other, Candidate> (this);
+            return new Variant<Candidate, Other>(this);
         }
         
         /// <summary>

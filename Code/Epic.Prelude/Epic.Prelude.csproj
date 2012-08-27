@@ -70,6 +70,7 @@
     <Compile Include="UnvisitableWrapper.cs" />
     <Compile Include="AcceptCaller.cs" />
     <Compile Include="Visitors\EchoingVisitor.cs" />
+    <Compile Include="Visitors\SimpleFormatter.cs" />
   </ItemGroup>
   <ItemGroup />
 </Project>

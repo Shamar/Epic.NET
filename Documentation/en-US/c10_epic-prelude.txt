@@ -92,6 +92,16 @@ hundred types of exceptions that the domain objects throw whenever they
 need to.
 However your users works all over the world, talking different language. 
 
+In our sample domain for cargo tracking, all the messages from the domain's 
+exceptions are already expressive in English. So, for english people 
+we can just print the message, right?
+
+[source,c#]
+-------------------------------------------
+
+-------------------------------------------
+
+
 
 Specifying qualities
 ~~~~~~~~~~~~~~~~~~~~

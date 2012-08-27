@@ -48,7 +48,7 @@ namespace Epic.Visitors
             string target = "result";
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeCompositeVisitor<string, string> optimizer = new FakeCompositeVisitor<string,string>("test");
-            EchoingVisitor<string> visitor = new EchoingVisitor<string>(optimizer);
+            IVisitor<string, string> visitor = new EchoingVisitor<string>(optimizer);
 
             // act:
             string result = visitor.Visit(target, context);

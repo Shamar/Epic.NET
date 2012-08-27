@@ -72,6 +72,7 @@
     <Compile Include="VisitableExceptionsQA.cs" />
     <Compile Include="UnvisitableWrapperQA.cs" />
     <Compile Include="Visitors\EchoingVisitorQA.cs" />
+    <Compile Include="Visitors\SimpleFormatterQA.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

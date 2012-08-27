@@ -1,5 +1,5 @@
 //
-//  EnglishExceptionsFormatterQA.cs
+//  ItalianExceptionsFormatterQA.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -32,13 +32,13 @@ using Challenge00.DDDSample.Voyage;
 namespace Challenge00.DDDSample.ACME.UnitTests
 {
 	[TestFixture]
-	public class EnglishExceptionsFormatterQA
+	public class ItalianExceptionsFormatterQA
 	{
 		[Test]
 		public void Initialize_works ()
 		{
 			// act:
-			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
+			ItalianExceptionsFormatter toTest = new ItalianExceptionsFormatter();
 
 			// assert:
 			Assert.IsNotNull(toTest);
@@ -60,13 +60,13 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 		public void Visit_anUnknownException_returnsTheDefaultMessage (Exception toFormat)
 		{
 			// arrange:
-			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
+			ItalianExceptionsFormatter toTest = new ItalianExceptionsFormatter();
 
 			// act:
 			string result = toFormat.Accept(toTest, VisitContext.New);
 
 			// assert:
-			Assert.AreEqual("An unexpected error occurred. Please contact the administrator.", result);
+            Assert.AreEqual("Si è verificato un errore imprevisto. Conttattare l'amministratore del sistema.", result);
 		}
 
 		[TestCase("UNL23", "UNL34")]
@@ -77,7 +77,7 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 			UnLocode expectedLocation = new UnLocode(expected);
 			UnLocode actualLocation = new UnLocode(actual);
 			WrongLocationException toFormat = new WrongLocationException("test", "Test message.", expectedLocation, actualLocation);
-			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
+			ItalianExceptionsFormatter toTest = new ItalianExceptionsFormatter();
 
 			// act:
 			string result = toFormat.Accept(toTest, VisitContext.New);
@@ -87,15 +87,15 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 			StringAssert.Contains(actual, result);
 		}
 
-		[TestCase("test", RoutingStatus.Misrouted, "Cannot perform the operation requested becouse the cargo '{0}' has been misrouted.")]
-		[TestCase("test2", RoutingStatus.NotRouted, "Cannot perform the operation requested becouse the cargo '{0}' is still not routed.")]
+        [TestCase("test", RoutingStatus.Misrouted, "Non è possibile effettuare l'operazione perché il cargo '{0}' è stato diretto su un percorso sbagliato.")]
+        [TestCase("test2", RoutingStatus.NotRouted, "Non è possibile effettuare l'operazione perché non è ancora stato assegnato un percorso al cargo '{0}'.")]
 		public void Visit_aKnownRoutingException_returnsTheProperMessage (string cargo, RoutingStatus status, string expectedFormat)
 		{
 			// arrange:
 			string expectedMessage = string.Format(expectedFormat, cargo);
 			TrackingId id = new TrackingId(cargo);
 			RoutingException toFormat = new RoutingException(id, status);
-			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
+			ItalianExceptionsFormatter toTest = new ItalianExceptionsFormatter();
 
 			// act:
 			string result = toFormat.Accept(toTest, VisitContext.New);
@@ -109,10 +109,10 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 		public void Visit_anAlreadyClaimedException_returnsTheRightMessage (string trackingId)
 		{
 			// arrange:
-			string expectedMessage = string.Format("Cannot perform the operation requested becouse the cargo '{0}' has been claimed.", trackingId);
+            string expectedMessage = string.Format("Non è possibile effettuare l'operazione perché il cargo '{0}' è già stato ritirato.", trackingId);
 			TrackingId cargo = new TrackingId(trackingId);
 			AlreadyClaimedException toFormat = new AlreadyClaimedException(cargo, "Test message.");
-			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
+			ItalianExceptionsFormatter toTest = new ItalianExceptionsFormatter();
 
 			// act:
 			string result = toFormat.Accept(toTest, VisitContext.New);
@@ -126,10 +126,10 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 		public void Visit_aVoyageCompletedException_returnsTheRightMessage (string voyageNumber)
 		{
 			// arrange:
-			string expectedMessage = string.Format("The voyage '{0}' has already reached its own destintation.", voyageNumber);
+            string expectedMessage = string.Format("Il viaggio '{0}' ha già raggiunto la propria destinazione.", voyageNumber);
 			VoyageNumber voyage = new VoyageNumber(voyageNumber);
 			VoyageCompletedException toFormat = new VoyageCompletedException(voyage, "Test message.");
-			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
+			ItalianExceptionsFormatter toTest = new ItalianExceptionsFormatter();
 			
 			// act:
 			string result = toFormat.Accept(toTest, VisitContext.New);

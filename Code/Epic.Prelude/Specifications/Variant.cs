@@ -32,8 +32,8 @@ namespace Epic.Specifications
     /// <typeparam name="ToCandidate">Type of the objects that can be tested with this specification.</typeparam>
     /// <typeparam name="FromCanditate">Type of the objects that can be tested with inner specification.</typeparam>
     [Serializable]
-    public sealed class Variant<ToCandidate, FromCanditate> : SpecificationBase<Variant<ToCandidate, FromCanditate>, ToCandidate>,
-                                                              IEquatable<Variant<ToCandidate, FromCanditate>>
+    public sealed class Variant<FromCanditate, ToCandidate> : SpecificationBase<Variant<FromCanditate, ToCandidate>, ToCandidate>,
+                                                              IEquatable<Variant<FromCanditate, ToCandidate>>
         where ToCandidate : class
         where FromCanditate : class
     {
@@ -89,7 +89,7 @@ namespace Epic.Specifications
         /// <param name='otherSpecification'>
         /// Other specification.
         /// </param>
-        protected override bool EqualsA (Variant<ToCandidate, FromCanditate> otherSpecification)
+        protected override bool EqualsA(Variant<FromCanditate, ToCandidate> otherSpecification)
         {
             return _innerSpecification.Equals (otherSpecification._innerSpecification);
         }

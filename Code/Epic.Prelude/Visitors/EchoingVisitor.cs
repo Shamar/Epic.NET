@@ -66,7 +66,7 @@ namespace Epic.Visitors
         /// <returns>
         /// The <paramref name="target"/>.
         /// </returns>
-        public TEcho Visit (TEcho target, IVisitContext context)
+        TEcho IVisitor<TEcho, TEcho>.Visit (TEcho target, IVisitContext context)
         {
             return target;
         }

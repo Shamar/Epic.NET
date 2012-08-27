@@ -33,7 +33,7 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 		public void Initialize_withoutAnyArguments_throwsArgumentNullException ()
 		{
 			// arrange:
-			EnglishExceptionsMessages composition = new EnglishExceptionsMessages();
+			EnglishExceptionsFormatter composition = new EnglishExceptionsFormatter();
 
 			// assert:
 			Assert.Throws<ArgumentNullException>(delegate {

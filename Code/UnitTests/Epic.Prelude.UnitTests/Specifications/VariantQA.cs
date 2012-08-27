@@ -40,8 +40,8 @@ namespace Epic.Specifications
             inner2.Expect(s => s.CandidateType).Return(typeof(Fakes.FakeCandidate1Abstraction)).Repeat.Once();
 
             // act:
-            var toTest1 = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner1);
-            var toTest2 = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner2);
+            var toTest1 = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner1);
+            var toTest2 = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner2);
 
             // assert:
             Assert.IsNotNull(toTest1);
@@ -69,7 +69,7 @@ namespace Epic.Specifications
             
             // act:
             Assert.Throws<TypeInitializationException>(delegate() {
-                new Variant<Fakes.FakeCandidate2, Fakes.FakeCandidate1>(inner);
+                new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate2>(inner);
             });
         }
 
@@ -91,8 +91,8 @@ namespace Epic.Specifications
             // arrange:
             ISpecification<Fakes.FakeCandidate1> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1>>();
             inner.Expect(s => s.Equals(inner)).Return(true).Repeat.AtLeastOnce();
-            var toTest1 = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner);
-            var other = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner);
+            var toTest1 = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner);
+            var other = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner);
 
             // act:
             bool result = toTest1.Equals(other);
@@ -112,7 +112,7 @@ namespace Epic.Specifications
             inner.Expect(s => s.IsSatisfiedBy(candidate1)).Return(true).Repeat.Once();
             inner.Expect(s => s.IsSatisfiedBy(candidate2)).Return(false).Repeat.Once();
             inner.Expect(s => s.IsSatisfiedBy(null)).Return(false).Repeat.Once();
-            ISpecification<Fakes.FakeCandidate1Abstraction> toTest = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner);
+            ISpecification<Fakes.FakeCandidate1Abstraction> toTest = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner);
 
             // act:
             bool candidate1Result = toTest.IsSatisfiedBy(candidate1);
@@ -132,7 +132,7 @@ namespace Epic.Specifications
             ISpecification<Fakes.FakeCandidate2> expectedResult = GenerateStrictMock<ISpecification<Fakes.FakeCandidate2>>();
             ISpecification<Fakes.FakeCandidate1> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1>>();
             inner.Expect(s => s.OfType<Fakes.FakeCandidate2>()).Return(expectedResult).Repeat.Once();
-            ISpecification<Fakes.FakeCandidate1Abstraction> toTest = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner);
+            ISpecification<Fakes.FakeCandidate1Abstraction> toTest = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner);
 
 
             // act:
