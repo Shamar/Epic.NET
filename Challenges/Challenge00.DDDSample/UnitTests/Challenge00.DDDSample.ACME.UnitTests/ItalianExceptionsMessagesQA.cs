@@ -66,7 +66,7 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 			string result = toFormat.Accept(toTest, VisitContext.New);
 
 			// assert:
-            Assert.AreEqual("Si è verificato un errore imprevisto. Conttattare l'amministratore del sistema.", result);
+            Assert.AreEqual("Si è verificato un errore imprevisto. Contattare l'amministratore del sistema.", result);
 		}
 
 		[TestCase("UNL23", "UNL34")]
@@ -136,6 +136,25 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 			
 			// assert:
 			Assert.AreEqual(expectedMessage, result);
+		}
+
+		[Test]
+		public void Visit_aWrappedDomainException_returnsTheInnerVisitResult ()
+		{
+			// arrange:
+			string expectedMessage = "Test message.";
+			UnLocode expectedLocation = new UnLocode("UNL23");
+			UnLocode actualLocation = new UnLocode("UNL34");
+			WrongLocationException inner = new WrongLocationException("test", expectedMessage, expectedLocation, actualLocation);
+			InvalidTimeZoneException toFormat = new InvalidTimeZoneException("Message to ignore.", inner);
+			ItalianExceptionsFormatter toTest = new ItalianExceptionsFormatter();
+			
+			// act:
+			string result = toFormat.Accept(toTest, VisitContext.New);
+			
+			// assert:
+			StringAssert.Contains("UNL23", result);
+			StringAssert.Contains("UNL34", result);
 		}
 	}
 }

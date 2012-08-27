@@ -25,42 +25,42 @@ using System;
 using Epic;
 namespace Challenge00.DDDSample.ACME
 {
-    public sealed class Format<TException> : CompositeVisitor<string>.VisitorBase, IVisitor<string, TException>
-        where TException : Exception
-    {
-        private readonly Func<TException, string> _format;
-        private readonly Func<TException, bool> _acceptanceRule;
-        public Format(CompositeVisitor<string> composition, Func<TException, string> format)
-            : this(composition, format, e => true)
-        {
-        }
+	public sealed class Format<TException> : CompositeVisitor<string>.VisitorBase, IVisitor<string, TException>
+	    where TException : Exception
+	{
+	    private readonly Func<TException, string> _format;
+	    private readonly Func<TException, bool> _acceptanceRule;
+	    public Format(CompositeVisitor<string> composition, Func<TException, string> format)
+	        : this(composition, format, e => true)
+	    {
+	    }
 
-        public Format(CompositeVisitor<string> composition, Func<TException, string> format, Func<TException, bool> acceptanceRule)
-            : base(composition)
-        {
-            if (null == format)
-                throw new ArgumentNullException("format");
-            if (null == acceptanceRule)
-                throw new ArgumentNullException("acceptanceRule");
-            _format = format;
-            _acceptanceRule = acceptanceRule;
-        }
+	    public Format(CompositeVisitor<string> composition, Func<TException, string> format, Func<TException, bool> acceptanceRule)
+	        : base(composition)
+	    {
+	        if (null == format)
+	            throw new ArgumentNullException("format");
+	        if (null == acceptanceRule)
+	            throw new ArgumentNullException("acceptanceRule");
+	        _format = format;
+	        _acceptanceRule = acceptanceRule;
+	    }
 
-        protected override IVisitor<string, TExpression> AsVisitor<TExpression>(TExpression target)
-        {
-            IVisitor<string, TExpression> visitor = base.AsVisitor(target);
+	    protected override IVisitor<string, TExpression> AsVisitor<TExpression>(TExpression target)
+	    {
+	        IVisitor<string, TExpression> visitor = base.AsVisitor(target);
 
-            if (null == visitor || !_acceptanceRule(target as TException))
-                return null;
+	        if (null == visitor || !_acceptanceRule(target as TException))
+	            return null;
 
-            return visitor;
-        }
+	        return visitor;
+	    }
 
-        #region IVisitor implementation
-        public string Visit(TException target, IVisitContext context)
-        {
-            return _format(target);
-        }
-        #endregion
-    }
+	    #region IVisitor implementation
+	    public string Visit(TException target, IVisitContext context)
+	    {
+	        return _format(target);
+	    }
+	    #endregion
+	}
 }

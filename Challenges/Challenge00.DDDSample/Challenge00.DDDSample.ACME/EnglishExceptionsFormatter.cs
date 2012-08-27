@@ -26,25 +26,84 @@ using Epic;
 
 namespace Challenge00.DDDSample.ACME
 {
+	public sealed class ReturnMessages : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception>
+	{
+		public ReturnMessages(CompositeVisitor<string> composition)
+			: base(composition)
+		{
+		}
+
+		public string Visit(Exception target, IVisitContext context)
+		{
+			return target.Message;
+		}
+	}
+
+	public sealed class ConstantMessage : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception>
+	{
+		private readonly string _msg;
+		public ConstantMessage(CompositeVisitor<string> composition, string message)
+			: base(composition)
+		{
+			_msg = message;
+		}
+
+		protected override IVisitor<string, TExpression> AsVisitor<TExpression> (TExpression target)
+		{
+			IVisitor<string, TExpression> visitor = base.AsVisitor (target);
+			
+			if(null == visitor || typeof(TExpression).Assembly.Equals(typeof(Challenge00.DDDSample.Cargo.ICargo).Assembly))
+				return null;
+			
+			return visitor;
+		}
+
+		public string Visit(Exception target, IVisitContext context)
+		{
+			return _msg;
+		}
+	}
+
+	public sealed class InnerDomainExceptionUnwrap : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception>
+	{
+		public InnerDomainExceptionUnwrap(CompositeVisitor<string> composition)
+			: base(composition)
+		{
+		}
+		
+		protected override IVisitor<string, TExpression> AsVisitor<TExpression> (TExpression target)
+		{
+			IVisitor<string, TExpression> visitor = base.AsVisitor (target);
+			
+			if(null == visitor || typeof(TExpression).Assembly.Equals(typeof(Challenge00.DDDSample.Cargo.ICargo).Assembly))
+				return null;
+			
+			return visitor;
+		}
+		
+		public string Visit(Exception target, IVisitContext context)
+		{
+			if(null == target.InnerException)
+			{
+				return ContinueVisit(target, context);
+			}
+			else
+			{
+				return VisitInner(target.InnerException, context);
+			}
+		}
+	}
+
 	public sealed class EnglishExceptionsFormatter : CompositeVisitorBase<string, Exception>
 	{
 		public EnglishExceptionsFormatter ()
 			: base("EnglishExceptionsMessages")
 		{
-			new Format<Exception>(this, 
-			                      e => "An unexpected error occurred. Please contact the administrator.");
+			new ReturnMessages(this);
+			new ConstantMessage(this, "An unexpected error occurred. Please contact the administrator.");
+			new InnerDomainExceptionUnwrap(this);
 			new Format<Location.WrongLocationException>(this,
-			                                            e => string.Format("Cannot perform the operation requested, becouse the location provided ({0}) is not the expected one ({1}).", e.ActualLocation, e.ExpectedLocation));
-			new Format<Voyage.VoyageCompletedException>(this,
-			                                            e => string.Format("The voyage '{0}' has already reached its own destintation.", e.Voyage));
-			new Format<Cargo.AlreadyClaimedException>(this,
-			                                          e => string.Format("Cannot perform the operation requested becouse the cargo '{0}' has been claimed.", e.Cargo));
-			new Format<Cargo.RoutingException>(this,
-			                                   e => string.Format ("Cannot perform the operation requested becouse the cargo '{0}' has been misrouted.", e.Cargo),
-			                                   e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.Misrouted);
-			new Format<Cargo.RoutingException>(this,
-			                                   e => string.Format ("Cannot perform the operation requested becouse the cargo '{0}' is still not routed.", e.Cargo),
-			                                   e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.NotRouted);
+			                                            e => e.Message.Substring(0, e.Message.LastIndexOf("\r\n")));
 		}
 
 		protected override IVisitContext InitializeVisitContext (Exception target, IVisitContext context)

@@ -52,7 +52,6 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 				yield return new ArgumentNullException();
 				yield return new ArgumentException();
 				yield return new Exception();
-				yield return new RoutingException(new TrackingId("test"), RoutingStatus.Routed); // No routing exception should have such RoutingStatus
 			}
 		}
 
@@ -71,30 +70,13 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 
 		[TestCase("UNL23", "UNL34")]
 		[TestCase("UNL45", "UNL56")]
-		public void Visit_aWrongLocationException_returnsTheRightMessage (string expected, string actual)
+		public void Visit_aWrongLocationException_returnsTheExceptionMessage (string expected, string actual)
 		{
 			// arrange:
+			string expectedMessage = "Test message.";
 			UnLocode expectedLocation = new UnLocode(expected);
 			UnLocode actualLocation = new UnLocode(actual);
-			WrongLocationException toFormat = new WrongLocationException("test", "Test message.", expectedLocation, actualLocation);
-			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
-
-			// act:
-			string result = toFormat.Accept(toTest, VisitContext.New);
-
-			// assert:
-			StringAssert.Contains(expected, result);
-			StringAssert.Contains(actual, result);
-		}
-
-		[TestCase("test", RoutingStatus.Misrouted, "Cannot perform the operation requested becouse the cargo '{0}' has been misrouted.")]
-		[TestCase("test2", RoutingStatus.NotRouted, "Cannot perform the operation requested becouse the cargo '{0}' is still not routed.")]
-		public void Visit_aKnownRoutingException_returnsTheProperMessage (string cargo, RoutingStatus status, string expectedFormat)
-		{
-			// arrange:
-			string expectedMessage = string.Format(expectedFormat, cargo);
-			TrackingId id = new TrackingId(cargo);
-			RoutingException toFormat = new RoutingException(id, status);
+			WrongLocationException toFormat = new WrongLocationException("test", expectedMessage, expectedLocation, actualLocation);
 			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
 
 			// act:
@@ -104,14 +86,30 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 			Assert.AreEqual(expectedMessage, result);
 		}
 
-		[TestCase("TEST1")]
-		[TestCase("TEST2")]
-		public void Visit_anAlreadyClaimedException_returnsTheRightMessage (string trackingId)
+		[TestCase("test", RoutingStatus.Misrouted)]
+		[TestCase("test2", RoutingStatus.NotRouted)]
+		public void Visit_aKnownRoutingException_returnsTheProperMessage (string cargo, RoutingStatus status)
 		{
 			// arrange:
-			string expectedMessage = string.Format("Cannot perform the operation requested becouse the cargo '{0}' has been claimed.", trackingId);
+			TrackingId id = new TrackingId(cargo);
+			RoutingException toFormat = new RoutingException(id, status);
+			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
+
+			// act:
+			string result = toFormat.Accept(toTest, VisitContext.New);
+
+			// assert:
+			Assert.AreEqual(toFormat.Message, result);
+		}
+
+		[TestCase("TEST1")]
+		[TestCase("TEST2")]
+		public void Visit_anAlreadyClaimedException_returnsTheExceptionMessage (string trackingId)
+		{
+			// arrange:
+			string expectedMessage = "Test message.";
 			TrackingId cargo = new TrackingId(trackingId);
-			AlreadyClaimedException toFormat = new AlreadyClaimedException(cargo, "Test message.");
+			AlreadyClaimedException toFormat = new AlreadyClaimedException(cargo, expectedMessage);
 			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
 
 			// act:
@@ -123,12 +121,30 @@ namespace Challenge00.DDDSample.ACME.UnitTests
 
 		[TestCase("TEST1")]
 		[TestCase("TEST2")]
-		public void Visit_aVoyageCompletedException_returnsTheRightMessage (string voyageNumber)
+		public void Visit_aVoyageCompletedException_returnsTheExceptionMessage (string voyageNumber)
 		{
 			// arrange:
 			string expectedMessage = string.Format("The voyage '{0}' has already reached its own destintation.", voyageNumber);
 			VoyageNumber voyage = new VoyageNumber(voyageNumber);
-			VoyageCompletedException toFormat = new VoyageCompletedException(voyage, "Test message.");
+			VoyageCompletedException toFormat = new VoyageCompletedException(voyage, expectedMessage);
+			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
+			
+			// act:
+			string result = toFormat.Accept(toTest, VisitContext.New);
+			
+			// assert:
+			Assert.AreEqual(expectedMessage, result);
+		}
+
+		[Test]
+		public void Visit_aWrappedDomainException_returnsTheInnerVisitResult ()
+		{
+			// arrange:
+			string expectedMessage = "Test message.";
+			UnLocode expectedLocation = new UnLocode("UNL23");
+			UnLocode actualLocation = new UnLocode("UNL34");
+			WrongLocationException inner = new WrongLocationException("test", expectedMessage, expectedLocation, actualLocation);
+			InvalidTimeZoneException toFormat = new InvalidTimeZoneException("Message to ignore.", inner);
 			EnglishExceptionsFormatter toTest = new EnglishExceptionsFormatter();
 			
 			// act:

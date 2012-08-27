@@ -31,8 +31,8 @@ namespace Challenge00.DDDSample.ACME
         public ItalianExceptionsFormatter()
             : base("ItalianExceptionsFormatter")
 		{
-			new Format<Exception>(this, 
-			                      e => "Si è verificato un errore imprevisto. Conttattare l'amministratore del sistema.");
+			new ConstantMessage(this, "Si è verificato un errore imprevisto. Contattare l'amministratore del sistema.");
+			new InnerDomainExceptionUnwrap(this);
 			new Format<Location.WrongLocationException>(this,
 			                                            e => string.Format("Non è possibile effettuare l'operazione, perché la località fornita ({0}) non coincide con quella prevista ({1}).", e.ActualLocation, e.ExpectedLocation));
 			new Format<Voyage.VoyageCompletedException>(this,
@@ -45,6 +45,9 @@ namespace Challenge00.DDDSample.ACME
 			new Format<Cargo.RoutingException>(this,
                                                e => string.Format("Non è possibile effettuare l'operazione perché non è ancora stato assegnato un percorso al cargo '{0}'.", e.Cargo),
 			                                   e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.NotRouted);
+			new Format<Cargo.RoutingException>(this,
+			                                   e => "Si è verificato un errore imprevisto. Contattare l'amministratore del sistema.",
+			                                   e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.Routed);
 		}
 
 		protected override IVisitContext InitializeVisitContext (Exception target, IVisitContext context)
@@ -52,7 +55,5 @@ namespace Challenge00.DDDSample.ACME
 			return context;
 		}
 	}
-
-
 }
 
