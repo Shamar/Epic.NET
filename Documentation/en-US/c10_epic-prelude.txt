@@ -238,7 +238,7 @@ public sealed class EnglishExceptionsFormatter : CompositeVisitorBase<string, Ex
 However our english message are still a bit weird. The +WrongLocationException+ 
 derives +ArgumentException+ and thus add to the message provided by the thrower
 the parameter name. But this time we can write a little more general visitor
-for the english composition: a +Format<TException>+. footnote:[Being such a case
+for the english composition: a +Format<TException>+. footnote:[Being such a use case
 so frequent, Epic provides an even more general version of this class: the
 http://epic.tesio.it/doc/api/html/T_Epic_Visitors_SimpleFormatter_1.htm[SimpleFormatter<TTarget>]. ]
 

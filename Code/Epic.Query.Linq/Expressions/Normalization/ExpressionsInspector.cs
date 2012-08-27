@@ -43,7 +43,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
         IVisitor<Expression, UnaryExpression>, 
         IVisitor<Expression, BinaryExpression>, 
         IVisitor<Expression, ConditionalExpression>,
-        IVisitor<Expression, ConstantExpression>,
         IVisitor<Expression, InvocationExpression>,
         IVisitor<Expression, LambdaExpression>,
         IVisitor<Expression, MemberExpression>,
@@ -52,7 +51,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
         IVisitor<Expression, NewArrayExpression>,
         IVisitor<Expression, MemberInitExpression>,
         IVisitor<Expression, ListInitExpression>,
-        IVisitor<Expression, ParameterExpression>,
         IVisitor<Expression, TypeBinaryExpression>
     {
         /// <summary>
@@ -124,20 +122,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
         }
     
         /// <summary>
-        /// Visit the specified <see cref="ConstantExpression"/>.
-        /// </summary>
-        /// <param name='expression'>
-        /// Expression.
-        /// </param>
-        /// <param name='context'>
-        /// Context.
-        /// </param>
-        public Expression Visit (ConstantExpression expression, IVisitContext context)
-        {
-            return expression;
-        }
-    
-        /// <summary>
         /// Visit the specified <see cref="ConditionalExpression"/>.
         /// </summary>
         /// <param name='expression'>
@@ -155,21 +139,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
                 return Expression.Condition (newTest, newTrue, newFalse);
             return expression;
         }
-    
-        /// <summary>
-        /// Visit the specified <see cref="ParameterExpression"/>.
-        /// </summary>
-        /// <param name='expression'>
-        /// Expression.
-        /// </param>
-        /// <param name='context'>
-        /// Context.
-        /// </param>
-        public Expression Visit (ParameterExpression expression, IVisitContext context)
-        {
-            return expression;
-        }
-    
+
         /// <summary>
         /// Visit the specified <see cref="LambdaExpression"/>.
         /// </summary>

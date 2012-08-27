@@ -53,36 +53,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
             return inspector;
         }
         
-        [Test]
-        public void Visit_aConstantExpression_returnTheConstantRecieved()
-        {
-            // arrange:
-            ConstantExpression expressionToVisit = Expression.Constant(1);
-            IVisitor<Expression, Expression> interceptor = null;
-            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
-
-            // act:
-            Expression result = inspector.Visit(expressionToVisit, VisitContext.New);
-
-            // assert:
-            Assert.AreSame(expressionToVisit, result);
-        }
-        
-        [Test]
-        public void Visit_aParameterExpression_returnTheParameterRecieved()
-        {
-            // arrange:
-            ParameterExpression expressionToVisit = Expression.Parameter(typeof(int), "p");
-            IVisitor<Expression, Expression> interceptor = null;
-            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
-
-            // act:
-            Expression result = inspector.Visit(expressionToVisit, VisitContext.New);
-
-            // assert:
-            Assert.AreSame(expressionToVisit, result);
-        }
-        
         [Test, TestCaseSource(typeof(Samples), "UnaryExpressions")]
         public void Visit_anUnaryExpression_askTheCompositionToVisitTheOperand(UnaryExpression expressionToVisit)
         {

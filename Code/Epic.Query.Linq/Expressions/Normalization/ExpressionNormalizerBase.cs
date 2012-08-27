@@ -23,6 +23,7 @@
 //  
 using System;
 using System.Linq.Expressions;
+using Epic.Visitors;
 
 namespace Epic.Query.Linq.Expressions.Normalization
 {
@@ -43,6 +44,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         protected ExpressionNormalizerBase (string name)
             : base(name)
         {
+            new EchoingVisitor<Expression>(this);
             new ExpressionsInspector(this);
         }
 
