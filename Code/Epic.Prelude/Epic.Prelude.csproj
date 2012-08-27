@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -59,7 +59,7 @@
     <Compile Include="Math\FunctionMapping.cs" />
     <Compile Include="Collections\IIdentityMap.cs" />
     <Compile Include="Specifications\SpecificationBase.cs" />
-    <Compile Include="Specifications\OfType.cs" />
+    <Compile Include="Specifications\Variant.cs" />
     <Compile Include="Specifications\Any.cs" />
     <Compile Include="Specifications\No.cs" />
     <Compile Include="Specifications\Negation.cs" />
@@ -71,10 +71,5 @@
     <Compile Include="AcceptCaller.cs" />
     <Compile Include="Visitors\EchoingVisitor.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Specifications\" />
-    <Folder Include="Collections\" />
-    <Folder Include="Math\" />
-    <Folder Include="Visitors\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

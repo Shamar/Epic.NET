@@ -332,7 +332,7 @@ namespace Epic.Specifications
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<OfType<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>>(result);
+            Assert.IsInstanceOf<Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>>(result);
         }
 
         [Test]

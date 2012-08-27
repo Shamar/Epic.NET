@@ -1,5 +1,5 @@
 //
-//  OfType.cs
+//  Variant.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -26,36 +26,36 @@ using System;
 namespace Epic.Specifications
 {
     /// <summary>
-    /// Specification that is satisfied by any <typeparamref name="TCandidate"/> that is a 
-    /// <typeparamref name="TInitial"/> satisfing the inner specification.
+    /// Specification that is satisfied by any <typeparamref name="ToCandidate"/> that is a 
+    /// <typeparamref name="FromCanditate"/> satisfing the inner specification.
     /// </summary>
-    /// <typeparam name="TCandidate">Type of the objects that can be tested with this specification.</typeparam>
-    /// <typeparam name="TInitial">Type of the objects that can be tested with inner specification.</typeparam>
+    /// <typeparam name="ToCandidate">Type of the objects that can be tested with this specification.</typeparam>
+    /// <typeparam name="FromCanditate">Type of the objects that can be tested with inner specification.</typeparam>
     [Serializable]
-    public sealed class OfType<TCandidate, TInitial> : SpecificationBase<OfType<TCandidate, TInitial>, TCandidate>,
-                                                       IEquatable<OfType<TCandidate, TInitial>>
-        where TCandidate : class
-        where TInitial : class
+    public sealed class Variant<ToCandidate, FromCanditate> : SpecificationBase<Variant<ToCandidate, FromCanditate>, ToCandidate>,
+                                                              IEquatable<Variant<ToCandidate, FromCanditate>>
+        where ToCandidate : class
+        where FromCanditate : class
     {
-        static OfType ()
+        static Variant ()
         {
-            if (!typeof(TCandidate).IsAssignableFrom (typeof(TInitial)) && !typeof(TInitial).IsAssignableFrom (typeof(TCandidate))) {
-                string message = string.Format ("Cannot cast neither from {0} to {1} nor from {1} to {0}.", typeof(TInitial), typeof(TCandidate));
+            if (!typeof(ToCandidate).IsAssignableFrom (typeof(FromCanditate)) && !typeof(FromCanditate).IsAssignableFrom (typeof(ToCandidate))) {
+                string message = string.Format ("Cannot cast neither from {0} to {1} nor from {1} to {0}.", typeof(FromCanditate), typeof(ToCandidate));
                 throw new InvalidCastException (message);
             }
-            if (typeof(TCandidate).Equals(typeof(TInitial)))
+            if (typeof(ToCandidate).Equals(typeof(FromCanditate)))
             {
-                string message = string.Format ("Cannot create an OfType<{1}, {0}>, becouse the two type arguments are equals.", typeof(TInitial), typeof(TCandidate));
+                string message = string.Format("Cannot create a Variant<{1}, {0}> specification, becouse the two type arguments are equals.", typeof(FromCanditate), typeof(ToCandidate));
                 throw new InvalidCastException (message);
             }
         }
         
-        private readonly ISpecification<TInitial> _innerSpecification;
+        private readonly ISpecification<FromCanditate> _innerSpecification;
 
         /// <summary>
-        /// The <see cref="ISpecification{TInitial}"/> that must be satisfied by <typeparamref name="TCandidate"/> for this specification.
+        /// The <see cref="ISpecification{TInitial}"/> that must be satisfied by <typeparamref name="ToCandidate"/> for this specification.
         /// </summary>
-        public ISpecification<TInitial> InnerSpecification
+        public ISpecification<FromCanditate> InnerSpecification
         {
             get
             {
@@ -64,13 +64,13 @@ namespace Epic.Specifications
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="OfType{TCandidate, TInitial}"/> class.
+        /// Initializes a new instance of the <see cref="Variant{ToCandidate, FromCanditate}"/> class.
         /// </summary>
         /// <param name='innerSpecification'>
-        /// Specification that must be satisfied by any <typeparamref name="TCandidate"/> to satisfy the current specification.
+        /// Specification that must be satisfied by any <typeparamref name="ToCandidate"/> to satisfy the current specification.
         /// </param>
         /// <exception cref="ArgumentNullException"><paramref name="innerSpecification"/> is <c>null</c>.</exception>
-        public OfType (ISpecification<TInitial> innerSpecification)
+        public Variant (ISpecification<FromCanditate> innerSpecification)
         {
             if (null == innerSpecification)
                 throw new ArgumentNullException ("innerSpecification");
@@ -80,7 +80,7 @@ namespace Epic.Specifications
         #region implemented abstract members of Epic.Specifications.SpecificationBase
         
         /// <summary>
-        /// Determines whether the specified <see cref="OfType{TCandidate, TInitial}"/> is equal to the current one.
+        /// Determines whether the specified <see cref="Variant{ToCandidate, FromCanditate}"/> is equal to the current one.
         /// </summary>
         /// <returns>
         /// <c>true</c>, if <paramref name="otherSpecification"/> has the same <see cref="InnerSpecification"/> 
@@ -89,7 +89,7 @@ namespace Epic.Specifications
         /// <param name='otherSpecification'>
         /// Other specification.
         /// </param>
-        protected override bool EqualsA (OfType<TCandidate, TInitial> otherSpecification)
+        protected override bool EqualsA (Variant<ToCandidate, FromCanditate> otherSpecification)
         {
             return _innerSpecification.Equals (otherSpecification._innerSpecification);
         }
@@ -98,15 +98,15 @@ namespace Epic.Specifications
         /// Determines whether this specification is satisfied by a the specified <paramref name="candidate"/>.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if <paramref name="candidate"/> is a <typeparamref name="TInitial"/> that satisfy 
+        /// <c>true</c> if <paramref name="candidate"/> is a <typeparamref name="FromCanditate"/> that satisfy 
         /// the <see cref="InnerSpecification"/>; otherwise, <c>false</c>.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.
         /// </param>
-        protected override bool IsSatisfiedByA (TCandidate candidate)
+        protected override bool IsSatisfiedByA (ToCandidate candidate)
         {
-            return _innerSpecification.IsSatisfiedBy (candidate as TInitial);
+            return _innerSpecification.IsSatisfiedBy (candidate as FromCanditate);
         }
         
         /// <summary>

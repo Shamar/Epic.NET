@@ -314,7 +314,7 @@ namespace Epic.Specifications
         }
         
         /// <summary>
-        /// Create a new <see cref="Specifications.OfType{Other, Candidate}"/> that is satisfied by all the <typeparamref name="Other"/> 
+        /// Create a new <see cref="Specifications.Variant{Other, Candidate}"/> that is satisfied by all the <typeparamref name="Other"/> 
         /// that are <typeparamref name="Other"/> and satisfy the current specification.
         /// </summary>
         /// <returns>
@@ -341,7 +341,7 @@ namespace Epic.Specifications
         /// </summary>
         /// <returns>
         /// A specifications satisfied by <typeparamref name="Other"/> that
-        /// satisfy this specification (if not overridden, an <see cref="Specifications.OfType{Other, Candidate}"/>).
+        /// satisfy this specification (if not overridden, an <see cref="Specifications.Variant{Other, Candidate}"/>).
         /// </returns>
         /// <typeparam name='Other'>
         /// Either a specialization or an abstraction of <typeparamref name="Candidate"/>.
@@ -350,7 +350,7 @@ namespace Epic.Specifications
         /// abstraction nor a specialization of <typeparamref name="Candidate"/>.</exception>
         protected virtual ISpecification<Other> OfAnotherType<Other> () where Other : class
         {
-            return new OfType<Other, Candidate> (this);
+            return new Variant<Other, Candidate> (this);
         }
         
         /// <summary>

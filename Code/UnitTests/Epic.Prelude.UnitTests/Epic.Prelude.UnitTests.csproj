@@ -64,7 +64,7 @@
     <Compile Include="Specifications\NoQA.cs" />
     <Compile Include="Specifications\StatelessSpecificationBaseQA.cs" />
     <Compile Include="Fakes\FakeStatelessSpecification.cs" />
-    <Compile Include="Specifications\OfTypeQA.cs" />
+    <Compile Include="Specifications\VariantQA.cs" />
     <Compile Include="Specifications\NegationQA.cs" />
     <Compile Include="Specifications\ConjunctionQA.cs" />
     <Compile Include="IObject.cs" />
@@ -80,7 +80,5 @@
       <Name>Epic.Prelude</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Visitors\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
