@@ -235,9 +235,10 @@ public sealed class EnglishExceptionsFormatter : CompositeVisitorBase<string, Ex
 }
 -------------------------------------------
 
-However our english message are still a bit weird. The +WrongLocationException+ 
-derives +ArgumentException+ and thus add to the message provided by the thrower
-the parameter name. But this time we can write a little more general visitor
+However our english messages are still a bit weird. The +Challenge00.DDDSample.Location.WrongLocationException+ 
+extends +System.ArgumentException+ and thus adds to the message provided by the thrower
+the parameter name. We could fix this with a custom visitor like we did till now,
+but this time we can write a little more general visitor
 for the english composition: a +Format<TException>+. footnote:[Being such a use case
 so frequent, Epic provides an even more general version of this class: the
 http://epic.tesio.it/doc/api/html/T_Epic_Visitors_SimpleFormatter_1.htm[SimpleFormatter<TTarget>]. ]
@@ -366,7 +367,7 @@ This turned to be a really powerfull tool, able to visit complex expression
 trees and translate them to nice, human readable, messages or to SQL queries.
 Moreover, when the class hierachy grows, you don't need to break existing 
 visitors: you can always extend the behaviour of the composition by adding 
-code, keeping the DLL already deployed untouched.
+code, keeping the DLLs already deployed untouched.
 
 
 Specifying qualities
