@@ -30,7 +30,7 @@ namespace Epic
     [TestFixture]
     public class UnvisitableWrapperQA : RhinoMocksFixtureBase
     {
-        private class PrivateInvalidOperationException : InvalidOperationException
+        private sealed class PrivateInvalidOperationException : InvalidOperationException
         {
         }
 
@@ -48,6 +48,26 @@ namespace Epic
 
         private class PrivateObject : Object
         {
+        }
+
+        [Test]
+        public void TypeInitialization_withObjectAsUnvisitableType_throwsInvalidOperationException ()
+        {
+            // arrange:
+            InvalidOperationException invalidOperation = null;
+
+            // act:
+            try
+            {
+                UnvisitableWrapper<object, int>.SimulateAccept(null, null, null);
+            }
+            catch(TypeInitializationException ex)
+            {
+                invalidOperation = ex.InnerException as InvalidOperationException;
+            }
+
+            // assert:
+            Assert.IsNotNull(invalidOperation);
         }
 
         [Test]
@@ -93,12 +113,12 @@ namespace Epic
         {
             // arrange:
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            object unvisitable = new PrivateObject();
+            PrivateObject unvisitable = new PrivateObject();
             IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
 
             // assert:
             Assert.Throws<ArgumentException>(delegate {
-                UnvisitableWrapper<object, object>.SimulateAccept(unvisitable, visitorComposition, context);
+                UnvisitableWrapper<PrivateObject, object>.SimulateAccept(unvisitable, visitorComposition, context);
             });
         }
 

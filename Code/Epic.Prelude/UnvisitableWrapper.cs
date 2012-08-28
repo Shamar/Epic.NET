@@ -35,13 +35,14 @@ namespace Epic
         private static readonly ConcurrentDictionary<Type, Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult>> _delegates;
         static UnvisitableWrapper()
         {
-            if (typeof(object).Equals(typeof(TUnvisitable)))
+            Type unvisitableType = typeof(TUnvisitable);
+            if (typeof(object).Equals(unvisitableType))
             {
-                throw new InvalidOperationException("Cannot use System.Object as the base class of a visitable hierarchy. It's too abstract, thus no client of the domain model should use as a model.");
+                throw new InvalidOperationException("Cannot use System.Object as the base class of a visitable hierarchy. It's too abstract: no client of the domain model should use as a model.");
             }
-            if (typeof(IVisitable).IsAssignableFrom(typeof(TUnvisitable)))
+            if (typeof(IVisitable).IsAssignableFrom(unvisitableType))
             {
-                string message = string.Format("The UnvisitableWrapper is for types' hierachies whose root does not implement Epic.IVisitable, but {0} is visitable by itself.", typeof(TUnvisitable));
+                string message = string.Format("The UnvisitableWrapper is for types' hierachies whose root does not implement Epic.IVisitable, but {0} is visitable by itself.", unvisitableType);
                 throw new InvalidOperationException(message);
             }
             _acceptAs = typeof(UnvisitableWrapper<TUnvisitable, TResult>).GetMethod("AcceptAs", BindingFlags.Static | BindingFlags.NonPublic);

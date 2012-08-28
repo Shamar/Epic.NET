@@ -138,7 +138,21 @@ namespace Epic
                 throw new ArgumentNullException("visitor");
             if (null == context)
                 throw new ArgumentNullException("context");
-            return UnvisitableWrapper<TBaseClass, TResult>.SimulateAccept(expression, visitor, context);
+            if (typeof(TBaseClass).IsSealed)
+            {
+                string message = string.Format("Cannot use {0} as the base class of a visitable hierarchy becouse it is sealed.", typeof(TBaseClass));
+                throw new InvalidOperationException(message);
+            }
+            TResult result;
+            try
+            {
+                result = UnvisitableWrapper<TBaseClass, TResult>.SimulateAccept(expression, visitor, context);
+            }
+            catch(TypeInitializationException ex)
+            {
+                throw ex.InnerException;
+            }
+            return result;
         }
     }
 }

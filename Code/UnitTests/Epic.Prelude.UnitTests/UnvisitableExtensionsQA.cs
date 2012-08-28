@@ -29,7 +29,7 @@ using System.Linq.Expressions;
 namespace Epic
 {
     [TestFixture]
-    public class UnvisitableExtensionsQA : RhinoMocksFixtureBase
+    public sealed class UnvisitableExtensionsQA : RhinoMocksFixtureBase
     {
         [Test]
         public void Accept_anArgumentOutOfRangeException_forwardToTheVisitorTheRightType ()
@@ -158,6 +158,73 @@ namespace Epic
                 nullArgs.Accept(visitor, context);
             });
         }
+
+        [Test]
+        public void SimulateAcceptFor_withoutAnyArgument_throwsArgumentNullException ()
+        {
+            // arrange:
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            Exception unvisitable = new Exception();
+            IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
+            
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                UnvisitableExtensions.SimulateAcceptFor<object, Exception>(null, visitorComposition, context);
+            });
+            Assert.Throws<ArgumentNullException>(delegate {
+                UnvisitableExtensions.SimulateAcceptFor<object, Exception>(unvisitable, null, context);
+            });
+            Assert.Throws<ArgumentNullException>(delegate {
+                UnvisitableExtensions.SimulateAcceptFor<object, Exception>(unvisitable, visitorComposition, null);
+            });
+        }
+
+        [Test]
+        public void SimulateAcceptFor_anAbstractClassWithValidArguments_returnsTheVisitResult ()
+        {
+            // arrange:
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            ConstantExpression toVisit = Expression.Constant(1);
+            IVisitor<string> visitor = GenerateStrictMock<IVisitor<string>>();
+            IVisitor<string, ConstantExpression> specializedVisitor = GenerateStrictMock<IVisitor<string, ConstantExpression>>();
+            visitor.Expect(v => v.AsVisitor<ConstantExpression>(toVisit)).Return(specializedVisitor).Repeat.Once();
+            specializedVisitor.Expect(v => v.Visit(toVisit, context)).Return("test").Repeat.Once();
+
+            // act:
+            string result = UnvisitableExtensions.SimulateAcceptFor<string, Expression>(toVisit, visitor, context);
+
+            // assert:
+            Assert.AreEqual("test", result);
+        }
+
+        [Test]
+        public void SimulateAcceptFor_aSealedClass_throwsInvalidOperationException ()
+        {
+            // arrange:
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            UnvisitableExtensionsQA unvisitable = new UnvisitableExtensionsQA();
+            IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
+            
+            // assert:
+            Assert.Throws<InvalidOperationException>(delegate {
+                UnvisitableExtensions.SimulateAcceptFor<object, UnvisitableExtensionsQA>(unvisitable, visitorComposition, context);
+            });
+        }
+
+        [Test]
+        public void SimulateAcceptFor_SystemObject_throwsInvalidOperationException ()
+        {
+            // arrange:
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            object unvisitable = new object();
+            IVisitor<object> visitorComposition = GenerateStrictMock<IVisitor<object>>();
+            
+            // assert:
+            Assert.Throws<InvalidOperationException>(delegate {
+                UnvisitableExtensions.SimulateAcceptFor<object, object>(unvisitable, visitorComposition, context);
+            });
+        }
+
     }
 }
 

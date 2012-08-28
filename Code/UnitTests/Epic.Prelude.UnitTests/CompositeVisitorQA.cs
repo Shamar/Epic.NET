@@ -71,7 +71,7 @@ namespace Epic
             // assert:
             Assert.Throws<InvalidOperationException>(delegate { 
                 visitor.GetFirstVisitor(target);
-            }, "No visitor available for the expression {0} in the composition \"{1}\".", target, name);
+            }, "No visitor available for the expression {0} (of type: {2}) in the composition '{1}'.", target, name, target.GetType());
         }
 
         [TestFixture]
