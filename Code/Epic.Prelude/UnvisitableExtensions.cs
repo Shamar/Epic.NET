@@ -144,9 +144,9 @@ namespace Epic
         /// 
         /// public static class VisitableAnimals
         /// {
-        ///     public static TResult Accept{TResult}(this Animal animal, IVisitor{TResult} visitor, IVisitContext context)
+        ///     public static TResult Accept&lt;TResult&gt;(this Animal animal, IVisitor&lt;TResult&gt; visitor, IVisitContext context)
         ///     {
-        ///         return UnvisitableExtensions.SimulateAcceptFor{TResult, Animal}(animal, visitor, context);
+        ///         return UnvisitableExtensions.SimulateAcceptFor&lt;TResult, Animal&gt;(animal, visitor, context);
         ///     }
         /// }
         /// </code>
