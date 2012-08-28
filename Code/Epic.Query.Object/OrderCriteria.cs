@@ -45,7 +45,7 @@ namespace Epic.Query.Object
         /// <param name='second'>
         /// Second criterion to apply.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="first"/> or <paramref name="second"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
         internal OrderCriteria (OrderCriterion<TEntity> first, OrderCriterion<TEntity> second)
         {
             if(null == first)

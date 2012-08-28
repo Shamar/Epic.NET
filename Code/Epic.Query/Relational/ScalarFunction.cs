@@ -54,9 +54,6 @@ namespace Epic.Query.Relational
         /// <summary>
         /// Gets the function name.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
         public string Name { get { return this._name; } }
 
         /// <summary>

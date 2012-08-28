@@ -32,6 +32,9 @@ namespace Epic
     /// <remarks>
     /// On disposition, all observed entities will be unsubscribed.
     /// </remarks>
+    /// <typeparam name="TEntity">
+    /// Type of the observed entities.
+    /// </typeparam>
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument is null.
     /// </exception>

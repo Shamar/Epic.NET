@@ -36,7 +36,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         /// <param name='name'>
         /// Name of the normalizer.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c> or <see cref="String.Empty"/>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/> or <see cref="String.Empty"/>.</exception>
         public DefaultNormalizer (string name)
             : base(name)
         {

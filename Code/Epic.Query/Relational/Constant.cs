@@ -89,9 +89,6 @@ namespace Epic.Query.Relational
         /// <summary>
         /// Gets the value of the constant.
         /// </summary>
-        /// <value>
-        /// The value.
-        /// </value>
         public TValue Value
         {
             get

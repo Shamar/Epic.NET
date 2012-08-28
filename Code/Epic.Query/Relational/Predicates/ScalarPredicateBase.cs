@@ -59,17 +59,11 @@ namespace Epic.Query.Relational.Predicates
         /// <summary>
         /// Gets the left operand of the predicate.
         /// </summary>
-        /// <value>
-        /// The left operand.
-        /// </value>
         public Scalar Left { get { return this._left; } }
 
         /// <summary>
         /// Gets the right operand of the predicate.
         /// </summary>
-        /// <value>
-        /// The right operand.
-        /// </value>
         public Scalar Right { get { return this._right; } }
 
         /// <summary>

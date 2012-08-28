@@ -71,7 +71,7 @@ namespace Epic.Specifications
         }
             
         /// <summary>
-        /// Throws <see cref="ArgumentNullException"/> if <paramref name="other"/> is <c>null</c>.
+        /// Throws <see cref="ArgumentNullException"/> if <paramref name="other"/> is <see langword="null"/>.
         /// </summary>
         /// <param name='other'>
         /// Other.
@@ -99,7 +99,7 @@ namespace Epic.Specifications
         /// <typeparam name='TResult'>
         /// The type of the visit result.
         /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="visitor"/> or <paramref name="context"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="visitor"/> or <paramref name="context"/> is <see langword="null"/>.</exception>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe<TResult, TSpecification> (this as TSpecification, visitor, context);
@@ -183,7 +183,7 @@ namespace Epic.Specifications
         /// <c>true</c>, if this is equal to <paramref name="otherSpecification"/>, <c>false</c> otherwise.
         /// </returns>
         /// <param name='otherSpecification'>
-        /// Another specification instance, that is not <c>null</c> and has the same type
+        /// Another specification instance, that is not <see langword="null"/> and has the same type
         /// of this.
         /// </param>
         protected abstract bool EqualsA (TSpecification otherSpecification);
@@ -199,7 +199,7 @@ namespace Epic.Specifications
         /// </param>
         /// <returns>
         /// Returns <c>true</c> when <paramref name="candidate"/> satisfies the specification, <c>false</c> otherwise.
-        /// Note that <c>null</c> can not satisfy any specification.
+        /// Note that <see langword="null"/> can not satisfy any specification.
         /// </returns>
         public bool IsSatisfiedBy (Candidate candidate)
         {
@@ -227,7 +227,7 @@ namespace Epic.Specifications
         /// <returns>A new <see cref="ISpecification{Candidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.</returns>
         /// <remarks>This method calls <see cref="AndAlso"/> that can be overridden.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
         public ISpecification<Candidate> And (ISpecification<Candidate> other)
         {
             ThrowIfNull (other);
@@ -242,7 +242,7 @@ namespace Epic.Specifications
         /// Create a new <see cref="Conjunction{Candidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.
         /// </summary>
-        /// <param name="other">The other specification to evaluate (that will not be <c>null</c>).</param>
+        /// <param name="other">The other specification to evaluate (that will not be <see langword="null"/>).</param>
         /// <returns>A new <see cref="Conjunction{Candidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.</returns>
         protected virtual ISpecification<Candidate> AndAlso (ISpecification<Candidate> other)
@@ -258,7 +258,7 @@ namespace Epic.Specifications
         /// <returns>A new <see cref="ISpecification{Candidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.</returns>
         /// <remarks>This method calls <see cref="OrElse"/> that can be overridden.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
         public ISpecification<Candidate> Or (ISpecification<Candidate> other)
         {
             ThrowIfNull (other);
@@ -273,10 +273,10 @@ namespace Epic.Specifications
         /// Create a new <see cref="Disjunction{Candidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.
         /// </summary>
-        /// <param name="other">The other specification to evaluate (that will not be <c>null</c>).</param>
+        /// <param name="other">The other specification to evaluate (that will not be <see langword="null"/>).</param>
         /// <returns>A new <see cref="Disjunction{Candidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
         protected virtual ISpecification<Candidate> OrElse (ISpecification<Candidate> other)
         {
             return new Disjunction<Candidate> (this, other);
@@ -467,9 +467,9 @@ namespace Epic.Specifications
         /// Candidate.
         /// </param>
         /// <remarks>
-        /// <para>This method grant that <c>null</c> can not satisfy any specification.
+        /// <para>This method grant that <see langword="null"/> can not satisfy any specification.
         /// and calls <see cref="IsSatisfiedByA"/> if the <paramref name="candidate"/> 
-        /// is not <c>null</c>.</para>
+        /// is not <see langword="null"/>.</para>
         /// </remarks>
         public bool IsSatisfiedBy (Candidate2 candidate)
         {
@@ -497,7 +497,7 @@ namespace Epic.Specifications
         /// <returns>A new <see cref="ISpecification{Candidate2}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.</returns>
         /// <remarks>This method calls <see cref="AndAlso"/> that can be overridden.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
         public ISpecification<Candidate2> And (ISpecification<Candidate2> other)
         {
             ThrowIfNull (other);
@@ -512,7 +512,7 @@ namespace Epic.Specifications
         /// Create a new <see cref="Conjunction{Candidate2}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.
         /// </summary>
-        /// <param name="other">The other specification to evaluate (that will not be <c>null</c>).</param>
+        /// <param name="other">The other specification to evaluate (that will not be <see langword="null"/>).</param>
         /// <returns>A new <see cref="Conjunction{Candidate2}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.</returns>
         protected virtual ISpecification<Candidate2> AndAlso (ISpecification<Candidate2> other)
@@ -528,7 +528,7 @@ namespace Epic.Specifications
         /// <returns>A new <see cref="ISpecification{Candidate2}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.</returns>
         /// <remarks>This method calls <see cref="OrElse"/> that can be overridden.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
         public ISpecification<Candidate2> Or (ISpecification<Candidate2> other)
         {
             ThrowIfNull (other);
@@ -543,10 +543,10 @@ namespace Epic.Specifications
         /// Create a new <see cref="Disjunction{Candidate2}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.
         /// </summary>
-        /// <param name="other">The other specification to evaluate (that will not be <c>null</c>).</param>
+        /// <param name="other">The other specification to evaluate (that will not be <see langword="null"/>).</param>
         /// <returns>A new <see cref="Disjunction{Candidate2}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
         protected virtual ISpecification<Candidate2> OrElse (ISpecification<Candidate2> other)
         {
             return new Disjunction<Candidate2> (this, other);

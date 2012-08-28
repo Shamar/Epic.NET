@@ -56,7 +56,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='context'>
         /// Streaming context.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="info"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="info"/> is <see langword="null"/>.</exception>
         protected Expression (SerializationInfo info, StreamingContext context)
             : this()
         {
@@ -68,7 +68,7 @@ namespace Epic.Query.Object.Expressions
         /// Register into <paramref name="info"/> the data to be stored in the serialization.
         /// </summary>
         /// <param name='info'>
-        /// Serialization informations (will never be <c>null</c>).
+        /// Serialization informations (will never be <see langword="null"/>).
         /// </param>
         /// <param name='context'>
         /// Streaming context.

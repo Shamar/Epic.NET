@@ -46,7 +46,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='entities'>
         /// Entities to map.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="entities"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="entities"/> is <see langword="null"/>.</exception>
         public Identification (Expression<IEnumerable<TEntity>> entities)
         {
             if (null == entities)

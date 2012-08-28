@@ -62,17 +62,11 @@ namespace Epic.Query.Relational
         /// <summary>
         /// Gets the name of the attribute.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
         public string Name { get { return this._name; } }
         
         /// <summary>
         /// Gets the relation the attribute is tied to.
         /// </summary>
-        /// <value>
-        /// The relation.
-        /// </value>
         public Relation Relation { get { return this._relation; } }
         
         /// <summary>

@@ -57,7 +57,7 @@ namespace Epic.Query.Object
         /// Another order criterion.
         /// </param>
         /// <returns>A criterion that chain the <paramref name="other"/> order criterion after this.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/></exception>
         public abstract OrderCriterion<TEntity> Chain(OrderCriterion<TEntity> other);
 
         /// <summary>

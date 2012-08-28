@@ -41,8 +41,8 @@ namespace Epic.Environment
 	    /// type of the value parameter. This parameter is passed uninitialized.
 		/// </param>
 		/// <returns>
-		/// <value>true</value> if the chain link knows how to provide the required 
-		/// <paramref name="information"/>, <value>false</value> otherwise.
+		/// <see langword="true"/> if the chain link knows how to provide the required 
+		/// <paramref name="information"/>, <see langword="false"/> otherwise.
 		/// </returns>
 		public abstract bool TryGet<TObject> (InstanceName<TObject> name, out TObject information);
 	}

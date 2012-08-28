@@ -43,7 +43,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='source'>
         /// A representation of the enumerable to count.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public Count (Expression<IEnumerable<TItem>> source)
         {
             if (null == source)

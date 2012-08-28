@@ -47,7 +47,7 @@ namespace Epic.Collections
         /// <param name='mapping'>
         /// Mapping from instances of <typeparamref name="TEntity"/> and their identities.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="mapping"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="mapping"/> is <see langword="null"/>.</exception>
         public IdentityMap (IMapping<TEntity, TIdentity> mapping)
         {
             if (null == mapping)
@@ -62,7 +62,7 @@ namespace Epic.Collections
         /// <param name='mapping'>
         /// Mapping from instances of <typeparamref name="TEntity"/> and their identities.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="mapping"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="mapping"/> is <see langword="null"/>.</exception>
         public IdentityMap (Func<TEntity, TIdentity> mapping)
             : this(new FunctionMapping<TEntity, TIdentity>(mapping))
         {
@@ -82,7 +82,7 @@ namespace Epic.Collections
         /// <param name='key'>
         /// Key of interest.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
         public TEntity this[TIdentity key]
         {
             get
@@ -144,7 +144,7 @@ namespace Epic.Collections
         /// <param name='entity'>
         /// Entity to register.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="entity"/> has already been registered.</exception>
         public void Register (TEntity entity)
         {
@@ -167,7 +167,7 @@ namespace Epic.Collections
         /// Identity of the entity of interest.
         /// </param>
         /// <returns><c>true</c>if the map knows the specified entity, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         public bool Knows(TIdentity entity)
         {
             ThrowIfDisposed();

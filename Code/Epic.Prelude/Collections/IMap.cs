@@ -40,7 +40,7 @@ namespace Epic.Collections
         /// <param name='key'>
         /// The key of the element to get.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
         /// <exception cref="KeyNotFoundException{TKey}">The property is retrieved and <paramref name="key"/> is not found.</exception>
         TValue this[TKey key] { get; }
     }

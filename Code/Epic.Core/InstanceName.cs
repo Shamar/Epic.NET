@@ -73,8 +73,8 @@ namespace Epic
 		/// A <see cref="InstanceName{TObject}"/>.
 		/// </param>
 		/// <returns>
-		/// <value>true</value> when <paramref name="other"/> is semantically equals 
-		/// to this, <value>false</value> otherwise.
+		/// <see langword="true"/> when <paramref name="other"/> is semantically equals 
+		/// to this, <see langword="false"/> otherwise.
 		/// </returns>
 		public bool Equals (InstanceName<TObject> other)
 		{
@@ -94,8 +94,8 @@ namespace Epic
 		/// A <see cref="System.Object"/>.
 		/// </param>
 		/// <returns>
-		/// <value>true</value> when <paramref name="obj"/> is <see cref="InstanceName{TObject}"/> 
-		/// semantically equal to this, <value>false</value> otherwise.
+		/// <see langword="true"/> when <paramref name="obj"/> is <see cref="InstanceName{TObject}"/> 
+		/// semantically equal to this, <see langword="false"/> otherwise.
 		/// </returns>
 		public override bool Equals (object obj)
 		{

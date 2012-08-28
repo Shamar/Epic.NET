@@ -66,9 +66,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the expression tree that is associated with the instance of IQueryable.
 		/// </summary>
-		/// <value>
-		/// The expression.
-		/// </value>
 		public System.Linq.Expressions.Expression Expression {
 			get {
 				return _expression;
@@ -78,9 +75,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the type of the element(s) that are returned when the expression tree associated with this instance of IQueryable is executed.
 		/// </summary>
-		/// <value>
-		/// The type of the element.
-		/// </value>
 		public Type ElementType {
 			get {
 				return typeof(T);
@@ -90,9 +84,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the query provider that is associated with this data source.
 		/// </summary>
-		/// <value>
-		/// The provider.
-		/// </value>
 		public IQueryProvider Provider {
 			get {
 				return _provider;

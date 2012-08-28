@@ -38,7 +38,7 @@ namespace Epic
 		/// <param name="enterprise">
 		/// A <see cref="EnterpriseBase"/> to handle request.
 		/// </param>
-		/// <exception cref="ArgumentNullException">When <paramref name="enterprise"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">When <paramref name="enterprise"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">When called more then once.</exception>
 		public static void Initialize(EnterpriseBase enterprise)
 		{

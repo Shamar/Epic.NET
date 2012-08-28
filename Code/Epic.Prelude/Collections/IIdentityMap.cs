@@ -40,7 +40,7 @@ namespace Epic.Collections
         /// <param name='entity'>
         /// Entity to register.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="entity"/> has already been registered.</exception>
         void Register(TEntity entity);
 
@@ -51,7 +51,7 @@ namespace Epic.Collections
         /// Identity of the entity of interest.
         /// </param>
         /// <returns><c>true</c>if the map knows the specified entity, <c>false</c> otherwise.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         bool Knows(TIdentity entity);
     }
 }

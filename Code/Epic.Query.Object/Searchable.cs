@@ -84,7 +84,7 @@ namespace Epic.Query.Object
         /// Type of the identity of <typeparamref name="TEntity"/>s
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> 
-        /// is <c>null</c>.</exception>
+        /// is <see langword="null"/>.</exception>
         public static IEnumerable<TIdentity> Identify<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -107,7 +107,7 @@ namespace Epic.Query.Object
         /// The number of results that the specified search will return.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> 
-        /// is <c>null</c>.</exception>
+        /// is <see langword="null"/>.</exception>
         public static uint Count<TItem>(this IDeferred<IEnumerable<TItem>> search)
         {
             if(null == search)
@@ -135,7 +135,7 @@ namespace Epic.Query.Object
         /// The type of the identities of the entities searched by <paramref name="search"/>.
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> or 
-        /// <paramref name="criterion"/> is <c>null</c>.</exception>
+        /// <paramref name="criterion"/> is <see langword="null"/>.</exception>
         public static IOrderedSearch<TEntity, TIdentity> OrderBy<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search, OrderCriterion<TEntity> criterion)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -169,7 +169,7 @@ namespace Epic.Query.Object
         /// The type of the identities of the entities searched by <paramref name="search"/>.
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> or 
-        /// <paramref name="criterion"/> is <c>null</c>.</exception>
+        /// <paramref name="criterion"/> is <see langword="null"/>.</exception>
         public static IOrderedSearch<TEntity, TIdentity> ThenBy<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, OrderCriterion<TEntity> criterion)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -200,7 +200,7 @@ namespace Epic.Query.Object
         /// <typeparam name='TIdentity'>
         /// The type of the identities of the entities searched by <paramref name="search"/>.
         /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is <c>0</c>.</exception>
         public static ISlicedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
@@ -231,7 +231,7 @@ namespace Epic.Query.Object
         /// <typeparam name='TIdentity'>
         /// The type of the identities of the entities searched by <paramref name="search"/>.
         /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <see langword="null"/>.</exception>
         public static ISlicedSearch<TEntity, TIdentity> Skip<TEntity, TIdentity>(this IOrderedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -261,7 +261,7 @@ namespace Epic.Query.Object
         /// <typeparam name='TIdentity'>
         /// The type of the identities of the entities searched by <paramref name="search"/>.
         /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="count"/> is <c>0</c>.</exception>
         public static ISlicedSearch<TEntity, TIdentity> Take<TEntity, TIdentity>(this ISlicedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
@@ -293,7 +293,7 @@ namespace Epic.Query.Object
         /// <typeparam name='TIdentity'>
         /// The type of the identities of the entities searched by <paramref name="search"/>.
         /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="search"/> is <see langword="null"/>.</exception>
         public static ISlicedSearch<TEntity, TIdentity> Skip<TEntity, TIdentity>(this ISlicedSearch<TEntity, TIdentity> search, uint count)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>

@@ -42,7 +42,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         /// <param name='composition'>
         /// Composition that will own the new instance.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="composition"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="composition"/> is <see langword="null"/>.</exception>
         public EnumerableMethodsReducer (CompositeVisitor<Expression> composition)
             : base(composition)
         {

@@ -46,7 +46,7 @@ namespace Epic.Query.Object
         /// <typeparam name='TResult'>
         /// The result to defer.
         /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="expression"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="expression"/> is <see langword="null"/>.</exception>
         /// <exception cref="DeferringException">This deferrer can not build a <typeparamref name='TDeferred'/>
         /// producing a <typeparamref name="TResult"/> on evaluation.</exception>
         TDeferred Defer<TDeferred, TResult>(Expression<TResult> expression)
@@ -61,7 +61,7 @@ namespace Epic.Query.Object
         /// <typeparam name='TResult'>
         /// Result of the evaluation of <paramref name="expression"/>.
         /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="expression"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="expression"/> is <see langword="null"/>.</exception>
         TResult Evaluate<TResult>(Expression<TResult> expression);
     }
 }

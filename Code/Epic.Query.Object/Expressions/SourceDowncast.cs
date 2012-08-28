@@ -46,7 +46,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='source'>
         /// Source to downcast.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         public SourceDowncast (Expression<IEnumerable<TAbstraction>> source)
         {
             if (null == source)

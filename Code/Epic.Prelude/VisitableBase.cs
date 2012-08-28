@@ -78,7 +78,7 @@ namespace Epic
         /// <typeparam name='TVisitable'>
         /// Type of the visitable (must be a leaf in the hierarchy tree).
         /// </typeparam>
-        /// <exception cref="ArgumentNullException">Is thrown when either <paramref name="visitor"/> or <paramref name="context"/> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Is thrown when either <paramref name="visitor"/> or <paramref name="context"/> are <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Is thrown when <paramref name="visitable"/> is not the current instance.</exception>
         /// <exception cref='InvalidOperationException'>
         /// Is thrown when called from a non leaf in the hierachy tree.

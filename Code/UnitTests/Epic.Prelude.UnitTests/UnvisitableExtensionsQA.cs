@@ -225,6 +225,40 @@ namespace Epic
             });
         }
 
+        [Test]
+        public void Accept_inTheSampleCode_returnsTheVisitResult ()
+        {
+            // arrange:
+            IVisitContext context = GenerateStrictMock<IVisitContext>();
+            Cat toVisit = new Cat();
+            IVisitor<string> visitor = GenerateStrictMock<IVisitor<string>>();
+            IVisitor<string, Cat> specializedVisitor = GenerateStrictMock<IVisitor<string, Cat>>();
+            visitor.Expect(v => v.AsVisitor<Cat>(toVisit)).Return(specializedVisitor).Repeat.Once();
+            specializedVisitor.Expect(v => v.Visit(toVisit, context)).Return("This was a cat.").Repeat.Once();
+            
+            // act:
+            string result = toVisit.Accept(visitor, context);
+            
+            // assert:
+            Assert.AreEqual("This was a cat.", result);
+        }
+
+    }
+
+    public abstract class Animal { }
+
+    public class Mammal : Animal { }
+
+    public sealed class Human : Mammal { }
+
+    public sealed class Cat : Mammal { }
+
+    public static class VisitableAnimals
+    {
+        public static TResult Accept<TResult>(this Animal animal, IVisitor<TResult> visitor, IVisitContext context)
+        {
+            return UnvisitableExtensions.SimulateAcceptFor<TResult, Animal>(animal, visitor, context);
+        }
     }
 }
 

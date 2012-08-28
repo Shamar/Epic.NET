@@ -127,7 +127,30 @@ namespace Epic
         /// <param name='context'>
         /// Context of the visit.
         /// </param>
-        /// <returns>Result of the visit.</returns>
+        /// <returns>
+        /// Result of the visit.
+        /// </returns>
+        /// <example>
+        /// The following code shows how to make an existing class hierachy visitable without any change
+        /// to the existing code.
+        /// <code>
+        /// public abstract class Animal { }
+        /// 
+        /// public class Mammal : Animal { }
+        /// 
+        /// public sealed class Human : Mammal { }
+        /// 
+        /// public sealed class Cat : Mammal { }
+        /// 
+        /// public static class VisitableAnimals
+        /// {
+        ///     public static TResult Accept{TResult}(this Animal animal, IVisitor{TResult} visitor, IVisitContext context)
+        ///     {
+        ///         return UnvisitableExtensions.SimulateAcceptFor{TResult, Animal}(animal, visitor, context);
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         /// <exception cref="ArgumentNullException"><paramref name="expression"/>, <paramref name="visitor"/> or <paramref name="context"/> is <see langword="null"/>.</exception>
         public static TResult SimulateAcceptFor<TResult, TBaseClass>(TBaseClass expression, IVisitor<TResult> visitor, IVisitContext context)
             where TBaseClass : class

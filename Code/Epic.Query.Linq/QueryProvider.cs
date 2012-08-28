@@ -57,11 +57,8 @@ namespace Epic.Query.Linq
 		}
 
         /// <summary>
-        /// Return the name of the provider.
+        /// Returns the name of the provider.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
         public string Name
         {
             get

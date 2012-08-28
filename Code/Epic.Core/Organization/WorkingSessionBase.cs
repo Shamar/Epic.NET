@@ -66,9 +66,6 @@ namespace Epic.Organization
 		/// <summary>
 		/// Working session's owner.
 		/// </summary>
-		/// <value>
-		/// The owner.
-		/// </value>
 		protected IPrincipal Owner
 		{
 			get
@@ -137,7 +134,7 @@ namespace Epic.Organization
 		/// Indicates whether the owner can achieve the specified role.
 		/// </summary>
 		/// <returns>
-		/// <value>true</value> if the session owner can achieve the role, <value>false</value> otherwise.
+		/// <see langword="true"/> if the session owner can achieve the role, <see langword="false"/> otherwise.
 		/// </returns>
 		/// <typeparam name='TRole'>
 		/// The type of the role to achieve.
@@ -160,7 +157,7 @@ namespace Epic.Organization
 		/// <remarks>
 		/// <para>
 		/// This method call a the <see cref="WorkingSessionBase.IsAllowed{TRole}"/> protected method.
-		/// It will throw <see cref="InvalidOperationException"/> as far as the method returns <value>false</value>.
+		/// It will throw <see cref="InvalidOperationException"/> as far as the method returns <see langword="false"/>.
 		/// </para>
 		/// <para>
 		/// If <typeparamref name="TRole"/> is allowed to the working session's owner, <see cref="WorkingSessionBase.GetRoleBuilder{TRole}()"/>
@@ -200,7 +197,7 @@ namespace Epic.Organization
 		/// <summary>
 		/// Leave the specified role. 
 		/// After calling this method, your role will be disposed 
-		/// and the reference to <paramref name="role"/> will be set to <c>null</c>.
+		/// and the reference to <paramref name="role"/> will be set to <see langword="null"/>.
 		/// </summary>
 		/// <remarks>
 		/// <para>
@@ -217,7 +214,7 @@ namespace Epic.Organization
 		/// <typeparam name='TRole'>
 		/// The type of the role to leave.
 		/// </typeparam>
-		/// <exception cref="ArgumentNullException">The <paramref name="role"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">The <paramref name="role"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentException">The <paramref name="role"/> is unknown to the session.</exception>
 		public void Leave<TRole> (ref TRole role) where TRole : class
 		{
@@ -247,9 +244,9 @@ namespace Epic.Organization
 		/// <summary>
 		/// Unique identifier of the working session.
 		/// </summary>
-		/// <value>
-		/// A unpredictable identifier, unique in the whole organization.
-		/// </value>
+		/// <remarks>
+		/// This must be an unpredictable identifier, unique in the whole organization.
+        /// </remarks>
 		public string Identifier 
 		{
 			get 
@@ -261,9 +258,6 @@ namespace Epic.Organization
 		/// <summary>
 		/// Owner of the working session. Will be <see cref="string.Empty"/> when anonymous.
 		/// </summary>
-		/// <value>
-		/// Owner of the working session. Will be <see cref="string.Empty"/> when anonymous.
-		/// </value>
 		string IWorkingSession.Owner 
 		{
 			get 

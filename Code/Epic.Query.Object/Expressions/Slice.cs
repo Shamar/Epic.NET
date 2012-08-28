@@ -49,7 +49,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='toTake'>
         /// Number of <typeparamref name="TEntity"/> to take.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toTake"/> is <c>0</c>.</exception>
         public Slice (Order<TEntity> source, uint toTake)
             : this(source, 0, toTake)
@@ -65,7 +65,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='toSkip'>
         /// Number of <typeparamref name="TEntity"/> to bypass.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toSkip"/> is <see cref="uint.MaxValue"/>.</exception>
         public Slice (uint toSkip, Order<TEntity> source)
             : this(source, toSkip, uint.MaxValue)
@@ -85,7 +85,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='toSkip'>
         /// Number of <typeparamref name="TEntity"/> to bypass.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="toSkip"/> is <see cref="uint.MaxValue"/>.</exception>
         public Slice (Order<TEntity> source, uint toSkip, uint toTake)
         {

@@ -146,7 +146,7 @@ namespace Epic
             /// Tries to find the <typeparamref name="TState"/> in the context.
             /// </summary>
             /// <returns>
-            /// <value>true</value> when the <typeparamref name="TState"/> has been found, <value>false</value> otherwise.
+            /// <see langword="true"/> when the <typeparamref name="TState"/> has been found, <see langword="false"/> otherwise.
             /// </returns>
             /// <param name='state'>
             /// <typeparamref name="TState"/> to be used during the visit.

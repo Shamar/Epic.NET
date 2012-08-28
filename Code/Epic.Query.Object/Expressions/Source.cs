@@ -45,7 +45,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='repository'>
         /// Repository of <typeparamref name="TEntity"/>.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="repository"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="repository"/> is <see langword="null"/>.</exception>
         public Source (IRepository<TEntity, TIdentity> repository)
         {
             if (null == repository)

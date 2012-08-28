@@ -47,7 +47,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='criterion'>
         /// Order criterion.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="criterion"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="criterion"/> is <see langword="null"/>.</exception>
         public Order (Expression<IEnumerable<TEntity>> source, OrderCriterion<TEntity> criterion)
         {
             if (null == source)
@@ -68,7 +68,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='criterion'>
         /// The order criterion to apply after the current one.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="criterion"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="criterion"/> is <see langword="null"/>.</exception>
         public Order<TEntity> ThanBy(OrderCriterion<TEntity> criterion)
         {
             if(null == criterion)

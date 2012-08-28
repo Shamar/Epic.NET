@@ -49,7 +49,7 @@ namespace Epic
         /// Name of the composition.
         /// </param>
         /// <exception cref='ArgumentNullException'>
-        /// Is thrown when <paramref name="name"/> is <c>null</c> or <value>string.Empty</value>.
+        /// Is thrown when <paramref name="name"/> is <see langword="null"/> or <see cref="String.Empty"/>.
         /// </exception>
         internal CompositeVisitor (string name)
         {
@@ -166,10 +166,10 @@ namespace Epic
         
         /// <summary>
         /// Returns the current instance as <seealso cref="IVisitor{TResult, TExpression}"/> 
-        /// (or <c>null</c> when the current composition is not intended to visit <typeparamref name="TExpression"/>).
+        /// (or <see langword="null"/> when the current composition is not intended to visit <typeparamref name="TExpression"/>).
         /// </summary>
         /// <returns>
-        /// The current instance or <c>null</c>.
+        /// The current instance or <see langword="null"/>.
         /// </returns>
         /// <param name='target'>
         /// Object to visit.
@@ -200,7 +200,7 @@ namespace Epic
             /// Composition that will own the new visitor.
             /// </param>
             /// <exception cref='ArgumentNullException'>
-            /// Is thrown when the <paramref name="composition"/> is <c>null</c>.
+            /// Is thrown when the <paramref name="composition"/> is <see langword="null"/>.
             /// </exception>
             protected VisitorBase(CompositeVisitor<TResult> composition)
             {
@@ -301,12 +301,12 @@ namespace Epic
 
             /// <summary>
             /// Returns the current instance if and only if it's able to visit <paramref name="target"/>,
-            /// <c>null</c> otherwise.
+            /// <see langword="null"/> otherwise.
             /// It should be overridden whenever the type of <paramref name="target"/> is not enough 
             /// to choose whether the current instance can visit it or not.
             /// </summary>
             /// <returns>
-            /// The current instance or <c>null</c>.
+            /// The current instance or <see langword="null"/>.
             /// </returns>
             /// <param name='target'>
             /// Object to visit.

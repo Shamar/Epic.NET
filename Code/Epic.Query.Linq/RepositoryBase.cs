@@ -64,7 +64,7 @@ namespace Epic.Query.Linq
         /// <param name='identity'>
         /// Identity.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="identity"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="identity"/> is <see langword="null"/>.</exception>
 		public TEntity this[TIdentity identity] {
 			get {
 				throw new NotImplementedException ();
@@ -76,9 +76,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the expression tree that is associated with the instance of IQueryable.
 		/// </summary>
-		/// <value>
-		/// The expression.
-		/// </value>
 		public System.Linq.Expressions.Expression Expression {
 			get 
             {
@@ -93,9 +90,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the type of the element(s) that are returned when the expression tree associated with this instance of IQueryable is executed.
 		/// </summary>
-		/// <value>
-		/// The type of the element.
-		/// </value>
 		public Type ElementType {
 			get {
 				return typeof(TEntity);
@@ -105,9 +99,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the query provider that is associated with this data source.
 		/// </summary>
-		/// <value>
-		/// The provider.
-		/// </value>
 		public IQueryProvider Provider {
 			get {
                 if(null == _provider)

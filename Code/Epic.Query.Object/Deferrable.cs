@@ -42,7 +42,7 @@ namespace Epic.Query.Object
         /// The type of the results.
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="deferred"/> 
-        /// is <c>null</c>.</exception>
+        /// is <see langword="null"/>.</exception>
         public static TResult Evaluate<TResult>(this IDeferred<TResult> deferred)
         {
             if(null == deferred)
