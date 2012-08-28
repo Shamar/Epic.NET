@@ -47,9 +47,6 @@ namespace Epic.Query.Relational
         /// <summary>
         /// Gets the type.
         /// </summary>
-        /// <value>
-        /// The <see cref="Type"/>.
-        /// </value>
         public ScalarType Type { get { return this._type; } }
 
         /// <summary>
