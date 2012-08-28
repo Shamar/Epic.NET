@@ -27,7 +27,7 @@ using System.Linq.Expressions;
 namespace Epic
 {
     /// <summary>
-    /// Defines a set of extension methods that makes some common type hierarchies
+    /// Defines a set of extension methods that make some common type hierarchies
     /// suitable for visit by a <see cref="IVisitor{TResult}"/>.
     /// </summary>
     public static class UnvisitableExtensions
