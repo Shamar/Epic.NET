@@ -66,7 +66,7 @@
     <Compile Include="Specifications\Disjunction.cs" />
     <Compile Include="Specifications\Conjunction.cs" />
     <Compile Include="Specifications\StatelessSpecificationBase.cs" />
-    <Compile Include="VisitableExceptions.cs" />
+    <Compile Include="UnvisitableExtensions.cs" />
     <Compile Include="UnvisitableWrapper.cs" />
     <Compile Include="AcceptCaller.cs" />
     <Compile Include="Visitors\EchoingVisitor.cs" />

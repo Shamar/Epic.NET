@@ -50,6 +50,7 @@ namespace Epic
         /// <param name='context'>
         /// Context of the visit.
         /// </param>
+        /// <returns>Result of the visit.</returns>
         /// <typeparam name='TResult'>
         /// Type of the result of the visit.
         /// </typeparam>
@@ -70,6 +71,7 @@ namespace Epic
         /// <param name='context'>
         /// Context of the visit.
         /// </param>
+        /// <returns>Result of the visit.</returns>
         /// <typeparam name='TResult'>
         /// Type of the result.
         /// </typeparam>

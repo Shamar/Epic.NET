@@ -35,12 +35,16 @@ namespace Epic
         private static readonly ConcurrentDictionary<Type, Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult>> _delegates;
         static UnvisitableWrapper()
         {
-            if(typeof(IVisitable).IsAssignableFrom(typeof(TUnvisitable)))
+            if (typeof(object).Equals(typeof(TUnvisitable)))
+            {
+                throw new InvalidOperationException("Cannot use System.Object as the base class of a visitable hierarchy. It's too abstract, thus no client of the domain model should use as a model.");
+            }
+            if (typeof(IVisitable).IsAssignableFrom(typeof(TUnvisitable)))
             {
                 string message = string.Format("The UnvisitableWrapper is for types' hierachies whose root does not implement Epic.IVisitable, but {0} is visitable by itself.", typeof(TUnvisitable));
                 throw new InvalidOperationException(message);
             }
-            _acceptAs = typeof(UnvisitableWrapper<TUnvisitable, TResult>).GetMethod("AcceptAs", BindingFlags.Static|BindingFlags.NonPublic);
+            _acceptAs = typeof(UnvisitableWrapper<TUnvisitable, TResult>).GetMethod("AcceptAs", BindingFlags.Static | BindingFlags.NonPublic);
             _delegates = new ConcurrentDictionary<Type, Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult>>();
         }
 
@@ -63,9 +67,9 @@ namespace Epic
         /// </param>
         private static Type GetFirstVisitableTypeFor(Type type)
         {
-            if(type.IsPublic || (type.IsNested && type.IsNestedPublic))
+            if (type.IsPublic || (type.IsNested && type.IsNestedPublic))
                 return type;
-            while(!type.Equals(typeof(object)) && !(type.IsPublic || (type.IsNested && type.IsNestedPublic)))
+            while (!type.Equals(typeof(object)) && !(type.IsPublic || (type.IsNested && type.IsNestedPublic)))
             {
                 type = type.BaseType;
             }
@@ -97,7 +101,7 @@ namespace Epic
         {
             // no null check here, becouse (being this method internal) a NullReferenceException from here is a bug in Epic.
             Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult> del = null;
-            if(!_delegates.TryGetValue(unvisitable.GetType(), out del))
+            if (!_delegates.TryGetValue(unvisitable.GetType(), out del))
             {
                 if (unvisitable is IVisitable)
                 {
@@ -111,11 +115,11 @@ namespace Epic
                     ParameterExpression unvisitableP = Expression.Parameter(typeof(TUnvisitable), "unvisitable");
                     ParameterExpression visitorP = Expression.Parameter(typeof(IVisitor<TResult>), "visitor");
                     ParameterExpression contextP = Expression.Parameter(typeof(IVisitContext), "context");
-                    Expression<Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult>> delegateBuilder = 
+                    Expression<Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult>> delegateBuilder =
                         Expression.Lambda<Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult>>(
-                            Expression.Call(_acceptAs.MakeGenericMethod(GetFirstVisitableTypeFor(unvisitable.GetType ())),
-                                            unvisitableP, 
-                                            visitorP, 
+                            Expression.Call(_acceptAs.MakeGenericMethod(GetFirstVisitableTypeFor(unvisitable.GetType())),
+                                            unvisitableP,
+                                            visitorP,
                                             contextP),
                             unvisitableP,
                             visitorP,

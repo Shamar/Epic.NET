@@ -34,6 +34,7 @@ namespace Epic
         /// Accept the specified visitor (double dispatch) and returns 
         /// the <typeparamref name="TResult"/> that the visit produce.
         /// </summary>
+        /// <returns>Result of the visit.</returns>
         /// <param name='visitor'>
         /// Visitor.
         /// </param>

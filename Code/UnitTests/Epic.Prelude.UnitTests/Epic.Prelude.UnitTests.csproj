@@ -69,7 +69,7 @@
     <Compile Include="Specifications\ConjunctionQA.cs" />
     <Compile Include="IObject.cs" />
     <Compile Include="Specifications\DisjunctionQA.cs" />
-    <Compile Include="VisitableExceptionsQA.cs" />
+    <Compile Include="UnvisitableExtensionsQA.cs" />
     <Compile Include="UnvisitableWrapperQA.cs" />
     <Compile Include="Visitors\EchoingVisitorQA.cs" />
     <Compile Include="Visitors\SimpleFormatterQA.cs" />
