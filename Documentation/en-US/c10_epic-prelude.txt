@@ -368,9 +368,9 @@ public sealed class ItalianExceptionsFormatter : CompositeVisitorBase<string, Ex
 -------------------------------------------
 
 While the example is quite straightforward, you've got the point. You can 
-enhance the behaviour of a visitor's composition by simply initializing a new visitor.
+enhance the behaviour of a +CompositeVisitor+ by simply initializing a new visitor.
 
-This turned to be a really powerfull tool, able to visit complex expression 
+This turned to be a really powerful tool, able to visit complex expression 
 trees and translate them to nice, human readable, messages or to SQL queries.
 Moreover, when the class hierachy grows, you don't need to break existing 
 visitors: you can always extend the behaviour of the composition by adding 
