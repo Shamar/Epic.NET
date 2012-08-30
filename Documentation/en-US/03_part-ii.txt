@@ -192,17 +192,25 @@ include::c11_epic-core.txt[]
 
 [[epic-query]]
 Epic.Query
----------
+----------
 Coming soon.
+
+
 
 
 [[epic-query-object]]
 Epic.Query.Object
----------
+-----------------
 Coming soon.
+
+
 
 
 [[epic-query-linq]]
 Epic.Query.Linq
----------
+---------------
 Coming soon.
+
+
+
+
