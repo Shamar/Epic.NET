@@ -189,6 +189,7 @@
   <xsl:call-template name="user.preroot"/> 
  
   <html> 
+    <meta http-equiv="cache-control" content="no-cache" />
     <xsl:call-template name="html.head"> 
       <xsl:with-param name="prev" select="$prev"/> 
       <xsl:with-param name="next" select="$next"/> 
