@@ -31,28 +31,25 @@ namespace Epic.Query.Relational.Operations
 {
     /// <summary>
     /// This class models the Projection operation, which extracts a given set of fields from a given
-    /// <see cref="Relation"/>.
+    /// <see cref="RelationalExpression"/>.
     /// </summary>
     [Serializable]
-    public sealed class Projection: Relation, IEquatable<Projection>
+    public sealed class Projection: RelationalExpression, IEquatable<Projection>
     {
-        private readonly Relation _relation;
+        private readonly RelationalExpression _relation;
         private readonly IEnumerable<RelationAttribute> _attributes;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.Projection"/> class.
         /// </summary>
         /// <param name='relation'>
-        /// The <see cref="Relation"/> used as source for the projection.
+        /// The <see cref="RelationalExpression"/> used as source for the projection.
         /// </param>
         /// <param name='attributes'>
         /// The collection of <see cref="RelationAttribute">relation attributes</see> extracted
         /// </param>
-        /// <param name='name'>
-        /// A user-defined name used to identify the Projection relation.
-        /// </param>
-        public Projection (Relation relation, IEnumerable<RelationAttribute> attributes, string name):
-            base(RelationType.Projection, name)
+        public Projection(RelationalExpression relation, IEnumerable<RelationAttribute> attributes):
+            base(RelationType.Projection)
         {
             if (null == relation) throw new ArgumentNullException("relation");
             if (null == attributes) throw new ArgumentNullException("attributes");
@@ -61,30 +58,9 @@ namespace Epic.Query.Relational.Operations
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.Projection"/> class.
+        /// Gets the <see cref="RelationalExpression"/> used as source for the projection.
         /// </summary>
-        /// <param name='relation'>
-        /// The <see cref="Relation"/> used as source for the projection.
-        /// </param>
-        /// <param name='attributes'>
-        /// The collection of <see cref="RelationAttribute">relation attributes</see> extracted
-        /// </param>
-        public Projection(Relation relation, IEnumerable<RelationAttribute> attributes):
-            base(RelationType.Projection, getDefaultName(relation))
-        {
-            // if (null == relation) throw new ArgumentNullException("relation");
-            if (null == attributes) throw new ArgumentNullException("attributes");
-            this._relation = relation;
-            this._attributes = attributes;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Relation"/> used as source for the projection.
-        /// </summary>
-        /// <value>
-        /// The table.
-        /// </value>
-        public Relation Relation { get { return this._relation; } }
+        public RelationalExpression Relation { get { return this._relation; } }
 
         /// <summary>
         /// Gets the attributes extracted from the given table.
@@ -95,16 +71,16 @@ namespace Epic.Query.Relational.Operations
         public IEnumerable<RelationAttribute> Attributes { get { return this._attributes; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.Projection"/>.
+        /// Determines whether the specified <see cref="RelationalExpression"/> is equal to the current <see cref="Epic.Query.Relational.Operations.Projection"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="Epic.Query.Relational.Operations.Projection"/>.
+        /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Query.Relational.Operations.Projection"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current
+        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
         /// <see cref="Epic.Query.Relational.Operations.Projection"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (Relation other)
+        public override bool Equals (RelationalExpression other)
         {
             return this.Equals (other as Projection);
         }
@@ -123,8 +99,7 @@ namespace Epic.Query.Relational.Operations
         public bool Equals(Projection other)
         {
             if (null == other) return false;
-            return this.Relation.Equals (other.Relation) && this.Attributes.SequenceEqual(other.Attributes)
-                && this.Name.Equals (other.Name);
+            return this.Relation.Equals (other.Relation) && this.Attributes.SequenceEqual(other.Attributes);
         }
 
         /// <summary>
@@ -153,27 +128,11 @@ namespace Epic.Query.Relational.Operations
         /// </returns>
         public override int GetHashCode ()
         {
-            int hash = this.Relation.GetHashCode () ^ this.Name.GetHashCode ();
+            int hash = this.Relation.GetHashCode ();
             foreach (RelationAttribute attribute in this.Attributes)
                 hash ^= attribute.GetHashCode ();
             return hash;
         }
-
-        /// <summary>
-        /// Gets the default name for the projection.
-        /// </summary>
-        /// <returns>
-        /// The default name.
-        /// </returns>
-        /// <param name='relation'>
-        /// the <see cref="Relation"/> used as source for the projection.
-        /// </param>
-        private static string getDefaultName (Relation relation)
-        {
-            if (null == relation) throw new ArgumentNullException("relation");
-            return relation.Name;
-        }
-
     }
 }
 

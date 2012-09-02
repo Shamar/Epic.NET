@@ -38,16 +38,13 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             Predicate predicate = new Fakes.FakePredicate();
 
             // assert:
             Assert.Throws<ArgumentNullException>(() => new Selection(table, null));
             Assert.Throws<ArgumentNullException>(() => new Selection(null, predicate));
             Assert.Throws<ArgumentNullException>(() => new Selection(null, null));
-            Assert.Throws<ArgumentNullException>(() => new Selection(table, predicate, null));
-            Assert.Throws<ArgumentNullException>(() => new Selection(null, predicate, tableName));
-            Assert.Throws<ArgumentNullException>(() => new Selection(table, null, tableName));
         }
 
         [Test]
@@ -55,24 +52,15 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             Predicate predicate = new Fakes.FakePredicate();
-            string operationName = "select * from testTable where 1 = 1";
 
             // act:
             Selection firstSelection = new Selection(table, predicate);
-            Selection secondSelection = new Selection(table, predicate, operationName);
 
             // assert:
             Assert.IsTrue (firstSelection.Relation.Equals (table));
-            Assert.IsTrue (firstSelection.Relation.Equals (secondSelection.Relation));
-
             Assert.IsTrue (firstSelection.Condition.Equals (predicate));
-            Assert.IsTrue (firstSelection.Condition.Equals (secondSelection.Condition));
-
-            Assert.IsTrue (firstSelection.Name.Equals (table.Name));
-            Assert.IsTrue (secondSelection.Name.Equals (operationName));
-            Assert.IsFalse (firstSelection.Equals (secondSelection));
         }
 
         [Test]
@@ -80,12 +68,11 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             Predicate predicate = new Fakes.FakePredicate();
-            string operationName = "select * from testTable where 1 = 1";
 
             // act:
-            Selection firstSelection = new Selection(table, predicate, operationName);
+            Selection firstSelection = new Selection(table, predicate);
             Selection secondSelection = firstSelection;
 
             // assert:
@@ -97,12 +84,11 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             Predicate predicate = new Fakes.FakePredicate();
-            string operationName = "select * from testTable where 1 = 1";
 
             // act:
-            Selection firstSelection = new Selection(table, predicate, operationName);
+            Selection firstSelection = new Selection(table, predicate);
 
             // assert:
             Assert.IsFalse (firstSelection.Equals (null));
@@ -113,22 +99,21 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             Predicate predicate = new Fakes.FakePredicate();
-            string operationName = "select * from testTable where 1 = 1";
 
             // act:
-            Selection firstSelection = new Selection(table, predicate, operationName);
-            Selection secondSelection = new Selection(table, predicate,  operationName);
-            Selection thirdSelection = new Selection(table, predicate);
-            Relation relation = secondSelection;
+            Selection firstSelection = new Selection(table, predicate);
+            Selection secondSelection = new Selection(table, predicate);
+            RelationalExpression relation = secondSelection;
 
             // assert:
+            Assert.IsTrue (firstSelection.Relation.Equals (secondSelection.Relation));
+            Assert.IsTrue (firstSelection.Condition.Equals (secondSelection.Condition));
             Assert.IsTrue (firstSelection.Equals (secondSelection));
             Assert.IsTrue (firstSelection.Equals (relation));
             Assert.AreEqual (firstSelection.GetHashCode (), secondSelection.GetHashCode ());
 
-            Assert.IsFalse (firstSelection.Equals (thirdSelection));
         }
 
         [Test]
@@ -136,10 +121,9 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             Predicate predicate = new Fakes.FakePredicate();
-            string operationName = "select * from testTable where 1 = 1";
-            Selection selection = new Selection(table, predicate, operationName);
+            Selection selection = new Selection(table, predicate);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<Selection>(selection);
@@ -153,10 +137,9 @@ namespace Epic.Query.Relational.Operations
         {
             // arrange:
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             Predicate predicate = new Fakes.FakePredicate();
-            string operationName = "select * from testTable where 1 = 1";
-            Selection selection = new Selection(table, predicate, operationName);
+            Selection selection = new Selection(table, predicate);
 
             // act:
             Stream stream = SerializationUtilities.Serialize<Selection>(selection);
@@ -174,10 +157,9 @@ namespace Epic.Query.Relational.Operations
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             string tableName = "testTable";
-            Relation table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
+            RelationalExpression table = new Fakes.FakeRelation(RelationType.BaseRelation, tableName);
             Predicate predicate = new Fakes.FakePredicate();
-            string operationName = "select * from testTable where 1 = 1";
-            Selection selection = new Selection(table, predicate, operationName);
+            Selection selection = new Selection(table, predicate);
 
             IVisitor<object, Selection> selectionVisitor =
             GenerateStrictMock<IVisitor<object, Selection>>();

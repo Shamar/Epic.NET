@@ -95,7 +95,7 @@ namespace Epic.Query.Relational
         {
             // arrange:
             RelationFunction function = new FakeRelationFunction(name);
-            Relation relation = new FakeRelation(RelationType.BaseRelation, name);
+            RelationalExpression relation = new FakeRelation(RelationType.BaseRelation, name);
 
             // act:
             bool areEqual = function.Equals (relation);

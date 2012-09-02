@@ -1,5 +1,5 @@
 //  
-//  Relation.cs
+//  RelationalExpression.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -32,86 +32,59 @@ namespace Epic.Query.Relational
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
     [Serializable]
-    public abstract class Relation : VisitableBase, IEquatable<Relation>
+    public abstract class RelationalExpression : VisitableBase, IEquatable<RelationalExpression>
     {
         private readonly RelationType _type;
-        private readonly string _name;
-        
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Relation"/> class.
+        /// Initializes a new instance of the <see cref="RelationalExpression"/> class.
         /// </summary>
         /// <param name='type'>
         /// Type of the relation.
         /// </param>
-        /// <param name='name'>
-        /// Name of the relation.
-        /// </param>
-        /// <exception cref='ArgumentNullException'>
-        /// Is thrown when <paramref name="name"/> is <see langword="null" /> or empty.
-        /// </exception>
-        protected Relation (RelationType type, string name)
+        protected RelationalExpression (RelationType type)
         {
-            if(string.IsNullOrEmpty(name))
-               throw new ArgumentNullException("name");
             _type = type;
-            _name = name;
         }
-        
+
         /// <summary>
         /// Type of the relation.
         /// </summary>
-        public RelationType Type
-        {
-            get
-            {
-                return _type;
-            }
-        }
-        
-        /// <summary>
-        /// Name of the relation.
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
+        public RelationType Type { get { return this._type; } }
 
         #region IEquatable[Relation] implementation
 
         /// <summary>
-        /// Determines whether the specified <see cref="Relation"/> is equal to the current <see cref="Relation"/>.
+        /// Determines whether the specified <see cref="RelationalExpression"/> is equal to the current <see cref="RelationalExpression"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Relation"/> to compare with the current <see cref="Relation"/>.
+        /// The <see cref="RelationalExpression"/> to compare with the current <see cref="RelationalExpression"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Relation"/> is equal to the current
-        /// <see cref="Relation"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationalExpression"/> is equal to the current
+        /// <see cref="RelationalExpression"/>; otherwise, <c>false</c>.
         /// </returns>
-        public abstract bool Equals (Relation other);
+        public abstract bool Equals (RelationalExpression other);
         
         #endregion
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Relation"/>.
+        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="RelationalExpression"/>.
         /// </summary>
         /// <param name='obj'>
-        /// The <see cref="System.Object"/> to compare with the current <see cref="Relation"/>.
+        /// The <see cref="System.Object"/> to compare with the current <see cref="RelationalExpression"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="Relation"/>; otherwise, <c>false</c>.
+        /// <see cref="RelationalExpression"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (object obj)
         {
-            return Equals (obj as Relation);
+            return Equals (obj as RelationalExpression);
         }
 
         /// <summary>
-        /// Serves as a hash function for a <see cref="Relation"/> object.
+        /// Serves as a hash function for a <see cref="RelationalExpression"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
@@ -119,7 +92,7 @@ namespace Epic.Query.Relational
         /// </returns>
         public override int GetHashCode ()
         {
-            return GetType().GetHashCode() ^ _name.GetHashCode() ;
+            return this.GetType ().GetHashCode ();
         }
     }
 }
