@@ -32,44 +32,24 @@ namespace Epic.Query.Relational.Operations
     /// a given <see cref="Predicate"/>
     /// </summary>
     [Serializable]
-    public sealed class Selection: Relation, IEquatable<Selection>
+    public sealed class Selection: RelationalExpression, IEquatable<Selection>
     {
         private readonly Predicate _condition;
-        private readonly Relation _relation;
+        private readonly RelationalExpression _relation;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.Selection"/> class.
         /// </summary>
         /// <param name='relation'>
-        /// The <see cref="Relation"/> used as source for the selection.
+        /// The <see cref="RelationalExpression"/> used as source for the selection.
         /// </param>
         /// <param name='condition'>
         /// The <see cref="Predicate"/> against which the records are matched.
         /// </param>
-        public Selection (Relation relation, Predicate condition)
-            : base(RelationType.Selection, getDefaultName (relation))
+        public Selection (RelationalExpression relation, Predicate condition)
+            : base(RelationType.Selection)
         {
-            if (null == condition) throw new ArgumentNullException("condition");
-            this._condition = condition;
-            this._relation = relation;
-        }
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.Selection"/> class.
-        /// </summary>
-        /// <param name='relation'>
-        /// The table used as source for the selection.
-        /// </param>
-        /// <param name='condition'>
-        /// The <see cref="Predicate"/> against which the records are matched.
-        /// </param>
-        /// <param name='name'>
-        /// A user-defined name to identify the Selection relation.
-        /// </param>
-        public Selection (Relation relation, Predicate condition, string name)
-            : base(RelationType.Selection, name)
-        {
-            if (null == relation) throw new ArgumentNullException("relation");
+            if (null == relation)  throw new ArgumentNullException("relation");
             if (null == condition) throw new ArgumentNullException("condition");
             this._condition = condition;
             this._relation = relation;
@@ -84,24 +64,24 @@ namespace Epic.Query.Relational.Operations
         public Predicate Condition { get { return this._condition; } }
         
         /// <summary>
-        /// Gets the <see cref="Relation"/> used as source for the selection.
+        /// Gets the <see cref="RelationalExpression"/> used as source for the selection.
         /// </summary>
         /// <value>
         /// The table.
         /// </value>
-        public Relation Relation { get { return this._relation; } }
+        public RelationalExpression Relation { get { return this._relation; } }
         
         /// <summary>
-        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.Selection"/>.
+        /// Determines whether the specified <see cref="RelationalExpression"/> is equal to the current <see cref="Epic.Query.Relational.Operations.Selection"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="Epic.Query.Relational.Operations.Selection"/>.
+        /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Query.Relational.Operations.Selection"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current
+        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
         /// <see cref="Epic.Query.Relational.Operations.Selection"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (Relation other)
+        public override bool Equals (RelationalExpression other)
         {
             return this.Equals (other as Selection);
         }
@@ -120,8 +100,7 @@ namespace Epic.Query.Relational.Operations
         public bool Equals(Selection other)
         {
             if (null == other) return false;
-            return this.Relation.Equals (other.Relation) && this.Condition.Equals (other.Condition)
-                && this.Name.Equals (other.Name);
+            return this.Relation.Equals (other.Relation) && this.Condition.Equals (other.Condition);
         }
 
         /// <summary>
@@ -133,7 +112,7 @@ namespace Epic.Query.Relational.Operations
         /// </returns>
         public override int GetHashCode ()
         {
-            return this.Relation.GetHashCode () ^ this.Condition.GetHashCode () ^ this.Name.GetHashCode ();
+            return this.Relation.GetHashCode () ^ this.Condition.GetHashCode ();
         }
         
         /// <summary>
@@ -152,22 +131,6 @@ namespace Epic.Query.Relational.Operations
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
-        }
-        
-        /// <summary>
-        /// Gets the default name for the selection.
-        /// </summary>
-        /// <returns>
-        /// The default name.
-        /// </returns>
-        /// <param name='relation'>
-        /// The <see cref="Relation"/> used as source for the selection.
-        /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="relation"/> is <see langword="null"/>.</exception>
-        private static string getDefaultName(Relation relation)
-        {
-            if (null == relation) throw new ArgumentNullException("relation");
-            return relation.Name;
         }
     }
 }

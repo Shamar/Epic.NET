@@ -32,11 +32,11 @@ namespace Epic.Query.Relational
     [TestFixture()]
     public class RelationAttributeQA : RhinoMocksFixtureBase
     {
-        private Relation generateRelation(string name)
+        private RelationalExpression generateRelation()
         {
-            Relation relation = GeneratePartialMock<Relation>(RelationType.BaseRelation, name);
+            RelationalExpression relation = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
             relation.Expect ( r => r.Equals (relation)).Return (true).Repeat.Any ();
-            relation.Expect (r => r.Equals (Arg<Relation>.Is.Anything)).Return(false).Repeat.Any ();
+            relation.Expect (r => r.Equals (Arg<RelationalExpression>.Is.Anything)).Return(false).Repeat.Any ();
             return relation;
         }
         
@@ -54,25 +54,24 @@ namespace Epic.Query.Relational
             Assert.Throws<ArgumentNullException>(delegate { new RelationAttribute("test", null); } );
         }
         
-        [TestCase("testAttribute", "testRelation")]
-        public void Initialize_wihtNameAndRelation_Works(string attrName, string relationName)
+        [TestCase("testAttribute")]
+        public void Initialize_wihtNameAndRelation_Works(string attrName)
         {
             // act:
-            Relation relation = generateRelation (relationName);
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute = new RelationAttribute(attrName, relation);
 
             // assert:
             Assert.AreEqual (attribute.Name, attrName);
-            Assert.AreEqual (attribute.Relation.Name, relationName);
             Assert.AreEqual (attribute.Type, ScalarType.Attribute);
             Assert.IsTrue (attribute.Relation.Equals(relation));
         }
         
-        [TestCase("testAttribute", "testRelation")]
-        public void Equals_toAttributeWithSameNameAndRelation_isTrue(string attrName, string relationName)
+        [TestCase("testAttribute")]
+        public void Equals_toAttributeWithSameNameAndRelation_isTrue(string attrName)
         {
             // arrange:
-            Relation relation = generateRelation (relationName);
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName, relation);
             Scalar scalar = attribute2;
@@ -85,11 +84,11 @@ namespace Epic.Query.Relational
             Assert.IsTrue (isTrueScalar);
         }
         
-        [TestCase("testAttribute", "toastAttribute", "testRelation")]
-        public void Equals_toAttributeWithDifferentName_isFalse(string attrName, string attrName2, string relationName)
+        [TestCase("testAttribute", "toastAttribute")]
+        public void Equals_toAttributeWithDifferentName_isFalse(string attrName, string attrName2)
         {
             // arrange:
-            Relation relation = generateRelation (relationName);
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName2, relation);
             Scalar scalar = attribute2;
@@ -102,12 +101,12 @@ namespace Epic.Query.Relational
             Assert.IsFalse (isFalseScalar);
         }        
 
-        [TestCase("testAttribute", "testRelation", "toastRelation")]
-        public void Equals_toAttributeWithDifferentRelation_isFalse(string attrName, string relationName, string relationName2)
+        [TestCase("testAttribute")]
+        public void Equals_toAttributeWithDifferentRelation_isFalse(string attrName)
         {
             // arrange:
-            Relation relation = generateRelation (relationName);
-            Relation relation2 = generateRelation (relationName2);
+            RelationalExpression relation = generateRelation ();
+            RelationalExpression relation2 = generateRelation ();
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName, relation2);
 
@@ -118,12 +117,12 @@ namespace Epic.Query.Relational
             Assert.IsFalse (isFalse);
         }
         
-        [TestCase("testAttribute", "testRelation")]
-        public void Equals_toNull_isFalse(string attrName, string relationName)
+        [TestCase("testAttribute")]
+        public void Equals_toNull_isFalse(string attrName)
         {
             // arrange:
             // arrange:
-            Relation relation = generateRelation (relationName);
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = null;            
 
@@ -135,11 +134,11 @@ namespace Epic.Query.Relational
 
         }
         
-        [TestCase("testAttribute", "testRelation")]
-        public void Equals_ToRelationAttributeObject_Works(string attrName, string relationName)
+        [TestCase("testAttribute")]
+        public void Equals_ToRelationAttributeObject_Works(string attrName)
         {
             // arrange:
-            Relation relation = generateRelation (relationName);
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             object testObj = new RelationAttribute(attrName, relation);
 
@@ -150,11 +149,11 @@ namespace Epic.Query.Relational
             Assert.IsTrue (isTrue);
         }
         
-        [TestCase("testAttribute", "testRelation")]
-        public void Equals_ToAnyObject_IsFalse(string attrName, string relationName)
+        [TestCase("testAttribute")]
+        public void Equals_ToAnyObject_IsFalse(string attrName)
         {
             // arrange:
-            Relation relation = generateRelation (relationName);
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             Object testObj = new Object();
 
@@ -166,11 +165,11 @@ namespace Epic.Query.Relational
 
         }
         
-        [TestCase("testAttribute", "testRelation")]
-        public void GetHashCode_toAttributeWithSameNameAndRelation_AreEqual(string attrName, string relationName)
+        [TestCase("testAttribute")]
+        public void GetHashCode_toAttributeWithSameNameAndRelation_AreEqual(string attrName)
         {
             // arrange:
-            Relation relation = generateRelation (relationName);
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName, relation);
 
@@ -181,11 +180,11 @@ namespace Epic.Query.Relational
             Assert.AreEqual(hash1, hash2);                
         }
         
-        [TestCase("testAttribute", "toastAttribute", "testRelation")]
-        public void GetHashCode_toAttributeWithDifferentName_areNotEqual(string attrName, string attrName2, string relationName)
+        [TestCase("testAttribute", "toastAttribute")]
+        public void GetHashCode_toAttributeWithDifferentName_areNotEqual(string attrName, string attrName2)
         {
             // arrange:
-            Relation relation = generateRelation (relationName);
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute1 = new RelationAttribute(attrName, relation);
             RelationAttribute attribute2 = new RelationAttribute(attrName2, relation);
 
@@ -203,7 +202,7 @@ namespace Epic.Query.Relational
             // arrange:
             object expectedResult = new object();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
-            Relation relation = generateRelation ("test");
+            RelationalExpression relation = generateRelation ();
             RelationAttribute attribute = new RelationAttribute("testName", relation);
             IVisitor<object, RelationAttribute> relationAttributeVisitor = GenerateStrictMock<IVisitor<object, RelationAttribute>>();
             relationAttributeVisitor.Expect(v => v.Visit(attribute, context)).Return(expectedResult).Repeat.Once();
@@ -221,7 +220,7 @@ namespace Epic.Query.Relational
         public void Serialize_Works(string attributeName, string relationName)
         {
             // arrange:
-            Relation relation = new FakeRelation (RelationType.BaseRelation, relationName);
+            RelationalExpression relation = new FakeRelation (RelationType.BaseRelation, relationName);
             RelationAttribute attribute = new RelationAttribute(attributeName, relation);
 
             // act:
@@ -236,7 +235,7 @@ namespace Epic.Query.Relational
         public void Deserialize_Works(string attributeName, string relationName)
         {
             // arrange:
-            Relation relation = new FakeRelation (RelationType.BaseRelation, relationName);
+            RelationalExpression relation = new FakeRelation (RelationType.BaseRelation, relationName);
             RelationAttribute attribute = new RelationAttribute(attributeName, relation);
 
             // act:

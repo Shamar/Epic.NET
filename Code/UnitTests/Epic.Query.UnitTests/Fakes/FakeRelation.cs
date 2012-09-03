@@ -27,19 +27,33 @@ using Epic.Query.Relational;
 namespace Epic.Query.Fakes
 {
     [Serializable]
-    public class FakeRelation : Relation
+    public class FakeRelation : RelationalExpression, IEquatable<FakeRelation>
     {
-        public FakeRelation (RelationType type, string name)
-            : base(type, name)
+        private readonly string _name;
+
+        public FakeRelation (RelationType type, string name) : base(type)
         {
+            this._name = name;
+        }
+
+        public string Name {
+            get { 
+                return this._name;
+            }
         }
 
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Relation
-        public override bool Equals (Relation other)
+        public override bool Equals (RelationalExpression other)
         {
-            return this.Type == other.Type && this.Name == other.Name;
+            return Equals (other as FakeRelation);
         }
         #endregion
+
+        public bool Equals (FakeRelation other)
+        {
+            if (null == other) return false;
+            return this.Name == other.Name;
+        }
         
         public override TResult Accept<TResult> (Epic.IVisitor<TResult> visitor, Epic.IVisitContext context)
         {
