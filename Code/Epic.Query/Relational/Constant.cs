@@ -70,6 +70,7 @@ namespace Epic.Query.Relational
     /// <summary>
     /// Constant value in a relational predicate.
     /// </summary>
+    /// <typeparam name="TValue">Type of the value of the constant.</typeparam>
     [Serializable]
     public sealed class Constant<TValue> : Constant, IEquatable<Constant<TValue>>
     {
@@ -110,6 +111,7 @@ namespace Epic.Query.Relational
         /// <typeparam name='TResult'>
         /// Type of the result produced from the visitor.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);

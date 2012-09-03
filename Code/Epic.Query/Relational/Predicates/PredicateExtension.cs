@@ -36,6 +36,7 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='predicate'>
         /// Predicate.
         /// </param>
+        /// <returns>A negation of <paramref name="predicate"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is <see langword="null"/></exception>
         public static Not Not(this Predicate predicate)
         {
@@ -49,8 +50,9 @@ namespace Epic.Query.Relational.Predicates
         /// Predicate.
         /// </param>
         /// <param name='other'>
-        /// Other.
+        /// Another predicate.
         /// </param>
+        /// <returns>A conjunction between <paramref name="predicate"/> and <paramref name="other"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> or <paramref name="other"/> is <see langword="null"/> </exception>
         public static And And(this Predicate predicate, Predicate other)
         {
@@ -66,6 +68,7 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='other'>
         /// Other.
         /// </param>
+        /// <returns>A disjunction between <paramref name="predicate"/> and <paramref name="other"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> or <paramref name="other"/> is <see langword="null"/> </exception>
         public static Or Or(this Predicate predicate, Predicate other)
         {
@@ -73,7 +76,7 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Produce an <see cref="Equal"/> predicate for the specified scalar and other.
+        /// Produce an <see cref="Equal"/> predicate for the specified scalars.
         /// </summary>
         /// <param name='scalar'>
         /// A scalar.
@@ -81,6 +84,7 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='other'>
         /// Another scalar.
         /// </param>
+        /// <returns>An <see cref="Equal"/> predicate for the specified scalar.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="scalar"/> or <paramref name="other"/> is <see langword="null"/> </exception>
         public static Equal Equal(this Scalar scalar, Scalar other)
         {
@@ -94,8 +98,9 @@ namespace Epic.Query.Relational.Predicates
         /// Scalar.
         /// </param>
         /// <param name='other'>
-        /// Other.
+        /// Another scalar.
         /// </param>
+        /// <returns>A <see cref="Greater"/> predicate for the specified scalar.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="scalar"/> or <paramref name="other"/> is <see langword="null"/> </exception>
         public static Greater Greater(this Scalar scalar, Scalar other)
         {
@@ -111,6 +116,7 @@ namespace Epic.Query.Relational.Predicates
         /// <param name='other'>
         /// Other.
         /// </param>
+        /// <returns>A <see cref="Less"/> predicate for the specified scalar.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="scalar"/> or <paramref name="other"/> is <see langword="null"/> </exception>
         public static Less Less(this Scalar scalar, Scalar other)
         {

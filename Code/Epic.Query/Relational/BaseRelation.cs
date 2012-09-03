@@ -88,6 +88,7 @@ namespace Epic.Query.Relational
         /// <typeparam name='TResult'>
         /// Type of the result produced from the visitor.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);

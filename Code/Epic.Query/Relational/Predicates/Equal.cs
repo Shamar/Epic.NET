@@ -43,7 +43,6 @@ namespace Epic.Query.Relational.Predicates
         public Equal (Scalar leftOperand, Scalar rightOperand)
             : base(leftOperand, rightOperand)
         {
-
         }
 
         /// <summary>
@@ -88,8 +87,9 @@ namespace Epic.Query.Relational.Predicates
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);

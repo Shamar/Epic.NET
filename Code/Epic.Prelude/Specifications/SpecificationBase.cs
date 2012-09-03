@@ -99,6 +99,9 @@ namespace Epic.Specifications
         /// <typeparam name='TResult'>
         /// The type of the visit result.
         /// </typeparam>
+        /// <returns>
+        /// Result of the visit.
+        /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="visitor"/> or <paramref name="context"/> is <see langword="null"/>.</exception>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {

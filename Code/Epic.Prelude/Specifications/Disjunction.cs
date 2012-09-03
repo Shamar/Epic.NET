@@ -42,6 +42,10 @@ namespace Epic.Specifications
         /// <summary>
         /// Initialize a new <see cref="Disjunction{TCandidate}"/>.
         /// </summary>
+        /// <param name="first">First specification.</param>
+        /// <param name="second">Second specification.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="first"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="first"/> and <paramref name="second"/> are equals.</exception>
         public Disjunction(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
         {
             if (null == first)

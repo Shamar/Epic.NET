@@ -25,7 +25,6 @@ using System;
 
 namespace Epic.Visitors
 {
-
     /// <summary>
     /// Visitor that can produce a <see cref="System.String"/> out of a <typeparamref name="TTarget"/>.
     /// </summary>
@@ -34,7 +33,7 @@ namespace Epic.Visitors
         where TTarget : class
     {
         private readonly Func<TTarget, string> _format;
-        private readonly Func<TTarget, bool> _acceptanceRule;
+        private readonly Func<TTarget, bool> _shouldAccept;
 
 
         /// <summary>
@@ -67,20 +66,21 @@ namespace Epic.Visitors
             if (null == acceptRule)
                 throw new ArgumentNullException("acceptRule");
             _format = format;
-            _acceptanceRule = acceptRule;
+            _shouldAccept = acceptRule;
         }
 
         /// <summary>
         /// Return the current instance if the <paramref name="target"/> match the accept rule provided to
         /// </summary>
-        /// <typeparam name="TExpression"></typeparam>
-        /// <param name="target"></param>
-        /// <returns></returns>
+        /// <typeparam name="TExpression">Type of the expression to visit.</typeparam>
+        /// <param name="target">Target to visit.</param>
+        /// <returns>The current <see cref="SimpleFormatter{TTarget}"/> if <paramref name="target"/> is a 
+        /// <typeparamref name="TTarget"/> that matches the accept rule provided at initialization.</returns>
         protected sealed override IVisitor<string, TExpression> AsVisitor<TExpression>(TExpression target)
         {
             IVisitor<string, TExpression> visitor = base.AsVisitor(target);
             TTarget myTarget = target as TTarget;
-            if (null == visitor || null == myTarget || !_acceptanceRule(myTarget))
+            if (null == visitor || null == myTarget || !_shouldAccept(myTarget))
                 return null;
 
             return visitor;

@@ -63,8 +63,9 @@ namespace Epic.Specifications
         /// Determine whether the current <see cref="Negation{TCandidate}"/> negates the same
         /// <see cref="ISpecification{TCandidate}"/> that <paramref name="otherSpecification"/> negates.
         /// </summary>
-        /// <param name="otherSpecification"></param>
-        /// <returns></returns>
+        /// <param name="otherSpecification">Another negation.</param>
+        /// <returns><see langword="true"/> if the <paramref name="otherSpecification"/> negates
+        /// the same specification that the current instance negates, <see langword="false"/> otherwise.</returns>
         protected override bool EqualsA (Negation<TCandidate> otherSpecification)
         {
             return _negated.Equals(otherSpecification._negated);

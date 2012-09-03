@@ -73,6 +73,7 @@ namespace Epic.Query.Object.Expressions
         /// <typeparam name='TResult'>
         /// The type of the visit's result.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
