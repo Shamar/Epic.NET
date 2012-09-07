@@ -55,8 +55,8 @@ namespace Challenge00.DDDSample.Cargo
 		/// <returns>
 		/// A new <see cref="IItinerary"/>
 		/// </returns>
-		/// <exception cref="ArgumentNullException"><paramref name="leg"/> is <value>null</value>.</exception>
-		/// <exception cref="ArgumentException">The <see cref="ILeg.LoadLocation"/> do not match the last leg 
+		/// <exception cref="ArgumentNullException"><paramref name="leg"/> is <see langword="null"/>.</exception>
+		/// <exception cref="WrongLocationException">The <see cref="ILeg.LoadLocation"/> do not match the last leg 
 		/// <see cref="UnloadLocation"/>.</exception>
 		IItinerary Append(ILeg leg);
 		
@@ -69,7 +69,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <returns>
 		/// A <see cref="IItinerary"/>
 		/// </returns>
-		/// <exception cref="ArgumentNullException">Any argument is <value>null</value>.</exception>
+		/// <exception cref="ArgumentNullException">Any argument is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentException">The first load location of <paramref name="legs"/> do not belong to this itinerary.</exception>
 		/// <exception cref="ArgumentException">The first load time of <paramref name="legs"/> is before the corrisponding unload location in the itinerary.</exception>
 		/// <exception cref="ArgumentException">The first and the last legs in <paramref name="legs"/> 

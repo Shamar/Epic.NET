@@ -45,7 +45,7 @@ namespace Epic.Query.Object
         /// <typeparam name='TSpecializedEntity'>
         /// The type of the entities of interest.
         /// </typeparam>
-        /// <exception cref="ArgumentNullException"><paramref name="satifyingSpecification"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="satifyingSpecification"/> is <see langword="null"/>.</exception>
         ISearch<TSpecializedEntity, TIdentity> Search<TSpecializedEntity>(ISpecification<TSpecializedEntity> satifyingSpecification)
             where TSpecializedEntity : class, TEntity;
     }

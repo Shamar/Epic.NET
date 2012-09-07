@@ -28,6 +28,9 @@ using System.Collections;
 
 namespace Epic.Query.Linq
 {
+    /// <summary>
+    /// Base class for Linq based repositories.
+    /// </summary>
 	[Serializable]
 	public abstract class RepositoryBase<TEntity, TIdentity> : IQueryableRepository<TEntity, TIdentity>, IQueryable<TEntity>, IQueryable, IEnumerable<TEntity>, IEnumerable
 		where TEntity : class
@@ -42,7 +45,7 @@ namespace Epic.Query.Linq
         private IQueryProvider _provider;
 		
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.RepositoryBase`2"/> class.
+        /// Initializes a new instance of the <see cref="RepositoryBase{TEntity, TIdentity}"/> class.
         /// </summary>
         /// <param name='providerName'>
         /// Provider name in the Environment.
@@ -55,6 +58,13 @@ namespace Epic.Query.Linq
 		}
 
 		#region IRepository[TEntity,TIdentity] implementation
+        /// <summary>
+        /// Gets the <typeparamref name="TEntity"/> with the specified identity.
+        /// </summary>
+        /// <param name='identity'>
+        /// Identity.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="identity"/> is <see langword="null"/>.</exception>
 		public TEntity this[TIdentity identity] {
 			get {
 				throw new NotImplementedException ();
@@ -66,9 +76,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the expression tree that is associated with the instance of IQueryable.
 		/// </summary>
-		/// <value>
-		/// The expression.
-		/// </value>
 		public System.Linq.Expressions.Expression Expression {
 			get 
             {
@@ -83,9 +90,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the type of the element(s) that are returned when the expression tree associated with this instance of IQueryable is executed.
 		/// </summary>
-		/// <value>
-		/// The type of the element.
-		/// </value>
 		public Type ElementType {
 			get {
 				return typeof(TEntity);
@@ -95,9 +99,6 @@ namespace Epic.Query.Linq
 		/// <summary>
 		/// Gets the query provider that is associated with this data source.
 		/// </summary>
-		/// <value>
-		/// The provider.
-		/// </value>
 		public IQueryProvider Provider {
 			get {
                 if(null == _provider)
@@ -111,7 +112,7 @@ namespace Epic.Query.Linq
 
 		#region IEnumerable[T] implementation
 		/// <summary>
-		/// Returns an enumerator that iterates through a collection of <typeparamref name="T"/>.
+        /// Returns an enumerator that iterates through a collection of <typeparamref name="TEntity"/>.
 		/// </summary>
 		/// <returns>
 		/// The enumerator.

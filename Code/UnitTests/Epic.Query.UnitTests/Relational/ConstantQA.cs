@@ -153,7 +153,7 @@ namespace Epic.Query.Relational
             constantVisitor.Expect(v => v.Visit(testConstant, context)).Return(expectedResult).Repeat.Once();
             
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect (v => v.GetVisitor(testConstant)).Return(constantVisitor).Repeat.Once();
+            visitor.Expect (v => v.AsVisitor(testConstant)).Return(constantVisitor).Repeat.Once();
 
             // act:
             object result = testConstant.Accept(visitor, context);

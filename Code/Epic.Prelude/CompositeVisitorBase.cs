@@ -29,6 +29,8 @@ namespace Epic
     /// <summary>
     /// Visitors' composition base class. This class must be derived from concrete compositions.
     /// </summary>
+    /// <typeparam name="TResult">The type of the result produced by the visit.</typeparam>
+    /// <typeparam name="TExpression">The type of the expression to visit.</typeparam>
     [DebuggerDisplay("CompositeVisitor<{typeof(TResult).Name, nq}, {typeof(TExpression).Name, nq}> {_name} ({_chain.Count} visitors)")]
     public abstract class CompositeVisitorBase<TResult, TExpression> : CompositeVisitor<TResult>, IVisitor<TResult, TExpression>
         where TExpression : class
@@ -39,7 +41,7 @@ namespace Epic
         /// <param name='name'>
         /// Name of the compositions.
         /// </param>
-        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="name"/> is <c>null</c> or <value>string.Empty</value>.</exception>
+        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="name"/> is <see langword="null"/> or <see cref="String.Empty"/>.</exception>
         protected CompositeVisitorBase(string name)
             : base(name)
         {
@@ -52,10 +54,10 @@ namespace Epic
         /// The <see cref="IVisitContext"/> to be used in the current visit.
         /// </returns>
         /// <param name='target'>
-        /// Object to visit (will never be <c>null</c>).
+        /// Object to visit (will never be <see langword="null"/>).
         /// </param>
         /// <param name='context'>
-        /// Context recieved from the caller (will never be <c>null</c>).
+        /// Context recieved from the caller (will never be <see langword="null"/>).
         /// </param>
         protected abstract IVisitContext InitializeVisitContext(TExpression target, IVisitContext context);
         
@@ -70,8 +72,11 @@ namespace Epic
         /// <param name='context'>
         /// Context of the visit.
         /// </param>
+        /// <returns>
+        /// The result of the visit.
+        /// </returns>
         /// <exception cref="ArgumentNullException">
-        /// Is thrown when either <paramref name="target"/> or <paramref name="context"/> are <c>null</c>.
+        /// Is thrown when either <paramref name="target"/> or <paramref name="context"/> are <see langword="null"/>.
         /// </exception>
         public TResult Visit (TExpression target, IVisitContext context)
         {

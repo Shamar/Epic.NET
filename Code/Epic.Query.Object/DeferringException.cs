@@ -56,7 +56,7 @@ namespace Epic.Query.Object
         /// </param>
         /// <param name='inner'>
         /// The exception that is the cause of the current exception. 
-        /// If the <paramref name="innerException"/> parameter is not a <c>null</c> reference, the current 
+        /// If the <paramref name="inner"/> parameter is not a <see langword="null"/> reference, the current 
         /// exception is raised in a catch block that handles the inner exception. 
         /// </param>
         internal DeferringException(string message, Exception inner)
@@ -116,7 +116,7 @@ namespace Epic.Query.Object
         /// </param>
         /// <param name='inner'>
         /// The exception that is the cause of the current exception. 
-        /// If the <paramref name="innerException"/> parameter is not a <c>null</c> reference, the current 
+        /// If the <paramref name="inner"/> parameter is not a <see langword="null"/> reference, the current 
         /// exception is raised in a catch block that handles the inner exception. 
         /// </param>
         public DeferringException(string message, Exception inner)

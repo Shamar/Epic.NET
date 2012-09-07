@@ -36,7 +36,7 @@ namespace Epic.Query.Relational
     {
         private readonly string _name;
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.ScalarFunction"/> class.
         /// </summary>
         /// <param name='name'>
         /// Name.
@@ -54,13 +54,10 @@ namespace Epic.Query.Relational
         /// <summary>
         /// Gets the function name.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
         public string Name { get { return this._name; } }
 
         /// <summary>
-        /// Serves as a hash function for a <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/> object.
+        /// Serves as a hash function for a <see cref="Epic.Query.Relational.ScalarFunction"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
@@ -70,14 +67,14 @@ namespace Epic.Query.Relational
 
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Scalar
         /// <summary>
-        /// Determines whether the specified <see cref="Scalar"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/>.
+        /// Determines whether the specified <see cref="Scalar"/> is equal to the current <see cref="Epic.Query.Relational.ScalarFunction"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/>.
+        /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Query.Relational.ScalarFunction"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Scalar"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.ScalarFunction"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (Scalar other)
         {
@@ -87,14 +84,14 @@ namespace Epic.Query.Relational
 
         #region IEquatable[ScalarFunction] implementation
         /// <summary>
-        /// Determines whether the specified <see cref="ScalarFunction"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/>.
+        /// Determines whether the specified <see cref="ScalarFunction"/> is equal to the current <see cref="Epic.Query.Relational.ScalarFunction"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarFunction"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/>.
+        /// The <see cref="ScalarFunction"/> to compare with the current <see cref="Epic.Query.Relational.ScalarFunction"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="ScalarFunction"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.ScalarFunction"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.ScalarFunction"/>; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals (ScalarFunction other);
         #endregion

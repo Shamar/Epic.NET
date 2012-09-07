@@ -46,7 +46,7 @@ namespace Challenge00.DDDSample.Voyage
 			if(LastKnownLocation.Equals(location.UnLocode))
 				return this;
 			string message = string.Format("The voyage stopped over at {0}.", LastKnownLocation);
-			throw new ArgumentException(message, "location");
+			throw new WrongLocationException("location", message, LastKnownLocation, location.UnLocode);
 		}
 		
 		
@@ -55,7 +55,7 @@ namespace Challenge00.DDDSample.Voyage
 			if(LastKnownLocation.Equals(location.UnLocode))
 				return new MovingVoyage(Number, Schedule, _movementIndex);
 			string message = string.Format("The voyage stopped over at {0}.", LastKnownLocation);
-			throw new ArgumentException(message, "location");
+			throw new WrongLocationException("location", message, LastKnownLocation, location.UnLocode);
 		}
 		
 		public override UnLocode LastKnownLocation 

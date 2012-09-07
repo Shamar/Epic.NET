@@ -173,8 +173,8 @@ namespace DefaultImplementation.Voyage
 			schedule.Expect(s => s.MovementsCount).Return(3).Repeat.Any();
 			UnLocode initialLocation = new UnLocode("DPLOC");
 			ICarrierMovement movement = MockRepository.GenerateStrictMock<ICarrierMovement>();
-			movement.Expect(m => m.DepartureLocation).Return(initialLocation).Repeat.Twice();
-			schedule.Expect(s => s[index]).Return(movement).Repeat.Twice();
+			movement.Expect(m => m.DepartureLocation).Return(initialLocation).Repeat.AtLeastOnce();
+			schedule.Expect(s => s[index]).Return(movement).Repeat.AtLeastOnce();
 			ILocation location = MockRepository.GenerateStrictMock<ILocation>();
 			location.Expect(l => l.UnLocode).Return(new UnLocode("ANTHR")).Repeat.Any();
 			
@@ -182,7 +182,7 @@ namespace DefaultImplementation.Voyage
 			StoppedVoyage state = new StoppedVoyage(number, schedule, index);
 
 			// assert:
-			Assert.Throws<ArgumentException>(delegate {state.StopOverAt(location);});
+			Assert.Throws<WrongLocationException>(delegate {state.StopOverAt(location);});
 			schedule.VerifyAllExpectations();
 			movement.VerifyAllExpectations();
 			location.VerifyAllExpectations();
@@ -239,7 +239,7 @@ namespace DefaultImplementation.Voyage
 			StoppedVoyage state = new StoppedVoyage(number, schedule, index);
 
 			// assert:
-			Assert.Throws<ArgumentException>(delegate {state.DepartFrom(location);});
+			Assert.Throws<WrongLocationException>(delegate {state.DepartFrom(location);});
 			schedule.VerifyAllExpectations();
 			movement.VerifyAllExpectations();
 			location.VerifyAllExpectations();

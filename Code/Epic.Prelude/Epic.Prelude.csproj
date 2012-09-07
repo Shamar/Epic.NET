@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -19,6 +19,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
+    <GenerateDocumentation>True</GenerateDocumentation>
+    <DocumentationFile>..\..\build\bin\Debug\Epic.Prelude.XML</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -27,6 +30,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
+    <GenerateDocumentation>True</GenerateDocumentation>
+    <DocumentationFile>..\..\build\bin\Release\Epic.Prelude.XML</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -53,17 +59,18 @@
     <Compile Include="Math\FunctionMapping.cs" />
     <Compile Include="Collections\IIdentityMap.cs" />
     <Compile Include="Specifications\SpecificationBase.cs" />
-    <Compile Include="Specifications\OfType.cs" />
+    <Compile Include="Specifications\Variant.cs" />
     <Compile Include="Specifications\Any.cs" />
     <Compile Include="Specifications\No.cs" />
     <Compile Include="Specifications\Negation.cs" />
     <Compile Include="Specifications\Disjunction.cs" />
     <Compile Include="Specifications\Conjunction.cs" />
     <Compile Include="Specifications\StatelessSpecificationBase.cs" />
+    <Compile Include="UnvisitableExtensions.cs" />
+    <Compile Include="UnvisitableWrapper.cs" />
+    <Compile Include="AcceptCaller.cs" />
+    <Compile Include="Visitors\EchoingVisitor.cs" />
+    <Compile Include="Visitors\SimpleFormatter.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Specifications\" />
-    <Folder Include="Collections\" />
-    <Folder Include="Math\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

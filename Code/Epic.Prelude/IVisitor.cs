@@ -1,5 +1,5 @@
 //  
-//  ICompositeVisitor.cs
+//  IVisitor.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -26,33 +26,43 @@ using System;
 namespace Epic
 {
     /// <summary>
-    /// Interface of visitors working together in a composition.
+    /// Visitor producing a <typeparamref name="TResult"/>.
     /// </summary>
     /// <typeparam name="TResult">Type of the result of the visit.</typeparam>
-    /// <seealso cref="IVisitState"/>
-    public interface IVisitor<TResult>
+    /// <seealso cref="IVisitor{TResult, TExpression}"/>
+    /// <seealso cref="IVisitContext"/>
+    public interface IVisitor<out TResult>
     {
         /// <summary>
-        /// Return the visitor that can visit <paramref name="target">.
+        /// Enables the visit of <paramref name="target"/> returning the visitor
+        /// under an interface ready for the operation.
         /// </summary>
         /// <returns>
-        /// The visitor.
+        /// The visitor that can visit <paramref name="target"/>.
         /// </returns>
         /// <param name='target'>
         /// Expression to be visited.
         /// </param>
         /// <typeparam name='TExpression'>
-        /// Type of the expression that will be visited from the provided visitor.
+        /// Type of the expression that will be visited from the returned visitor.
         /// </typeparam>
-        IVisitor<TResult, TExpression> GetVisitor<TExpression>(TExpression target);
+        /// <exception cref="InvalidOperationException">
+        /// The current visitor can not be used to visit <paramref name="target"/>.
+        /// </exception>
+        /// <seealso cref="CompositeVisitor{TResult}"/>
+        /// <seealso cref="CompositeVisitorBase{TResult, TExpression}"/>
+        /// <seealso cref="CompositeVisitor{TResult}.VisitorBase"/>
+        IVisitor<TResult, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class;
     }
     
     /// <summary>
-    /// Interface of a visitor that know how to visit a <typeparamref name="TExpression"/>.
+    /// Visitor that knows how to visit a <typeparamref name="TExpression"/>.
     /// </summary>
     /// <typeparam name="TResult">Type of the result of the visit.</typeparam>
     /// <typeparam name="TExpression">Expression to visit.</typeparam>
-    public interface IVisitor<TResult, TExpression> : IVisitor<TResult>
+    /// <seealso cref="IVisitContext"/>
+    public interface IVisitor<out TResult, in TExpression> : IVisitor<TResult>
+        where TExpression : class
     {
         /// <summary>
         /// Visit the specified expression.
@@ -60,10 +70,13 @@ namespace Epic
         /// <param name='target'>
         /// Expression to visit.
         /// </param>
-        /// <param name='state'>
-        /// Visit state. The state can be provided from previous visitors.
+        /// <param name='context'>
+        /// Visit context. Contains the state produced by previous visitors.
         /// </param>
         /// <returns>Result of the visit.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="target"/> or <paramref name="context"/> is <see langword="null"/>
+        /// </exception>
         TResult Visit(TExpression target, IVisitContext context);
     }
 }

@@ -30,10 +30,10 @@ namespace Epic.Query.Relational.Operations
     /// record matching a given condition.
     /// </summary>
     [Serializable]
-    public sealed class CrossProduct: Relation, IEquatable<CrossProduct>
+    public sealed class CrossProduct: RelationalExpression, IEquatable<CrossProduct>
     {
-        private readonly Relation _leftRelation;
-        private readonly Relation _rightRelation;
+        private readonly RelationalExpression _leftRelation;
+        private readonly RelationalExpression _rightRelation;
  
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.CrossProduct"/> class.
@@ -44,12 +44,9 @@ namespace Epic.Query.Relational.Operations
         /// <param name='rightRelation'>
         /// Right relation in the Join operation.
         /// </param>
-        /// <param name='name'>
-        /// Name assigned to the join relation.
-        /// </param>
         /// <exception cref="ArgumentNullException">Thrown when any argument is <see langword="null"/></exception> 
-        public CrossProduct (Relation leftRelation, Relation rightRelation, string name):
-            base(RelationType.CrossProduct, name)
+        public CrossProduct (RelationalExpression leftRelation, RelationalExpression rightRelation):
+            base(RelationType.CrossProduct)
         {
             if (null == leftRelation)
                 throw new ArgumentNullException("leftRelation");
@@ -66,7 +63,7 @@ namespace Epic.Query.Relational.Operations
         /// <value>
         /// The left relation.
         /// </value>
-        public Relation LeftRelation { get { return this._leftRelation; } }
+        public RelationalExpression LeftRelation { get { return this._leftRelation; } }
 
         /// <summary>
         /// Gets the right relation.
@@ -74,19 +71,19 @@ namespace Epic.Query.Relational.Operations
         /// <value>
         /// The right relation.
         /// </value>
-        public Relation RightRelation { get { return this._rightRelation; } }
+        public RelationalExpression RightRelation { get { return this._rightRelation; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.CrossProduct"/>.
+        /// Determines whether the specified <see cref="RelationalExpression"/> is equal to the current <see cref="Epic.Query.Relational.Operations.CrossProduct"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="Epic.Query.Relational.Operations.CrossProduct"/>.
+        /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Query.Relational.Operations.CrossProduct"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current
+        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
         /// <see cref="Epic.Query.Relational.Operations.CrossProduct"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (Relation other)
+        public override bool Equals (RelationalExpression other)
         {
             return Equals (other as CrossProduct);
         }
@@ -107,8 +104,7 @@ namespace Epic.Query.Relational.Operations
             if (null == other) return false;
 
             return this.LeftRelation.Equals (other.LeftRelation) &&
-                this.RightRelation.Equals (other.RightRelation) &&
-                this.Name.Equals (other.Name);
+                this.RightRelation.Equals (other.RightRelation) ;
         }
 
         /// <summary>
@@ -120,7 +116,7 @@ namespace Epic.Query.Relational.Operations
         /// </returns>
         public override int GetHashCode ()
         {
-            return this.LeftRelation.GetHashCode () ^ this.RightRelation.GetHashCode () ^ this.Name.GetHashCode();
+            return this.LeftRelation.GetHashCode () ^ this.RightRelation.GetHashCode () ;
         }
 
         /// <summary>
@@ -133,8 +129,9 @@ namespace Epic.Query.Relational.Operations
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);

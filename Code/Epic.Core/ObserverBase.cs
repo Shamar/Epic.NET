@@ -32,6 +32,9 @@ namespace Epic
     /// <remarks>
     /// On disposition, all observed entities will be unsubscribed.
     /// </remarks>
+    /// <typeparam name="TEntity">
+    /// Type of the observed entities.
+    /// </typeparam>
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument is null.
     /// </exception>
@@ -44,12 +47,6 @@ namespace Epic
         /// <summary>
         /// Initializes a new instance of the observer.
         /// </summary>
-        /// <param name='identityReader'>
-        /// A delegate able to extract the identifiers of each entity.
-        /// </param>
-        /// <exception cref='ArgumentNullException'>
-        /// Is thrown when <paramref name="identityReader"/> is null.
-        /// </exception>
         protected ObserverBase ()
         {
         }
@@ -125,10 +122,10 @@ namespace Epic
         /// Unsubscribe all subscriptions done.
         /// </summary>
         /// <remarks>
-        /// Call <see cref="Dispose"/> when you are finished using the <see cref="Epic.ObserverBase`2"/>. The
-        /// <see cref="Dispose"/> method leaves the <see cref="Epic.ObserverBase`2"/> in an unusable state. After
-        /// calling <see cref="Dispose"/>, you must release all references to the <see cref="Epic.ObserverBase`2"/> so
-        /// the garbage collector can reclaim the memory that the <see cref="Epic.ObserverBase`2"/> was occupying.
+        /// Call <see cref="Dispose"/> when you are finished using the <see cref="Epic.ObserverBase{TEntity}"/>. The
+        /// <see cref="Dispose"/> method leaves the <see cref="Epic.ObserverBase{TEntity}"/> in an unusable state. After
+        /// calling <see cref="Dispose"/>, you must release all references to the <see cref="Epic.ObserverBase{TEntity}"/> so
+        /// the garbage collector can reclaim the memory that the <see cref="Epic.ObserverBase{TEntity}"/> was occupying.
         /// </remarks>
         public void Dispose ()
         {

@@ -36,7 +36,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         IVisitor<Expression, MethodCallExpression>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.PartialEvaluator"/> class.
+        /// Initializes a new instance of the <see cref="PartialEvaluator"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that will own this visitor.
@@ -56,7 +56,9 @@ namespace Epic.Query.Linq.Expressions.Normalization
         /// <returns>The reduced expression or <paramref name="target"/>, as appropriate.</returns>
         public Expression Visit (MemberExpression target, IVisitContext context)
         {
-            Expression owner = VisitInner(target.Expression, context);
+            Expression owner = null;
+            if(null != target.Expression)
+                owner = VisitInner(target.Expression, context);
             if(null == owner)
             {
                 // static members

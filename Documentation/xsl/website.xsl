@@ -16,10 +16,10 @@
   <meta charset='utf-8'/>
 
   <link rel="icon" href="/favicon.ico" />
-  <script src='script/shCore.js' type='text/javascript'></script> 
-  <script src='script/shBrushCSharp.js' type='text/javascript'></script> 
+  <script src='../script/shCore.js' type='text/javascript'></script> 
+  <script src='../script/shBrushCSharp.js' type='text/javascript'></script> 
 
-  <link rel="alternate" type="application/atom+xml" title="Development log"  href="atom.xml" />
+  <link rel="alternate" type="application/atom+xml" title="Development log"  href="/atom.xml" />
   <xsl:comment><![CDATA[[if !IE 7]>
     <style type="text/css">
 		#wrap {display:table;height:100%}
@@ -28,7 +28,7 @@
   <xsl:comment><![CDATA[[if lt IE 8]>
     <style type="text/css">
         #header {padding-top: 9px}
-    </xsl:element>
+    </style>
   <![endif]]]></xsl:comment>
   <xsl:comment><![CDATA[[if IE 8]>
     <style type="text/css">
@@ -189,6 +189,7 @@
   <xsl:call-template name="user.preroot"/> 
  
   <html> 
+    <meta http-equiv="cache-control" content="no-cache" />
     <xsl:call-template name="html.head"> 
       <xsl:with-param name="prev" select="$prev"/> 
       <xsl:with-param name="next" select="$next"/> 
@@ -199,7 +200,7 @@
 
   <div id="wrap">
     <div id="header">
-      <a href="http://github.com/Shamar/Epic.NET/"><img style="position: absolute; top: 0; left: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png" alt="Fork me on GitHub" /></a>
+      <a href="https://github.com/bards/Epic.NET"><img style="position: absolute; top: 0; left: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png" alt="Fork me on GitHub" /></a>
       <a class="title" href="/">Epic</a>
       <span>dominant domains</span>
     </div>
@@ -210,10 +211,10 @@
           <li><a href="/index.html">Overview</a></li>
           <li><a href="/roadmap.html">Roadmap</a></li>
           <li><a href="/blog.html" title="Development blog">Blog</a></li>
-          <li><a href="/doc/manual.html">Documentation</a></li>
-          <li><a href="http://github.com/Shamar/Epic.NET/archives/master">Download</a></li>
+          <li><a href="/doc/index.html">Documentation</a></li>
+          <li><a href="https://github.com/bards/Epic.NET/archives/master">Download</a></li>
           <li><a href="/license.html">License</a></li>
-          <li><a href="https://groups.google.com/group/epic-net/">Support</a></li>
+          <li><a href="http://epic.tesio.it/credits.html">Bards</a></li>
         </ul>
       </xsl:if>
       <xsl:call-template name="user.header.navigation"/> 
@@ -242,7 +243,7 @@
   </div>
 
   <div id="footer">
-    <div class="copyright">Copyright &#169; 2010-2011 Giacomo Tesio</div>
+    <div class="copyright">Copyright &#169; 2010-2012 Giacomo Tesio</div>
   </div>
      <xsl:call-template name="user.footer.navigation"/> 
   <script type='text/javascript'>SyntaxHighlighter.all()</script> 
@@ -301,6 +302,73 @@
     </xsl:with-param>
     <xsl:with-param name="quiet" select="$chunk.quietly"/>
   </xsl:call-template>
+</xsl:template>
+
+<xsl:template match="footnote">
+ <xsl:variable name="name">
+   <xsl:call-template name="object.id"/>
+ </xsl:variable>
+ <xsl:variable name="href">
+   <xsl:text>#ftn.</xsl:text>
+   <xsl:call-template name="object.id"/>
+ </xsl:variable>
+ 
+ <xsl:choose>
+   <xsl:when test="ancestor::tgroup">
+     <sup class="footnoteref">
+       <xsl:text>[</xsl:text>
+       <a name="{$name}" href="{$href}">
+         <xsl:apply-templates select="." mode="class.attribute"/>
+         <xsl:apply-templates select="." mode="footnote.number"/>
+       </a>
+       <xsl:text>]</xsl:text>
+     </sup>
+   </xsl:when>
+   <xsl:otherwise>
+     <sup class="footnoteref">
+       <xsl:text>[</xsl:text>
+       <a name="{$name}" href="{$href}">
+         <xsl:apply-templates select="." mode="class.attribute"/>
+         <xsl:apply-templates select="." mode="footnote.number"/>
+       </a>
+       <xsl:text>]</xsl:text>
+     </sup>
+   </xsl:otherwise>
+ </xsl:choose>
+</xsl:template>
+
+<xsl:template match="footnote/para[1]|footnote/simpara[1]" priority="2">
+ <!-- this only works if the first thing in a footnote is a para, -->
+ <!-- which is ok, because it usually is. -->
+ <xsl:variable name="name">
+   <xsl:text>ftn.</xsl:text>
+   <xsl:call-template name="object.id">
+     <xsl:with-param name="object" select="ancestor::footnote"/>
+   </xsl:call-template>
+ </xsl:variable>
+ <xsl:variable name="href">
+   <xsl:text>#</xsl:text>
+   <xsl:call-template name="object.id">
+     <xsl:with-param name="object" select="ancestor::footnote"/>
+   </xsl:call-template>
+ </xsl:variable>
+ <p>
+   <xsl:if test="@role and $para.propagates.style != 0">
+     <xsl:apply-templates select="." mode="class.attribute">
+       <xsl:with-param name="class" select="@role"/>
+     </xsl:apply-templates>
+   </xsl:if>
+   <sup class="footnote">
+     <xsl:text>[</xsl:text>
+     <a name="{$name}" href="{$href}">
+       <xsl:apply-templates select="." mode="class.attribute"/>
+       <xsl:apply-templates select="ancestor::footnote"
+                            mode="footnote.number"/>
+     </a>
+     <xsl:text>] </xsl:text>
+   </sup>
+   <xsl:apply-templates/>
+ </p>
 </xsl:template>
 
 <xsl:include href="http://docbook.sourceforge.net/release/xsl/current/xhtml/chunk-code.xsl"/>

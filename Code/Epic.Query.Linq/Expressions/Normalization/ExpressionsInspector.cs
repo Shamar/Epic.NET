@@ -43,7 +43,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
         IVisitor<Expression, UnaryExpression>, 
         IVisitor<Expression, BinaryExpression>, 
         IVisitor<Expression, ConditionalExpression>,
-        IVisitor<Expression, ConstantExpression>,
         IVisitor<Expression, InvocationExpression>,
         IVisitor<Expression, LambdaExpression>,
         IVisitor<Expression, MemberExpression>,
@@ -52,11 +51,10 @@ namespace Epic.Query.Linq.Expressions.Normalization
         IVisitor<Expression, NewArrayExpression>,
         IVisitor<Expression, MemberInitExpression>,
         IVisitor<Expression, ListInitExpression>,
-        IVisitor<Expression, ParameterExpression>,
         IVisitor<Expression, TypeBinaryExpression>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Normalization.ExpressionsInspector"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Linq.Expressions.Normalization.ExpressionsInspector"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that owns this visitor.
@@ -124,20 +122,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
         }
     
         /// <summary>
-        /// Visit the specified <see cref="ConstantExpression"/>.
-        /// </summary>
-        /// <param name='expression'>
-        /// Expression.
-        /// </param>
-        /// <param name='context'>
-        /// Context.
-        /// </param>
-        public Expression Visit (ConstantExpression expression, IVisitContext context)
-        {
-            return expression;
-        }
-    
-        /// <summary>
         /// Visit the specified <see cref="ConditionalExpression"/>.
         /// </summary>
         /// <param name='expression'>
@@ -155,21 +139,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
                 return Expression.Condition (newTest, newTrue, newFalse);
             return expression;
         }
-    
-        /// <summary>
-        /// Visit the specified <see cref="ParameterExpression"/>.
-        /// </summary>
-        /// <param name='expression'>
-        /// Expression.
-        /// </param>
-        /// <param name='context'>
-        /// Context.
-        /// </param>
-        public Expression Visit (ParameterExpression expression, IVisitContext context)
-        {
-            return expression;
-        }
-    
+
         /// <summary>
         /// Visit the specified <see cref="LambdaExpression"/>.
         /// </summary>
@@ -322,7 +292,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         /// Context.
         /// </param>
         /// <exception cref='NotSupportedException'>
-        /// Is thrown when the visit of the <see cref="ListInitExpressions.NewExpression"/> does not return a <see cref="NewExpression"/>.
+        /// Is thrown when the visit of the <see cref="ListInitExpression.NewExpression"/> does not return a <see cref="NewExpression"/>.
         /// </exception>
         public Expression Visit (ListInitExpression expression, IVisitContext context)
         {
@@ -351,6 +321,8 @@ namespace Epic.Query.Linq.Expressions.Normalization
         /// </param>
         private Expression VisitExpression (Expression expression, IVisitContext context)
         {
+            if (null == expression)
+                return null;
             return VisitInner(expression, context);
         }
         

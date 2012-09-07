@@ -67,7 +67,7 @@ namespace Epic
             IVisitor<string, FakeVisitable<int>> visitorToUse = GenerateStrictMock<IVisitor<string, FakeVisitable<int>>>();
             visitorToUse.Expect(v => v.Visit(visitable, context)).Return(expectedResult).Repeat.Once();
             IVisitor<string> visitor = GenerateStrictMock<IVisitor<string>>();
-            visitor.Expect(v => v.GetVisitor<FakeVisitable<int>>(visitable)).Return(visitorToUse).Repeat.Once();
+            visitor.Expect(v => v.AsVisitor<FakeVisitable<int>>(visitable)).Return(visitorToUse).Repeat.Once();
 
             // act:
             string visitResult = visitable.Accept(visitor, context);

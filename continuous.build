@@ -22,6 +22,7 @@
                 
                 <call target="test-code" cascade="false"/>
                 <call target="test-samples" cascade="false" />
+                <call target="documentation" cascade="false" />
             </try>
             <finally>
                 <call target="restore-version" />
@@ -30,6 +31,8 @@
     </target>
     
 	<target name="clean-builddirectory">
+        <delete if="${directory::exists(website.tmp.path)}" dir="${website.tmp.path}" />
+        <delete if="${directory::exists(api.tmp.path)}" dir="${api.tmp.path}" />
 	    <delete if="${directory::exists(repository.testdirectory)}">
 	        <fileset>
 	            <include name="${path::combine(path::combine(repository.testdirectory, '**'), '*.dll')}" />
@@ -104,12 +107,78 @@
     </target>
     
     <target name="documentation" depends="api,manual">
+        <property name="website.commit.msg" value="Update documentation to ${build.vcs.number}."/>
+        <echo message="Clone git@ssh.github.com:bards/Epic.NET.git &quot;${website.tmp.path}&quot;"/>
+        <exec program="cmd">
+            <arg value="/c" />
+            <arg value="git clone git@ssh.github.com:bards/Epic.NET.git -b gh-pages &quot;${website.tmp.path}&quot;" />
+        </exec>
+        <delete if="${directory::exists(website.tmp.docApi.path)}" dir="${website.tmp.docApi.path}" />
+        <delete if="${directory::exists(website.tmp.docManual.path)}" dir="${website.tmp.docManual.path}" />
+        <copy todir="${website.tmp.docApi.path}" if="${directory::exists(api.tmp.path)}">
+            <fileset basedir="${api.tmp.path}">
+                <include name="${path::combine('html', '*.htm')}" />
+                <include name="${path::combine('icons', '*.gif')}" />
+                <include name="${path::combine('scripts', '*.js')}" />
+                <include name="${path::combine('styles', '*.css')}" />
+            </fileset>
+        </copy>
+        <copy todir="${website.tmp.docManual.path}" if="${directory::exists(manual.tmp.path)}">
+            <fileset basedir="${manual.tmp.path}">
+                <include name="*.html" />
+                <include name="${path::combine('images', '*.*')}" />
+                <include name="${path::combine('css', '*.css')}" />
+            </fileset>
+        </copy>
+        <exec program="cmd" workingdir="${website.tmp.path}">
+            <arg value="/c" />
+            <arg value="git add ." />
+        </exec>
+        <echo message="Commit API doc changes with message &quot;${website.commit.msg}&quot;"/>
+        <exec program="cmd" workingdir="${website.tmp.path}">
+            <arg value="/c" />
+            <arg value="git commit -am &quot;${website.commit.msg}&quot;" />
+        </exec>
+        <exec program="cmd" workingdir="${website.tmp.path}">
+            <arg value="/c" />
+            <arg value="git push origin gh-pages" />
+        </exec>
     </target>
     
     <target name="api">
+        <property name="project.path" value="${path::combine(documentation.dir, 'Epic.API.shfbproj')}"/>
+        <echo message="Call sandcastle with arguments ${project.path} /p:PresentationStyle=${website.presentationstyle} /t:${build.target} /p:Configuration=${build.configuration} /v:${build.verbosity}"/>
+        <exec program="${msbuild.path}"        
+             workingdir="${documentation.dir}" >
+             <arg value="${project.path}"/>
+             <arg value="/p:PresentationStyle=${website.presentationstyle}"/>
+             <arg value="/t:${build.target}"/>
+             <arg value="/p:Configuration=${build.configuration}"/>
+             <arg value="/v:${build.verbosity}"/>
+        </exec>
     </target>
     
     <target name="manual">
+        <if test="${property::exists('a2x.path')}">
+            <exec program="python"        
+                  workingdir="${documentation.dir}" verbose="true" >
+                  <!-- 
+                      Enable Verbosity
+                  <arg value="-v"/>
+                    --> 
+                  <arg value="${a2x.path}" />
+                  <arg value="--no-xmllint"/>
+                  <arg value="--icons"/>
+                  <arg value="--xsltproc-opts=&quot;--stringparam highlight.source 1 --stringparam navig.graphics 0&quot;"/>
+                  <arg value="--resource=${path::combine(documentation.dir, 'resources')}"/>
+                  <arg value="--format=chunked"/>
+                  <arg value="--destination-dir=../build/tmp/"/>
+                  <arg value="--conf-file=a2x.conf"/>
+                  <arg value="--stylesheet=&quot;css/layout.css css/screen.css css/shCore.css css/shCoreDefault.css css/shThemeDefault.css css/documentation.css&quot;"/>
+                  <arg value="--xsl-file=xsl/website.xsl"/>
+                  <arg value="en-US/manual.txt"/>
+            </exec>
+        </if>
     </target>
 
     

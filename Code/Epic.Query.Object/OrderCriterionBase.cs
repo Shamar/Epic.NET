@@ -56,32 +56,90 @@ namespace Epic.Query.Object
             }
         }
 
-        protected override sealed bool SafeEquals (OrderCriterion<TEntity> other)
+        /// <summary>
+        /// Determines whether the specified <see cref="OrderCriterion{TEntity}"/> is equal to the
+        /// current <see cref="OrderCriterion{TEntity}"/>, given that <see cref="EqualsA(OrderCriterion{TEntity})"/>
+        /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if equals was safed, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='other'>
+        /// Other.
+        /// </param>
+        protected override sealed bool EqualsA (OrderCriterion<TEntity> other)
         {
             TOrderCriterion otherCriterion = other as TOrderCriterion;
             // we don't need to check the cast again, since it's granted from the OrderCriterionBase 
             // constructor and the last OrderCriterion.Equals() check.
 
-            return SafeEquals(otherCriterion);
+            return EqualsA(otherCriterion);
         }
 
-        protected abstract bool SafeEquals (TOrderCriterion other);
+        /// <summary>
+        /// Determines whether the specified <typeparamref name="TOrderCriterion"/> is equal to the
+        /// current <typeparamref name="TOrderCriterion"/>, given that <see cref="EqualsA(OrderCriterion{TEntity})"/>
+        /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if the current criterion is equal to the <paramref name="other"/>, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='other'>
+        /// Another criterion.
+        /// </param>
+        protected abstract bool EqualsA (TOrderCriterion other);
 
+        /// <summary>
+        /// Accept the specified visitor and context as a <typeparamref name="TOrderCriterion"/>.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// Type of the result of the visit.
+        /// </typeparam>
         public sealed override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe<TResult, TOrderCriterion>(this as TOrderCriterion, visitor, context);
         }
 
+        /// <summary>
+        /// Chain the specified <see cref="OrderCriterion{TEntity}"/> to compare <typeparamref name="TEntity"/>
+        /// when they are equivalent according to the current criterion.
+        /// </summary>
+        /// <param name='other'>
+        /// Other order criterion to evaluate after the current one.
+        /// </param>
         public override sealed OrderCriterion<TEntity> Chain(OrderCriterion<TEntity> other)
         {
             return new OrderCriteria<TEntity>(this, other);
         }
 
+        /// <summary>
+        /// Reverse this order criterion.
+        /// </summary>
+        /// <returns>
+        /// A criterion that is the reverse of this.
+        /// </returns>
+        /// <seealso cref="ReverseOrder{TEntity}"/>
         public override sealed OrderCriterion<TEntity> Reverse()
         {
             return new ReverseOrder<TEntity>(this);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrderCriterionBase{TEntity, TOrderCriterion}"/> class,
+        /// after deserialization.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected OrderCriterionBase(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

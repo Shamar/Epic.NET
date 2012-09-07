@@ -47,7 +47,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='criterion'>
         /// Order criterion.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="criterion"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="criterion"/> is <see langword="null"/>.</exception>
         public Order (Expression<IEnumerable<TEntity>> source, OrderCriterion<TEntity> criterion)
         {
             if (null == source)
@@ -68,7 +68,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='criterion'>
         /// The order criterion to apply after the current one.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="criterion"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="criterion"/> is <see langword="null"/>.</exception>
         public Order<TEntity> ThanBy(OrderCriterion<TEntity> criterion)
         {
             if(null == criterion)
@@ -90,11 +90,33 @@ namespace Epic.Query.Object.Expressions
             get { return _criterion; }
         }
 
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit's result.
+        /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
         }
 
+        /// <summary>
+        /// Gets the object data to serialize.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("R", _source, typeof(Expression<IEnumerable<TEntity>>));

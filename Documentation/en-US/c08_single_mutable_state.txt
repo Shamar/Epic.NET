@@ -53,8 +53,8 @@ commands in the contract.
 
 For example the abstract +InvestmentProposalState+ 
 replicates the contract of the related +InvestmentProposal+, but replaces 
-commands like +void Acquire(FundQuote)+ with queries like 
-+InvestmentProposalState Acquire(FundQuote)+ returning the new state that the 
+commands like +void Subscribe(FundQuote)+ with queries like 
++InvestmentProposalState Subscribe(FundQuote)+ returning the new state that the 
 +InvestmentProposal+ will have. The +InvestmentProposal+ will works like a
 proxy: it delegates to the current state all the recieved commands, it replaces
 the previous mutable state with an atomic operation (a Compare And Swap 

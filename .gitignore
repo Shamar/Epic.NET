@@ -27,6 +27,7 @@ Thumbs.db
 *.lib
 *.sbr
 *.sdf
+*_bkp
 ipch/
 obj/
 [Bb]in
@@ -44,4 +45,7 @@ _ReSharper*/
 
 #Subversion files
 .svn
+
+Documentation/Epic.API.shfbproj_*
+
 

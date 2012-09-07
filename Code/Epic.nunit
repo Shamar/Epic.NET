@@ -1,6 +1,6 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Default" />
-  <Config name="Default" appbase="C:\Documents and Settings\Sara\Epic\Code\..\build\tests\Debug" binpathtype="Auto" runtimeFramework="v4.0">
+  <Config name="Default" appbase="..\build\tests\Debug" binpathtype="Auto" runtimeFramework="v4.0">
     <assembly path="Epic.Prelude.UnitTests.dll" />
     <assembly path="Epic.Core.UnitTests.dll" />
     <assembly path="Epic.Query.UnitTests.dll" />

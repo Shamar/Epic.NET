@@ -48,24 +48,57 @@ namespace Epic.Specifications
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 
+        /// <summary>
+        /// Determines that this specification cannot be satisfied by any candidate.
+        /// </summary>
+        /// <returns>
+        /// Always <c>false</c>.
+        /// </returns>
+        /// <param name='candidate'>
+        /// Candidate.
+        /// </param>
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
             return false;
         }
 
+        /// <summary>
+        /// Returns the <see cref="No{TSpecification}.Specification"/>, since False AND P = False.
+        /// </summary>
+        /// <returns>
+        /// The current instance.
+        /// </returns>
+        /// <param name='other'>
+        /// Another <see cref="ISpecification{TCandidate}"/> that will be ignored.
+        /// </param>
         protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
         {
             return this;
         }
 
+        /// <summary>
+        /// Returns the <paramref name="other"/>, since False OR P = P.
+        /// </summary>
+        /// <returns>
+        /// The <paramref name="other"/>.
+        /// </returns>
+        /// <param name='other'>
+        /// Another specification.
+        /// </param>
         protected override ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
         {
             return other;
         }
 
-        protected override ISpecification<TCandidate> NegateFirstCandidate ()
+        /// <summary>
+        /// Returns in <paramref name="negation"/> a <see cref="Any{TCandidate}"/>.
+        /// </summary>
+        /// <param name='negation'>
+        /// An <see cref="Any{TCandidate}"/>. since NOT False == True.
+        /// </param>
+        protected override void BuildNegation (out ISpecification<TCandidate> negation)
         {
-            return Any<TCandidate>.Specification;
+            negation = Any<TCandidate>.Specification;
         }
 
         #endregion

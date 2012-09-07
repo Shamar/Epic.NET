@@ -316,7 +316,7 @@ namespace DefaultImplementation.Voyage
 			};
 			
 			// act:
-			Assert.Throws<InvalidOperationException>(() => voyage.DepartFrom(loc3));
+			Assert.Throws<VoyageCompletedException>(() => voyage.DepartFrom(loc3));
 			
 			// assert:
 			Assert.AreSame(number, voyage.Number);

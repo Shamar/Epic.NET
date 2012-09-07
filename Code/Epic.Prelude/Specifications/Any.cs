@@ -30,7 +30,11 @@ namespace Epic.Specifications
     /// <summary>
     /// Specification that is satisfied by any <typeparamref name="TCandidate"/>.
     /// </summary>
-    /// <typeparam name="TCandidate">Type of the objects that can be tested with this specification.</typeparam>
+    /// <typeparam name="TCandidate">The type of the objects that can be tested with this specification.</typeparam>
+    /// <remarks>
+    /// This is a serializable singleton: an <see cref="IObjectReference"/> will always return the
+    /// instance at <see cref="Specification"/> after deserialization.
+    /// </remarks>
     [Serializable]
     public sealed class Any<TCandidate> : StatelessSpecificationBase<Any<TCandidate>, TCandidate>,
                                           IEquatable<Any<TCandidate>>,
@@ -48,24 +52,57 @@ namespace Epic.Specifications
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 
+        /// <summary>
+        /// Determines that this specification is satisfied by any candidate.
+        /// </summary>
+        /// <returns>
+        /// Always <c>true</c>, since the base class grant that no <see langword="null"/> candidate will reach this method.
+        /// </returns>
+        /// <param name='candidate'>
+        /// Candidate.
+        /// </param>
         protected override bool IsSatisfiedByA (TCandidate candidate)
         {
             return true;
         }
 
+        /// <summary>
+        /// Overrides the default behaviour returning <paramref name="other"/>.
+        /// </summary>
+        /// <returns>
+        /// The <paramref name="other"/> specification, since P == True AND P.
+        /// </returns>
+        /// <param name='other'>
+        /// Another specification.
+        /// </param>
         protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
         {
             return other;
         }
 
+        /// <summary>
+        /// Overrides the default behaviour returning the current instance.
+        /// </summary>
+        /// <returns>
+        /// The current instance, since True == True OR P.
+        /// </returns>
+        /// <param name='other'>
+        /// Another specification.
+        /// </param>
         protected override ISpecification<TCandidate> OrElse (ISpecification<TCandidate> other)
         {
             return this;
         }
 
-        protected override ISpecification<TCandidate> NegateFirstCandidate()
+        /// <summary>
+        /// Returns in <paramref name="negation"/> a <see cref="No{TCandidate}"/>.
+        /// </summary>
+        /// <param name='negation'>
+        /// A <see cref="No{TCandidate}"/>. since NOT True == False.
+        /// </param>
+        protected override void BuildNegation(out ISpecification<TCandidate> negation)
         {
-            return No<TCandidate>.Specification;
+            negation = No<TCandidate>.Specification;
         }
 
         #endregion

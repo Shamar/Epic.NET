@@ -52,6 +52,9 @@ namespace Epic
         /// <typeparam name='TState'>
         /// Type of the state of interest.
         /// </typeparam>
+        /// <returns>
+        /// Value of the <typeparamref name="TState"/> that was registered from previous visitors in the context.
+        /// </returns>
         /// <exception cref="InvalidOperationException">Thrown when the <typeparamref name="TState"/> has not been found in the context.</exception>
         public TState Get<TState> ()
         {
@@ -62,7 +65,7 @@ namespace Epic
         /// Tries to find the <typeparamref name="TState"/> in the context.
         /// </summary>
         /// <returns>
-        /// <value>true</value> when the <typeparamref name="TState"/> has been found, <value>false</value> otherwise.
+        /// <see langword="true"/> when the <typeparamref name="TState"/> has been found, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='state'>
         /// <typeparamref name="TState"/> to be used during the visit.
@@ -77,11 +80,14 @@ namespace Epic
         }
 
         /// <summary>
-        /// Return a new context containing the specified <paramref name="state"/>.
+        /// Create a new context containing the specified <paramref name="state"/>.
         /// </summary>
         /// <param name='state'>
         /// State to use in the visits recieving the resulting context.
         /// </param>
+        /// <returns>
+        /// A new context containing the <paramref name="state"/>.
+        /// </returns>
         /// <typeparam name='TState'>
         /// Type of the state to use.
         /// </typeparam>
@@ -103,7 +109,7 @@ namespace Epic
             private readonly TValue _state;
             
             /// <summary>
-            /// Initializes a new instance of the <see cref="Epic.VisitContext.State`1"/> class.
+            /// Initializes a new instance of the <see cref="Epic.VisitContext.State{TValue}"/> class.
             /// </summary>
             /// <param name='next'>
             /// Next context to be looked for states.
@@ -124,6 +130,9 @@ namespace Epic
             /// <typeparam name='TState'>
             /// Type of the state of interest.
             /// </typeparam>
+            /// <returns>
+            /// Value of the <typeparamref name="TState"/> that was registered from previous visitors in the context.
+            /// </returns>
             /// <exception cref="InvalidOperationException">Thrown when the <typeparamref name="TState"/> has not been found in the context.</exception>
             public TState Get<TState> ()
             {
@@ -137,7 +146,7 @@ namespace Epic
             /// Tries to find the <typeparamref name="TState"/> in the context.
             /// </summary>
             /// <returns>
-            /// <value>true</value> when the <typeparamref name="TState"/> has been found, <value>false</value> otherwise.
+            /// <see langword="true"/> when the <typeparamref name="TState"/> has been found, <see langword="false"/> otherwise.
             /// </returns>
             /// <param name='state'>
             /// <typeparamref name="TState"/> to be used during the visit.

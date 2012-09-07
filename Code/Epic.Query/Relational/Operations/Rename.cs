@@ -26,83 +26,61 @@ namespace Epic.Query.Relational.Operations
 {
     /// <summary>
     /// This class models the Rename operation, which allows user to assign a custom name 
-    /// to a given <see cref="Relation"/>.
+    /// to a given <see cref="RelationalExpression"/>.
     /// </summary>
     [Serializable]
-    public sealed class Rename: Relation, IEquatable<Rename>
+    public sealed class Rename: RelationalExpression, IEquatable<Rename>
     {
-        private readonly Relation relation;
-        private readonly string newRelationName;
+        private readonly RelationalExpression relation;
+        private readonly string name;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.Rename"/> class.
         /// </summary>
         /// <param name='relation'>
-        /// The <see cref="Relation"/> to be renamed.
+        /// The <see cref="RelationalExpression"/> to be renamed.
         /// </param>
-        /// <param name='newRelationName'>
+        /// <param name='name'>
         /// The new name given to the relation.
         /// </param>
-        public Rename (Relation relation, string newRelationName): 
-            base(RelationType.BaseRelation, getDefaultName (relation))
-        {
-            if (String.IsNullOrEmpty (newRelationName))
-                throw new ArgumentNullException("newRelationName");
-            this.relation = relation;
-            this.newRelationName = newRelationName;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Operations.Rename"/> class.
-        /// </summary>
-        /// <param name='relation'>
-        /// The <see cref="Relation"/> to be renamed.
-        /// </param>
-        /// <param name='newRelationName'>
-        /// The new name given to the relation.
-        /// </param>
-        /// <param name='operationName'>
-        /// A user-defined name used to identify the Projection relation.
-        /// </param>
-        public Rename (Relation relation, string newRelationName, string operationName):
-            base(RelationType.Rename, operationName)
+        public Rename (RelationalExpression relation, string name): 
+            base(RelationType.BaseRelation)
         {
             if(null == relation)
                 throw new ArgumentNullException("relation");
-            if(string.IsNullOrEmpty(newRelationName))
+            if (String.IsNullOrEmpty (name))
                 throw new ArgumentNullException("newRelationName");
-
             this.relation = relation;
-            this.newRelationName = newRelationName;
+            this.name = name;
         }
 
         /// <summary>
-        /// Gets the <see cref="Relation"/> to be renamed.
+        /// Gets the <see cref="RelationalExpression"/> to be renamed.
         /// </summary>
         /// <value>
         /// The relation.
         /// </value>
-        public Relation Relation { get { return this.relation; } }
+        public RelationalExpression Relation { get { return this.relation; } }
 
         /// <summary>
-        /// Gets the new name of the <see cref="Relation"/>.
+        /// Gets the new name of the <see cref="RelationalExpression"/>.
         /// </summary>
         /// <value>
         /// The new name of the relation.
         /// </value>
-        public string NewRelationName { get { return this.newRelationName; } }
+        public string Name { get { return this.name; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current <see cref="Epic.Query.Relational.Operations.Rename"/>.
+        /// Determines whether the specified <see cref="RelationalExpression"/> is equal to the current <see cref="Epic.Query.Relational.Operations.Rename"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Epic.Query.Relational.Relation"/> to compare with the current <see cref="Epic.Query.Relational.Operations.Rename"/>.
+        /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Query.Relational.Operations.Rename"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Relation"/> is equal to the current
+        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
         /// <see cref="Epic.Query.Relational.Operations.Rename"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (Relation other)
+        public override bool Equals (RelationalExpression other)
         {
             return Equals (other as Rename);
         }
@@ -116,7 +94,7 @@ namespace Epic.Query.Relational.Operations
         /// </returns>
         public override int GetHashCode ()
         {
-            return this.relation.GetHashCode () ^ this.newRelationName.GetHashCode () ^ this.Name.GetHashCode ();
+            return this.relation.GetHashCode () ^ this.name.GetHashCode () ;
         }
 
         /// <summary>
@@ -129,8 +107,9 @@ namespace Epic.Query.Relational.Operations
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
@@ -151,17 +130,10 @@ namespace Epic.Query.Relational.Operations
         public bool Equals (Rename other)
         {
             if (null == other) return false;
-            return this.relation.Equals (other.relation) && this.newRelationName.Equals (other.newRelationName)
-                && this.Name.Equals (other.Name);
+            return this.relation.Equals (other.relation) && this.name.Equals (other.name);
         }
         #endregion
 
-        private static string getDefaultName(Relation relation)
-        {
-            if(null == relation)
-                throw new ArgumentNullException("relation");
-            return relation.Name;
-        }
     }
 }
 

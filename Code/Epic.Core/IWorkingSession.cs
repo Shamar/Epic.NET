@@ -34,24 +34,21 @@ namespace Epic
 		/// <summary>
 		/// Unique identifier of the working session.
 		/// </summary>
-		/// <value>
-		/// A unpredictable identifier, unique in the whole organization.
-		/// </value>
+		/// <remarks>
+		/// This must be an unpredictable identifier, unique in the whole organization.
+        /// </remarks>
 		string Identifier { get; }
 		
 		/// <summary>
 		/// Owner of the working session. Will be <see cref="string.Empty"/> when anonymous.
 		/// </summary>
-		/// <value>
-		/// Owner of the working session. Will be <see cref="string.Empty"/> when anonymous.
-		/// </value>
 		string Owner { get; }
 		
 		/// <summary>
 		/// Indicates whether the owner can achieve the specified role.
 		/// </summary>
 		/// <returns>
-		/// <value>true</value> if the session owner can achieve the role, <value>false</value> otherwise.
+		/// <see langword="true"/> if the session owner can achieve the role, <see langword="false"/> otherwise.
 		/// </returns>
 		/// <typeparam name='TRole'>
 		/// The type of the role to achieve.
@@ -74,7 +71,7 @@ namespace Epic
 		/// <summary>
 		/// Leave the specified role. 
 		/// After calling this method, your role will be disposed 
-		/// and the reference to <paramref name="role"/> will be set to <c>null</c>.
+		/// and the reference to <paramref name="role"/> will be set to <see langword="null"/>.
 		/// </summary>
 		/// <param name='role'>
 		/// User's role to be disposed.
@@ -82,7 +79,7 @@ namespace Epic
 		/// <typeparam name='TRole'>
 		/// The type of the role to leave.
 		/// </typeparam>
-		/// <exception cref="ArgumentNullException">The <paramref name="role"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException">The <paramref name="role"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentException">The <paramref name="role"/> is unknown to the session.</exception>
 		void Leave<TRole>(ref TRole role) where TRole : class;
 	}

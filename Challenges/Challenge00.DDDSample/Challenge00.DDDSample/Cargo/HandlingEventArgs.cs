@@ -50,7 +50,7 @@ namespace Challenge00.DDDSample.Cargo
 		/// <param name="completionDate">
 		/// The completion <see cref="DateTime"/>
 		/// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="delivery"/> is <value>null</value>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="delivery"/> is <see langword="null"/>.</exception>
 		public HandlingEventArgs (IDelivery delivery, DateTime completionDate)
 		{
 			if (null == delivery)

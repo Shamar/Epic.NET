@@ -37,7 +37,7 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/> class.
+        /// <see cref="BinaryPredicateBase"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand of the predicate. Cannot be <see langword="null"/>.
@@ -73,26 +73,26 @@ namespace Epic.Query.Relational.Predicates
         public Predicate Right { get { return this._right; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>.
+        /// Determines whether the specified <see cref="BinaryPredicateBase"/> is equal to the current <see cref="BinaryPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>.
+        /// The <see cref="BinaryPredicateBase"/> to compare with the current <see cref="BinaryPredicateBase"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="BinaryPredicateBase"/> is equal to the
+        /// current <see cref="BinaryPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals(BinaryPredicateBase other);
 
         /// <summary>
-        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>.
+        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="BinaryPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Predicate"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>.
+        /// The <see cref="Predicate"/> to compare with the current <see cref="BinaryPredicateBase"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Predicate"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/>; otherwise, <c>false</c>.
+        /// <see cref="BinaryPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (Predicate other)
         {
@@ -101,7 +101,7 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Serves as a hash function for a
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.BinaryPredicateBase`2"/> object.
+        /// <see cref="BinaryPredicateBase"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a

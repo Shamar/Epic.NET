@@ -26,9 +26,11 @@ using System;
 namespace Epic.Collections
 {
     /// <summary>
-    /// A map that provide access to <typeparamref name="TValue"> 
+    /// A map that provide access to <typeparamref name="TValue"/> 
     /// given a <typeparamref name="TKey"/>.
     /// </summary>
+    /// <typeparam name="TKey">The type of keys in the map.</typeparam>
+    /// <typeparam name="TValue">The type of values in the map.</typeparam>
     public interface IMap<TKey, TValue>
         where TKey : IEquatable<TKey>
     {
@@ -38,7 +40,7 @@ namespace Epic.Collections
         /// <param name='key'>
         /// The key of the element to get.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
         /// <exception cref="KeyNotFoundException{TKey}">The property is retrieved and <paramref name="key"/> is not found.</exception>
         TValue this[TKey key] { get; }
     }

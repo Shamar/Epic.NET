@@ -187,7 +187,7 @@ namespace Epic.Query.Relational.Predicates
                 GenerateStrictMock<IVisitor<object, Equal>>();
             equalPredicateVisitor.Expect(v => v.Visit(equal, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(equal)).Return(equalPredicateVisitor).Repeat.Once ();
+            visitor.Expect(v => v.AsVisitor(equal)).Return(equalPredicateVisitor).Repeat.Once ();
 
             // act:
             object result = equal.Accept(visitor, context);

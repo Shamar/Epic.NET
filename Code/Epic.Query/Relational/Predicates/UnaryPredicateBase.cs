@@ -36,10 +36,10 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/> class.
+        /// <see cref="UnaryPredicateBase"/> class.
         /// </summary>
         /// <param name='operand'>
-        /// The operand of the predicate. Cannot be <see langword="null".
+        /// The operand of the predicate. Cannot be <see langword="null"/>.
         /// </param>
         /// <exception cref='ArgumentNullException'>
         /// This exception is thrown if any of the operand is <see langword="null"/>
@@ -59,26 +59,26 @@ namespace Epic.Query.Relational.Predicates
         public Predicate Operand { get { return this._operand; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="UnaryPredicateBase<TScalar>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>.
+        /// Determines whether the specified <see cref="UnaryPredicateBase"/> is equal to the current <see cref="Predicates.UnaryPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="UnaryPredicateBase<TPredicate>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>.
+        /// The <see cref="UnaryPredicateBase"/> to compare with the current <see cref="UnaryPredicateBase"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="UnaryPredicateBase<TPredicate>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="UnaryPredicateBase"/> is equal to the current
+        /// <see cref="UnaryPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals(UnaryPredicateBase other);
 
         /// <summary>
-        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>.
+        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="UnaryPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Predicate"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>.
+        /// The <see cref="Predicate"/> to compare with the current <see cref="UnaryPredicateBase"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Predicate"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/>; otherwise, <c>false</c>.
+        /// <see cref="UnaryPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(Predicate other)
         {
@@ -87,7 +87,7 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Serves as a hash function for a
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.UnaryPredicateBase`1"/> object.
+        /// <see cref="UnaryPredicateBase"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a

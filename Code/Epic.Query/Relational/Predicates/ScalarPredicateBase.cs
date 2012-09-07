@@ -27,7 +27,7 @@ namespace Epic.Query.Relational.Predicates
 {
     /// <summary>
     /// <para>This is the base class for those predicates having two <see cref="Scalar"/> as operands.</para>
-    /// <para>Examples are: <see cref="Less"/>, <see cref="Greater"/>, <see cref="Equals"/>.</para>
+    /// <para>Examples are: <see cref="Less"/>, <see cref="Greater"/>, <see cref="Predicates.Equal"/>.</para>
     /// </summary>
     [Serializable]
     public abstract class ScalarPredicateBase : Predicate, IEquatable<ScalarPredicateBase>
@@ -37,7 +37,7 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/> class.
+        /// <see cref="Epic.Query.Relational.Predicates.ScalarPredicateBase"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand of the predicate. Cannot be <see langword="null"/>.
@@ -59,40 +59,34 @@ namespace Epic.Query.Relational.Predicates
         /// <summary>
         /// Gets the left operand of the predicate.
         /// </summary>
-        /// <value>
-        /// The left operand.
-        /// </value>
         public Scalar Left { get { return this._left; } }
 
         /// <summary>
         /// Gets the right operand of the predicate.
         /// </summary>
-        /// <value>
-        /// The right operand.
-        /// </value>
         public Scalar Right { get { return this._right; } }
 
         /// <summary>
-        /// Determines whether the specified <see cref="ScalarPredicateBase<Scalar,Scalar"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>.
+        /// Determines whether the specified <see cref="ScalarPredicateBase"/> is equal to the current <see cref="ScalarPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarPredicateBase<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>.
+        /// The <see cref="ScalarPredicateBase"/> to compare with the current <see cref="ScalarPredicateBase"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ScalarPredicateBase<Scalar,Scalar>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="ScalarPredicateBase"/> is equal to the current
+        /// <see cref="ScalarPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public abstract bool Equals(ScalarPredicateBase other);
 
         /// <summary>
-        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>.
+        /// Determines whether the specified <see cref="Predicate"/> is equal to the current <see cref="ScalarPredicateBase"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Predicate"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>.
+        /// The <see cref="Predicate"/> to compare with the current <see cref="ScalarPredicateBase"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Predicate"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/>; otherwise, <c>false</c>.
+        /// <see cref="ScalarPredicateBase"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (Predicate other)
         {
@@ -101,7 +95,7 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Serves as a hash function for a
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.ScalarPredicateBase"/> object.
+        /// <see cref="Epic.Query.Relational.Predicates.ScalarPredicateBase"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a

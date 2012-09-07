@@ -1,0 +1,383 @@
+[[epic-prelude]]
+Epic.Prelude
+------------
+The Epic.Prelude can be thought of as a preface for your domain model. 
+It provides a set of general purpose models distilled from our experience. 
+
+Indeed during some years of domain driven design we faced many different 
+domains and we discovered some common concepts in them (most of which are 
+rooted in theorethical math). After some trials and errors we got a flexible 
+design that is proposed in this module.
+
+NOTE: You could object that while one of the core design targets of Epic is to 
+keep the domain model ignorant of the infrastructure, Epic.Prelude 
+imposes a dependency from Epic itself. You're right!
+You should carefully consider pro and cons of such dependency.
+However, since the Epic.Prelude models are actually usefull we decided to 
+provide them.
+
+WARNING: From a legal point of view, by referencing Epic.Prelude, your 
+domain model will be subjected to the licencing terms with which you obtained 
+Epic. In other words, if you obtained Epic under the 
+http://www.gnu.org/licenses/agpl-3.0.html[Affero GPLv3], 
+your whole domain must be distributed under the terms of such a license. 
+Note however that, this is already true for the rest of the application built 
+with Epic. mailto:giacomo@tesio.it[Contact the authors] to obtain 
+a linking exception if you want to write proprietary code.
+
+Epic itself depends on Prelude's models, so you will have to include such a 
+library into the runtime environment of applications using Epic.
+
+Interpreting values
+~~~~~~~~~~~~~~~~~~~
+Many value objects serves two different purposes: to enforce a set of specific
+rules and to express such a rule. From the client point of view we can call
+these two connected responsibilities **execution** and **interpretation**.
+
+While this could seem quite abstract, it looks perfectly reasonable when we
+looks to that particular value objects that work like mathematical functions.
+Specifications, for example, are predicates that can be both executed, to know
+whether a candidate satisfy them, or interpreted, translating them into a human
+readable sentence or into SQL queries. footnote:[A closer look shows that execution 
+is actually a specific kind of interpretation, done by the CLR. Indeed, some stacktraces
+from http://msdn.microsoft.com/en-us/library/bb345362[Expression<TDelegate>.Compile]
+show that expression tree compilation is done by a visitor producing the executable IL code.]
+
+The need for value objects' interpretation poses a problem to software 
+maintenance: how can we stick to the open-closed principle if we have to 
+interpret an ever growing number of value objects' types? 
+
+Most of interpretation techniques rely on the Visitor design pattern 
+and its underlying mechanism known as "double dispatch". 
+However both the http://en.wikipedia.org/wiki/Visitor_pattern[classical] and 
+the http://objectmentor.com/resources/articles/visitor.pdf[acyclic] version of
+the visitor patterns suffers of a 
+http://c2.com/cgi/wiki?VisitorPattern[well known limitation]: whenever you 
+want to add a new element to the visited class hierarchy you have to 
+change all the visitors.
+
+To address this issue we developed the **composite visitor** pattern that 
+actually is just an acyclic visitor that replaces inheritance with composition.
+
+The base interface for visitable objects is the 
+http://epic.tesio.it/doc/api/html/T_Epic_IVisitable.htm[IVisitable] interface
+that defines the http://epic.tesio.it/doc/api/html/M_Epic_IVisitable_Accept__1.htm[Accept]
+method. footnote:[To reduce the effort of implementing the IVisitable interface, 
+a http://epic.tesio.it/doc/api/html/T_Epic_VisitableBase.htm[base class] exists. 
+Moreover, a set of extension methods is provided for well known class hierarchy 
+such as Exceptions, EventArgs and Expressions.] 
+
+The first difference from the classical pattern is that Accept takes a 
+http://epic.tesio.it/doc/api/html/T_Epic_IVisitor_1.htm[visitor] and a 
+http://epic.tesio.it/doc/api/html/T_Epic_IVisitContext.htm[context for the visit]
+decoupling the visitor from its mutable state. footnote:[We want the visitors to
+be stateless so that we can initialize each of them only once, at application 
+start up, and then use the computation they express in parallel from different 
+threads.] 
+
+Moreover, the visitor take controls over it's own cast to the specialized 
+visitor type footnote:[We called this technique "managed cast". It consists 
+into delegating a cast to the object that you want to cast, so that it has 
+control on the casting behaviour according to runtime conditions.] through
+the method http://epic.tesio.it/doc/api/html/M_Epic_IVisitor_1_AsVisitor__1.htm[AsVisitor<TExpression>(TExpression)].
+
+Thus, when the visitor is an instance of a class that extends the
+http://epic.tesio.it/doc/api/html/T_Epic_CompositeVisitorBase_2.htm[CompositeVisitorBase<TResult, TExpression>]
+abstract class, the composition will be able to returns a specialized visitor
+that designed to interpret that specific expression.
+
+Lets see an example. Whenever the domain model can't fulfill the user's requests 
+the UI have to explain them what happens. So you have correctly modeled a
+hundred types of exceptions that the domain objects throw whenever they
+need to.
+However your users works all over the world, talking different languages. 
+
+In our sample domain for cargo tracking, all the messages from the domain's 
+exceptions are already expressive in English. So, for english people 
+we can just print the message, right? So we write a very simple composable 
+visitor that returns the exception message and a composition that use it: 
+
+[source,c#]
+-------------------------------------------
+public sealed class ReturnMessages : 
+    CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception>
+{
+    public ReturnMessages(CompositeVisitor<string> composition)
+        : base(composition)
+    {
+    }
+    
+    public string Visit(Exception target, IVisitContext context)
+    {
+        return target.Message;
+    }
+}
+
+public sealed class EnglishExceptionsFormatter : CompositeVisitorBase<string, Exception>
+{
+    public EnglishExceptionsFormatter ()
+        : base("EnglishExceptionsMessages")
+    {
+        new ReturnMessages(this);
+    }
+
+    protected override IVisitContext InitializeVisitContext (Exception target, IVisitContext context)
+    {
+        return context;
+    }
+}
+-------------------------------------------
+
+Quite verbose, to just return a string, isn't it? Now consider that actually
+we have only control over the domain exception messages. We can't grant that
+**all** exceptions' messages are english! And BTW, we should hide to the user
+exceptions details from SqlException and the so. But (for the sake of the example)
+we cannot modify the already deployed ReturnMessages.
+
+Thus we write a new visitor that will intercept all the Exception that are not
+defined in the domain model assembly, and return a constant message.
+
+[source,c#]
+-------------------------------------------
+public sealed class ReturnMessages : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception> {...}
+public sealed class ConstantMessage : 
+    CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception>
+{
+    private readonly string _msg;
+    public ConstantMessage(CompositeVisitor<string> composition, string message)
+        : base(composition)
+    {
+        _msg = message ?? string.Empty;
+    }
+
+    protected override IVisitor<string, TExpression> AsVisitor<TExpression> (TExpression target)
+    {
+        IVisitor<string, TExpression> visitor = base.AsVisitor (target);
+        
+        if (    null == visitor 
+            || !typeof(TExpression).Assembly.Equals(typeof(Challenge00.DDDSample.Cargo.ICargo).Assembly))
+            return null;
+        
+        return visitor;
+    }
+
+    public string Visit(Exception target, IVisitContext context)
+    {
+        return _msg;
+    }
+}
+public sealed class EnglishExceptionsFormatter : CompositeVisitorBase<string, Exception>
+{
+    public EnglishExceptionsFormatter ()
+        : base("EnglishExceptionsMessages")
+    {
+        new ReturnMessages(this);
+        new ConstantMessage(this, "An unexpected error occurred. Please contact the administrator.");
+    }
+
+    protected override IVisitContext InitializeVisitContext (Exception target, IVisitContext context)
+    {
+        return context;
+    }
+}
+-------------------------------------------
+
+Overriding +AsVisitor+ we inform the composition that +ConstantMessage+ 
+cannot handle exceptions defined in the same assembly of +Challenge00.DDDSample.Cargo.ICargo+.  
+
+But hey, what if a domain exception is catched and wrapped in a different, unknown one as InnerException?
+Since the user speaks the same ubiquitous language of the domain model we want to unwrap the domain exceptions.
+
+[source,c#]
+-------------------------------------------
+public sealed class ReturnMessages : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception> {...}
+public sealed class ConstantMessage : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception> {...}
+public sealed class InnerDomainExceptionUnwrap : 
+    CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception>
+{
+    public InnerDomainExceptionUnwrap(CompositeVisitor<string> composition)
+        : base(composition)
+    {
+    }
+    
+    protected override IVisitor<string, TExpression> AsVisitor<TExpression> (TExpression target)
+    {
+        IVisitor<string, TExpression> visitor = base.AsVisitor (target);
+        
+        if(null == visitor || typeof(TExpression).Assembly.Equals(typeof(Challenge00.DDDSample.Cargo.ICargo).Assembly))
+            return null;
+        
+        return visitor;
+    }
+    
+    public string Visit(Exception target, IVisitContext context)
+    {
+        if(null == target.InnerException)
+        {
+            return ContinueVisit(target, context);
+        }
+        else
+        {
+            return VisitInner(target.InnerException, context);
+        }
+    }
+}
+public sealed class EnglishExceptionsFormatter : CompositeVisitorBase<string, Exception>
+{
+    public EnglishExceptionsFormatter ()
+        : base("EnglishExceptionsMessages")
+    {
+        new ReturnMessages(this);
+        new ConstantMessage(this, "An unexpected error occurred. Please contact the administrator.");
+        new InnerDomainExceptionUnwrap(this);
+    }
+
+    protected override IVisitContext InitializeVisitContext (Exception target, IVisitContext context)
+    {
+        return context;
+    }
+}
+-------------------------------------------
+
+However our english messages are still a bit weird. The +Challenge00.DDDSample.Location.WrongLocationException+ 
+extends +System.ArgumentException+ and thus adds to the message provided by the thrower
+the parameter name. We could fix this with a custom visitor like we did till now,
+but this time we can write a little more general visitor
+for the english composition: a +Format<TException>+. footnote:[Being such a use case
+so frequent, Epic provides an even more general version of this class: the
+http://epic.tesio.it/doc/api/html/T_Epic_Visitors_SimpleFormatter_1.htm[SimpleFormatter<TTarget>]. ]
+
+[source,c#]
+-------------------------------------------
+public sealed class ReturnMessages : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception> {...}
+public sealed class ConstantMessage : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception> {...}
+public sealed class InnerDomainExceptionUnwrap : CompositeVisitor<string>.VisitorBase, IVisitor<string, Exception> {...}
+public sealed class Format<TException> : 
+        CompositeVisitor<string>.VisitorBase, IVisitor<string, TException>
+    where TException : Exception
+{
+    private readonly Func<TException, string> _format;
+    private readonly Func<TException, bool> _acceptanceRule;
+    public Format(CompositeVisitor<string> composition, Func<TException, string> format)
+        : this(composition, format, e => true)
+    {
+    }
+
+    public Format(CompositeVisitor<string> composition, 
+                  Func<TException, string> format, 
+                  Func<TException, bool> acceptanceRule)
+        : base(composition)
+    {
+        if (null == format)
+            throw new ArgumentNullException("format");
+        if (null == acceptanceRule)
+            throw new ArgumentNullException("acceptanceRule");
+        _format = format;
+        _acceptanceRule = acceptanceRule;
+    }
+
+    protected override IVisitor<string, TExpression> AsVisitor<TExpression>(TExpression target)
+    {
+        IVisitor<string, TExpression> visitor = base.AsVisitor(target);
+
+        if (null == visitor || !_acceptanceRule(target as TException))
+            return null;
+
+        return visitor;
+    }
+
+    #region IVisitor implementation
+    public string Visit(TException target, IVisitContext context)
+    {
+        return _format(target);
+    }
+    #endregion
+}
+public sealed class EnglishExceptionsFormatter : CompositeVisitorBase<string, Exception>
+{
+    public EnglishExceptionsFormatter ()
+        : base("EnglishExceptionsMessages")
+    {
+        new ReturnMessages(this);
+        new ConstantMessage(this, "An unexpected error occurred. Please contact the administrator.");
+        new InnerDomainExceptionUnwrap(this);
+        new Format<Challenge00.DDDSample.Location.WrongLocationException>(this, 
+            e => e.Message.Substring(0, e.Message.LastIndexOf("\r\n")));
+    }
+
+    protected override IVisitContext InitializeVisitContext (Exception target, IVisitContext context)
+    {
+        return context;
+    }
+}
+-------------------------------------------
+
+As you can see, we changed the composition behaviour without any violation to 
+the open-closed principle, by simply adding new visitors to the composition.
+
+To run the visit we simply have to write:
+
+[source,c#]
+-------------------------------------------
+try
+{
+    // some code here
+}
+catch(Exception e)
+{
+    // TODO add log here :-)
+    IVisitor<string> formatter = new EnglishExceptionsFormatter();
+    string exceptionMessage = e.Accept(formatter, VisitContext.New);
+    NotifyFailureToUser(exceptionMessage);
+}
+-------------------------------------------
+
+But what about the other languages? Let's try with italian:
+
+[source,c#]
+-------------------------------------------
+public sealed class ItalianExceptionsFormatter : CompositeVisitorBase<string, Exception>
+{
+    public ItalianExceptionsFormatter()
+        : base("ItalianExceptionsFormatter")
+    {
+        new ConstantMessage(this, "Si è verificato un errore imprevisto. Contattare l'amministratore del sistema.");
+        new InnerDomainExceptionUnwrap(this);
+        new Format<Challenge00.DDDSample.Location.WrongLocationException>(this,
+            e => string.Format("Non è possibile effettuare l'operazione, perché la località fornita ({0}) non coincide con quella prevista ({1}).", e.ActualLocation, e.ExpectedLocation));
+        new Format<Challenge00.DDDSample.Voyage.VoyageCompletedException>(this,
+            e => string.Format("Il viaggio '{0}' ha già raggiunto la propria destinazione.", e.Voyage));
+        new Format<Challenge00.DDDSample.Cargo.AlreadyClaimedException>(this,
+            e => string.Format("Non è possibile effettuare l'operazione perché il cargo '{0}' è già stato ritirato.", e.Cargo));
+        new Format<Challenge00.DDDSample.Cargo.RoutingException>(this,
+            e => string.Format("Non è possibile effettuare l'operazione perché il cargo '{0}' è stato diretto su un percorso sbagliato.", e.Cargo),
+            e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.Misrouted);
+        new Format<Challenge00.DDDSample.Cargo.RoutingException>(this,
+            e => string.Format("Non è possibile effettuare l'operazione perché non è ancora stato assegnato un percorso al cargo '{0}'.", e.Cargo),
+            e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.NotRouted);
+        new Format<Challenge00.DDDSample.Cargo.RoutingException>(this,
+            e => "Si è verificato un errore imprevisto. Contattare l'amministratore del sistema.",
+            e => e.RoutingStatus == Challenge00.DDDSample.Cargo.RoutingStatus.Routed);
+    }
+
+    protected override IVisitContext InitializeVisitContext (Exception target, IVisitContext context)
+    {
+        return context;
+    }
+}
+-------------------------------------------
+
+While the example is quite straightforward, you've got the point. You can 
+enhance the behaviour of a +CompositeVisitor+ by simply initializing a new visitor.
+
+This turned to be a really powerful tool, able to visit complex expression 
+trees and translate them to nice, human readable, messages or to SQL queries.
+Moreover, when the class hierachy grows, you don't need to break existing 
+visitors: you can always extend the behaviour of the composition by adding 
+code, keeping the DLLs already deployed untouched.
+
+
+Specifying qualities
+~~~~~~~~~~~~~~~~~~~~
+
+Coming soon.

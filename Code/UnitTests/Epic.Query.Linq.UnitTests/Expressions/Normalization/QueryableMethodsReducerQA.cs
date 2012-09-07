@@ -50,10 +50,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
             where TArgument : Expression
         {
             TArgument argumentToReturn = (TArgument)callExression.Arguments[argumentIndex];
-            FakeVisitor<Expression, TArgument> mockEchoVisitor = GeneratePartialMock<FakeVisitor<Expression, TArgument>>(composition);
-            Func<TArgument, IVisitor<Expression, TArgument>> impl = a => object.ReferenceEquals(a, argumentToReturn) ? mockEchoVisitor : null;// .Return(mockEchoVisitor);
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<TArgument>(argumentToReturn)).IgnoreArguments().Do(impl).Repeat.Once();
-            mockEchoVisitor.Expect(v => v.Visit(argumentToReturn, context)).Return(argumentToReturn).Repeat.Once();
+            new EchoVisitor<TArgument>(composition, argumentToReturn);
         }
 
         [Test, TestCaseSource(typeof(Samples), "ReduceableQueryableMethodCallExpressions")]
@@ -64,10 +61,10 @@ namespace Epic.Query.Linq.Expressions.Normalization
             FakeNormalizer composition = new FakeNormalizer();
             new QueryableMethodsReducer(composition);
             FakeVisitor<Expression, MethodCallExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MethodCallExpression>>(composition);
-            mockVisitor.Expect(v => v.CallAsVisitor((MethodCallExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            //mockVisitor.Expect(v => v.CallToVisitor((MethodCallExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MethodCallExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
-            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
-            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
             for(int i = 1; i < expressionToVisit.Arguments.Count; ++i)
             {
                 switch(expressionToVisit.Arguments[i].NodeType)
@@ -104,9 +101,9 @@ namespace Epic.Query.Linq.Expressions.Normalization
             FakeNormalizer composition = new FakeNormalizer();
             new QueryableMethodsReducer(composition);
             FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
-            mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            mockVisitor.Expect(v => v.CallToVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(enumerableToReturn)).Repeat.Once();
-            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
             for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
             {
                 switch (expressionToVisit.Arguments[i].NodeType)
@@ -145,7 +142,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
         public void Visit_aQueryableMethodOverAnNotExecutedQueryable_returnsAMethodCallToTheSameMethod(MethodCallExpression expressionToVisit, object dummy1, object dummy2)
         {
             // arrange:
-            IEnumerable<string> enumerableToReturn = Enumerable.Empty<string>();
             IVisitContext context = GenerateStrictMock<IVisitContext>();
             FakeNormalizer composition = new FakeNormalizer();
             new QueryableMethodsReducer(composition);

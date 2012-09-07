@@ -33,12 +33,24 @@ namespace Epic.Query.Linq.Fakes
     {
         /// <summary>
         /// Initializes a new instance of the 
-        /// <see cref="Epic.Linq.Fakes.UnknownExpression"/> class 
+        /// <see cref="Epic.Query.Linq.Fakes.UnknownExpression"/> class 
         /// with ExpressionType equal to <see cref="int.MaxValue"/>.
         /// </summary>
         public UnknownExpression()
-            : base((ExpressionType)int.MaxValue, typeof(string))
+            : base()
         {
+        }
+
+        public override ExpressionType NodeType {
+            get {
+                return (ExpressionType)int.MaxValue;
+            }
+        }
+
+        public override System.Type Type {
+            get {
+                return typeof(string);
+            }
         }
     }
 }

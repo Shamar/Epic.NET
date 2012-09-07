@@ -50,7 +50,7 @@ namespace Challenge00.DDDSample.Voyage
 		/// <param name="destinationLocation">
 		/// A <see cref="ILocation"/>
 		/// </param>
-		/// <exception cref="ArgumentNullException">Any argument is <value>null</value>.</exception>
+		/// <exception cref="ArgumentNullException">Any argument is <see langword="null"/>.</exception>
 		public VoyageEventArgs (UnLocode previousLocation, UnLocode destinationLocation)
 		{
 			if (null == previousLocation)

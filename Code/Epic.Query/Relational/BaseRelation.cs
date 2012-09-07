@@ -29,33 +29,66 @@ namespace Epic.Query.Relational
     /// Base relation (in SQL database a table).
     /// </summary>
     [Serializable]
-    public sealed class BaseRelation : Relation
+    public sealed class BaseRelation : RelationalExpression, IEquatable<BaseRelation>
     {
+        private readonly string _name;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.BaseRelation"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.BaseRelation"/> class.
         /// </summary>
         /// <param name='name'>
         /// Name of the relation.
         /// </param>
         public BaseRelation (string name)
-            : base(RelationType.BaseRelation, name)
+            : base(RelationType.BaseRelation)
         {
+            if (string.IsNullOrEmpty (name))
+                throw new ArgumentNullException("name");
+            this._name = name;
         }
-        
-        private bool Equals(BaseRelation other)
-        {
-            return Name.Equals(other.Name);
-        }
+
+        /// <summary>
+        /// Gets the name of the relation.
+        /// </summary>
+        public string Name { get { return this._name; } }
         
         #region implemented abstract members of Epic.Linq.Expressions.Relational.Relation
-        public override bool Equals (Relation other)
+        /// <summary>
+        /// Determines whether the specified <see cref="Epic.Query.Relational.RelationalExpression"/> is equal to the current <see cref="Epic.Query.Relational.BaseRelation"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Query.Relational.BaseRelation"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.BaseRelation"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals (RelationalExpression other)
         {
-            if(null == other)
-                return false;
-            return other.Type == RelationType.BaseRelation && Equals(other as BaseRelation);
+            return Equals (other as BaseRelation);
         }
         #endregion
-        
+
+        #region IEquatable implementation
+        /// <summary>
+        /// Determines whether the specified <see cref="Epic.Query.Relational.BaseRelation"/> is equal to the current <see cref="Epic.Query.Relational.BaseRelation"/>.
+        /// </summary>
+        /// <param name='other'>
+        /// The <see cref="Epic.Query.Relational.BaseRelation"/> to compare with the current <see cref="Epic.Query.Relational.BaseRelation"/>.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.BaseRelation"/> has the same name of the current
+        /// <see cref="Epic.Query.Relational.BaseRelation"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals (BaseRelation other)
+        {
+            if (null == other) return false;
+            return this.Name == other.Name;
+        }
+        #endregion
+
+
+
         /// <summary>
         /// Accept the specified visitor and context.
         /// </summary>
@@ -68,6 +101,7 @@ namespace Epic.Query.Relational
         /// <typeparam name='TResult'>
         /// Type of the result produced from the visitor.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);

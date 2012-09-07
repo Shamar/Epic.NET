@@ -49,7 +49,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='specification'>
         /// Specification to satisfy.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="specifiaction"/> is null</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source"/> or <paramref name="specification"/> is <see langword="null"/>.</exception>
         public Selection (Expression<IEnumerable<TEntity>> source, ISpecification<TEntity> specification)
         {
             if (null == source)
@@ -74,11 +74,33 @@ namespace Epic.Query.Object.Expressions
             get { return _specification;}
         }
 
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit's result.
+        /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
         }
 
+        /// <summary>
+        /// Gets the object data to serialize.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("R", _source, typeof(Expression<IEnumerable<TEntity>>));

@@ -38,7 +38,7 @@ namespace Challenge00.DDDSample.Cargo
 		DateTime CalculationDate { get; }
 		
 		/// <summary>
-		/// Current voyage or <value>null</value> if 
+		/// Current voyage or <see langword="null"/> if 
 		/// the delivery history is empty 
 		/// </summary>
 		VoyageNumber CurrentVoyage { get; }
@@ -54,7 +54,7 @@ namespace Challenge00.DDDSample.Cargo
 		bool IsUnloadedAtDestination { get; }
 		
 		/// <summary>
-		/// Last known location of the cargo, or <value>null</value> if 
+		/// Last known location of the cargo, or <see langword="null"/> if 
 		/// the delivery history is empty 
 		/// </summary>
 		UnLocode LastKnownLocation { get; }

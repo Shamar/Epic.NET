@@ -186,9 +186,31 @@ done in the future.
 
 --
 
-include::c10_epic-core.txt[]
+include::c10_epic-prelude.txt[]
 
-[[epic-linq]]
-Epic.Linq
----------
+include::c11_epic-core.txt[]
+
+[[epic-query]]
+Epic.Query
+----------
 Coming soon.
+
+
+
+
+[[epic-query-object]]
+Epic.Query.Object
+-----------------
+Coming soon.
+
+
+
+
+[[epic-query-linq]]
+Epic.Query.Linq
+---------------
+Coming soon.
+
+
+
+

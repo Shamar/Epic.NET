@@ -47,7 +47,7 @@ namespace Epic.Collections
         /// <param name='mapping'>
         /// Mapping from instances of <typeparamref name="TEntity"/> and their identities.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="mapping"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="mapping"/> is <see langword="null"/>.</exception>
         public IdentityMap (IMapping<TEntity, TIdentity> mapping)
         {
             if (null == mapping)
@@ -62,7 +62,7 @@ namespace Epic.Collections
         /// <param name='mapping'>
         /// Mapping from instances of <typeparamref name="TEntity"/> and their identities.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="mapping"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="mapping"/> is <see langword="null"/>.</exception>
         public IdentityMap (Func<TEntity, TIdentity> mapping)
             : this(new FunctionMapping<TEntity, TIdentity>(mapping))
         {
@@ -75,6 +75,14 @@ namespace Epic.Collections
         }
            
         #region IMap implementation
+
+        /// <summary>
+        /// Gets the <typeparamref name="TEntity"/> with the specified key.
+        /// </summary>
+        /// <param name='key'>
+        /// Key of interest.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
         public TEntity this[TIdentity key]
         {
             get
@@ -114,6 +122,12 @@ namespace Epic.Collections
         #endregion
 
         #region IDisposable implementation
+        /// <summary>
+        /// Releases all resource used by the <see cref="Epic.Collections.IdentityMap{TKey,TValue}"/> object.
+        /// </summary>
+        /// <remarks>
+        /// The different repositories must call <see cref="Dispose"/> when they are disposed.
+        /// </remarks>
         public void Dispose ()
         {
             Dictionary<TIdentity, TEntity> map = _map;
@@ -124,6 +138,14 @@ namespace Epic.Collections
         #endregion
 
         #region IIdentityMap implementation
+        /// <summary>
+        /// Register in the map the specified entity.
+        /// </summary>
+        /// <param name='entity'>
+        /// Entity to register.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="entity"/> has already been registered.</exception>
         public void Register (TEntity entity)
         {
             ThrowIfDisposed();  
@@ -138,6 +160,14 @@ namespace Epic.Collections
             _map[identity] = entity;
         }
 
+        /// <summary>
+        /// Determines if the map already knows the specified entity.
+        /// </summary>
+        /// <param name='entity'>
+        /// Identity of the entity of interest.
+        /// </param>
+        /// <returns><c>true</c>if the map knows the specified entity, <c>false</c> otherwise.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         public bool Knows(TIdentity entity)
         {
             ThrowIfDisposed();

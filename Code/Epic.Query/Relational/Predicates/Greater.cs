@@ -32,7 +32,7 @@ namespace Epic.Query.Relational.Predicates
     public sealed class Greater: ScalarPredicateBase, IEquatable<Greater>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.Predicates.Greater"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand.
@@ -46,14 +46,14 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Determines whether the specified <see cref="ScalarPredicateBase"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>.
+        /// current <see cref="Epic.Query.Relational.Predicates.Greater"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarPredicateBase"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>.
+        /// The <see cref="ScalarPredicateBase"/> to compare with the current <see cref="Epic.Query.Relational.Predicates.Greater"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="ScalarPredicateBase"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.Predicates.Greater"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (ScalarPredicateBase other)
         {
@@ -61,14 +61,14 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Greater<Scalar,Scalar>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>.
+        /// Determines whether the specified <see cref="Greater"/> is equal to the current <see cref="Greater"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Greater<Scalar,Scalar>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>.
+        /// The <see cref="Greater"/> to compare with the current <see cref="Greater"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Greater<Scalar,Scalar>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Greater"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Greater"/> is equal to the current
+        /// <see cref="Greater"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals(Greater other)
         {
@@ -86,8 +86,9 @@ namespace Epic.Query.Relational.Predicates
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);

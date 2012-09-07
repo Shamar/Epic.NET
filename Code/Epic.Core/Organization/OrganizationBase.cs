@@ -66,7 +66,7 @@ namespace Epic.Organization
 		/// Starts a new working session.
 		/// </summary>
 		/// <param name='owner'>
-		/// Owner of the new session. Will never be <c>null</c>.
+		/// Owner of the new session. Will never be <see langword="null"/>.
 		/// </param>
 		/// <param name='workingSession'>
 		/// The new working session.
@@ -82,10 +82,10 @@ namespace Epic.Organization
 		/// The working session.
 		/// </returns>
 		/// <param name='owner'>
-		/// The owner. Will never be <c>null</c>.
+		/// The owner. Will never be <see langword="null"/>.
 		/// </param>
 		/// <param name='identifier'>
-		/// The working session identifier. Will never be <c>null</c> or empty.
+		/// The working session identifier. Will never be <see langword="null"/> or empty.
 		/// </param>
 		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not acquire 
 		/// the <see cref="IWorkingSession"/> identified by <paramref name="identifier"/>.</exception>
@@ -111,9 +111,6 @@ namespace Epic.Organization
 		/// <summary>
 		/// Name of the organization.
 		/// </summary>
-		/// <value>
-		/// The name.
-		/// </value>
 		public string Name 
 		{
 			get 
@@ -131,10 +128,10 @@ namespace Epic.Organization
 		/// <param name='workingSession'>
 		/// The new working session.
 		/// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <c>null</c>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not create a 
 		/// new <see cref="IWorkingSession"/>.</exception>
-		/// <seealso cref="OrganizationBase.StartWorkingSession(IPrincipal, WorkingSessionBase)"/>
+		/// <seealso cref="OrganizationBase.StartWorkingSession(IPrincipal, out WorkingSessionBase)"/>
 		public void StartWorkingSession (IPrincipal owner, out IWorkingSession workingSession)
 		{
 			if(null == owner)
@@ -156,8 +153,8 @@ namespace Epic.Organization
 		/// <param name='identifier'>
 		/// The working session identifier.
 		/// </param>
-		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <c>null</c>.</exception>
-		/// <exception cref="ArgumentNullException"><paramref name="identifier"/> is <c>null</c> 
+		/// <exception cref="ArgumentNullException"><paramref name="owner"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="identifier"/> is <see langword="null"/> 
 		/// or empty.</exception>
 		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not acquire 
 		/// the <see cref="IWorkingSession"/> identified by <paramref name="identifier"/>.</exception>
@@ -178,7 +175,7 @@ namespace Epic.Organization
 		/// <remarks>
 		/// <para>
 		/// Before disposing the working session will call the 
-		/// <see cref="OrganizationBase.BeforeWorkingSessionEnd(IPrincipal, IWorkingSession)"/> so that
+        /// <see cref="OrganizationBase.BeforeWorkingSessionEnd(IPrincipal, WorkingSessionBase)"/> so that
 		/// derived class will be able to log the operation.
 		/// </para>
 		/// <para>
@@ -192,7 +189,7 @@ namespace Epic.Organization
 		/// The working session to end.
 		/// </param>
 		/// <exception cref="ArgumentNullException">Either <paramref name="owner"/> or 
-		/// <paramref name="workingSession"/> are <c>null</c>.</exception>
+		/// <paramref name="workingSession"/> are <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException"><paramref name="owner"/> can not end 
 		/// <paramref name="workingSession"/>.</exception>
 		public void EndWorkingSession (IPrincipal owner, IWorkingSession workingSession)

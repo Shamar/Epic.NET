@@ -48,6 +48,8 @@ namespace Challenge00.DDDSample.Voyage
 		/// <returns>
 		/// A new <see cref="ISchedule"/>
 		/// </returns>
+		/// <exception cref="ArgumentNullException"><paramref name="movement"/> is <see langword="null"/>.</exception>
+		/// <exception cref="Location.WrongLocationException"><paramref name="movement"/>'s departure does not match the scheduled arrival.</exception>
 		ISchedule Append(ICarrierMovement movement);
 		
 		/// <summary>

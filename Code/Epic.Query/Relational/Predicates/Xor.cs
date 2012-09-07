@@ -33,7 +33,7 @@ namespace Epic.Query.Relational.Predicates
         IEquatable<Xor>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/> class.
+        /// Initializes a new instance of the <see cref="Predicates.Xor"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand.
@@ -48,14 +48,14 @@ namespace Epic.Query.Relational.Predicates
 
         /// <summary>
         /// Determines whether the specified <see cref="BinaryPredicateBase"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor"/>.
+        /// current <see cref="Epic.Query.Relational.Predicates.Xor"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="BinaryPredicateBase"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
+        /// The <see cref="BinaryPredicateBase"/> to compare with the current <see cref="Predicates.Xor"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="BinaryPredicateBase"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>; otherwise, <c>false</c>.
+        /// current <see cref="Predicates.Xor"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (BinaryPredicateBase other)
         {
@@ -63,14 +63,14 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Xor<Predicate,Predicate>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
+        /// Determines whether the specified <see cref="Predicates.Xor"/> is equal to the current <see cref="Predicates.Xor"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Xor<Predicate,Predicate>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>.
+        /// The <see cref="Predicates.Xor"/> to compare with the current <see cref="Predicates.Xor"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Xor<Predicate,Predicate>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Xor`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Predicates.Xor"/> is equal to the current
+        /// <see cref="Predicates.Xor"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals (Xor other)
         {
@@ -88,8 +88,11 @@ namespace Epic.Query.Relational.Predicates
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>
+        /// The result of the visit.
+        /// </returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);

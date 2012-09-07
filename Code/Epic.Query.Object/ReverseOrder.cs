@@ -55,27 +55,75 @@ namespace Epic.Query.Object
             }
         }
 
+        /// <summary>
+        /// Chain the specified criterion after the current one.
+        /// </summary>
+        /// <param name='other'>
+        /// Another criterion.
+        /// </param>
         public override OrderCriterion<TEntity> Chain (OrderCriterion<TEntity> other)
         {
             return new OrderCriteria<TEntity>(this, other);
         }
 
+        /// <summary>
+        /// Reverse this criterion.
+        /// </summary>
+        /// <returns>
+        /// <see cref="Reversed"/> since it's the reverse of the current criterion.
+        /// </returns>
         public override OrderCriterion<TEntity> Reverse ()
         {
             return _toReverse;
         }
 
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit's result.
+        /// </typeparam>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);
         }
 
+        /// <summary>
+        /// Compare the specified entities.
+        /// </summary>
+        /// <param name='x'>
+        /// The first entity.
+        /// </param>
+        /// <param name='y'>
+        /// The second entity.
+        /// </param>
+        /// <remarks>
+        /// This calls the <see cref="Reversed"/>'s <c>Compare</c> 
+        /// method inverting the arguments (<c>Reversed.Compare(y, x)</c>).
+        /// </remarks>
         public override int Compare (TEntity x, TEntity y)
         {
             return _toReverse.Compare(y, x);
         }
 
-        protected override bool SafeEquals (OrderCriterion<TEntity> other)
+        /// <summary>
+        /// Determines whether the specified <see cref="OrderCriterion{TEntity}"/> is equal to the
+        /// current <see cref="ReverseOrder{TEntity}"/>, given that <see cref="EqualsA(OrderCriterion{TEntity})"/>
+        /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
+        /// </summary>
+        /// <returns>
+        /// <c>true</c>, if the current criterion is equal to the <paramref name="other"/>, <c>false</c> otherwise.
+        /// </returns>
+        /// <param name='other'>
+        /// Another criterion.
+        /// </param>
+        protected override bool EqualsA (OrderCriterion<TEntity> other)
         {
             ReverseOrder<TEntity> reverseOther = other as ReverseOrder<TEntity>;
             return _toReverse.Equals(reverseOther._toReverse);
@@ -88,6 +136,15 @@ namespace Epic.Query.Object
             _toReverse = (OrderCriterion<TEntity>)info.GetValue("C", typeof(OrderCriterion<TEntity>));
         }
 
+        /// <summary>
+        /// Gets the object data to serialize.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue("C", _toReverse, typeof(OrderCriterion<TEntity>));

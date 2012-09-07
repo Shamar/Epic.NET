@@ -32,7 +32,7 @@ namespace Epic.Query.Relational.Predicates
     public sealed class Equal : ScalarPredicateBase, IEquatable<Equal>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/> class.
+        /// Initializes a new instance of the <see cref="Predicates.Equal"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand.
@@ -43,19 +43,18 @@ namespace Epic.Query.Relational.Predicates
         public Equal (Scalar leftOperand, Scalar rightOperand)
             : base(leftOperand, rightOperand)
         {
-
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/>.
+        /// Determines whether the specified <see cref="ScalarPredicateBase"/> is equal to the
+        /// current <see cref="Predicates.Equal"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/>.
+        /// The <see cref="ScalarPredicateBase"/> to compare with the current <see cref="Predicates.Equal"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ScalarPredicateBase<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="ScalarPredicateBase"/> is equal to the current
+        /// <see cref="Predicates.Equal"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (ScalarPredicateBase other)
         {
@@ -63,14 +62,14 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Equal<TScalar1,TScalar2>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/>.
+        /// Determines whether the specified <see cref="Predicates.Equal"/> is equal to the current <see cref="Predicates.Equal"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Equal<TScalar1,TScalar2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/>.
+        /// The <see cref="Predicates.Equal"/> to compare with the current <see cref="Predicates.Equal"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Equal<TScalar1,TScalar2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Equal`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Predicates.Equal"/> is equal to the current
+        /// <see cref="Predicates.Equal"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals(Equal other)
         {
@@ -88,8 +87,9 @@ namespace Epic.Query.Relational.Predicates
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);

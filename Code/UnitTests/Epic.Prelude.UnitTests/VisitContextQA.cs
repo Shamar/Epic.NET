@@ -34,6 +34,7 @@ namespace Epic
         {
             // act:
             IVisitContext context = VisitContext.New;
+            Assert.IsNotNull(context);
         }
         
         [TestCase("testString")]
@@ -171,12 +172,11 @@ namespace Epic
         public void Get_onANewVisitContext_throwsInvalidOperationException<T>(T ignoredValue)
         {
             // arrange:
-            T dummyVar;
             IVisitContext context = VisitContext.New;
 
             // assert:
             Assert.Throws<InvalidOperationException>(delegate {
-                dummyVar = context.Get<T>();
+                context.Get<T>();
             });
         }
         
@@ -185,12 +185,11 @@ namespace Epic
         public void Get_onAContextWithoutTheNeededObject_throwsInvalidOperationException<T>(T ignoredValue)
         {
             // arrange:
-            T dummyVar;
             IVisitContext context = VisitContext.New.With(new object());
 
             // assert:
             Assert.Throws<InvalidOperationException>(delegate {
-                dummyVar = context.Get<T>();
+                context.Get<T>();
             });
         }
 
@@ -199,13 +198,12 @@ namespace Epic
         public void Get_anAbsentTypeInAContextWithAValue_throwsInvalidOperationException<T>(T valueToSet)
         {
             // arrange:
-            object valueHolder;
             IVisitContext context = VisitContext.New
                                         .With<T>(valueToSet);
             
             // assert:
             Assert.Throws<InvalidOperationException>(delegate {
-                valueHolder = context.Get<object>();
+                context.Get<object>();
             });
         }
 

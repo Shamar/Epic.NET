@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8A174BD0-1139-4442-9452-856FC36CC1CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Challenge00.DDDSample.ACME.UnitTests</RootNamespace>
+    <AssemblyName>Challenge00.DDDSample.ACME.UnitTests</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\..\..\..\build\tests\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>..\..\..\..\build\tests\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\..\..\3rdParties\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="Epic.Prelude">
+      <HintPath>..\..\..\..\build\bin\Debug\Epic.Prelude.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ItalianExceptionsMessagesQA.cs" />
+    <Compile Include="EnglishExceptionsMessagesQA.cs" />
+    <Compile Include="FormatQA.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Challenge00.DDDSample\Challenge00.DDDSample.csproj">
+      <Project>{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}</Project>
+      <Name>Challenge00.DDDSample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Challenge00.DDDSample.ACME\Challenge00.DDDSample.ACME.csproj">
+      <Project>{AE1E1387-36B9-4000-A2DC-1887B8E7F905}</Project>
+      <Name>Challenge00.DDDSample.ACME</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Challenge00.DDDSample.Default\Challenge00.DDDSample.Default.csproj">
+      <Project>{47C7912D-2CF9-4464-BCF6-641A6867577D}</Project>
+      <Name>Challenge00.DDDSample.Default</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -26,7 +26,7 @@ using System;
 namespace Epic.Query.Relational
 {
     /// <summary>
-    /// Relation attribute. Models one attribute of a <see cref="Relation"/> (e.g. a column in a database table)
+    /// Relation attribute. Models one attribute of a <see cref="RelationalExpression"/> (e.g. a column in a database table)
     /// </summary>
     /// <exception cref='ArgumentNullException'>
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
@@ -35,21 +35,21 @@ namespace Epic.Query.Relational
     public sealed class RelationAttribute: Scalar, IEquatable<RelationAttribute>
     {
         private readonly string _name;
-        private readonly Relation _relation;
+        private readonly RelationalExpression _relation;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/> class.
+        /// Initializes a new instance of the <see cref="Epic.Query.Relational.RelationAttribute"/> class.
         /// </summary>
         /// <param name='name'>
         /// Name of the attribute.
         /// </param>
         /// <param name='relation'>
-        /// The <see cref="Relation"/> the attribute is tied to.
+        /// The <see cref="RelationalExpression"/> the attribute is tied to.
         /// </param>
         /// <exception cref='ArgumentNullException'>
         /// Is thrown when either arguments are null.
         /// </exception>
-        public RelationAttribute (string name, Relation relation):base(ScalarType.Attribute)
+        public RelationAttribute (string name, RelationalExpression relation):base(ScalarType.Attribute)
         {
             if (null == name)
                 throw new ArgumentNullException("name");
@@ -62,21 +62,15 @@ namespace Epic.Query.Relational
         /// <summary>
         /// Gets the name of the attribute.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
         public string Name { get { return this._name; } }
         
         /// <summary>
         /// Gets the relation the attribute is tied to.
         /// </summary>
-        /// <value>
-        /// The relation.
-        /// </value>
-        public Relation Relation { get { return this._relation; } }
-        
+        public RelationalExpression Relation { get { return this._relation; } }
+
         /// <summary>
-        /// Serves as a hash function for a <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/> object.
+        /// Serves as a hash function for a <see cref="Epic.Query.Relational.RelationAttribute"/> object.
         /// </summary>
         /// <returns>
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
@@ -88,14 +82,14 @@ namespace Epic.Query.Relational
         }
         
         /// <summary>
-        /// Determines whether the specified <see cref="RelationAttribute"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
+        /// Determines whether the specified <see cref="RelationAttribute"/> is equal to the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="RelationAttribute"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
+        /// The <see cref="RelationAttribute"/> to compare with the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="RelationAttribute"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals (RelationAttribute other)
         {
@@ -104,14 +98,14 @@ namespace Epic.Query.Relational
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Scalar"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
+        /// Determines whether the specified <see cref="Scalar"/> is equal to the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
+        /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="Scalar"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(Scalar other)
         {
@@ -119,14 +113,14 @@ namespace Epic.Query.Relational
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
+        /// Determines whether the specified <see cref="System.Object"/> is equal to the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </summary>
         /// <param name='obj'>
-        /// The <see cref="System.Object"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>.
+        /// The <see cref="System.Object"/> to compare with the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </param>
         /// <returns>
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
+        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (object obj)
         {
@@ -146,8 +140,9 @@ namespace Epic.Query.Relational
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);

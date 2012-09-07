@@ -47,40 +47,10 @@ namespace Epic.Query.Linq.Expressions.Normalization
         private ExpressionsInspector BuildCompositionWithMockableInterceptor(out IVisitor<Expression, Expression> mockableInterceptor)
         {
             FakeCompositeVisitor<Expression, Expression> composition = new FakeCompositeVisitor<Expression, Expression>("TEST");
-            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, Expression>>(composition);
             ExpressionsInspector inspector = new ExpressionsInspector(composition);
+            CompositeVisitor<Expression>.VisitorBase mockable = GeneratePartialMock<MockableVisitor<Expression>>(composition);
             mockableInterceptor = mockable as IVisitor<Expression, Expression>;
             return inspector;
-        }
-        
-        [Test]
-        public void Visit_aConstantExpression_returnTheConstantRecieved()
-        {
-            // arrange:
-            ConstantExpression expressionToVisit = Expression.Constant(1);
-            IVisitor<Expression, Expression> interceptor = null;
-            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
-
-            // act:
-            Expression result = inspector.Visit(expressionToVisit, VisitContext.New);
-
-            // assert:
-            Assert.AreSame(expressionToVisit, result);
-        }
-        
-        [Test]
-        public void Visit_aParameterExpression_returnTheParameterRecieved()
-        {
-            // arrange:
-            ParameterExpression expressionToVisit = Expression.Parameter(typeof(int), "p");
-            IVisitor<Expression, Expression> interceptor = null;
-            ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
-
-            // act:
-            Expression result = inspector.Visit(expressionToVisit, VisitContext.New);
-
-            // assert:
-            Assert.AreSame(expressionToVisit, result);
         }
         
         [Test, TestCaseSource(typeof(Samples), "UnaryExpressions")]
@@ -129,7 +99,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
             interceptor.Expect(v => v.Visit(expressionToVisit.Left, context)).Return(expressionToVisit.Left).Repeat.Once();
             interceptor.Expect(v => v.Visit(expressionToVisit.Right, context)).Return(expressionToVisit.Right).Repeat.Once();
-            interceptor.Expect(v => v.Visit(expressionToVisit.Conversion, context)).Return(expressionToVisit.Conversion).Repeat.Once();
 
             // act:
             Expression result = inspector.Visit(expressionToVisit, context);
@@ -147,7 +116,6 @@ namespace Epic.Query.Linq.Expressions.Normalization
             ExpressionsInspector inspector = BuildCompositionWithMockableInterceptor(out interceptor);
             interceptor.Expect(v => v.Visit(expressionToVisit.Left, context)).Return(differentExpression.Left).Repeat.Once();
             interceptor.Expect(v => v.Visit(expressionToVisit.Right, context)).Return(differentExpression.Right).Repeat.Once();
-            interceptor.Expect(v => v.Visit(expressionToVisit.Conversion, context)).Return(differentExpression.Conversion).Repeat.Once();
 
             // act:
             Expression result = inspector.Visit(expressionToVisit, context);
@@ -437,7 +405,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
 
             // assert:
             Assert.Throws<InvalidOperationException>(delegate {
-                Expression result = inspector.Visit(expressionToVisit, context);
+                inspector.Visit(expressionToVisit, context);
             });
         }
         
@@ -474,7 +442,7 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.Throws<NotSupportedException>(delegate {
-                Expression result = inspector.Visit(expressionToVisit, context);
+                inspector.Visit(expressionToVisit, context);
             });
         }
 
@@ -785,7 +753,7 @@ IVisitor<Expression, Expression> interceptor = null;
 
             // assert:
             Assert.Throws<NotSupportedException>(delegate {
-                Expression result = inspector.Visit(expressionToVisit, context);
+                inspector.Visit(expressionToVisit, context);
             });
         }
         

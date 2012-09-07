@@ -135,7 +135,7 @@ namespace Epic.Specifications
             IVisitor<object, Fakes.ISampleSpecification<string>> specificationVisitor = GenerateStrictMock<IVisitor<object, Fakes.ISampleSpecification<string>>>();
             specificationVisitor.Expect(v => v.Visit(toTest, context)).Return(expectedResult).Repeat.Once();
             IVisitor<object> visitor = GenerateStrictMock<IVisitor<object>>();
-            visitor.Expect(v => v.GetVisitor(toTest)).Return(specificationVisitor).Repeat.Once ();
+            visitor.Expect(v => v.AsVisitor(toTest)).Return(specificationVisitor).Repeat.Once ();
 
             // act:
             object result = toTest.Accept(visitor, context);
@@ -332,7 +332,7 @@ namespace Epic.Specifications
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<OfType<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>>(result);
+            Assert.IsInstanceOf<Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>>(result);
         }
 
         [Test]

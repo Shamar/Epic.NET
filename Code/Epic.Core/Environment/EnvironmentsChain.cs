@@ -65,7 +65,7 @@ namespace Epic.Environment
 		/// </param>
 		/// <typeparam name="TObject">Type of the required tool or information.</typeparam>
 		/// <returns>
-		/// The <typeparamref name="TObject"> returned from the first chain link that knows it.
+		/// The <typeparamref name="TObject"/> returned from the first chain link that knows it.
 		/// </returns>
 		public override TObject Get<TObject> (InstanceName<TObject> name)
 		{

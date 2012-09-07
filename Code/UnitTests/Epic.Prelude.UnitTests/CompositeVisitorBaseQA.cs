@@ -65,14 +65,13 @@ namespace Epic
             string name = "test";
             Expression expression = Expression.Constant(1);
             IVisitor<object, Expression> visitor = new FakeCompositeVisitor<object, Expression>(name);
-            object result = null;
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-                result = visitor.Visit(null, VisitContext.New);
+                visitor.Visit(null, VisitContext.New);
             });
             Assert.Throws<ArgumentNullException>(delegate {
-                result = visitor.Visit(expression, null);
+                visitor.Visit(expression, null);
             });
         }
         
@@ -84,11 +83,11 @@ namespace Epic
             object expectedResult = new object();
             IVisitContext initialContext = GenerateStrictMock<IVisitContext>();
             IVisitContext initializedContext = GenerateStrictMock<IVisitContext>();
-            Expression expression = Expression.Constant(1);
+            ConstantExpression expression = Expression.Constant(1);
             FakeCompositeVisitor<object, Expression> composition = GeneratePartialMock<FakeCompositeVisitor<object, Expression>>(name);
             composition.Expect(c => c.CallInitializeVisitContext(expression, initialContext)).Return(initializedContext).Repeat.Once();
-            FakeVisitor<object, Expression> registered = GeneratePartialMock<FakeVisitor<object, Expression>>(composition);
-            registered.Expect(v => v.CallAsVisitor(expression)).Return(registered).Repeat.Once();
+            FakeVisitor<object, ConstantExpression> registered = GeneratePartialMock<FakeVisitor<object, ConstantExpression>>(composition);
+            registered.Expect(v => v.CallToVisitor(expression)).Return(registered).Repeat.Once();
             registered.Expect(v => v.Visit(expression, initializedContext)).Return(expectedResult).Repeat.Once();
 
             // act:

@@ -60,9 +60,9 @@ namespace Challenge00.DDDSample.Voyage
 		/// Move the last knwon location to the next scheduled arrival.
 		/// </summary>
 		/// <param name="location">Location reached.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value>.</exception>
-		/// <exception cref="ArgumentException"><paramref name="location"/> is not the correct location.</exception>
-		/// <exception cref="InvalidOperationException">The voyage has already be completed.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/>.</exception>
+		/// <exception cref="WrongLocationException"><paramref name="location"/> is not the correct location.</exception>
+		/// <exception cref="VoyageCompletedException">The voyage has already be completed.</exception>
 		void StopOverAt(ILocation location);
 		
 		event EventHandler<VoyageEventArgs> Stopped;
@@ -71,16 +71,16 @@ namespace Challenge00.DDDSample.Voyage
 		/// Start a voyage movement.
 		/// </summary>
 		/// <param name="location">Location leave.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value></exception>
-		/// <exception cref="ArgumentException"><paramref name="location"/> is not the correct location.</exception>
-		/// <exception cref="InvalidOperationException">The voyage has already be completed.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/></exception>
+		/// <exception cref="WrongLocationException"><paramref name="location"/> is not the correct location.</exception>
+		/// <exception cref="VoyageCompletedException">The voyage has already be completed.</exception>
 		void DepartFrom(ILocation location);
 		
 		event EventHandler<VoyageEventArgs> Departed;
 
 		/// <summary>
 		/// True if the voyage will stop over at <paramref name="location"/>. 
-		/// Will return <value>false</value> when either the location is not on the schedule or it was already left.
+		/// Will return <see langword="false"/> when either the location is not on the schedule or it was already left.
 		/// </summary>
 		/// <param name="location">
 		/// A <see cref="ILocation"/>.
@@ -88,7 +88,7 @@ namespace Challenge00.DDDSample.Voyage
 		/// <returns>
 		/// A <see cref="System.Boolean"/>
 		/// </returns>
-		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <value>null</value>.</exception>
+		/// <exception cref="ArgumentNullException"><paramref name="location"/> is <see langword="null"/>.</exception>
 		bool WillStopOverAt(ILocation location);
 		
 	}

@@ -189,7 +189,7 @@ namespace DefaultImplementation.Voyage
 			MovingVoyage state = new MovingVoyage(number, schedule, index);
 
 			// assert:
-			Assert.Throws<ArgumentException>(delegate {state.StopOverAt(location);});
+			Assert.Throws<WrongLocationException>(delegate {state.StopOverAt(location);});
 			schedule.VerifyAllExpectations();
 			movement.VerifyAllExpectations();
 			location.VerifyAllExpectations();
@@ -275,7 +275,7 @@ namespace DefaultImplementation.Voyage
 			MovingVoyage state = new MovingVoyage(number, schedule, index);
 
 			// assert:
-			Assert.Throws<ArgumentException>(delegate {state.DepartFrom(location);});
+			Assert.Throws<WrongLocationException>(delegate {state.DepartFrom(location);});
 			schedule.VerifyAllExpectations();
 			movement.VerifyAllExpectations();
 			location.VerifyAllExpectations();

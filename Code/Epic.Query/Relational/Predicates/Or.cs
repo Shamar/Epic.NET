@@ -33,7 +33,7 @@ namespace Epic.Query.Relational.Predicates
         IEquatable<Or>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Or`2"/> class.
+        /// Initializes a new instance of the <see cref="Predicates.Or"/> class.
         /// </summary>
         /// <param name='leftOperand'>
         /// Left operand.
@@ -47,15 +47,15 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Or`2"/>.
+        /// Determines whether the specified <see cref="BinaryPredicateBase"/> is equal to the
+        /// current <see cref="Predicates.Or"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Or`2"/>.
+        /// The <see cref="BinaryPredicateBase"/> to compare with the current <see cref="Predicates.Or"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="BinaryPredicateBase<TPredicate1,TPredicate2>"/> is equal to the
-        /// current <see cref="Epic.Linq.Expressions.Relational.Predicates.Or`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="BinaryPredicateBase"/> is equal to the
+        /// current <see cref="Predicates.Or"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (BinaryPredicateBase other)
         {
@@ -63,14 +63,14 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Or<TPredicate1,TPredicate2>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Or`2"/>.
+        /// Determines whether the specified <see cref="Predicates.Or"/> is equal to the current <see cref="Predicates.Or"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Or<TPredicate1,TPredicate2>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Or`2"/>.
+        /// The <see cref="Predicates.Or"/> to compare with the current <see cref="Predicates.Or"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Or<TPredicate1,TPredicate2>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Or`2"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Predicates.Or"/> is equal to the current
+        /// <see cref="Predicates.Or"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals (Or other)
         {
@@ -88,8 +88,9 @@ namespace Epic.Query.Relational.Predicates
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);

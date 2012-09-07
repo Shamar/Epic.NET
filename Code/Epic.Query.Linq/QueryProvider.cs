@@ -41,7 +41,7 @@ namespace Epic.Query.Linq
         
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="Epic.Linq.QueryProvider"/> class.
+		/// Initializes a new instance of the <see cref="Epic.Query.Linq.QueryProvider"/> class.
 		/// </summary>
 		/// <param name='name'>
 		/// Name of the query provider. Used to get tools from the <see cref="Epic.IEnvironment"/>.
@@ -57,11 +57,8 @@ namespace Epic.Query.Linq
 		}
 
         /// <summary>
-        /// Return the name of the provider.
+        /// Returns the name of the provider.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
         public string Name
         {
             get
@@ -75,8 +72,8 @@ namespace Epic.Query.Linq
 		/// Constructs an IQueryable object that can evaluate the query represented by a specified expression tree.
 		/// </summary>
 		/// <remarks>
-		/// Several of the standard query operator methods defined in Queryable, such as <see cref="OfType{TResult}"/> 
-		/// and <see cref="Cast{TResult}"/>, call this method. They pass it a MethodCallExpression that represents a LINQ query.
+		/// Several of the standard query operator methods defined in Queryable, such as <see cref="Queryable.OfType{TResult}"/> 
+        /// and <see cref="Queryable.Cast{TResult}"/>, call this method. They pass it a MethodCallExpression that represents a LINQ query.
 		/// </remarks>
 		/// <returns>
 		/// The query.
@@ -85,7 +82,7 @@ namespace Epic.Query.Linq
 		/// An expression tree that represents a LINQ query.
 		/// </param>
 		/// <exception cref='ArgumentException'>
-		/// Is thrown when <paramref name="expression"/> is not assignable from <see cref="IEnumerable"/>.
+        /// Is thrown when <paramref name="expression"/> is not assignable from <see cref="System.Collections.Generic.IEnumerable{T}"/>.
 		/// </exception>
 		public IQueryable CreateQuery (System.Linq.Expressions.Expression expression)
 		{

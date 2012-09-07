@@ -45,7 +45,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='repository'>
         /// Repository of <typeparamref name="TEntity"/>.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="repository"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="repository"/> is <see langword="null"/>.</exception>
         public Source (IRepository<TEntity, TIdentity> repository)
         {
             if (null == repository)
@@ -60,11 +60,33 @@ namespace Epic.Query.Object.Expressions
             get { return _repository; }
         }
 
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit's result.
+        /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
         }
-
+        
+        /// <summary>
+        /// Gets the object data to serialize.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("R", _repository, typeof(IRepository<TEntity, TIdentity>));

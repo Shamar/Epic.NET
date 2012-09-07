@@ -44,14 +44,14 @@ namespace Epic.Specifications
         Type SpecificationType { get; }
 
         /// <summary>
-        /// Check if the <typeparamref name="TCandidate"> satisfy the specification. 
+        /// Check if the <typeparamref name="TCandidate"/> satisfy the specification. 
         /// </summary>
         /// <param name="candidate">
-        /// A <see cref="TCandidate"/>.
+        /// A <typeparamref name="TCandidate"/>.
         /// </param>
         /// <returns>
         /// Returns <c>true</c> when <paramref name="candidate"/> satisfies the specification, <c>false</c> otherwise.
-        /// Note that <c>null</c> can not satisfy any specification.
+        /// Note that <see langword="null"/> can not satisfy any specification.
         /// </returns>
         bool IsSatisfiedBy(TCandidate candidate);
 
@@ -62,7 +62,7 @@ namespace Epic.Specifications
         /// <param name="other">The other specification to evaluate.</param>
         /// <returns>A new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
         ISpecification<TCandidate> And(ISpecification<TCandidate> other);
         
         /// <summary>
@@ -72,7 +72,7 @@ namespace Epic.Specifications
         /// <param name="other">The other specification to evaluate.</param>
         /// <returns>A new <see cref="ISpecification{TCandidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <value>null</value>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
         ISpecification<TCandidate> Or(ISpecification<TCandidate> other);
 
         /// <summary>

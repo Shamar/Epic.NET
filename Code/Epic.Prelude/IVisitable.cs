@@ -34,6 +34,7 @@ namespace Epic
         /// Accept the specified visitor (double dispatch) and returns 
         /// the <typeparamref name="TResult"/> that the visit produce.
         /// </summary>
+        /// <returns>Result of the visit.</returns>
         /// <param name='visitor'>
         /// Visitor.
         /// </param>
@@ -43,6 +44,12 @@ namespace Epic
         /// <typeparam name='TResult'>
         /// Type of the result of the visit.
         /// </typeparam>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="visitor"/> or <paramref name="context"/> is <see langword="null"/>
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The <paramref name="visitor"/> can not be used to visit the current instance.
+        /// </exception>
         TResult Accept<TResult>(IVisitor<TResult> visitor, IVisitContext context);
     }
 }

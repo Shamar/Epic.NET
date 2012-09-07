@@ -25,8 +25,18 @@ using System;
 
 namespace Epic.Query.Linq.Expressions.Normalization
 {
+    /// <summary>
+    /// Default normalizer.
+    /// </summary>
     public class DefaultNormalizer : ExpressionNormalizerBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.Query.Linq.Expressions.Normalization.DefaultNormalizer"/> class.
+        /// </summary>
+        /// <param name='name'>
+        /// Name of the normalizer.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null"/> or <see cref="String.Empty"/>.</exception>
         public DefaultNormalizer (string name)
             : base(name)
         {

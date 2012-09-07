@@ -58,7 +58,7 @@ namespace Epic.Query.Object.UnitTests.Fakes
             return _comparison(x, y);
         }
 
-        protected override bool SafeEquals(FakeCriterion<TEntity> other)
+        protected override bool EqualsA(FakeCriterion<TEntity> other)
         {
             SafeEqualsCalled = true;
             return Identity.Equals(other.Identity);
@@ -92,7 +92,7 @@ namespace Epic.Query.Object.UnitTests.Fakes
             throw new System.NotImplementedException();
         }
 
-        protected override bool SafeEquals(OtherFakeCriterion<TEntity> other)
+        protected override bool EqualsA(OtherFakeCriterion<TEntity> other)
         {
             throw new System.NotImplementedException();
         }

@@ -34,6 +34,9 @@ namespace Epic
     [Serializable]
     public abstract class VisitableBase : IVisitable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.VisitableBase"/> class.
+        /// </summary>
         protected VisitableBase ()
         {
         }
@@ -47,9 +50,16 @@ namespace Epic
         /// <param name='context'>
         /// Context of the visit.
         /// </param>
+        /// <returns>Result of the visit.</returns>
         /// <typeparam name='TResult'>
         /// Type of the result of the visit.
         /// </typeparam>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="visitor"/> or <paramref name="context"/> is <see langword="null"/>
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// The <paramref name="visitor"/> can not be used to visit the current instance.
+        /// </exception>
         public abstract TResult Accept<TResult>(IVisitor<TResult> visitor, IVisitContext context);
         
         /// <summary>
@@ -67,18 +77,19 @@ namespace Epic
         /// <param name='context'>
         /// Context of the visit.
         /// </param>
+        /// <returns>Result of the visit.</returns>
         /// <typeparam name='TResult'>
         /// Type of the result.
         /// </typeparam>
         /// <typeparam name='TVisitable'>
         /// Type of the visitable (must be a leaf in the hierarchy tree).
         /// </typeparam>
-        /// <exception cref="ArgumentNullException">Is thrown when either <paramref name="visitor"/> or <paramref name="context"/> are <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException">Is thrown when either <paramref name="visitor"/> or <paramref name="context"/> are <see langword="null"/>.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Is thrown when <paramref name="visitable"/> is not the current instance.</exception>
         /// <exception cref='InvalidOperationException'>
         /// Is thrown when called from a non leaf in the hierachy tree.
         /// </exception>
-        protected TResult AcceptMe<TResult, TVisitable>(TVisitable visitable, IVisitor<TResult> visitor, IVisitContext context) where TVisitable : IVisitable
+        protected TResult AcceptMe<TResult, TVisitable>(TVisitable visitable, IVisitor<TResult> visitor, IVisitContext context) where TVisitable : class, IVisitable
         {
             if(!object.ReferenceEquals(this, visitable))
             {
@@ -95,7 +106,7 @@ namespace Epic
             if(null == context)
                 throw new ArgumentNullException("context");
             
-            var myVisitor = visitor.GetVisitor(visitable);
+            var myVisitor = visitor.AsVisitor(visitable);
             return myVisitor.Visit(visitable, context);
         }
     }

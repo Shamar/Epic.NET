@@ -38,11 +38,11 @@ namespace Epic.Query.Object
         /// <param name='deferred'>
         /// A deferred <typeparamref name="TResult"/>.
         /// </param>
-        /// <typeparam name='TItem'>
+        /// <typeparam name='TResult'>
         /// The type of the results.
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="deferred"/> 
-        /// is <c>null</c>.</exception>
+        /// is <see langword="null"/>.</exception>
         public static TResult Evaluate<TResult>(this IDeferred<TResult> deferred)
         {
             if(null == deferred)

@@ -48,10 +48,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
             where TArgument : Expression
         {
             TArgument argumentToReturn = (TArgument)callExression.Arguments[argumentIndex];
-            FakeVisitor<Expression, TArgument> mockEchoVisitor = GeneratePartialMock<FakeVisitor<Expression, TArgument>>(composition);
-            Func<TArgument, IVisitor<Expression, TArgument>> impl = a => object.ReferenceEquals(a, argumentToReturn) ? mockEchoVisitor : null;// .Return(mockEchoVisitor);
-            mockEchoVisitor.Expect(v => v.CallAsVisitor<TArgument>(argumentToReturn)).IgnoreArguments().Do(impl).Repeat.Once();
-            mockEchoVisitor.Expect(v => v.Visit(argumentToReturn, context)).Return(argumentToReturn).Repeat.Once();
+            new EchoVisitor<TArgument>(composition, argumentToReturn);
         }
 
         [Test, TestCaseSource(typeof(Samples), "ReduceableEnumerableMethodCallExpressions")]
@@ -62,10 +59,10 @@ namespace Epic.Query.Linq.Expressions.Normalization
             FakeNormalizer composition = new FakeNormalizer();
             new EnumerableMethodsReducer(composition);
             FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
-            mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            //mockVisitor.Expect(v => v.CallToVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(originalEnumerable)).Repeat.Once();
-            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
-            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
             for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
             {
                 switch(expressionToVisit.Arguments[i].NodeType)
@@ -107,10 +104,10 @@ namespace Epic.Query.Linq.Expressions.Normalization
             new EnumerableMethodsReducer(composition);
 
             FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
-            mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            //mockVisitor.Expect(v => v.CallToVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(newSource, typeof(IEnumerable<string>))).Repeat.Once();
-            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
-            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
 
             for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
             {
@@ -171,10 +168,10 @@ namespace Epic.Query.Linq.Expressions.Normalization
             new EnumerableMethodsReducer(composition);
 
             FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
-            mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            //mockVisitor.Expect(v => v.CallToVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(dummy.Body).Repeat.Once();
-            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
-            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
 
             for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
             {
@@ -269,10 +266,10 @@ namespace Epic.Query.Linq.Expressions.Normalization
             FakeNormalizer composition = new FakeNormalizer();
             new EnumerableMethodsReducer(composition);
             FakeVisitor<Expression, MemberExpression> mockVisitor = GeneratePartialMock<FakeVisitor<Expression, MemberExpression>>(composition);
-            mockVisitor.Expect(v => v.CallAsVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
+            //mockVisitor.Expect(v => v.CallToVisitor((MemberExpression)expressionToVisit.Arguments[0])).Return(mockVisitor).Repeat.Once();
             mockVisitor.Expect(v => v.Visit((MemberExpression)expressionToVisit.Arguments[0], context)).Return(Expression.Constant(Enumerable.Empty<string>())).Repeat.Once();
-            mockVisitor.Expect(v => v.CallAsVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
-            mockVisitor.Expect(v => v.CallAsVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<MethodCallExpression>(expressionToVisit)).Return(null).Repeat.Any();
+            mockVisitor.Expect(v => v.CallToVisitor<Expression>(null)).IgnoreArguments().Return(null).Repeat.Any();
             for (int i = 1; i < expressionToVisit.Arguments.Count; ++i)
             {
                 switch (expressionToVisit.Arguments[i].NodeType)

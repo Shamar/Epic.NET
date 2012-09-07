@@ -27,7 +27,7 @@ namespace Epic.Math
 {
     /// <summary>
     /// Reppresent a function that associate each instance of
-    /// <typeparamref name="TDomain"> to an instance of <typeparamref name="TCodomain">.
+    /// <typeparamref name="TDomain"/> to an instance of <typeparamref name="TCodomain"/>.
     /// </summary>
     /// <typeparam name="TDomain">Type of the objects to map (the pre-image of the mapping).</typeparam>
     /// <typeparam name="TCodomain">Type of the objects to map (the image of the mapping).</typeparam>

@@ -32,7 +32,7 @@ namespace Epic.Query.Relational.Predicates
     public sealed class Not : UnaryPredicateBase, IEquatable<Not> 
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/> class.
+        /// Initializes a new instance of the <see cref="Predicates.Not"/> class.
         /// </summary>
         /// <param name='operand'>
         /// Operand.
@@ -42,14 +42,14 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="UnaryPredicateBase<TPredicate>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/>.
+        /// Determines whether the specified <see cref="UnaryPredicateBase"/> is equal to the current <see cref="Predicates.Not"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="UnaryPredicateBase<TPredicate>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/>.
+        /// The <see cref="UnaryPredicateBase"/> to compare with the current <see cref="Predicates.Not"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="UnaryPredicateBase<TPredicate>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="UnaryPredicateBase"/> is equal to the current
+        /// <see cref="Predicates.Not"/>; otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals (UnaryPredicateBase other)
         {
@@ -57,14 +57,14 @@ namespace Epic.Query.Relational.Predicates
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Not<TPredicate>"/> is equal to the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/>.
+        /// Determines whether the specified <see cref="Predicates.Not"/> is equal to the current <see cref="Predicates.Not"/>.
         /// </summary>
         /// <param name='other'>
-        /// The <see cref="Not<TPredicate>"/> to compare with the current <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/>.
+        /// The <see cref="Predicates.Not"/> to compare with the current <see cref="Predicates.Not"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Not<TPredicate>"/> is equal to the current
-        /// <see cref="Epic.Linq.Expressions.Relational.Predicates.Not`1"/>; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="Predicates.Not"/> is equal to the current
+        /// <see cref="Predicates.Not"/>; otherwise, <c>false</c>.
         /// </returns>
         public bool Equals(Not other)
         {
@@ -82,8 +82,9 @@ namespace Epic.Query.Relational.Predicates
         /// Context.
         /// </param>
         /// <typeparam name='TResult'>
-        /// The 1st type parameter.
+        /// The type of the result of the visit.
         /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe(this, visitor, context);

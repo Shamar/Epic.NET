@@ -49,7 +49,7 @@ namespace Challenge00.DDDSample.Voyage
 					return new CompletedVoyage(Number, Schedule);
 			}
 			string message = string.Format("The voyage should stop over at {0}.", NextExpectedLocation);
-			throw new ArgumentException(message, "location");
+			throw new WrongLocationException("location", message, NextExpectedLocation, location.UnLocode);
 		}
 		
 		public override VoyageState DepartFrom (ILocation location)
@@ -57,7 +57,7 @@ namespace Challenge00.DDDSample.Voyage
 			if(LastKnownLocation.Equals(location.UnLocode))
 				return this;
 			string message = string.Format("The voyage departed from {0}.", LastKnownLocation);
-			throw new ArgumentException(message, "location");
+			throw new WrongLocationException("location", message, LastKnownLocation, location.UnLocode);
 		}
 	
 		public override UnLocode LastKnownLocation 

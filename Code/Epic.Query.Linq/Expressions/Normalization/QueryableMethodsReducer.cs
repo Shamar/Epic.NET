@@ -38,7 +38,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
     {
         /// <summary>
         /// Initializes a new instance of the
-        /// <see cref="Epic.Linq.Expressions.Normalization.QueryableMethodsReducer"/> class.
+        /// <see cref="Epic.Query.Linq.Expressions.Normalization.QueryableMethodsReducer"/> class.
         /// </summary>
         /// <param name='composition'>
         /// Composition that will own this visitor.

@@ -38,7 +38,7 @@ namespace Epic.Query.Object
     /// been computed yet. Its <see cref="IDeferred{TResult}.Expression"/> 
     /// declaratively describes the qualities of the 
     /// <typeparamref name="TResult"/>. Such expression is defined by
-    /// the <see cref="IDeferrer.Defer{TResult}"/> method of the 
+    /// the <see cref="IDeferrer.Defer{TDeferred, TResult}"/> method of the 
     /// <see cref="IDeferred{TResult}.Deferrer"/>.
     /// </para>
     /// <para>
@@ -49,12 +49,12 @@ namespace Epic.Query.Object
     /// (like <see cref="ISearch{TEntity, TIdentity}"/>, 
     /// <see cref="IOrderedSearch{TEntity, TIdentity}"/> and
     /// <see cref="ISlicedSearch{TEntity, TIdentity}"/>) using specialized
-    /// <see cref="Expression{TResult}"/> for their specific purposes.
+    /// <see cref="Expressions.Expression{TResult}"/> for their specific purposes.
     /// </para>
     /// <para>
     /// The <see cref="IDeferred{TResult}"/> can be evaluated when 
     /// the <typeparamref name="TResult"/> is actually needed, through
-    /// the <see cref="Deferrable.As{TResult}"/> method. 
+    /// the <see cref="Deferrable.Evaluate{TResult}"/> method. 
     /// </para>
     /// </remarks>
     public interface IDeferred<TResult>

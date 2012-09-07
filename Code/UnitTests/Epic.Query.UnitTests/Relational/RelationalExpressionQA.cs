@@ -1,5 +1,5 @@
 //  
-//  RelationQA.cs
+//  RelationalExpressionQA.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -29,23 +29,8 @@ using Rhino.Mocks;
 namespace Epic.Query.Relational
 {
     [TestFixture()]
-    public class RelationQA : RhinoMocksFixtureBase
+    public class RelationalExpressionQA : RhinoMocksFixtureBase
     {
-        [Test]
-        public void Initialize_withoutName_throwsArgumentNullException()
-        {
-            // assert:
-            foreach (RelationType type in Enum.GetValues(typeof(RelationType)))
-            {
-                Assert.Throws<ArgumentNullException>(delegate {  
-                    new FakeRelation(type, null);
-                });
-                Assert.Throws<ArgumentNullException>(delegate {  
-                    new FakeRelation(type, string.Empty);
-                });
-            }
-        }
-        
         [Test]
         public void Initialize_withAName_works()
         {
@@ -55,9 +40,8 @@ namespace Epic.Query.Relational
             // assert:
             foreach (RelationType type in Enum.GetValues(typeof(RelationType)))
             {
-                Relation relation = new FakeRelation(type, name);
+                RelationalExpression relation = new FakeRelation(type, name);
                 
-                Assert.AreEqual(name, relation.Name);
                 Assert.IsTrue(type.Equals(relation.Type));
             }
         }
@@ -68,8 +52,8 @@ namespace Epic.Query.Relational
         public void GetHashCode_areEqualForEqualNames(string name)
         {
             // arrange:
-            Relation rel1 = new FakeRelation(RelationType.BaseRelation, name);
-            Relation rel2 = new FakeRelation(RelationType.CrossProduct, name);
+            RelationalExpression rel1 = new FakeRelation(RelationType.BaseRelation, name);
+            RelationalExpression rel2 = new FakeRelation(RelationType.CrossProduct, name);
 
             // act:
             int hash1 = rel1.GetHashCode();
@@ -85,7 +69,7 @@ namespace Epic.Query.Relational
         {
             // arrange:
             string name = "test";
-            Relation mockArgument = GeneratePartialMock<Relation>(RelationType.BaseRelation, name);
+            RelationalExpression mockArgument = GeneratePartialMock<RelationalExpression>(RelationType.BaseRelation);
             FakeRelation relation = GeneratePartialMock<FakeRelation>(RelationType.BaseRelation, name);
             relation.Expect(r => r.Equals(mockArgument)).Return(expectedResult).Repeat.Once();
 
@@ -106,7 +90,7 @@ namespace Epic.Query.Relational
             // assert:
             foreach (RelationType type in Enum.GetValues(typeof(RelationType)))
             {
-                Relation relation = new FakeRelation (type, name);
+                RelationalExpression relation = new FakeRelation (type, name);
                 
                 System.IO.Stream stream = SerializationUtilities.Serialize (relation);
                 Assert.IsNotNull (stream);
@@ -122,12 +106,12 @@ namespace Epic.Query.Relational
             // assert:
             foreach (RelationType type in Enum.GetValues(typeof(RelationType)))
             {
-                Relation relation = new FakeRelation (type, name);
+                RelationalExpression relation = new FakeRelation (type, name);
                 
                 System.IO.Stream stream = SerializationUtilities.Serialize (relation);
-                Relation deserialized = SerializationUtilities.Deserialize<Relation> (stream);
-                
-                Assert.AreEqual(relation.Name, deserialized.Name);
+                RelationalExpression deserialized = SerializationUtilities.Deserialize<RelationalExpression> (stream);
+
+                Assert.IsTrue (relation.Equals (deserialized));
                 Assert.AreEqual(relation.Type, deserialized.Type);
             }
         }

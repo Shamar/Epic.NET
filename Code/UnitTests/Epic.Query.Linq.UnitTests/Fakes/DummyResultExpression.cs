@@ -33,13 +33,25 @@ namespace Epic.Query.Linq.Fakes
     {
         /// <summary>
         /// Initializes a new instance of the 
-        /// <see cref="Epic.Linq.Fakes.DummyResultExpression"/> class 
+        /// <see cref="Epic.Query.Linq.Fakes.DummyResultExpression"/> class 
         /// with ExpressionType equal to <see cref="int.MinValue"/>.
         /// </summary>
         public DummyResultExpression()
-            : base((ExpressionType)int.MinValue, typeof(string))
+            : base()
         {
         }
+
+        public override ExpressionType NodeType {
+            get {
+                return (ExpressionType)int.MinValue;
+            }
+        }
+
+        public override System.Type Type {
+            get {
+                return typeof(string);
+            }
+        } 
     }
 }
 

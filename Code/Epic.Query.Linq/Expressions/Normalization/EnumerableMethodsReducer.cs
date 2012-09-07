@@ -29,13 +29,38 @@ using System.Linq;
 
 namespace Epic.Query.Linq.Expressions.Normalization
 {
+    /// <summary>
+    /// Reduce <see cref="MethodCallExpression"/> expressing methods of <see cref="Enumerable"/> to either their equivalent value 
+    /// or an equivalent call to the <see cref="Queryable"/> methods (when the source is actually a queryable and we can translate all the arguments).
+    /// </summary>
     public sealed class EnumerableMethodsReducer : CompositeVisitor<Expression>.VisitorBase, IVisitor<Expression, MethodCallExpression>
     {
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="Epic.Query.Linq.Expressions.Normalization.EnumerableMethodsReducer"/> class.
+        /// </summary>
+        /// <param name='composition'>
+        /// Composition that will own the new instance.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="composition"/> is <see langword="null"/>.</exception>
         public EnumerableMethodsReducer (CompositeVisitor<Expression> composition)
             : base(composition)
         {
         }
 
+        /// <summary>
+        /// Return the current instance as a visitor of <paramref name="target"/> if it's a <see cref="MethodCallExpression"/>
+        /// related to any <see cref="Enumerable"/>'s method.
+        /// </summary>
+        /// <returns>
+        /// The visitor.
+        /// </returns>
+        /// <param name='target'>
+        /// Target.
+        /// </param>
+        /// <typeparam name='TExpression'>
+        /// Type of the expression to be visited.
+        /// </typeparam>
         protected override IVisitor<Expression, TExpression> AsVisitor<TExpression>(TExpression target)
         {
             IVisitor<Expression, TExpression> visitor = base.AsVisitor (target);
@@ -51,6 +76,19 @@ namespace Epic.Query.Linq.Expressions.Normalization
         }
 
         #region IVisitor[Expression,MethodCallExpression] implementation
+        /// <summary>
+        /// Visit the specified expression, reducing all <see cref="MethodCallExpression"/> expressing methods of <see cref="Enumerable"/> to either their equivalent value 
+        /// or an equivalent call to the <see cref="Queryable"/> methods (when the source is actually a queryable and we can translate all the arguments).
+        /// </summary>
+        /// <param name='target'>
+        /// Expression to visit.
+        /// </param>
+        /// <param name='context'>
+        /// Visit context. Contains the state produced by previous visitors.
+        /// </param>
+        /// <returns>
+        /// Result of the visit.
+        /// </returns>
         public Expression Visit (MethodCallExpression target, IVisitContext context)
         {
             MethodInfo targetMethod = target.Method;

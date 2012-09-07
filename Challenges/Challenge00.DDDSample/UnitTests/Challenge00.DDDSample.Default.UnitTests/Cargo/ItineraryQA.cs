@@ -133,14 +133,14 @@ namespace DefaultImplementation.Cargo
 			UnLocode loc2 = new UnLocode("CODAB");
 			UnLocode loc3 = new UnLocode("CDOUT");
 			ILeg leg = MockRepository.GenerateStrictMock<ILeg>();
-			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.Once();
+			leg.Expect(l => l.UnloadLocation).Return(loc2).Repeat.AtLeastOnce();
 			ILeg leg2 = MockRepository.GenerateStrictMock<ILeg>();
-			leg2.Expect(l => l.LoadLocation).Return(loc3).Repeat.Once();
+			leg2.Expect(l => l.LoadLocation).Return(loc3).Repeat.AtLeastOnce();
 			IItinerary initial = new Itinerary();
 			initial = initial.Append(leg);
 			
 			// assert:
-			Assert.Throws<ArgumentException>(delegate { initial.Append(leg2); });
+			Assert.Throws<WrongLocationException>(delegate { initial.Append(leg2); });
 			leg.VerifyAllExpectations();
 			leg2.VerifyAllExpectations();
 		}

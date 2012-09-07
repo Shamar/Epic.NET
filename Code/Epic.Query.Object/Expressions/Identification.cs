@@ -46,7 +46,7 @@ namespace Epic.Query.Object.Expressions
         /// <param name='entities'>
         /// Entities to map.
         /// </param>
-        /// <exception cref="ArgumentNullException"><paramref name="entities"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="entities"/> is <see langword="null"/>.</exception>
         public Identification (Expression<IEnumerable<TEntity>> entities)
         {
             if (null == entities)
@@ -63,11 +63,33 @@ namespace Epic.Query.Object.Expressions
             }
         }
 
+        /// <summary>
+        /// Accept the specified visitor and context.
+        /// </summary>
+        /// <param name='visitor'>
+        /// Visitor.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
+        /// <typeparam name='TResult'>
+        /// The type of the visit's result.
+        /// </typeparam>
+        /// <returns>Result of the visit.</returns>
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
             return AcceptMe (this, visitor, context);
         }
 
+        /// <summary>
+        /// Gets the object data to serialize.
+        /// </summary>
+        /// <param name='info'>
+        /// Info.
+        /// </param>
+        /// <param name='context'>
+        /// Context.
+        /// </param>
         protected override void GetObjectData (SerializationInfo info, StreamingContext context)
         {
             info.AddValue ("E", _entities, typeof(Expression<IEnumerable<TEntity>>));
