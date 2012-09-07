@@ -49,7 +49,7 @@ namespace Epic.Query.Object
         where TIdentity : IEquatable<TIdentity>
     {
         /// <summary>
-        /// Search expression.
+        /// Selection expression.
         /// </summary>
         new Expression<IEnumerable<TEntity>> Expression { get; }
     }
