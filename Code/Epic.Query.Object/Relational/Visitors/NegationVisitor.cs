@@ -27,17 +27,31 @@ using Epic.Query.Relational.Predicates;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
-    public class NegationVisitor<TEntity> : CompositeVisitor<Predicate>.VisitorBase, 
-                                            IVisitor<Predicate, Negation<TEntity>>
+    /// <summary>
+    /// Visitor of <see cref="Negation{TEntity}"/> that produce the corresponding <see cref="Predicate"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
+    public sealed class NegationVisitor<TEntity> : CompositeVisitor<Predicate>.VisitorBase, 
+                                                   IVisitor<Predicate, Negation<TEntity>>
         where TEntity : class
     {
+        /// <summary>
+        /// Initialize a new <see cref="NegationVisitor{TEntity}"/> as part of the <paramref name="composition"/>.
+        /// </summary>
+        /// <param name="composition">Composite visitor to enhance.</param>
         public NegationVisitor (CompositeVisitor<Predicate> composition)
             : base(composition)
         {
         }
         
         #region IVisitor implementation
-        public Predicate Visit (Negation<TEntity> target, IVisitContext context)
+        /// <summary>
+        /// Visit the <paramref name="target"/> to produce a <see cref="Predicate"/>.
+        /// </summary>
+        /// <param name="target">Negation to visit.</param>
+        /// <param name="context">Context of the visit.</param>
+        /// <returns>A <see cref="Not"/> predicate.</returns>
+        Predicate IVisitor<Predicate, Negation<TEntity>>.Visit (Negation<TEntity> target, IVisitContext context)
         {
             Predicate inner = VisitInner(target.Negated, context);
             if (null == inner)

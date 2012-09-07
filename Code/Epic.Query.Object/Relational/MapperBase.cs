@@ -36,7 +36,7 @@ namespace Epic.Query.Object.Relational
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
-        private readonly Relation _mainRelation;
+        private readonly BaseRelation _mainRelation;
         private IIdentityMapping<TIdentity> _identityMap;
         
         protected MapperBase (string mainRelation)
@@ -79,7 +79,7 @@ namespace Epic.Query.Object.Relational
         }
         #endregion
 
-        protected Relation MainRelation
+        protected RelationalExpression MainRelation
         {
             get { return _mainRelation; }
         }
@@ -87,8 +87,8 @@ namespace Epic.Query.Object.Relational
         protected abstract TIdentity Identify (TEntity entity);
         
         protected abstract TEntity[] Load (TIdentity[] identities);
-        
-        protected void Map<TSpecification> (Func<TSpecification, Predicate> predicateBuilder, params Relation[] relationsToJoin)
+
+        protected void Map<TSpecification>(Func<TSpecification, Predicate> predicateBuilder, params RelationalExpression[] relationsToJoin)
             where TSpecification : class, ISpecification<TEntity>
         {
                 // wrong api: foreach relation we need a join condition

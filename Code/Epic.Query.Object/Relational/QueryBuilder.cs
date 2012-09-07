@@ -28,14 +28,24 @@ using System.Collections.Generic;
 using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object.Relational
-{
-    public sealed class QueryBuilder<TEntity, TIdentity> : CompositeVisitorBase<Relation, Expression<IEnumerable<TEntity>>>
+{ 
+    /// <summary>
+    /// Composite visitor that builds a <see cref="RelationalExpression"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
+    /// <typeparam name="TIdentity">Type of the identity of <typeparamref name="TEntity"/>.</typeparam>
+    public class QueryBuilder<TEntity, TIdentity> : CompositeVisitorBase<RelationalExpression, Expression<IEnumerable<TEntity>>>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
         private readonly PredicateBuilder<TEntity> _predicateBuilder;
 
-        public QueryBuilder (string name, Relation mainRelation)
+        /// <summary>
+        /// Initialize a new <see cref="QueryBuilder{TEntity, TIdentity}"/>.
+        /// </summary>
+        /// <param name="name">Name of the composition.</param>
+        /// <param name="mainRelation">Main relation for <typeparamref name="TEntity"/>.</param>
+        public QueryBuilder(string name, RelationalExpression mainRelation)
             : base(name)
         {
             _predicateBuilder = new PredicateBuilder<TEntity>(name);
@@ -45,6 +55,9 @@ namespace Epic.Query.Object.Relational
             new SelectionVisitor<TEntity>(this, _predicateBuilder);
         }
         
+        /// <summary>
+        /// Predicate builder for <see cref="Epic.Specifications.ISpecification{TEntity}"/>.
+        /// </summary>
         public PredicateBuilder<TEntity> PredicateBuilder
         {
             get
@@ -53,6 +66,12 @@ namespace Epic.Query.Object.Relational
             }
         }
         #region implemented abstract members of Epic.CompositeVisitorBase
+        /// <summary>
+        /// Returns the <paramref name="context"/> provided.
+        /// </summary>
+        /// <param name="target">Expression to visit.</param>
+        /// <param name="context">Visit context.</param>
+        /// <returns>The <paramref name="context"/> provided.</returns>
         protected override IVisitContext InitializeVisitContext (Expression<IEnumerable<TEntity>> target, IVisitContext context)
         {
             return context;

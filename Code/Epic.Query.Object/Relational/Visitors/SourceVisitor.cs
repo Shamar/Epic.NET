@@ -27,13 +27,25 @@ using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
-    public sealed class SourceVisitor<TEntity, TIdentity> : CompositeVisitor<Relation>.VisitorBase, 
-                                                     IVisitor<Relation, Source<TEntity, TIdentity>>
+    /// <summary>
+    /// Visitor of <see cref="Source{TEntity, TIdentity}"/> that produce the right 
+    /// <see cref="RelationalExpression"/> for the <see cref="IRepository{TEntity, TIdentity}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
+    /// <typeparam name="TIdentity">Type of the identity of <typeparamref name="TEntity"/>.</typeparam>
+    public sealed class SourceVisitor<TEntity, TIdentity> : CompositeVisitor<RelationalExpression>.VisitorBase, 
+                                                     IVisitor<RelationalExpression, Source<TEntity, TIdentity>>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
-        private readonly Relation _relation;
-        public SourceVisitor (CompositeVisitor<Relation> composition, Relation relation)
+        private readonly RelationalExpression _relation;
+
+        /// <summary>
+        /// Initializes a new <see cref="SourceVisitor{TEntity, TIdentity}"/> as part of the <paramref name="composition"/>.
+        /// </summary>
+        /// <param name="composition">Composite visitor to enhance.</param>
+        /// <param name="relation">Relation for the <see cref="IRepository{TEntity, TIdentity}"/>.</param>
+        public SourceVisitor(CompositeVisitor<RelationalExpression> composition, RelationalExpression relation)
             : base(composition)
         {
             if (relation == null)
@@ -42,7 +54,7 @@ namespace Epic.Query.Object.Relational.Visitors
         }
 
         #region IVisitor implementation
-        public Relation Visit (Source<TEntity, TIdentity> target, IVisitContext context)
+        RelationalExpression IVisitor<RelationalExpression, Source<TEntity, TIdentity>>.Visit(Source<TEntity, TIdentity> target, IVisitContext context)
         {
             return _relation;
         }

@@ -25,8 +25,15 @@ using System;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
+    /// <summary>
+    /// Generic visitor for specifications. 
+    /// </summary>
+    ///TODO: complete
     public class GenericSpecificationVisitor
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public GenericSpecificationVisitor ()
         {
         }

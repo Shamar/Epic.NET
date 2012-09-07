@@ -27,17 +27,25 @@ using Epic.Specifications;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
+    /// <summary>
+    /// Visitor of a <see cref="Disjunction{TEntity}"/> that produce a <see cref="Predicate"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
     public sealed class DisjunctionVisitor<TEntity> : CompositeVisitor<Predicate>.VisitorBase, 
                                                       IVisitor<Predicate, Disjunction<TEntity>>
         where TEntity : class
     {
-        public DisjunctionVisitor (CompositeVisitor<Predicate> composition)
+        /// <summary>
+        /// Initialize a new <see cref="DisjunctionVisitor{TEntity}"/> as part of the <paramref name="composition"/>.
+        /// </summary>
+        /// <param name="composition">Composite visitor to enhance.</param>
+        public DisjunctionVisitor(CompositeVisitor<Predicate> composition)
             : base(composition)
         {
         }
         
         #region IVisitor implementation
-        public Predicate Visit (Disjunction<TEntity> target, IVisitContext context)
+        Predicate IVisitor<Predicate, Disjunction<TEntity>>.Visit (Disjunction<TEntity> target, IVisitContext context)
         {
             Predicate[] predicates = new Predicate[target.NumberOfSpecifications];
             int i = 0;

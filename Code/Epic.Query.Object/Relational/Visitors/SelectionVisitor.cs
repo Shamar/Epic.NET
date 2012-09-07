@@ -25,15 +25,25 @@ using System;
 using Epic.Query.Object.Expressions;
 using Epic.Query.Relational;
 using Epic.Query.Relational.Predicates;
+using Epic.Query.Relational.Operations;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
-    public sealed class SelectionVisitor<TEntity> : CompositeVisitor<Relation>.VisitorBase, 
-                                                    IVisitor<Relation, Selection<TEntity>>
+    /// <summary>
+    /// Visitor that translate to a <see cref="RelationalExpression"/> a <see cref="Selection{TEntity}"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">Type of the entity.</typeparam>
+    public sealed class SelectionVisitor<TEntity> : CompositeVisitor<RelationalExpression>.VisitorBase,
+                                                    IVisitor<RelationalExpression, Selection<TEntity>>
         where TEntity : class
     {
         private readonly PredicateBuilder<TEntity> _predicateBuilder;
-        public SelectionVisitor (CompositeVisitor<Relation> composition, PredicateBuilder<TEntity> predicateBuilder)
+        /// <summary>
+        /// Initialize a new <see cref="SelectionVisitor{TEntity}"/> as part of the <paramref name="composition"/>.
+        /// </summary>
+        /// <param name="composition">Composite visitor to enhance.</param>
+        /// <param name="predicateBuilder">Predicate builder to use while visiting <see cref="Epic.Specifications.ISpecification{TEntity}"/>.</param>
+        public SelectionVisitor(CompositeVisitor<RelationalExpression> composition, PredicateBuilder<TEntity> predicateBuilder)
             : base(composition)
         {
             if(null == predicateBuilder)
@@ -42,13 +52,13 @@ namespace Epic.Query.Object.Relational.Visitors
         }
 
         #region IVisitor implementation
-        public Relation Visit (Selection<TEntity> target, IVisitContext context)
+        RelationalExpression IVisitor<RelationalExpression, Selection<TEntity>>.Visit(Selection<TEntity> target, IVisitContext context)
         {
-            Relation source = VisitInner(target.Source, context);
+            RelationalExpression source = VisitInner(target.Source, context);
             SourceRelationBuilder builder = new SourceRelationBuilder(source);
             Predicate predicate = _predicateBuilder.Visit(target.Specification, context.With(builder));
             // we have to add a constructor without the name argument to the Selection 
-            return new Selection("removeThisArgument", builder.ToRelation(), predicate);
+            return new Selection(builder.ToRelation(), predicate);
         }
         #endregion
     }

@@ -28,21 +28,35 @@ using Epic.Query.Relational.Operations;
 
 namespace Epic.Query.Relational
 {
+    /// <summary>
+    /// Builder of the source relation in a relational query designed to extract entities. 
+    /// </summary>
     public sealed class SourceRelationBuilder
     {
-        public readonly Relation _mainRelation;
-        public readonly List<Func<Relation, Relation>> _expressionFactory;
-        public readonly HashSet<Relation> _relations;
-        public SourceRelationBuilder (Relation mainRelation)
+        private readonly RelationalExpression _mainRelation;
+        private readonly List<Func<RelationalExpression, RelationalExpression>> _expressionFactory;
+        private readonly HashSet<RelationalExpression> _relations;
+        
+        /// <summary>
+        /// Initializes a new <see cref="SourceRelationBuilder"/>.
+        /// </summary>
+        /// <param name="mainRelation">Main <see cref="RelationalExpression"/> that holds at least the identity (and
+        /// the type) of the entity.</param>
+        public SourceRelationBuilder (RelationalExpression mainRelation)
         {
             if (mainRelation == null)
                 throw new ArgumentNullException ("mainRelation");
             _mainRelation = mainRelation;
-            _expressionFactory = new List<Func<Relation, Relation>>();
-            _relations = new HashSet<Relation>();
+            _expressionFactory = new List<Func<RelationalExpression, RelationalExpression>>();
+            _relations = new HashSet<RelationalExpression>();
         }
 
-        public void InnerNaturalJoin(Relation relation, params string[] attributes)
+        /// <summary>
+        /// Defines an inner natural join between the current source and the <paramref name="relation"/>.
+        /// </summary>
+        /// <param name="relation">Relation to join.</param>
+        /// <param name="attributes">Join attributes.</param>
+        public void InnerNaturalJoin(RelationalExpression relation, params string[] attributes)
         {
             if (relation == null)
                 throw new ArgumentNullException ("relation");
@@ -54,7 +68,11 @@ namespace Epic.Query.Relational
             }
         }
 
-        public void CrossProduct(Relation relation)
+        /// <summary>
+        /// Defines a cross product between the current source and <paramref name="relation"/>.
+        /// </summary>
+        /// <param name="relation">Relation to cross product.</param>
+        public void CrossProduct(RelationalExpression relation)
         {
             if (relation == null)
                 throw new ArgumentNullException ("relation");
@@ -64,7 +82,7 @@ namespace Epic.Query.Relational
             }
         }
 
-        private static Relation BuildInnerNaturalJoin(Relation left, Relation right, string[] attributes)
+        private static RelationalExpression BuildInnerNaturalJoin(RelationalExpression left, RelationalExpression right, string[] attributes)
         {
             Predicate predicate = null;
             for(int i = 0; i < attributes.Length; ++i)
@@ -82,12 +100,16 @@ namespace Epic.Query.Relational
                                        );
                 }
             }
-            return new ThetaJoin(left, right, predicate, "deleteMe");
+            return new ThetaJoin(left, right, predicate);
         }
 
-        public Relation ToRelation()
+        /// <summary>
+        /// Produces the <see cref="RelationalExpression"/> that express the source relation of a query.
+        /// </summary>
+        /// <returns>The <see cref="RelationalExpression"/> that express the source relation of a query.</returns>
+        public RelationalExpression ToRelation()
         {
-            Relation result = _mainRelation;
+            RelationalExpression result = _mainRelation;
             foreach(var operation in _expressionFactory)
             {
                 result = operation(result);
