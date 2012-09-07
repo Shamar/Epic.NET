@@ -91,7 +91,8 @@ namespace Epic.Query.Object
         {
             if(null == search)
                 throw new ArgumentNullException("search");
-            return search.Deferrer.Evaluate(new Identification<TEntity, TIdentity>(search.Expression));
+            IDeferred<IEnumerable<TEntity>> deferred = search;
+            return search.Deferrer.Evaluate(new Identification<TEntity, TIdentity>(deferred.Expression));
         }
 
         /// <summary>

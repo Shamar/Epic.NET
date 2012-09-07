@@ -48,6 +48,10 @@ namespace Epic.Query.Object
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
+        /// <summary>
+        /// Search expression.
+        /// </summary>
+        new Expression<IEnumerable<TEntity>> Expression { get; }
     }
 }
 
