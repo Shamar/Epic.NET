@@ -29,7 +29,7 @@ namespace Epic.Query.Relational
     /// This is the base class for all scalar types.
     /// </summary>
     [Serializable]
-    public abstract class Scalar: VisitableBase, IEquatable<Scalar>
+    public abstract class Scalar: AlgebraicExpression, IEquatable<Scalar>
     {
         private readonly ScalarType _type;
 

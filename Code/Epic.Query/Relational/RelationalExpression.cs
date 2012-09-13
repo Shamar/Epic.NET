@@ -32,7 +32,7 @@ namespace Epic.Query.Relational
     /// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
     /// </exception>
     [Serializable]
-    public abstract class RelationalExpression : VisitableBase, IEquatable<RelationalExpression>
+    public abstract class RelationalExpression : AlgebraicExpression, IEquatable<RelationalExpression>
     {
         private readonly RelationType _type;
 
