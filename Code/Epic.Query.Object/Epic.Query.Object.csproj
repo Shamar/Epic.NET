@@ -64,7 +64,6 @@
     <Compile Include="DeferringException.cs" />
     <Compile Include="ISlicedSearch.cs" />
     <Compile Include="OrderCriterionBase.cs" />
-    <Compile Include="Relational\MapperBase.cs" />
     <Compile Include="Relational\QueryBuilder.cs" />
     <Compile Include="Relational\Visitors\SourceVisitor.cs" />
     <Compile Include="Relational\PredicateBuilder.cs" />
