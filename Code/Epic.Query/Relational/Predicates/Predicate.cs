@@ -29,7 +29,7 @@ namespace Epic.Query.Relational.Predicates
     /// Base class for Predicates.
     /// </summary>
     [Serializable]
-    public abstract class Predicate : VisitableBase, IEquatable<Predicate>
+    public abstract class Predicate : AlgebraicExpression, IEquatable<Predicate>
     {
         #region IEquatable[Predicate] implementation
         /// <summary>
