@@ -29,13 +29,69 @@ using System.Security.Permissions;
 namespace Epic.Query.Object.Expressions
 {
     /// <summary>
+    /// Expression that represent a value.
+    /// </summary>
+    [Serializable]
+    public abstract class Expression : VisitableBase, ISerializable
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Expression"/> class.
+        /// </summary>
+        internal Expression ()
+            : base()
+        {
+        }
+        
+        #region ISerializable implementation
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Expression{TValue}"/> class after a deserialization.
+        /// </summary>
+        /// <param name='info'>
+        /// Serialization informations.
+        /// </param>
+        /// <param name='context'>
+        /// Streaming context.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="info"/> is <see langword="null"/>.</exception>
+        internal Expression (SerializationInfo info, StreamingContext context)
+            : this()
+        {
+            if(null == info)
+                throw new ArgumentNullException("info");
+        }
+        
+        /// <summary>
+        /// Register into <paramref name="info"/> the data to be stored in the serialization.
+        /// </summary>
+        /// <param name='info'>
+        /// Serialization informations (will never be <see langword="null"/>).
+        /// </param>
+        /// <param name='context'>
+        /// Streaming context.
+        /// </param>
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected abstract void GetObjectData (SerializationInfo info, StreamingContext context);
+        
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+        {
+            if(null == info)
+                throw new ArgumentNullException("info");
+            GetObjectData(info, context);
+        }
+        
+        #endregion ISerializable implementation
+    }
+
+    /// <summary>
     /// Expression that represent a <typeparamref name="TValue"/>.
     /// </summary>
     /// <typeparam name="TValue">
     /// Type of the value that the expression represent.
     /// </typeparam>
     [Serializable]
-    public abstract class Expression<TValue> : VisitableBase, ISerializable
+    public abstract class Expression<TValue> : Expression
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Expression{TValue}"/> class.
@@ -45,7 +101,7 @@ namespace Epic.Query.Object.Expressions
         {
         }
 
-        #region ISerializable implementation
+        #region Serializable implementation
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Expression{TValue}"/> class after a deserialization.
@@ -58,33 +114,11 @@ namespace Epic.Query.Object.Expressions
         /// </param>
         /// <exception cref="ArgumentNullException"><paramref name="info"/> is <see langword="null"/>.</exception>
         protected Expression (SerializationInfo info, StreamingContext context)
-            : this()
+            : base(info, context)
         {
-            if(null == info)
-                throw new ArgumentNullException("info");
         }
 
-        /// <summary>
-        /// Register into <paramref name="info"/> the data to be stored in the serialization.
-        /// </summary>
-        /// <param name='info'>
-        /// Serialization informations (will never be <see langword="null"/>).
-        /// </param>
-        /// <param name='context'>
-        /// Streaming context.
-        /// </param>
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected abstract void GetObjectData (SerializationInfo info, StreamingContext context);
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-        {
-            if(null == info)
-                throw new ArgumentNullException("info");
-            GetObjectData(info, context);
-        }
-
-        #endregion ISerializable implementation
+        #endregion Serializable implementation
     }
 }
 

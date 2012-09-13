@@ -36,7 +36,7 @@ namespace Epic.Query.Object.Relational.Visitors
         where TEntity : class
     {
         /// <summary>
-        /// Initialize a new <see cref="NegationVisitor{TEntity}"/> as part of the <paramref name="composition"/>.
+        /// Initializes a new <see cref="NegationVisitor{TEntity}"/> as part of the <paramref name="composition"/>.
         /// </summary>
         /// <param name="composition">Composite visitor to enhance.</param>
         public NegationVisitor (CompositeVisitor<Predicate> composition)

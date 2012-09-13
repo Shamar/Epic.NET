@@ -34,11 +34,11 @@ namespace Epic.Query.Object.Relational
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
     /// <typeparam name="TIdentity">Type of the identity of <typeparamref name="TEntity"/>.</typeparam>
-    public class QueryBuilder<TEntity, TIdentity> : CompositeVisitorBase<RelationalExpression, Expression<IEnumerable<TEntity>>>
+    public class QueryBuilder<TEntity, TIdentity> : CompositeVisitorBase<RelationalExpression, Expression>
         where TEntity : class
         where TIdentity : IEquatable<TIdentity>
     {
-        private readonly PredicateBuilder<TEntity> _predicateBuilder;
+        private readonly PredicateBuilder _predicateBuilder;
 
         /// <summary>
         /// Initialize a new <see cref="QueryBuilder{TEntity, TIdentity}"/>.
@@ -48,7 +48,11 @@ namespace Epic.Query.Object.Relational
         public QueryBuilder(string name, RelationalExpression mainRelation)
             : base(name)
         {
-            _predicateBuilder = new PredicateBuilder<TEntity>(name);
+            _predicateBuilder = new PredicateBuilder(name);
+            new ConjunctionVisitor<TEntity>(_predicateBuilder);
+            new DisjunctionVisitor<TEntity>(_predicateBuilder);
+            new NegationVisitor<TEntity>(_predicateBuilder);
+
 
             new SourceVisitor<TEntity, TIdentity>(this, mainRelation);
             
@@ -58,7 +62,7 @@ namespace Epic.Query.Object.Relational
         /// <summary>
         /// Predicate builder for <see cref="Epic.Specifications.ISpecification{TEntity}"/>.
         /// </summary>
-        public PredicateBuilder<TEntity> PredicateBuilder
+        public PredicateBuilder PredicateBuilder
         {
             get
             {
@@ -72,7 +76,7 @@ namespace Epic.Query.Object.Relational
         /// <param name="target">Expression to visit.</param>
         /// <param name="context">Visit context.</param>
         /// <returns>The <paramref name="context"/> provided.</returns>
-        protected override IVisitContext InitializeVisitContext (Expression<IEnumerable<TEntity>> target, IVisitContext context)
+        protected override IVisitContext InitializeVisitContext (Expression target, IVisitContext context)
         {
             return context;
         }

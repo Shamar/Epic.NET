@@ -25,11 +25,22 @@ using System;
 namespace Epic.Specifications
 {
     /// <summary>
+    /// Common interface for specifications.
+    /// </summary>
+    public interface ISpecification : IVisitable
+    {
+        /// <summary>
+        /// Gets the type of the specification.
+        /// </summary>
+        Type SpecificationType { get; }
+    }
+
+    /// <summary>
     /// Specificaiton interface.  
     /// </summary>
     /// <typeparam name="TCandidate">The (reference) type of the objects 
     /// that can satisfy the specification.</typeparam>
-    public interface ISpecification<TCandidate> : IEquatable<ISpecification<TCandidate>>, IVisitable
+    public interface ISpecification<TCandidate> : IEquatable<ISpecification<TCandidate>>, ISpecification
         where TCandidate : class
     {
         /// <summary>
@@ -37,11 +48,6 @@ namespace Epic.Specifications
         /// It can be an abstraction or a specialization of <typeparamref name="TCandidate"/>.
         /// </summary>
         Type CandidateType { get; }
-
-        /// <summary>
-        /// Gets the type of the specification.
-        /// </summary>
-        Type SpecificationType { get; }
 
         /// <summary>
         /// Check if the <typeparamref name="TCandidate"/> satisfy the specification. 

@@ -29,14 +29,12 @@ using Epic.Query.Object.Relational.Visitors;
 namespace Epic.Query.Object.Relational
 {
     /// <summary>
-    /// Visitor that can build a <see cref="Predicate"/> by visiting a <see cref="ISpecification{TEntity}"/>.
+    /// Visitor that can build a <see cref="Predicate"/> by visiting a <see cref="ISpecification"/>.
     /// </summary>
-    /// <typeparam name="TEntity">Type of the entities.</typeparam>
-    public class PredicateBuilder<TEntity> : CompositeVisitorBase<Predicate, ISpecification<TEntity>>
-        where TEntity : class
+    public class PredicateBuilder : CompositeVisitorBase<Predicate, ISpecification>
     {
         /// <summary>
-        /// Initializes a new <see cref="PredicateBuilder{TEntity}"/>.
+        /// Initializes a new <see cref="PredicateBuilder"/>.
         /// </summary>
         /// <param name="name">Name of the composition.</param>
         /// <remarks>
@@ -46,9 +44,6 @@ namespace Epic.Query.Object.Relational
         public PredicateBuilder (string name)
             : base(name)
         {
-            new ConjunctionVisitor<TEntity>(this);
-            new DisjunctionVisitor<TEntity>(this);
-            new NegationVisitor<TEntity>(this);
         }
 
         #region implemented abstract members of Epic.CompositeVisitorBase
@@ -58,7 +53,7 @@ namespace Epic.Query.Object.Relational
         /// <param name="target">Expression to visit.</param>
         /// <param name="context">Visit context.</param>
         /// <returns>The <paramref name="context"/> provided.</returns>
-        protected override IVisitContext InitializeVisitContext(ISpecification<TEntity> target, IVisitContext context)
+        protected override IVisitContext InitializeVisitContext(ISpecification target, IVisitContext context)
         {
             return context;
         }

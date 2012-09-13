@@ -37,13 +37,13 @@ namespace Epic.Query.Object.Relational.Visitors
                                                     IVisitor<RelationalExpression, Selection<TEntity>>
         where TEntity : class
     {
-        private readonly PredicateBuilder<TEntity> _predicateBuilder;
+        private readonly PredicateBuilder _predicateBuilder;
         /// <summary>
-        /// Initialize a new <see cref="SelectionVisitor{TEntity}"/> as part of the <paramref name="composition"/>.
+        /// Initializes a new <see cref="SelectionVisitor{TEntity}"/> as part of the <paramref name="composition"/>.
         /// </summary>
         /// <param name="composition">Composite visitor to enhance.</param>
         /// <param name="predicateBuilder">Predicate builder to use while visiting <see cref="Epic.Specifications.ISpecification{TEntity}"/>.</param>
-        public SelectionVisitor(CompositeVisitor<RelationalExpression> composition, PredicateBuilder<TEntity> predicateBuilder)
+        public SelectionVisitor(CompositeVisitor<RelationalExpression> composition, PredicateBuilder predicateBuilder)
             : base(composition)
         {
             if(null == predicateBuilder)
@@ -56,8 +56,7 @@ namespace Epic.Query.Object.Relational.Visitors
         {
             RelationalExpression source = VisitInner(target.Source, context);
             SourceRelationBuilder builder = new SourceRelationBuilder(source);
-            Predicate predicate = _predicateBuilder.Visit(target.Specification, context.With(builder));
-            // we have to add a constructor without the name argument to the Selection 
+            Predicate predicate = target.Specification.Accept(_predicateBuilder, context.With(builder));
             return new Selection(builder.ToRelation(), predicate);
         }
         #endregion
