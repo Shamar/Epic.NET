@@ -74,6 +74,7 @@
     <Compile Include="Relational\Visitors\GenericSpecificationVisitor.cs" />
     <Compile Include="Relational\Mappings\IIdentityMapping.cs" />
     <Compile Include="Relational\Mappings\IdentityMapping.cs" />
+    <Compile Include="ContravariantOrder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -107,6 +107,19 @@ namespace Epic.Query.Object
         }
 
         /// <summary>
+        /// Returns the current criterion wrapped to handle any <typeparamref name="TSpecializedEntity"/>.
+        /// </summary>
+        /// <returns>A <see cref="ContravariantOrder{TEntity, TSpecializedEntity}"/> wrapping the current 
+        /// criterion to handle any <typeparamref name="TSpecializedEntity"/>.</returns>
+        /// <typeparam name='TSpecializedEntity'>
+        /// Type of the entities to order.
+        /// </typeparam>
+        public override OrderCriterion<TSpecializedEntity> For<TSpecializedEntity> ()
+        {
+            return new ContravariantOrder<TEntity, TSpecializedEntity>(this);
+        }
+
+        /// <summary>
         /// Chain the specified <see cref="OrderCriterion{TEntity}"/> to compare <typeparamref name="TEntity"/>
         /// when they are equivalent according to the current criterion.
         /// </summary>

@@ -85,12 +85,28 @@ namespace Epic.Query.Object
         }
 
         /// <summary>
+        /// Returns the current <see cref="OrderCriterion{TEntity}"/> wrapped to handle any <typeparamref name="TSpecializedEntity"/>.
+        /// </summary>
+        /// <returns>A <see cref="ContravariantOrder{TEntity, TSpecializedEntity}"/> wrapping the current 
+        /// criterion to handle any <typeparamref name="TSpecializedEntity"/>.</returns>
+        /// <typeparam name='TSpecializedEntity'>
+        /// Type of the entities to order.
+        /// </typeparam>
+        public override OrderCriterion<TSpecializedEntity> For<TSpecializedEntity> ()
+        {
+            return new ContravariantOrder<TEntity, TSpecializedEntity>(this);
+        }
+
+        /// <summary>
         /// Chain the specified criterion after the current chain.
         /// </summary>
         /// <remarks>
         /// If <paramref name="other"/> is a set of <see cref="OrderCriteria{TEntity}"/>, 
         /// the contained criteria are merged after those in the current instance.
         /// </remarks>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
+        /// <returns>A new set of <see cref="OrderCriteria{TEntity}"/> that evaluates
+        /// the <paramref name="other"/> criterion after the current ones.</returns>
         /// <param name='other'>
         /// Another order criterion.
         /// </param>
@@ -165,6 +181,7 @@ namespace Epic.Query.Object
         /// <param name='y'>
         /// The second entity.
         /// </param>
+        /// <exception cref="InvalidOperationException"><paramref name="x"/> and <paramref name="y"/> cannot be sorted by the current criterion.</exception>
         /// <remarks>
         /// The comparison is delegated to the criteria in the set in the order thay have been chained. 
         /// The first order criterion that returns a non-zero result stop the chain.

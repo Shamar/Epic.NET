@@ -56,18 +56,34 @@ namespace Epic.Query.Object
         }
 
         /// <summary>
+        /// Returns the current criterion wrapped to handle any <typeparamref name="TSpecializedEntity"/>.
+        /// </summary>
+        /// <returns>A <see cref="ContravariantOrder{TEntity, TSpecializedEntity}"/> wrapping the current 
+        /// criterion to handle any <typeparamref name="TSpecializedEntity"/>.</returns>
+        /// <typeparam name='TSpecializedEntity'>
+        /// Type of the entities to order.
+        /// </typeparam>
+        public override OrderCriterion<TSpecializedEntity> For<TSpecializedEntity> ()
+        {
+            return new ContravariantOrder<TEntity, TSpecializedEntity>(this);
+        }
+
+        /// <summary>
         /// Chain the specified criterion after the current one.
         /// </summary>
         /// <param name='other'>
         /// Another criterion.
         /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
+        /// <returns>A new set of <see cref="OrderCriteria{TEntity}"/> that evaluates
+        /// the <paramref name="other"/> criterion after the current one.</returns>
         public override OrderCriterion<TEntity> Chain (OrderCriterion<TEntity> other)
         {
             return new OrderCriteria<TEntity>(this, other);
         }
 
         /// <summary>
-        /// Reverse this criterion.
+        /// Reverse the current criterion.
         /// </summary>
         /// <returns>
         /// <see cref="Reversed"/> since it's the reverse of the current criterion.
@@ -86,6 +102,7 @@ namespace Epic.Query.Object
         /// <param name='context'>
         /// Context.
         /// </param>
+        /// <returns>The result of the visit.</returns>
         /// <typeparam name='TResult'>
         /// The type of the visit's result.
         /// </typeparam>
