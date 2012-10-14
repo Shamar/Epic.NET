@@ -61,6 +61,7 @@
     <Compile Include="OrderCriterionBaseQA.cs" />
     <Compile Include="OrderCriteriaQA.cs" />
     <Compile Include="ReverseOrderQA.cs" />
+    <Compile Include="ContravariantOrderQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Query.Object\Epic.Query.Object.csproj">

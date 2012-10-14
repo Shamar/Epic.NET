@@ -209,6 +209,22 @@ namespace Epic.Query.Object.UnitTests
         }
 
         [Test]
+        public void For_aMoreSpecializedEntity_delegateToTheInner ()
+        {
+            // arrange:
+            OrderCriterion<ICargo> first = new Fakes.FakeCriterion<ICargo>(1);
+            OrderCriterion<ICargo> second = new Fakes.FakeCriterion<ICargo>(2);
+            OrderCriteria<ICargo> toTest = new OrderCriteria<ICargo>(first, second);
+
+            // act:
+            var result = toTest.For<ISpecializedCargo>();
+            
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ContravariantOrder<ICargo, ISpecializedCargo>>(result);
+        }
+
+        [Test]
         public void Reverse_returnsCriteriaInReversedOrder()
         {
             // arrange:
