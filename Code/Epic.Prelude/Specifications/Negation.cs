@@ -40,9 +40,9 @@ namespace Epic.Specifications
         /// that does not satisfy <paramref name="specification"/>.
         /// </summary>
         /// <param name="specification">Specification to negate.</param>
-        public Negation (ISpecification<TCandidate> specification)
+        internal Negation(ISpecification<TCandidate> specification)
         {
-            if(null == specification)
+            if (null == specification)
                 throw new ArgumentNullException("specification");
             _negated = specification;
         }
@@ -66,7 +66,7 @@ namespace Epic.Specifications
         /// <param name="otherSpecification">Another negation.</param>
         /// <returns><see langword="true"/> if the <paramref name="otherSpecification"/> negates
         /// the same specification that the current instance negates, <see langword="false"/> otherwise.</returns>
-        protected override bool EqualsA (Negation<TCandidate> otherSpecification)
+        protected override bool EqualsA(Negation<TCandidate> otherSpecification)
         {
             return _negated.Equals(otherSpecification._negated);
         }
@@ -76,7 +76,7 @@ namespace Epic.Specifications
         /// </summary>
         /// <param name="candidate">A candidate.</param>
         /// <returns><see langword="true"/> if <paramref name="candidate"/> does not satisfy <see cref="Negated"/>, <see langword="false"/> otherwise.</returns>
-        protected override bool IsSatisfiedByA (TCandidate candidate)
+        protected override bool IsSatisfiedByA(TCandidate candidate)
         {
             return !_negated.IsSatisfiedBy(candidate);
         }
@@ -85,7 +85,7 @@ namespace Epic.Specifications
         /// Set <see cref="Negated"/> in <paramref name="negation"/>.
         /// </summary>
         /// <param name="negation">The negation of the current specification.</param>
-        protected override void BuildNegation (out ISpecification<TCandidate> negation)
+        protected override void BuildNegation(out ISpecification<TCandidate> negation)
         {
             negation = _negated;
         }

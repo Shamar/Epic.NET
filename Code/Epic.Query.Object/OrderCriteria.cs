@@ -33,6 +33,7 @@ namespace Epic.Query.Object
     /// <typeparam name="TEntity">Type of the entity that can be sorted by these criteria.</typeparam>
     [Serializable]
     public sealed class OrderCriteria<TEntity> : OrderCriterion<TEntity>, IEnumerable<OrderCriterion<TEntity>>
+        where TEntity : class
     {
         private readonly OrderCriterion<TEntity>[] _criteria;
 

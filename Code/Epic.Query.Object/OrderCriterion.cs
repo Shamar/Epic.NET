@@ -44,6 +44,7 @@ namespace Epic.Query.Object
                                                     IComparer<TEntity>,
                                                     IEquatable<OrderCriterion<TEntity>>,
                                                     ISerializable
+        where TEntity : class
     {
         internal OrderCriterion ()
             : base()
@@ -57,7 +58,7 @@ namespace Epic.Query.Object
         /// <typeparam name='TSpecializedEntity'>
         /// Type of the entities to order.
         /// </typeparam>
-        public abstract OrderCriterion<TSpecializedEntity> For<TSpecializedEntity>() where TSpecializedEntity : TEntity;
+        public abstract OrderCriterion<TSpecializedEntity> For<TSpecializedEntity>() where TSpecializedEntity : class, TEntity;
 
         /// <summary>
         /// Returns a criterion that chain the <paramref name="other"/> order criterion after this.

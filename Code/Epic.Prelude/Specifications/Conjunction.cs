@@ -52,7 +52,7 @@ namespace Epic.Specifications
         /// are <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="first"/> and <paramref name="second"/>
         /// are equal.</exception>
-        public Conjunction(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
+        internal Conjunction(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
         {
             if (null == first)
                 throw new ArgumentNullException("first");
@@ -76,12 +76,12 @@ namespace Epic.Specifications
                 // No need to check that the second is not included in first, since AndAlso already check this.
                 specifications.Add(second);
             }
-            else if(null == firstAnd)
+            else if (null == firstAnd)
             {
-                for(int i = 0; i < secondAnd._specifications.Length; ++i)
+                for (int i = 0; i < secondAnd._specifications.Length; ++i)
                 {
-                    ISpecification<TCandidate> toAdd = secondAnd._specifications[i];
-                    if(!first.Equals(toAdd))
+                    ISpecification<TCandidate> toAdd = secondAnd._specifications [i];
+                    if (!first.Equals(toAdd))
                     {
                         specifications.Add(toAdd);
                     }
@@ -89,13 +89,13 @@ namespace Epic.Specifications
             }
             else
             {
-                for(int i = 0; i < secondAnd._specifications.Length; ++i)
+                for (int i = 0; i < secondAnd._specifications.Length; ++i)
                 {
                     bool alreadyPresent = false;
-                    ISpecification<TCandidate> toAdd = secondAnd._specifications[i];
-                    for(int j = 0; j < firstAnd._specifications.Length && !alreadyPresent; ++j)
+                    ISpecification<TCandidate> toAdd = secondAnd._specifications [i];
+                    for (int j = 0; j < firstAnd._specifications.Length && !alreadyPresent; ++j)
                     {
-                        if(toAdd.Equals(firstAnd._specifications[j]))
+                        if (toAdd.Equals(firstAnd._specifications [j]))
                         {
                             alreadyPresent = true;
                         }
@@ -133,18 +133,18 @@ namespace Epic.Specifications
         /// <param name='other'>
         /// Another specification.
         /// </param>
-        protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
+        protected override ISpecification<TCandidate> AndAlso(ISpecification<TCandidate> other)
         {
             Conjunction<TCandidate> otherAnd = other as Conjunction<TCandidate>;
-            if(null == otherAnd)
+            if (null == otherAnd)
             {
-                for(int i = 0; i < _specifications.Length; ++i)
+                for (int i = 0; i < _specifications.Length; ++i)
                 {
-                    if(other.Equals(_specifications[i]))
+                    if (other.Equals(_specifications [i]))
                         return this;
                 }
             }
-            return base.AndAlso (other);
+            return base.AndAlso(other);
         }
 
         /// <summary>
@@ -158,12 +158,12 @@ namespace Epic.Specifications
         /// <param name='otherSpecification'>
         /// Another specification.
         /// </param>
-        protected override bool EqualsA (Conjunction<TCandidate> otherSpecification)
+        protected override bool EqualsA(Conjunction<TCandidate> otherSpecification)
         {
-            if(_specifications.Length != otherSpecification._specifications.Length)
+            if (_specifications.Length != otherSpecification._specifications.Length)
                 return false;
-            for(int i = 0; i < _specifications.Length; ++i)
-                if(!_specifications[i].Equals(otherSpecification._specifications[i]))
+            for (int i = 0; i < _specifications.Length; ++i)
+                if (!_specifications [i].Equals(otherSpecification._specifications [i]))
                     return false;
             return true;
         }
@@ -177,10 +177,10 @@ namespace Epic.Specifications
         /// <param name='candidate'>
         /// Candidate.
         /// </param>
-        protected override bool IsSatisfiedByA (TCandidate candidate)
+        protected override bool IsSatisfiedByA(TCandidate candidate)
         {
-            for(int i = 0; i < _specifications.Length; ++i)
-                if(!_specifications[i].IsSatisfiedBy(candidate))
+            for (int i = 0; i < _specifications.Length; ++i)
+                if (!_specifications [i].IsSatisfiedBy(candidate))
                     return false;
             return true;
         }
@@ -188,14 +188,14 @@ namespace Epic.Specifications
         #endregion
 
         #region IEnumerable implementation
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return _specifications.GetEnumerator();
         }
         #endregion
 
         #region IEnumerable implementation
-        IEnumerator<ISpecification<TCandidate>> IEnumerable<ISpecification<TCandidate>>.GetEnumerator ()
+        IEnumerator<ISpecification<TCandidate>> IEnumerable<ISpecification<TCandidate>>.GetEnumerator()
         {
             return (_specifications as IEnumerable<ISpecification<TCandidate>>).GetEnumerator();
         }

@@ -70,7 +70,7 @@ namespace Epic.Specifications
         /// Specification that must be satisfied by any <typeparamref name="ToCandidate"/> to satisfy the current specification.
         /// </param>
         /// <exception cref="ArgumentNullException"><paramref name="innerSpecification"/> is <see langword="null"/>.</exception>
-        public Variant (ISpecification<FromCanditate> innerSpecification)
+        internal Variant (ISpecification<FromCanditate> innerSpecification)
         {
             if (null == innerSpecification)
                 throw new ArgumentNullException ("innerSpecification");
