@@ -77,8 +77,8 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Query.Relational.Operations.Rename"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Operations.Rename"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationalExpression"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Operations.Rename"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (RelationalExpression other)
         {
@@ -124,8 +124,8 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="Epic.Query.Relational.Operations.Rename"/> to compare with the current <see cref="Epic.Query.Relational.Operations.Rename"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Operations.Rename"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Operations.Rename"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Epic.Query.Relational.Operations.Rename"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Operations.Rename"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (Rename other)
         {

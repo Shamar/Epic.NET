@@ -39,8 +39,8 @@ namespace Epic.Query.Relational.Predicates
         /// The <see cref="Predicate"/> to compare with the current <see cref="Predicate"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Predicate"/> is equal to the current
-        /// <see cref="Predicate"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Predicate"/> is equal to the current
+        /// <see cref="Predicate"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public abstract bool Equals (Predicate other);
         
@@ -52,8 +52,8 @@ namespace Epic.Query.Relational.Predicates
         /// The <see cref="System.Object"/> to compare with the current <see cref="Predicate"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="Predicate"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="Predicate"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (object obj)
         {

@@ -56,7 +56,7 @@ namespace Epic.Specifications
         /// Determines that this specification is satisfied by any candidate.
         /// </summary>
         /// <returns>
-        /// Always <c>true</c>, since the base class grant that no <see langword="null"/> candidate will reach this method.
+        /// Always <see langword="true"/>, since the base class grant that no <see langword="null"/> candidate will reach this method.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.

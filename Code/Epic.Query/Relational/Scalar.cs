@@ -68,8 +68,8 @@ namespace Epic.Query.Relational
         /// The <see cref="System.Object"/> to compare with the current <see cref="Epic.Query.Relational.Scalar"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Scalar"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Scalar"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (object obj)
         {
@@ -84,8 +84,8 @@ namespace Epic.Query.Relational
         /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Query.Relational.Scalar"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Scalar"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Scalar"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Scalar"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Scalar"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public abstract bool Equals (Scalar other);
         #endregion

@@ -63,7 +63,7 @@ namespace Epic.Query.Object
         /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if equals was safed, <c>false</c> otherwise.
+        /// <see langword="true"/>, if equals was safed, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='other'>
         /// Other.
@@ -83,7 +83,7 @@ namespace Epic.Query.Object
         /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if the current criterion is equal to the <paramref name="other"/>, <c>false</c> otherwise.
+        /// <see langword="true"/>, if the current criterion is equal to the <paramref name="other"/>, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='other'>
         /// Another criterion.

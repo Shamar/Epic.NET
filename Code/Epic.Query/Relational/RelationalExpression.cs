@@ -62,7 +62,7 @@ namespace Epic.Query.Relational
         /// </param>
         /// <returns>
         /// <see langword="true"/> if the specified <see cref="RelationalExpression"/> is equal to the current
-        /// <see cref="RelationalExpression"/>; otherwise, <c>false</c>.
+        /// <see cref="RelationalExpression"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public abstract bool Equals (RelationalExpression other);
         
@@ -75,8 +75,8 @@ namespace Epic.Query.Relational
         /// The <see cref="System.Object"/> to compare with the current <see cref="RelationalExpression"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="RelationalExpression"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="RelationalExpression"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (object obj)
         {

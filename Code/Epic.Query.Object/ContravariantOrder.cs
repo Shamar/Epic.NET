@@ -139,7 +139,7 @@ namespace Epic.Query.Object
         /// that wraps the same <see cref="OrderCriterion{TEntity}"/> as the current instance.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if the current criterion and <paramref name="other"/> are equivalent, <c>false</c> otherwise.
+        /// <see langword="true"/>, if the current criterion and <paramref name="other"/> are equivalent, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='other'>
         /// Other.

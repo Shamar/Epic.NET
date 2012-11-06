@@ -104,7 +104,7 @@ namespace Epic.Query.Object
         /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if the current criterion and <paramref name="other"/> are equivalent, <c>false</c> otherwise.
+        /// <see langword="true"/>, if the current criterion and <paramref name="other"/> are equivalent, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='other'>
         /// Other.
@@ -124,8 +124,8 @@ namespace Epic.Query.Object
         /// The <see cref="OrderCriterion{TEntity}"/> to compare with the current <see cref="OrderCriterion{TEntity}"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="OrderCriterion{TEntity}"/> is equal to the current
-        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="OrderCriterion{TEntity}"/> is equal to the current
+        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (OrderCriterion<TEntity> other)
         {
@@ -149,8 +149,8 @@ namespace Epic.Query.Object
         /// The <see cref="System.Object"/> to compare with the current <see cref="OrderCriterion{TEntity}"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public sealed override bool Equals (object obj)
         {

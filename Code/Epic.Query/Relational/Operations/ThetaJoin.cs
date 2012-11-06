@@ -97,8 +97,8 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="RelationalExpression"/> to compare with the current <see cref="ThetaJoin"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
-        /// <see cref="ThetaJoin"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationalExpression"/> is equal to the current
+        /// <see cref="ThetaJoin"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (RelationalExpression other)
         {
@@ -113,8 +113,8 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="ThetaJoin"/> to compare with the current <see cref="ThetaJoin"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ThetaJoin"/> is equal to the
-        /// current <see cref="ThetaJoin"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="ThetaJoin"/> is equal to the
+        /// current <see cref="ThetaJoin"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (ThetaJoin other)
         {

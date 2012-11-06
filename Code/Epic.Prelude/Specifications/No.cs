@@ -52,7 +52,7 @@ namespace Epic.Specifications
         /// Determines that this specification cannot be satisfied by any candidate.
         /// </summary>
         /// <returns>
-        /// Always <c>false</c>.
+        /// Always <see langword="false"/>.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.

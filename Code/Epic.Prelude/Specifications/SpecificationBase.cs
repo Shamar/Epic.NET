@@ -121,8 +121,8 @@ namespace Epic.Specifications
         /// The <see cref="Epic.Specifications.ISpecification{Candidate}"/> to compare with the current instance.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Specifications.ISpecification{Candidate}"/> is equal to the
-        /// current <see cref="Epic.Specifications.SpecificationBase{TSpecification,Candidate}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Epic.Specifications.ISpecification{Candidate}"/> is equal to the
+        /// current <see cref="Epic.Specifications.SpecificationBase{TSpecification,Candidate}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals(ISpecification<Candidate> other)
         {
@@ -136,8 +136,8 @@ namespace Epic.Specifications
         /// The <see cref="System.Object"/> to compare with the current <see cref="SpecificationBase{TSpecification,Candidate}"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="SpecificationBase{TSpecification,Candidate}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="SpecificationBase{TSpecification,Candidate}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals(object obj)
         {
@@ -167,8 +167,8 @@ namespace Epic.Specifications
         /// The <typeparamref name="TSpecification"/> to compare with the current <see cref="SpecificationBase{TSpecification,Candidate}"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <typeparamref name="TSpecification"/> is equal to
-        /// the current <see cref="SpecificationBase{TSpecification,Candidate}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <typeparamref name="TSpecification"/> is equal to
+        /// the current <see cref="SpecificationBase{TSpecification,Candidate}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals(TSpecification other)
         {
@@ -186,7 +186,7 @@ namespace Epic.Specifications
         /// to the current <see cref="SpecificationBase{TSpecification,Candidate}"/>.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if this is equal to <paramref name="otherSpecification"/>, <c>false</c> otherwise.
+        /// <see langword="true"/>, if this is equal to <paramref name="otherSpecification"/>, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='otherSpecification'>
         /// Another specification instance, that is not <see langword="null"/> and has the same type
@@ -204,7 +204,7 @@ namespace Epic.Specifications
         /// A <typeparamref name="Candidate"/>.
         /// </param>
         /// <returns>
-        /// Returns <c>true</c> when <paramref name="candidate"/> satisfies the specification, <c>false</c> otherwise.
+        /// Returns <see langword="true"/> when <paramref name="candidate"/> satisfies the specification, <see langword="false"/> otherwise.
         /// Note that <see langword="null"/> can not satisfy any specification.
         /// </returns>
         public bool IsSatisfiedBy(Candidate candidate)
@@ -218,7 +218,7 @@ namespace Epic.Specifications
         /// Determines whether this specification is satisfied by a the specified candidate.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this specification is satisfied by a the specified candidate; otherwise, <c>false</c>.
+        /// <see langword="true"/> if this specification is satisfied by a the specified candidate; otherwise, <see langword="false"/>.
         /// </returns>
         /// <param name='candidate'>
         /// A valid (not null) candidate.
@@ -349,7 +349,7 @@ namespace Epic.Specifications
         /// </summary>
         /// <returns>
         /// A specifications satisfied by <typeparamref name="Other"/> that
-        /// satisfy this specification (if not overridden, an <see cref="Specifications.Variant{Other, Candidate}"/>).
+        /// satisfy this specification (if not overridden, an <see cref="Specifications.Variant{Candidate, Other}"/>).
         /// </returns>
         /// <typeparam name='Other'>
         /// Either a specialization or an abstraction of <typeparamref name="Candidate"/>.
@@ -461,8 +461,8 @@ namespace Epic.Specifications
         /// The <see cref="ISpecification{Candidate2}"/> to compare with the current instance.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ISpecification{Candidate2}"/> is equal to the
-        /// current specification; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="ISpecification{Candidate2}"/> is equal to the
+        /// current specification; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals(ISpecification<Candidate2> other)
         {
@@ -475,7 +475,7 @@ namespace Epic.Specifications
         /// Determines whether this specification is satisfied by the specified candidate.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this specification is satisfied by the specified candidate; otherwise, <c>false</c>.
+        /// <see langword="true"/> if this specification is satisfied by the specified candidate; otherwise, <see langword="false"/>.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.
@@ -496,7 +496,7 @@ namespace Epic.Specifications
         /// Determines whether this specification is satisfied by a the specified candidate.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if this specification is satisfied by a the specified candidate; otherwise, <c>false</c>.
+        /// <see langword="true"/> if this specification is satisfied by a the specified candidate; otherwise, <see langword="false"/>.
         /// </returns>
         /// <param name='candidate'>
         /// A valid (not null) candidate.

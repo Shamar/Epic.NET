@@ -97,8 +97,8 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Operations.OuterJoin"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationalExpression"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Operations.OuterJoin"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (RelationalExpression other)
         {
@@ -113,8 +113,8 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="Epic.Query.Relational.Operations.OuterJoin"/> to compare with the current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Operations.OuterJoin"/> is equal to the
-        /// current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Epic.Query.Relational.Operations.OuterJoin"/> is equal to the
+        /// current <see cref="Epic.Query.Relational.Operations.OuterJoin"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (OuterJoin other)
         {

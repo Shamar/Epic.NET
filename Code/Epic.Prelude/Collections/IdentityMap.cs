@@ -166,7 +166,7 @@ namespace Epic.Collections
         /// <param name='entity'>
         /// Identity of the entity of interest.
         /// </param>
-        /// <returns><c>true</c>if the map knows the specified entity, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/>if the map knows the specified entity, <see langword="false"/> otherwise.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         public bool Knows(TIdentity entity)
         {

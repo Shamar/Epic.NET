@@ -130,7 +130,7 @@ namespace Epic.Specifications
         }
 
         [Test]
-        public void OfType_withAMoreDerivedCandidate_asksToTheInnerSpecification ()
+        public void OfType_withAMoreDerivedCandidateOnAnUpcastingVariantSpecification_asksToTheInnerSpecification ()
         {
             // arrange:
             ISpecification<Fakes.FakeCandidate1Specialization> expectedResult = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Specialization>>();
@@ -144,6 +144,23 @@ namespace Epic.Specifications
 
             // assert:
             Assert.AreSame(expectedResult, result);
+        }
+
+
+        [Test]
+        public void OfType_withAMoreDerivedCandidateOnAnDowncastingVariantSpecification_returnsANewVariantWithTheSameInner ()
+        {
+            // arrange:
+            ISpecification<Fakes.FakeCandidate1Abstraction> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Abstraction>>();
+            ISpecification<Fakes.FakeCandidate1> toTest = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner);
+            
+            
+            // act:
+            var result = toTest.OfType<Fakes.FakeCandidate1Specialization>();
+            
+            // assert:
+            Assert.IsInstanceOf<Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1Specialization>>(result);
+            Assert.AreSame(inner, (result as Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1Specialization>).InnerSpecification);
         }
     }
 }

@@ -152,8 +152,8 @@ namespace Epic.Specifications
         /// to <paramref name="otherSpecification"/>.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if each of disjuncted specification are equal 
-        /// to the corresponding one in <paramref name="otherSpecification"/>, <c>false</c> otherwise.
+        /// <see langword="true"/>, if each of disjuncted specification are equal 
+        /// to the corresponding one in <paramref name="otherSpecification"/>, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='otherSpecification'>
         /// Another specification.
@@ -172,7 +172,7 @@ namespace Epic.Specifications
         /// Determines whether this specification is satisfied by <paramref name="candidate"/>.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if <paramref name="candidate"/> satisfies all the conjuncted specifications; otherwise, <c>false</c>.
+        /// <see langword="true"/> if <paramref name="candidate"/> satisfies all the conjuncted specifications; otherwise, <see langword="false"/>.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.

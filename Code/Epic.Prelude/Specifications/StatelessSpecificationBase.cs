@@ -43,10 +43,10 @@ namespace Epic.Specifications
         }
         
         /// <summary>
-        /// Returns <c>true</c> for any <typeparamref name="TSpecification"/>, since its has to be stateless.
+        /// Returns <see langword="true"/> for any <typeparamref name="TSpecification"/>, since its has to be stateless.
         /// </summary>
         /// <returns>
-        /// Always <c>true</c>.
+        /// Always <see langword="true"/>.
         /// </returns>
         /// <param name='otherSpecification'>
         /// Other specification.

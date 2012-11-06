@@ -45,8 +45,8 @@ namespace Epic.Query.Relational
         /// The <see cref="Epic.Query.Relational.Constant"/> to compare with the current <see cref="Epic.Query.Relational.Constant"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Constant"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Constant"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Epic.Query.Relational.Constant"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Constant"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public abstract bool Equals (Constant other);
         #endregion
@@ -58,8 +58,8 @@ namespace Epic.Query.Relational
         /// The <see cref="Epic.Query.Relational.Scalar"/> to compare with the current <see cref="Epic.Query.Relational.Constant"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.Scalar"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Constant"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Epic.Query.Relational.Scalar"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Constant"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (Scalar other)
         {
@@ -130,8 +130,8 @@ namespace Epic.Query.Relational
         /// The <see cref="Constant{TValue}"/> to compare with the current <see cref="Constant{TValue}"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Constant{TValue}"/> express the same value of the current
-        /// <see cref="Constant{TValue}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Constant{TValue}"/> express the same value of the current
+        /// <see cref="Constant{TValue}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (Constant<TValue> other)
         {
@@ -150,8 +150,8 @@ namespace Epic.Query.Relational
         /// The <see cref="Epic.Query.Relational.Constant"/> to compare with the current <see cref="Constant{TValue}"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Constant"/> is equal to the current
-        /// <see cref="Constant{TValue}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Constant"/> is equal to the current
+        /// <see cref="Constant{TValue}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (Constant other)
         {

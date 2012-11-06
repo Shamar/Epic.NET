@@ -95,8 +95,8 @@ namespace Epic.Organization
 		/// <typeparamref name="TRole"/>.
 		/// </summary>
 		/// <returns>
-		/// <c>true</c> if the owner of the working session is allowed to achieve the role; 
-		/// otherwise, <c>false</c>.
+		/// <see langword="true"/> if the owner of the working session is allowed to achieve the role; 
+		/// otherwise, <see langword="false"/>.
 		/// </returns>
 		/// <typeparam name='TRole'>
 		/// Role of interest.

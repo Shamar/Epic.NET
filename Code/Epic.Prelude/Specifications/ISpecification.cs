@@ -56,7 +56,7 @@ namespace Epic.Specifications
         /// A <typeparamref name="TCandidate"/>.
         /// </param>
         /// <returns>
-        /// Returns <c>true</c> when <paramref name="candidate"/> satisfies the specification, <c>false</c> otherwise.
+        /// Returns <see langword="true"/> when <paramref name="candidate"/> satisfies the specification, <see langword="false"/> otherwise.
         /// Note that <see langword="null"/> can not satisfy any specification.
         /// </returns>
         bool IsSatisfiedBy(TCandidate candidate);
