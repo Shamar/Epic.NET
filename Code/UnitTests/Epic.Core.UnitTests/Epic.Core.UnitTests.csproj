@@ -51,7 +51,6 @@
     <Compile Include="Fakes\FakeRoleBuilder.cs" />
     <Compile Include="Fakes\FakeRole.cs" />
     <Compile Include="Fakes\FakeWorkingSession.cs" />
-    <Compile Include="EpicExceptionQA.cs" />
     <Compile Include="ObserverBaseQA.cs" />
     <Compile Include="Fakes\FakeObserver.cs" />
     <Compile Include="Fakes\FakeOrganization.cs" />

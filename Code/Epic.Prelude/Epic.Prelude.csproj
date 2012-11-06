@@ -71,6 +71,7 @@
     <Compile Include="AcceptCaller.cs" />
     <Compile Include="Visitors\EchoingVisitor.cs" />
     <Compile Include="Visitors\SimpleFormatter.cs" />
+    <Compile Include="EpicException.cs" />
   </ItemGroup>
   <ItemGroup />
 </Project>
