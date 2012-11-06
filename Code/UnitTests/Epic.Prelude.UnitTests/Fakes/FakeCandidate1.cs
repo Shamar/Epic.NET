@@ -32,5 +32,9 @@ namespace Epic.Fakes
     public class FakeCandidate1 : FakeCandidate1Abstraction
     {
     }
+
+    public class FakeCandidate1Specialization : FakeCandidate1
+    {
+    }
 }
 

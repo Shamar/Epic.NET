@@ -39,14 +39,10 @@ namespace Epic.Specifications
     {
         static Variant ()
         {
-            if (!typeof(ToCandidate).IsAssignableFrom (typeof(FromCanditate)) && !typeof(FromCanditate).IsAssignableFrom (typeof(ToCandidate))) {
-                string message = string.Format ("Cannot cast neither from {0} to {1} nor from {1} to {0}.", typeof(FromCanditate), typeof(ToCandidate));
-                throw new InvalidCastException (message);
-            }
             if (typeof(ToCandidate).Equals(typeof(FromCanditate)))
             {
                 string message = string.Format("Cannot create a Variant<{1}, {0}> specification, becouse the two type arguments are equals.", typeof(FromCanditate), typeof(ToCandidate));
-                throw new InvalidCastException (message);
+                throw new EpicException (message);
             }
         }
         

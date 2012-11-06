@@ -47,26 +47,29 @@ namespace Epic.Specifications
         where Candidate : class
         where TSpecification : class, ISpecification<Candidate>, IEquatable<TSpecification>
     {
-        static SpecificationBase ()
+        static SpecificationBase()
         {
-            if (typeof(object).Equals (typeof(Candidate))) {
+            if (typeof(object).Equals(typeof(Candidate)))
+            {
                 string message = "System.Object is too generic to be a valid candidate for specifications.";
-                throw new InvalidOperationException (message);
+                throw new EpicException(message);
             }
-            if (typeof(ISpecification<Candidate>).Equals (typeof(TSpecification))) {
-                string message = string.Format ("ISpecification<{0}> is too generic to be a valid specification type.", typeof(Candidate));
-                throw new InvalidOperationException (message);
+            if (typeof(ISpecification<Candidate>).Equals(typeof(TSpecification)))
+            {
+                string message = string.Format("ISpecification<{0}> is too generic to be a valid specification type.", typeof(Candidate));
+                throw new EpicException(message);
             }
         }
             
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Specifications.SpecificationBase{TSpecification, Candidate}"/> class.
         /// </summary>
-        protected SpecificationBase ()
+        protected SpecificationBase()
         {
-            if (!(this is TSpecification)) {
-                string message = string.Format ("The specification {0} must implement {1} becouse it extends SpecificationBase<{1}, {2}>.", this.GetType (), typeof(TSpecification), typeof(Candidate));
-                throw new InvalidOperationException (message);
+            if (!(this is TSpecification))
+            {
+                string message = string.Format("The specification {0} must implement {1} becouse it extends SpecificationBase<{1}, {2}>.", this.GetType(), typeof(TSpecification), typeof(Candidate));
+                throw new InvalidOperationException(message);
             }
         }
             
@@ -79,11 +82,11 @@ namespace Epic.Specifications
         /// <typeparam name='T'>
         /// The 1st type parameter.
         /// </typeparam>
-        protected static void ThrowIfNull<T> (ISpecification<T> other)
+        protected static void ThrowIfNull<T>(ISpecification<T> other)
                 where T : class
         {
             if (null == other)
-                throw new ArgumentNullException ("other");
+                throw new ArgumentNullException("other");
         }
             
         #region implemented abstract members of Epic.VisitableBase
@@ -103,9 +106,9 @@ namespace Epic.Specifications
         /// Result of the visit.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="visitor"/> or <paramref name="context"/> is <see langword="null"/>.</exception>
-        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
+        public override TResult Accept<TResult>(IVisitor<TResult> visitor, IVisitContext context)
         {
-            return AcceptMe<TResult, TSpecification> (this as TSpecification, visitor, context);
+            return AcceptMe<TResult, TSpecification>(this as TSpecification, visitor, context);
         }
         #endregion
             
@@ -121,9 +124,9 @@ namespace Epic.Specifications
         /// <c>true</c> if the specified <see cref="Epic.Specifications.ISpecification{Candidate}"/> is equal to the
         /// current <see cref="Epic.Specifications.SpecificationBase{TSpecification,Candidate}"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals (ISpecification<Candidate> other)
+        public bool Equals(ISpecification<Candidate> other)
         {
-            return Equals (other as TSpecification);
+            return Equals(other as TSpecification);
         }
             
         /// <summary>
@@ -136,9 +139,9 @@ namespace Epic.Specifications
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
         /// <see cref="SpecificationBase{TSpecification,Candidate}"/>; otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals (object obj)
+        public override bool Equals(object obj)
         {
-            return Equals (obj as TSpecification);
+            return Equals(obj as TSpecification);
         }
             
         /// <summary>
@@ -147,11 +150,11 @@ namespace Epic.Specifications
         /// <returns>
         /// The hash code of <c>typeof(<typeparamref name="TSpecification"/>)</c>.
         /// </returns>
-        public override int GetHashCode ()
+        public override int GetHashCode()
         {
             // The HashCode of the TSpecification should be enough: it's strange 
             // to use a specification as a Key in a dictionary
-            return typeof(TSpecification).GetHashCode ();
+            return typeof(TSpecification).GetHashCode();
         }
         #endregion
             
@@ -167,15 +170,15 @@ namespace Epic.Specifications
         /// <c>true</c> if the specified <typeparamref name="TSpecification"/> is equal to
         /// the current <see cref="SpecificationBase{TSpecification,Candidate}"/>; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals (TSpecification other)
+        public bool Equals(TSpecification other)
         {
             if (null == other)
                 return false;
             if (this == other)
                 return true;
-            if (!this.GetType ().Equals (other.GetType ()))
+            if (!this.GetType().Equals(other.GetType()))
                 return false;
-            return EqualsA (other);
+            return EqualsA(other);
         }
         
         /// <summary>
@@ -189,7 +192,7 @@ namespace Epic.Specifications
         /// Another specification instance, that is not <see langword="null"/> and has the same type
         /// of this.
         /// </param>
-        protected abstract bool EqualsA (TSpecification otherSpecification);
+        protected abstract bool EqualsA(TSpecification otherSpecification);
             
         #endregion
             
@@ -204,11 +207,11 @@ namespace Epic.Specifications
         /// Returns <c>true</c> when <paramref name="candidate"/> satisfies the specification, <c>false</c> otherwise.
         /// Note that <see langword="null"/> can not satisfy any specification.
         /// </returns>
-        public bool IsSatisfiedBy (Candidate candidate)
+        public bool IsSatisfiedBy(Candidate candidate)
         {
             if (null == candidate)
                 return false;
-            return IsSatisfiedByA (candidate);
+            return IsSatisfiedByA(candidate);
         }
             
         /// <summary>
@@ -220,7 +223,7 @@ namespace Epic.Specifications
         /// <param name='candidate'>
         /// A valid (not null) candidate.
         /// </param>
-        protected abstract bool IsSatisfiedByA (Candidate candidate);
+        protected abstract bool IsSatisfiedByA(Candidate candidate);
             
         /// <summary>
         /// Create a new <see cref="ISpecification{Candidate}"/> that evaluates the <paramref name="other"/> 
@@ -231,14 +234,14 @@ namespace Epic.Specifications
         /// only if the current specification is satisfied.</returns>
         /// <remarks>This method calls <see cref="AndAlso"/> that can be overridden.</remarks>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
-        public ISpecification<Candidate> And (ISpecification<Candidate> other)
+        public ISpecification<Candidate> And(ISpecification<Candidate> other)
         {
-            ThrowIfNull (other);
-            if (other is No<Candidate> || this.Equals (other))
+            ThrowIfNull(other);
+            if (other is No<Candidate> || this.Equals(other))
                 return other;
             if (other is Any<Candidate>)
                 return this;
-            return AndAlso (other);
+            return AndAlso(other);
         }
             
         /// <summary>
@@ -248,9 +251,9 @@ namespace Epic.Specifications
         /// <param name="other">The other specification to evaluate (that will not be <see langword="null"/>).</param>
         /// <returns>A new <see cref="Conjunction{Candidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.</returns>
-        protected virtual ISpecification<Candidate> AndAlso (ISpecification<Candidate> other)
+        protected virtual ISpecification<Candidate> AndAlso(ISpecification<Candidate> other)
         {
-            return new Conjunction<Candidate> (this, other);
+            return new Conjunction<Candidate>(this, other);
         }
             
         /// <summary>
@@ -262,14 +265,14 @@ namespace Epic.Specifications
         /// only if the current specification is not satisfied.</returns>
         /// <remarks>This method calls <see cref="OrElse"/> that can be overridden.</remarks>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
-        public ISpecification<Candidate> Or (ISpecification<Candidate> other)
+        public ISpecification<Candidate> Or(ISpecification<Candidate> other)
         {
-            ThrowIfNull (other);
-            if (other is No<Candidate> || this.Equals (other))
+            ThrowIfNull(other);
+            if (other is No<Candidate> || this.Equals(other))
                 return this;
             if (other is Any<Candidate>)
                 return other;
-            return OrElse (other);
+            return OrElse(other);
         }
             
         /// <summary>
@@ -280,9 +283,9 @@ namespace Epic.Specifications
         /// <returns>A new <see cref="Disjunction{Candidate}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
-        protected virtual ISpecification<Candidate> OrElse (ISpecification<Candidate> other)
+        protected virtual ISpecification<Candidate> OrElse(ISpecification<Candidate> other)
         {
-            return new Disjunction<Candidate> (this, other);
+            return new Disjunction<Candidate>(this, other);
         }
         
         /// <summary>
@@ -294,10 +297,10 @@ namespace Epic.Specifications
         /// </remarks>
         /// <returns>A new <see cref="ISpecification{Candidate}"/> that is satisfied if and only if the
         /// current specification is not satisfied.</returns>
-        ISpecification<Candidate> ISpecification<Candidate>.Negate ()
+        ISpecification<Candidate> ISpecification<Candidate>.Negate()
         {
             ISpecification<Candidate> negated;
-            BuildNegation (out negated);
+            BuildNegation(out negated);
             return negated;
         }
         
@@ -311,9 +314,9 @@ namespace Epic.Specifications
         /// This is a query in CQS terms, but using a void method with an <c>out</c>
         /// arguments enable overloading to derived class.
         /// </remarks>
-        protected virtual void BuildNegation (out ISpecification<Candidate> negatedSpecification)
+        protected virtual void BuildNegation(out ISpecification<Candidate> negatedSpecification)
         {
-            negatedSpecification = new Negation<Candidate> (this);
+            negatedSpecification = new Negation<Candidate>(this);
         }
         
         /// <summary>
@@ -330,12 +333,14 @@ namespace Epic.Specifications
         /// </typeparam>
         /// <exception cref="InvalidCastException"><typeparamref name="Other"/> does not abstract or specialize <typeparamref name="Candidate"/>.</exception>
         /// <exception cref="InvalidOperationException"><typeparamref name="Other"/> is <see cref="System.Object"/>.</exception>
-        public ISpecification<Other> OfType<Other> () where Other : class
+        public ISpecification<Other> OfType<Other>() where Other : class
         {
             ISpecification<Other> other = this as ISpecification<Other>;
             if (null != other)
                 return other;
-            return OfAnotherType<Other> ();
+            if (!typeof(Candidate).IsAssignableFrom(typeof(Other)) && !typeof(Other).IsAssignableFrom(typeof(Candidate)))
+                return No<Other>.Specification;
+            return OfAnotherType<Other>();
         }
             
         /// <summary>
@@ -351,7 +356,7 @@ namespace Epic.Specifications
         /// </typeparam>
         /// <exception cref="InvalidCastException"><typeparamref name="Other"/> is neither an
         /// abstraction nor a specialization of <typeparamref name="Candidate"/>.</exception>
-        protected virtual ISpecification<Other> OfAnotherType<Other> () where Other : class
+        protected virtual ISpecification<Other> OfAnotherType<Other>() where Other : class
         {
             return new Variant<Candidate, Other>(this);
         }
@@ -359,8 +364,10 @@ namespace Epic.Specifications
         /// <summary>
         /// Gets the first type of candidates that can satisfy the current specification.
         /// </summary>
-        protected virtual Type FirstCandidateType {
-            get {
+        protected virtual Type FirstCandidateType
+        {
+            get
+            {
                 return typeof(Candidate);
             }
         }
@@ -373,8 +380,10 @@ namespace Epic.Specifications
         /// This method call <see cref="FirstCandidateType"/> to enabled derived classes to override the 
         /// default behaviour (returning <c>typeof(Candidate)</c>).
         /// </remarks>
-        Type ISpecification<Candidate>.CandidateType {
-            get {
+        Type ISpecification<Candidate>.CandidateType
+        {
+            get
+            {
                 return FirstCandidateType;
             }
         }
@@ -382,17 +391,19 @@ namespace Epic.Specifications
         /// <summary>
         /// Gets the type of the specification.
         /// </summary>
-        public virtual Type SpecificationType {
-            get {
+        public virtual Type SpecificationType
+        {
+            get
+            {
                 return typeof(TSpecification);
             }
         }
         #endregion
         
         #region IMapping implementation
-        bool IMapping<Candidate, bool>.ApplyTo (Candidate element)
+        bool IMapping<Candidate, bool>.ApplyTo(Candidate element)
         {
-            return IsSatisfiedBy (element);
+            return IsSatisfiedBy(element);
         }
         #endregion
     }
@@ -436,9 +447,9 @@ namespace Epic.Specifications
         /// This is a query in CQS terms, but using a void method with an <c>out</c>
         /// arguments enable overloading to derived class.
         /// </remarks>
-        protected virtual void BuildNegation (out ISpecification<Candidate2> negatedSpecification)
+        protected virtual void BuildNegation(out ISpecification<Candidate2> negatedSpecification)
         {
-            negatedSpecification = new Negation<Candidate2> (this);
+            negatedSpecification = new Negation<Candidate2>(this);
         }
                 
         #region IEquatable implementation
@@ -453,9 +464,9 @@ namespace Epic.Specifications
         /// <c>true</c> if the specified <see cref="ISpecification{Candidate2}"/> is equal to the
         /// current specification; otherwise, <c>false</c>.
         /// </returns>
-        public bool Equals (ISpecification<Candidate2> other)
+        public bool Equals(ISpecification<Candidate2> other)
         {
-            return base.Equals (other as TSpecification);
+            return base.Equals(other as TSpecification);
         }
         #endregion
                 
@@ -474,11 +485,11 @@ namespace Epic.Specifications
         /// and calls <see cref="IsSatisfiedByA"/> if the <paramref name="candidate"/> 
         /// is not <see langword="null"/>.</para>
         /// </remarks>
-        public bool IsSatisfiedBy (Candidate2 candidate)
+        public bool IsSatisfiedBy(Candidate2 candidate)
         {
             if (null == candidate)
                 return false;
-            return IsSatisfiedByA (candidate);
+            return IsSatisfiedByA(candidate);
         }
                 
         /// <summary>
@@ -490,7 +501,7 @@ namespace Epic.Specifications
         /// <param name='candidate'>
         /// A valid (not null) candidate.
         /// </param>
-        protected abstract bool IsSatisfiedByA (Candidate2 candidate);
+        protected abstract bool IsSatisfiedByA(Candidate2 candidate);
                 
         /// <summary>
         /// Create a new <see cref="ISpecification{Candidate2}"/> that evaluates the <paramref name="other"/> 
@@ -501,14 +512,14 @@ namespace Epic.Specifications
         /// only if the current specification is satisfied.</returns>
         /// <remarks>This method calls <see cref="AndAlso"/> that can be overridden.</remarks>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
-        public ISpecification<Candidate2> And (ISpecification<Candidate2> other)
+        public ISpecification<Candidate2> And(ISpecification<Candidate2> other)
         {
-            ThrowIfNull (other);
-            if (other is No<Candidate2> || this.Equals (other))
+            ThrowIfNull(other);
+            if (other is No<Candidate2> || this.Equals(other))
                 return other;
             if (other is Any<Candidate2>)
                 return this;
-            return AndAlso (other);
+            return AndAlso(other);
         }
                 
         /// <summary>
@@ -518,9 +529,9 @@ namespace Epic.Specifications
         /// <param name="other">The other specification to evaluate (that will not be <see langword="null"/>).</param>
         /// <returns>A new <see cref="Conjunction{Candidate2}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is satisfied.</returns>
-        protected virtual ISpecification<Candidate2> AndAlso (ISpecification<Candidate2> other)
+        protected virtual ISpecification<Candidate2> AndAlso(ISpecification<Candidate2> other)
         {
-            return new Conjunction<Candidate2> (this, other);
+            return new Conjunction<Candidate2>(this, other);
         }
                 
         /// <summary>
@@ -532,14 +543,14 @@ namespace Epic.Specifications
         /// only if the current specification is not satisfied.</returns>
         /// <remarks>This method calls <see cref="OrElse"/> that can be overridden.</remarks>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
-        public ISpecification<Candidate2> Or (ISpecification<Candidate2> other)
+        public ISpecification<Candidate2> Or(ISpecification<Candidate2> other)
         {
-            ThrowIfNull (other);
-            if (other is No<Candidate2> || this.Equals (other))
+            ThrowIfNull(other);
+            if (other is No<Candidate2> || this.Equals(other))
                 return this;
             if (other is Any<Candidate2>)
                 return other;
-            return OrElse (other);
+            return OrElse(other);
         }
 
         /// <summary>
@@ -550,20 +561,22 @@ namespace Epic.Specifications
         /// <returns>A new <see cref="Disjunction{Candidate2}"/> that evaluates the <paramref name="other"/> 
         /// only if the current specification is not satisfied.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/>.</exception>
-        protected virtual ISpecification<Candidate2> OrElse (ISpecification<Candidate2> other)
+        protected virtual ISpecification<Candidate2> OrElse(ISpecification<Candidate2> other)
         {
-            return new Disjunction<Candidate2> (this, other);
+            return new Disjunction<Candidate2>(this, other);
         }
         
-        ISpecification<Candidate2> ISpecification<Candidate2>.Negate ()
+        ISpecification<Candidate2> ISpecification<Candidate2>.Negate()
         {
             ISpecification<Candidate2> result = null;
             BuildNegation(out result);
             return result;
         }
                 
-        Type ISpecification<Candidate2>.CandidateType {
-            get {
+        Type ISpecification<Candidate2>.CandidateType
+        {
+            get
+            {
                 return typeof(Candidate2);
             }
         }
@@ -571,9 +584,9 @@ namespace Epic.Specifications
         #endregion ISpecification implementation
                 
         #region IMapping implementation
-        bool IMapping<Candidate2, bool>.ApplyTo (Candidate2 candidate)
+        bool IMapping<Candidate2, bool>.ApplyTo(Candidate2 candidate)
         {
-            return IsSatisfiedBy (candidate);
+            return IsSatisfiedBy(candidate);
         }
         #endregion
     }
