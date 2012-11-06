@@ -55,9 +55,8 @@ namespace Epic.Query.Object.Relational.Visitors
         RelationalExpression IVisitor<RelationalExpression, Selection<TEntity>>.Visit(Selection<TEntity> target, IVisitContext context)
         {
             RelationalExpression source = VisitInner(target.Source, context);
-            SourceRelationBuilder builder = new SourceRelationBuilder(source);
-            Predicate predicate = target.Specification.Accept(_predicateBuilder, context.With(builder));
-            return new Selection(builder.ToRelation(), predicate);
+            Predicate predicate = target.Specification.Accept(_predicateBuilder, context.With(source));
+            return new Selection(source, predicate);
         }
         #endregion
     }
