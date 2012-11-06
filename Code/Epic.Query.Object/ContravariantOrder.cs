@@ -30,7 +30,9 @@ namespace Epic.Query.Object
     /// Contravariant order criterion.
     /// </summary>
     [Serializable]
-    public sealed class ContravariantOrder<TEntity, TSpecializedEntity> : OrderCriterion<TSpecializedEntity> where TSpecializedEntity : TEntity
+    public sealed class ContravariantOrder<TEntity, TSpecializedEntity> : OrderCriterion<TSpecializedEntity> 
+        where TEntity : class
+        where TSpecializedEntity : class, TEntity
     {
         private readonly OrderCriterion<TEntity> _inner;
 

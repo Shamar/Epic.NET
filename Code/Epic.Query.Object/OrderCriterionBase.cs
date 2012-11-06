@@ -40,6 +40,7 @@ namespace Epic.Query.Object
     /// </remarks>
     [Serializable]
     public abstract class OrderCriterionBase<TEntity, TOrderCriterion> : OrderCriterion<TEntity>
+        where TEntity : class
         where TOrderCriterion : OrderCriterion<TEntity>
     {
         /// <summary>

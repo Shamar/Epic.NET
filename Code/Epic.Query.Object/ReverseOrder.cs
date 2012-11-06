@@ -32,6 +32,7 @@ namespace Epic.Query.Object
     /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
     [Serializable]
     public sealed class ReverseOrder<TEntity> : OrderCriterion<TEntity>
+        where TEntity : class
     {
         private readonly OrderCriterion<TEntity> _toReverse;
         internal ReverseOrder (OrderCriterion<TEntity> toReverse)
