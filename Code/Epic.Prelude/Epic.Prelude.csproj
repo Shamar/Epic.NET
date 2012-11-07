@@ -71,6 +71,12 @@
     <Compile Include="AcceptCaller.cs" />
     <Compile Include="Visitors\EchoingVisitor.cs" />
     <Compile Include="Visitors\SimpleFormatter.cs" />
+    <Compile Include="Extended\Delegates\FuncExt.cs" />
+    <Compile Include="Extended\Delegates\MissingValuesException.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extended\" />
+    <Folder Include="Extended\Delegates\" />
+  </ItemGroup>
 </Project>
