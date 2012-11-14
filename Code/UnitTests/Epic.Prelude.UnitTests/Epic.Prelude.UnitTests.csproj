@@ -73,6 +73,8 @@
     <Compile Include="UnvisitableWrapperQA.cs" />
     <Compile Include="Visitors\EchoingVisitorQA.cs" />
     <Compile Include="Visitors\SimpleFormatterQA.cs" />
+    <Compile Include="Extended\Delegates\FuncExtQA.cs" />
+    <Compile Include="Extended\Delegates\MissingValuesExceptionQA.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -82,4 +84,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extended\" />
+    <Folder Include="Extended\Delegates\" />
+  </ItemGroup>
 </Project>
