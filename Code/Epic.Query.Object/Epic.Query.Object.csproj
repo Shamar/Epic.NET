@@ -65,11 +65,9 @@
     <Compile Include="ISlicedSearch.cs" />
     <Compile Include="OrderCriterionBase.cs" />
     <Compile Include="Relational\Visitors\SourceVisitor.cs" />
-    <Compile Include="Relational\Visitors\SelectionVisitor.cs" />
     <Compile Include="Relational\Visitors\ConjunctionVisitor.cs" />
     <Compile Include="Relational\Visitors\DisjunctionVisitor.cs" />
     <Compile Include="Relational\Visitors\NegationVisitor.cs" />
-    <Compile Include="Relational\Visitors\GenericSpecificationVisitor.cs" />
     <Compile Include="Relational\Mappings\IIdentityMapping.cs" />
     <Compile Include="Relational\Mappings\IdentityMapping.cs" />
     <Compile Include="ContravariantOrder.cs" />
