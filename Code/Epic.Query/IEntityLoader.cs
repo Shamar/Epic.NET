@@ -31,9 +31,7 @@ namespace Epic.Query
 	/// </summary>
 	/// <typeparam name="TEntity">Type of the entity that the loader can load.</typeparam>
 	/// <typeparam name="TIdentity">Type used to identify each <typeparamref name="TEntity"/>.</typeparam>
-	public interface IEntityLoader<TEntity, TIdentity>
-		where TEntity : class
-		where TIdentity : IEquatable<TIdentity>
+	public interface IEntityLoader<TEntity, TIdentity> where TEntity : class where TIdentity : IEquatable<TIdentity>
 	{
 		/// <summary>
 		/// Load the specified entities.
@@ -43,6 +41,20 @@ namespace Epic.Query
 		/// </param>
 		/// <exception cref="Epic.EpicException">One or more <typeparamref name="TEntity"/> can not be loaded.</exception>
 		IEnumerable<TEntity> Load(params TIdentity[] identities);
+
+        /// <summary>
+        /// Determines wherter each of <paramref name="identities"/> identify an <typeparamref name="TEntity"/>
+        /// that actually exists.
+        /// </summary>
+        /// <remarks>The implementations must grant that the a <see cref="KeyValuePair{TIdentity, bool}"/>
+        /// is returned for each identity provided in <paramref name="identities">.</remarks>
+        /// <param name='identities'>
+        /// Identities of interest.
+        /// </param>
+        /// <returns>An enumerable of <see cref="KeyValuePair{TIdentity, bool}"/> each indicating the existance of
+        /// an entity identified by the corrisponding identity.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="identities"/> is <see langword="null"/> or contains <see langword="null"/>s.</exception>
+        IEnumerable<KeyValuePair<TIdentity, bool>> Exist(params TIdentity[] identities);
 	}
 }
 

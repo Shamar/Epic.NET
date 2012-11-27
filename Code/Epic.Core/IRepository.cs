@@ -46,6 +46,8 @@ namespace Epic
 		/// <param name='identity'>
 		/// <typeparamref name="TEntity"/>'s identifier.
 		/// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="identity"/> is <see langword="null"/>.</exception>
+        /// <exception cref="Epic.Collections.KeyNotFoundException{TIdentity}">No <typeparamref name="TEntity"/> is identified by <paramref name="identity"/>.</exception>
 		TEntity this[TIdentity identity] { get; }
 	}
 }

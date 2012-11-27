@@ -65,4 +65,10 @@
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Epic.Prelude\Epic.Prelude.csproj">
+      <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
+      <Name>Epic.Prelude</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
