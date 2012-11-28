@@ -22,12 +22,17 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 using System;
+using System.Linq;
 using Epic.Collections;
 using Epic.Specifications;
-using System.Linq;
+using Epic.Query.Object.Expressions;
+using System.Collections.Generic;
 
 namespace Epic.Query.Object
 {
+    /// <summary>
+    /// Base class for searchable repositories.
+    /// </summary>
     [Serializable]
     public class SearchableRepositoryBase<TEntity, TIdentity> : ISearchableRepository<TEntity, TIdentity>, IRepository<TEntity, TIdentity> where TEntity : class where TIdentity : IEquatable<TIdentity>
     {
@@ -43,7 +48,19 @@ namespace Epic.Query.Object
         private readonly IIdentityMap<TEntity, TIdentity> _identityMap;
         private readonly IEntityLoader<TEntity, TIdentity> _loader;
         private readonly string _deferrerName;
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Epic.Query.Object.SearchableRepositoryBase{TEntity, TIdentity}"/> class.
+        /// </summary>
+        /// <param name='identityMap'>
+        /// Identity map.
+        /// </param>
+        /// <param name='loader'>
+        /// Loader.
+        /// </param>
+        /// <param name='deferrerName'>
+        /// <see cref="IDeferrer"/> name.
+        /// </param>
         public SearchableRepositoryBase(IIdentityMap<TEntity, TIdentity> identityMap, IEntityLoader<TEntity, TIdentity> loader, string deferrerName)
         {
             if(null == identityMap) 
@@ -56,9 +73,32 @@ namespace Epic.Query.Object
             _loader = loader;
             _deferrerName = deferrerName;
         }
+
+        /// <summary>
+        /// Creates the <see cref="KeyNotFoundException{TIdentity}"/> to throw.
+        /// </summary>
+        /// <returns>
+        /// The exception to throw when no entity is identified by <paramref name="identity"/>.
+        /// </returns>
+        /// <param name='identity'>
+        /// Identity of interest.
+        /// </param>
+        /// <remarks>The caller grants that <paramref name="identity"/> is not <see langword="null"/>.</remarks>
+        protected virtual KeyNotFoundException<TIdentity> CreateEntityNotFoundException(TIdentity identity)
+        {
+            string message = string.Format("No {0} is identified by {1}.", typeof(TEntity), identity);
+            return new KeyNotFoundException<TIdentity>(identity, message);
+        }
         
         #region IRepository implementation
 
+        /// <summary>
+        /// Returns the <typeparamref name="TEntity"/> identified by the specified identity.
+        /// </summary>
+        /// <param name='identity'>
+        /// Identity of the entity of interest.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="identity"/> is <see langword="null"/></exception>
         public TEntity this[TIdentity identity]
         {
             get
@@ -66,10 +106,9 @@ namespace Epic.Query.Object
                 _checkNull(identity);
                 if(!_identityMap.Knows(identity))
                 {
-                    if(!_loader.Exist(identity))
+                    if(!_loader.Exist(identity).Exists(identity))
                     {
-                        string message = string.Format("No {0} is identified by {1}.", typeof(TEntity), identity));
-                        throw new KeyNotFoundException<TIdentity>(identity, message);
+                        throw CreateEntityNotFoundException(identity);
                     }
                     _identityMap.Register(_loader.Load(identity).First());
                 }
@@ -81,20 +120,30 @@ namespace Epic.Query.Object
         
         #region ISearchableRepository implementation
         
+        /// <summary>
+        /// Search the <typeparamref name="TSpecializedEntity"/> that satify the specification provided.
+        /// </summary>
+        /// <param name='satifyingSpecification'>
+        /// Specification to satisfy.
+        /// </param>
+        /// <typeparam name='TSpecializedEntity'>
+        /// The type of the entities of interest.
+        /// </typeparam>
+        /// <exception cref="ArgumentNullException"><paramref name="satifyingSpecification"/> is <see langword="null"/>.</exception>
         public ISearch<TSpecializedEntity, TIdentity> Search<TSpecializedEntity>(ISpecification<TSpecializedEntity> satifyingSpecification) where TSpecializedEntity : class, TEntity
         {
-            IDeferrer deferrer = Enterprise.Environment.Get<IDeferrer>(new InstanceName<IDeferrer>(name));
+            IDeferrer deferrer = Enterprise.Environment.Get<IDeferrer>(new InstanceName<IDeferrer>(_deferrerName));
             IRepository<TSpecializedEntity, TIdentity> justThis = this as IRepository<TSpecializedEntity, TIdentity>;
             if(null != justThis)
             {
-                var source = new Expressions.Source<TSpecializedEntity, TIdentity>(justThis);
-                var selection = new Expressions.Selection<TSpecializedEntity>(source, specification);
-                return deferrer.Defer<ISearch<TSpecializedEntity, TIdentity>>(selection);
+                var source = new Source<TSpecializedEntity, TIdentity>(justThis);
+                var selection = new Selection<TSpecializedEntity>(source, satifyingSpecification);
+                return deferrer.Defer<ISearch<TSpecializedEntity, TIdentity>, IEnumerable<TSpecializedEntity>>(selection);
             }
-            var abstractSource = new Expressions.Source<TEntity, TIdentity>(this);
-            var concreteSource = new Expressions.SourceDowncast<TEntity, TSpecializedEntity>(abstractSource);
-            var concreteSelection = new Expressions.Selection<TSpecializedEntity>(concreteSource, specification);
-            return deferrer.Defer<ISearch<TSpecializedEntity, TIdentity>>(concreteSelection);
+            var abstractSource = new Source<TEntity, TIdentity>(this);
+            var concreteSource = new SourceDowncast<TEntity, TSpecializedEntity>(abstractSource);
+            var concreteSelection = new Selection<TSpecializedEntity>(concreteSource, satifyingSpecification);
+            return deferrer.Defer<ISearch<TSpecializedEntity, TIdentity>, IEnumerable<TSpecializedEntity>>(concreteSelection);
         }
 
         #endregion

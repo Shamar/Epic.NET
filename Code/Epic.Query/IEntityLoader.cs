@@ -46,15 +46,12 @@ namespace Epic.Query
         /// Determines wherter each of <paramref name="identities"/> identify an <typeparamref name="TEntity"/>
         /// that actually exists.
         /// </summary>
-        /// <remarks>The implementations must grant that the a <see cref="KeyValuePair{TIdentity, bool}"/>
-        /// is returned for each identity provided in <paramref name="identities">.</remarks>
         /// <param name='identities'>
         /// Identities of interest.
         /// </param>
-        /// <returns>An enumerable of <see cref="KeyValuePair{TIdentity, bool}"/> each indicating the existance of
-        /// an entity identified by the corrisponding identity.</returns>
+        /// <returns>The informations about the existence of entities identified by <paramref name="identities"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="identities"/> is <see langword="null"/> or contains <see langword="null"/>s.</exception>
-        IEnumerable<KeyValuePair<TIdentity, bool>> Exist(params TIdentity[] identities);
+        EntitiesExistence<TIdentity> Exist(params TIdentity[] identities);
 	}
 }
 
