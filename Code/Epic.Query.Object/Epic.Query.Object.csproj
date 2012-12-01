@@ -72,6 +72,7 @@
     <Compile Include="Relational\Mappings\IdentityMapping.cs" />
     <Compile Include="ContravariantOrder.cs" />
     <Compile Include="SearchableRepositoryBase.cs" />
+    <Compile Include="DeferrerBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
