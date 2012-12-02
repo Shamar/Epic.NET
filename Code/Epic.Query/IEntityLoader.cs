@@ -41,17 +41,6 @@ namespace Epic.Query
 		/// </param>
 		/// <exception cref="Epic.EpicException">One or more <typeparamref name="TEntity"/> can not be loaded.</exception>
 		IEnumerable<TEntity> Load(params TIdentity[] identities);
-
-        /// <summary>
-        /// Determines wherter each of <paramref name="identities"/> identify an <typeparamref name="TEntity"/>
-        /// that actually exists.
-        /// </summary>
-        /// <param name='identities'>
-        /// Identities of interest.
-        /// </param>
-        /// <returns>The informations about the existence of entities identified by <paramref name="identities"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="identities"/> is <see langword="null"/> or contains <see langword="null"/>s.</exception>
-        EntitiesExistence<TIdentity> Exist(params TIdentity[] identities);
 	}
 }
 

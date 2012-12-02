@@ -34,7 +34,7 @@ namespace Epic.Query.Object
     /// Base class for searchable repositories.
     /// </summary>
     [Serializable]
-    public class SearchableRepositoryBase<TEntity, TIdentity> : ISearchableRepository<TEntity, TIdentity>, IRepository<TEntity, TIdentity> where TEntity : class where TIdentity : IEquatable<TIdentity>
+    public abstract class SearchableRepositoryBase<TEntity, TIdentity> : ISearchableRepository<TEntity, TIdentity>, IEntityLoader<TEntity, TIdentity> where TEntity : class where TIdentity : IEquatable<TIdentity>
     {
         private static readonly Action<TIdentity> _checkNull;
         static SearchableRepositoryBase()
@@ -83,11 +83,14 @@ namespace Epic.Query.Object
         /// <param name='identity'>
         /// Identity of interest.
         /// </param>
+        /// <param name="inner">
+        /// Inner exception.
+        /// </param>
         /// <remarks>The caller grants that <paramref name="identity"/> is not <see langword="null"/>.</remarks>
-        protected virtual KeyNotFoundException<TIdentity> CreateEntityNotFoundException(TIdentity identity)
+        protected virtual KeyNotFoundException<TIdentity> CreateEntityNotFoundException(TIdentity identity, Exception inner)
         {
             string message = string.Format("No {0} is identified by {1}.", typeof(TEntity), identity);
-            return new KeyNotFoundException<TIdentity>(identity, message);
+            return new KeyNotFoundException<TIdentity>(identity, message, inner);
         }
         
         #region IRepository implementation
@@ -106,11 +109,15 @@ namespace Epic.Query.Object
                 _checkNull(identity);
                 if(!_identityMap.Knows(identity))
                 {
-                    if(!_loader.Exist(identity).Exists(identity))
+                    try
                     {
-                        throw CreateEntityNotFoundException(identity);
+                        TEntity entity = _loader.Load(identity).Single();
+                        _identityMap.Register(Instrument(identity, entity));
                     }
-                    _identityMap.Register(_loader.Load(identity).First());
+                    catch (Exception e)
+                    {
+                        throw CreateEntityNotFoundException(identity, e);
+                    }
                 }
                 return _identityMap[identity];
            }
@@ -144,6 +151,60 @@ namespace Epic.Query.Object
             var concreteSource = new SourceDowncast<TEntity, TSpecializedEntity>(abstractSource);
             var concreteSelection = new Selection<TSpecializedEntity>(concreteSource, satifyingSpecification);
             return deferrer.Defer<ISearch<TSpecializedEntity, TIdentity>, IEnumerable<TSpecializedEntity>>(concreteSelection);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Instrument the specified entity. 
+        /// </summary>
+        /// <remarks>
+        /// This method can be used to subscribe
+        /// entity's events or to return a proxy wrapping the original entity.
+        /// It will be called just befor registering the entity in the identity map.
+        /// </remarks>
+        /// <param name='identity'>
+        /// Identity.
+        /// </param>
+        /// <param name='entity'>
+        /// Entity.
+        /// </param>
+        /// <returns>Either <paramref name="entity"/> or an "instrumented" copy.</returns>
+        protected abstract TEntity Instrument(TIdentity identity, TEntity entity);
+
+        #region IEntityLoader implementation
+
+        IEnumerable<TEntity> IEntityLoader<TEntity, TIdentity>.Load(params TIdentity[] identities)
+        {
+            if(null == identities)
+                throw new ArgumentNullException("identities");
+            Dictionary<TIdentity, int> toLoad = new Dictionary<TIdentity, int>();
+            TEntity[] results = new TEntity[identities.Length];
+            for(int i = 0; i < identities.Length; ++i)
+            {
+                var id = identities[i];
+                if(_identityMap.Knows(id))
+                {
+                    results[i] = _identityMap[id];
+                }
+                else
+                {
+                    toLoad[id] = i;
+                }
+            }
+            if(toLoad.Count > 0)
+            {
+                TIdentity[] ids = toLoad.Keys.ToArray();
+                TEntity[] loadedEntities = _loader.Load(ids).ToArray();
+                for(int i = 0; i < ids.Length; ++i)
+                {
+                    var id = ids[i];
+                    var e = Instrument(id, loadedEntities[i]);
+                    _identityMap.Register(e);
+                    results[toLoad[id]] = e;
+                }
+            }
+            return results;
         }
 
         #endregion
