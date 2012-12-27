@@ -27,6 +27,7 @@ using Epic.Collections;
 using Epic.Specifications;
 using Epic.Query.Object.Expressions;
 using System.Collections.Generic;
+using Epic.Math;
 
 namespace Epic.Query.Object
 {
@@ -34,7 +35,7 @@ namespace Epic.Query.Object
     /// Base class for searchable repositories.
     /// </summary>
     [Serializable]
-    public abstract class SearchableRepositoryBase<TEntity, TIdentity> : ISearchableRepository<TEntity, TIdentity>, IEntityLoader<TEntity, TIdentity> where TEntity : class where TIdentity : IEquatable<TIdentity>
+    public abstract class SearchableRepositoryBase<TEntity, TIdentity> : ISearchableRepository<TEntity, TIdentity>, IEntityLoader<TEntity, TIdentity>, IDisposable where TEntity : class where TIdentity : IEquatable<TIdentity>
     {
         private static readonly Action<TIdentity> _checkNull;
         static SearchableRepositoryBase()
@@ -47,30 +48,41 @@ namespace Epic.Query.Object
 
         private readonly IIdentityMap<TEntity, TIdentity> _identityMap;
         private readonly IEntityLoader<TEntity, TIdentity> _loader;
+        private readonly IMapping<TEntity, TIdentity> _identification;
         private readonly string _deferrerName;
+        private bool _disposed = false;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Epic.Query.Object.SearchableRepositoryBase{TEntity, TIdentity}"/> class.
+        /// Initializes a new instance of the <see cref="SearchableRepositoryBase{TEntity, TIdentity}"/> class.
         /// </summary>
         /// <param name='identityMap'>
         /// Identity map.
         /// </param>
         /// <param name='loader'>
-        /// Loader.
+        /// Loader of entities.
+        /// </param>
+        /// <param name='identification'>
+        /// Mapping between an entity and its own identifier.
         /// </param>
         /// <param name='deferrerName'>
         /// <see cref="IDeferrer"/> name.
         /// </param>
-        public SearchableRepositoryBase(IIdentityMap<TEntity, TIdentity> identityMap, IEntityLoader<TEntity, TIdentity> loader, string deferrerName)
+        protected SearchableRepositoryBase(IIdentityMap<TEntity, TIdentity> identityMap, 
+                                           IEntityLoader<TEntity, TIdentity> loader,
+                                           IMapping<TEntity, TIdentity> identification,
+                                           string deferrerName)
         {
             if(null == identityMap) 
                 throw new ArgumentNullException("identityMap");
             if(null == loader) 
                 throw new ArgumentNullException("loader");
+            if(null == identification)
+                throw new ArgumentNullException("identification");
             if(string.IsNullOrEmpty(deferrerName)) 
                 throw new ArgumentNullException("deferrerName");
             _identityMap = identityMap;
             _loader = loader;
+            _identification = identification;
             _deferrerName = deferrerName;
         }
 
@@ -92,7 +104,21 @@ namespace Epic.Query.Object
             string message = string.Format("No {0} is identified by {1}.", typeof(TEntity), identity);
             return new KeyNotFoundException<TIdentity>(identity, message, inner);
         }
-        
+
+        /// <summary>
+        /// Identify the specified entity.
+        /// </summary>
+        /// <param name='entity'>
+        /// Entity to identify.
+        /// </param>
+        /// <returns>
+        /// Returns the identifier of <paramref name="entity"/>.
+        /// </returns>
+        protected TIdentity Identify(TEntity entity)
+        {
+            return _identification.ApplyTo(entity);
+        }
+
         #region IRepository implementation
 
         /// <summary>
@@ -112,7 +138,7 @@ namespace Epic.Query.Object
                     try
                     {
                         TEntity entity = _loader.Load(identity).Single();
-                        _identityMap.Register(Instrument(identity, entity));
+                        _identityMap.Register(Instrument(entity));
                     }
                     catch (Exception e)
                     {
@@ -163,16 +189,45 @@ namespace Epic.Query.Object
         /// entity's events or to return a proxy wrapping the original entity.
         /// It will be called just befor registering the entity in the identity map.
         /// </remarks>
-        /// <param name='identity'>
-        /// Identity.
-        /// </param>
         /// <param name='entity'>
-        /// Entity.
+        /// Entity to instrument.
         /// </param>
         /// <returns>Either <paramref name="entity"/> or an "instrumented" copy.</returns>
-        protected abstract TEntity Instrument(TIdentity identity, TEntity entity);
+        /// <seealso cref="CleanUp"/>
+        protected abstract TEntity Instrument(TEntity entity);
 
-        #region IEntityLoader implementation
+        /// <summary>
+        /// Cleans up the instrumentation out of <paramref name="entity"/>.
+        /// </summary>
+        /// <remarks>
+        /// This method should revert the operations executed by <see cref="Instrument"/>
+        /// </remarks>
+        /// <param name='entity'>
+        /// Entity instrumented entity.
+        /// </param>
+        /// <seealso cref="Instrument"/>
+        protected abstract void CleanUp(TEntity entity);
+
+        /// <summary>
+        /// Releases all resource used by the object derived by <see cref="SearchableRepositoryBase{TEntity,TIdentity}"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The <see cref="SearchableRepositoryBase{TEntity,TIdentity}"/> implements <see cref="IDisposable"/>
+        /// to allow the explicit disposition of its responsibility.
+        /// </para>
+        /// <para>
+        /// On disposition, all disposable object provided to the constructor will be disposed and all known
+        /// entities will be <see cref="CleanUp"/>.
+        /// </para>
+        /// <para>
+        /// This abstract method should be used to clean other resources used by the concrete implementation
+        /// of the respository.
+        /// </para>
+        /// </remarks>
+        protected abstract void Dispose();
+
+        #region IEntityLoader<TEntity, TIdentity> implementation
 
         IEnumerable<TEntity> IEntityLoader<TEntity, TIdentity>.Load(params TIdentity[] identities)
         {
@@ -199,7 +254,7 @@ namespace Epic.Query.Object
                 for(int i = 0; i < ids.Length; ++i)
                 {
                     var id = ids[i];
-                    var e = Instrument(id, loadedEntities[i]);
+                    var e = Instrument(loadedEntities[i]);
                     _identityMap.Register(e);
                     results[toLoad[id]] = e;
                 }
@@ -207,7 +262,22 @@ namespace Epic.Query.Object
             return results;
         }
 
-        #endregion
+        #endregion IEntityLoader<TEntity, TIdentity> implementation
+
+        #region IDisposable implementation
+
+        void IDisposable.Dispose()
+        {
+            if(!_disposed)
+            {
+                _disposed = true;
+                Dispose();
+                _identityMap.ForEachKnownEntity(this.CleanUp);
+                _identityMap.Dispose();
+            }
+        }
+
+        #endregion IDisposable implementation
     }
 }
 

@@ -30,9 +30,7 @@ namespace Epic.Collections
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
     /// <typeparam name="TIdentity">Type of the identity of <typeparamref name="TEntity"/>.</typeparam>
-    public interface IIdentityMap<TEntity, TIdentity> :  IMap<TIdentity, TEntity>, IDisposable
-        where TEntity : class
-        where TIdentity : IEquatable<TIdentity>
+    public interface IIdentityMap<TEntity, TIdentity> :  IMap<TIdentity, TEntity>, IDisposable where TEntity : class where TIdentity : IEquatable<TIdentity>
     {
         /// <summary>
         /// Register in the map the specified entity.
@@ -53,6 +51,17 @@ namespace Epic.Collections
         /// <returns><see langword="true"/>if the map knows the specified entity, <see langword="false"/> otherwise.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         bool Knows(TIdentity entity);
+
+        /// <summary>
+        /// Execute <paramref name="action"/> to each known entity.
+        /// </summary>
+        /// <param name='action'>
+        /// Action to execute on each known entity.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <exception cref="AggregatedOperationFailedException{TIdentity}">An exception
+        /// occurred during the application of <paramref name="action"/> to one or more known entities.</exception>
+        void ForEachKnownEntity(Action<TEntity> action);
     }
 }
 

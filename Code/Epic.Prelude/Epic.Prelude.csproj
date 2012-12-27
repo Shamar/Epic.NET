@@ -74,6 +74,7 @@
     <Compile Include="EpicException.cs" />
     <Compile Include="Extended\Delegates\FuncExt.cs" />
     <Compile Include="Extended\Delegates\MissingValuesException.cs" />
+    <Compile Include="Collections\AggregatedOperationFailedException.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
