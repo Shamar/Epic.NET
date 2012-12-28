@@ -29,9 +29,11 @@ namespace Epic.Specifications
     /// Specification that is satisfied by any <typeparamref name="TCandidate"/> that doesn't satisfy the negated one.
     /// </summary>
     /// <typeparam name="TCandidate">The type of the objects that can be tested with this specification.</typeparam>
+    /// <seealso cref="IMonadicSpecificationComposition{TCandidate}"/>
     [Serializable]
     public sealed class Negation<TCandidate> : SpecificationBase<Negation<TCandidate>, TCandidate>,
-                                               IEquatable<Negation<TCandidate>>
+                                               IEquatable<Negation<TCandidate>>,
+                                               IMonadicSpecificationComposition<TCandidate>
         where TCandidate : class
     {
         private readonly ISpecification<TCandidate> _negated;
@@ -90,6 +92,17 @@ namespace Epic.Specifications
             negation = _negated;
         }
 
+        #endregion
+
+        #region IMonadicSpecificationComposition implementation
+
+        ISpecification IMonadicSpecificationComposition<TCandidate>.Operand
+        {
+            get
+            {
+                return _negated;
+            }
+        }
 
         #endregion
     }

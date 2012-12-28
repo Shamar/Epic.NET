@@ -31,9 +31,11 @@ namespace Epic.Specifications
     /// </summary>
     /// <typeparam name="ToCandidate">Type of the objects that can be tested with this specification.</typeparam>
     /// <typeparam name="FromCandidate">Type of the objects that can be tested with inner specification.</typeparam>
+    /// <seealso cref="IMonadicSpecificationComposition{TCandidate}"/>
     [Serializable]
     public sealed class Variant<FromCandidate, ToCandidate> : SpecificationBase<Variant<FromCandidate, ToCandidate>, ToCandidate>,
-                                                              IEquatable<Variant<FromCandidate, ToCandidate>>
+                                                              IEquatable<Variant<FromCandidate, ToCandidate>>,
+                                                              IMonadicSpecificationComposition<ToCandidate>
         where ToCandidate : class
         where FromCandidate : class
     {
@@ -138,6 +140,20 @@ namespace Epic.Specifications
                 return _innerSpecification.CandidateType;
             }
         }
+        
+        #endregion
+
+        #region IMonadicSpecificationComposition implementation
+        
+        // TODO: deeper analysis on MonadicSpecificationComposition nature of a Variant: what if is Variant itself the problem? why not distinguish between Upcast and Downcast?
+        ISpecification IMonadicSpecificationComposition<ToCandidate>.Operand
+        {
+            get
+            {
+                return _innerSpecification;
+            }
+        }
+
         #endregion
     }
 }

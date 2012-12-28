@@ -31,10 +31,12 @@ namespace Epic.Specifications
     /// least one of the specifications.
     /// </summary>
     /// <typeparam name="TCandidate">The type of the objects that can be tested with this specification.</typeparam>
+    /// <seealso cref="IPolyadicSpecificationComposition{TCandidate}"/>
     [Serializable]
     public sealed class Disjunction<TCandidate> : SpecificationBase<Disjunction<TCandidate>, TCandidate>,
                                                   IEquatable<Disjunction<TCandidate>>,
-                                                  IEnumerable<ISpecification<TCandidate>>
+                                                  IEnumerable<ISpecification<TCandidate>>,
+                                                  IPolyadicSpecificationComposition<TCandidate>
         where TCandidate : class
     {
         private readonly ISpecification<TCandidate>[] _specifications;
@@ -194,6 +196,16 @@ namespace Epic.Specifications
         {
             return (_specifications as IEnumerable<ISpecification<TCandidate>>).GetEnumerator();
         }
+        #endregion
+
+        #region IEnumerable implementation
+        
+        IEnumerator<ISpecification> IEnumerable<ISpecification>.GetEnumerator()
+        {
+            for(int i = 0; i < _specifications.Length; ++i)
+                yield return _specifications[i];
+        }
+        
         #endregion
     }
 }

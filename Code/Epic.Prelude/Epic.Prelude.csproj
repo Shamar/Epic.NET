@@ -75,6 +75,8 @@
     <Compile Include="Extended\Delegates\FuncExt.cs" />
     <Compile Include="Extended\Delegates\MissingValuesException.cs" />
     <Compile Include="Collections\AggregatedOperationFailedException.cs" />
+    <Compile Include="Specifications\IPolyadicSpecificationComposition.cs" />
+    <Compile Include="Specifications\IMonadicSpecificationComposition.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
