@@ -198,14 +198,14 @@ namespace Epic.Specifications
         }
         #endregion
 
-        #region IEnumerable implementation
-        
-        IEnumerator<ISpecification> IEnumerable<ISpecification>.GetEnumerator()
+        #region IPolyadicSpecificationComposition implementation
+        IEnumerable<ISpecification> IPolyadicSpecificationComposition<TCandidate>.Operands
         {
-            for(int i = 0; i < _specifications.Length; ++i)
-                yield return _specifications[i];
+            get
+            {
+                return _specifications;
+            }
         }
-        
         #endregion
     }
 }

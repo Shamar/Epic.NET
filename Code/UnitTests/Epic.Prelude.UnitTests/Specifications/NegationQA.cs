@@ -42,6 +42,7 @@ namespace Epic.Specifications
             // assert:
             Assert.IsNotNull(toTest);
             Assert.AreSame(inner, toTest.Negated);
+            Assert.AreSame(inner, (toTest as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
         }
 
         [Test]

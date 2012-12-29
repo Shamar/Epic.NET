@@ -35,8 +35,12 @@ namespace Epic.Specifications
     /// <seealso cref="IMonadicSpecificationComposition{TCandidate}"/>
     /// <remarks>This interface is intended like a marker for specifications (and thus specializes
     /// <see cref="ISpecification"/>), but it doesn't express a specification by itself.</remarks>
-    public interface IPolyadicSpecificationComposition<out TCandidate> : ISpecification, IEnumerable<ISpecification>
+    public interface IPolyadicSpecificationComposition<out TCandidate> : ISpecification
     {
+        /// <summary>
+        /// The specifications in the composition.
+        /// </summary>
+        IEnumerable<ISpecification> Operands { get; }
     }
 }
 

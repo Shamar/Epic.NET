@@ -46,9 +46,11 @@ namespace Epic.Specifications
             // assert:
             Assert.IsNotNull(toTest1);
             Assert.AreSame(inner1, toTest1.InnerSpecification);
+            Assert.AreSame(inner1, (toTest1 as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
             Assert.AreEqual(typeof(Fakes.FakeCandidate1), (toTest1 as ISpecification<Fakes.FakeCandidate1Abstraction>).CandidateType);
             Assert.IsNotNull(toTest2);
             Assert.AreSame(inner2, toTest2.InnerSpecification);
+            Assert.AreSame(inner2, (toTest2 as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
             Assert.AreEqual(typeof(Fakes.FakeCandidate1Abstraction), (toTest2 as ISpecification<Fakes.FakeCandidate1>).CandidateType);
         }
 

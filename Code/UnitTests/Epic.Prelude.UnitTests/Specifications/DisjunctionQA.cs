@@ -79,6 +79,8 @@ namespace Epic.Specifications
             Assert.AreSame(second, toTest.ElementAt(1));
             CollectionAssert.AreEquivalent(new Object[] { first, second }, toTest as System.Collections.IEnumerable);
             CollectionAssert.AreEquivalent(new ISpecification<Fakes.FakeCandidate1>[] { first, second }, toTest as IEnumerable<ISpecification<Fakes.FakeCandidate1>>);
+            CollectionAssert.AreEquivalent(new ISpecification[] { first, second }, (toTest as IPolyadicSpecificationComposition<Fakes.FakeCandidate1>).Operands);
+            CollectionAssert.AreEquivalent(new ISpecification[] { first, second }, (toTest as IPolyadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operands);
         }
 
         [Test]

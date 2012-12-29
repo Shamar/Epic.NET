@@ -145,7 +145,6 @@ namespace Epic.Specifications
 
         #region IMonadicSpecificationComposition implementation
         
-        // TODO: deeper analysis on MonadicSpecificationComposition nature of a Variant: what if is Variant itself the problem? why not distinguish between Upcast and Downcast?
         ISpecification IMonadicSpecificationComposition<ToCandidate>.Operand
         {
             get

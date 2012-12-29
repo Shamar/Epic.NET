@@ -37,7 +37,7 @@ namespace Epic.Specifications
     public interface IMonadicSpecificationComposition<out TCandidate> : ISpecification
     {
         /// <summary>
-        /// Gets the operand of the composition.
+        /// The operand of the composition.
         /// </summary>
         ISpecification Operand { get; }
     }
