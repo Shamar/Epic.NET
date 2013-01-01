@@ -74,7 +74,7 @@ namespace Epic.Specifications
 
             // assert:
             Assert.IsNotNull(toTest);
-            Assert.AreEqual(2, toTest.NumberOfSpecifications);
+            Assert.AreEqual(2, toTest.Count());
             Assert.AreSame(first, toTest.ElementAt(0));
             Assert.AreSame(second, toTest.ElementAt(1));
             CollectionAssert.AreEquivalent(new Object[] { first, second }, toTest as System.Collections.IEnumerable);
@@ -103,7 +103,6 @@ namespace Epic.Specifications
             var toTest = new Conjunction<Fakes.FakeCandidate1>(first, other);
 
             // assert:
-            Assert.AreEqual(3, toTest.NumberOfSpecifications);
             Assert.AreEqual(3, toTest.Count());
             Assert.AreSame(first, toTest.ElementAt(0));
             Assert.AreSame(second, toTest.ElementAt(1));
@@ -179,7 +178,6 @@ namespace Epic.Specifications
 
             // assert:
             Assert.IsNotNull(result);
-            Assert.AreEqual(4, result.NumberOfSpecifications);
             Assert.AreEqual(4, result.Count());
             Assert.AreSame(first, result.ElementAt(0));
             Assert.AreSame(second, result.ElementAt(1));

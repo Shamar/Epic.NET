@@ -27,7 +27,7 @@ using Epic.Query.Relational.Predicates;
 namespace Epic.Query.Relational.Operations
 {
     /// <summary>
-    /// This class models the Inner Join operation, which joins two relations and returns those
+    /// This class models the Theta join operation, which joins two relations and returns those
     /// record matching a given condition.
     /// </summary>
     [Serializable]

@@ -22,6 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 using System;
+using System.Linq;
 using Epic.Query.Relational.Predicates;
 using Epic.Specifications;
 
@@ -47,7 +48,7 @@ namespace Epic.Query.Object.Relational.Visitors
         #region IVisitor implementation
         Predicate IVisitor<Predicate, Conjunction<TEntity>>.Visit (Conjunction<TEntity> target, IVisitContext context)
         {
-            Predicate[] predicates = new Predicate[target.NumberOfSpecifications];
+            Predicate[] predicates = new Predicate[target.Count()];
             int i = 0;
             foreach(ISpecification<TEntity> specification in target)
             {
