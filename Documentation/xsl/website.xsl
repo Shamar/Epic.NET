@@ -243,7 +243,7 @@
   </div>
 
   <div id="footer">
-    <div class="copyright">Copyright &#169; 2010-2012 Giacomo Tesio</div>
+    <div class="copyright">Copyright &#169; 2010-2013 Giacomo Tesio</div>
   </div>
      <xsl:call-template name="user.footer.navigation"/> 
   <script type='text/javascript'>SyntaxHighlighter.all()</script> 

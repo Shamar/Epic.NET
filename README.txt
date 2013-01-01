@@ -1,4 +1,4 @@
-Epic.NET - Copyright (C) 2010-2012 Giacomo Tesio
+Epic.NET - Copyright (C) 2010-2013 Giacomo Tesio
 
 This release contains the following:
 
