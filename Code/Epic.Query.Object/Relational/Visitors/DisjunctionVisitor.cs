@@ -25,7 +25,6 @@ using System;
 using System.Linq;
 using Epic.Query.Relational;
 using Epic.Specifications;
-using System.Collections.Generic;
 using Epic.Query.Relational.Operations;
 
 namespace Epic.Query.Object.Relational.Visitors

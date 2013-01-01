@@ -23,41 +23,61 @@
 //
 using System;
 using System.Linq;
-using Epic.Query.Relational.Predicates;
+using Epic.Query.Relational;
 using Epic.Specifications;
+using Epic.Query.Relational.Operations;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
     /// <summary>
-    /// Visitor of a <see cref="Conjunction{TEntity}"/> that produce a <see cref="Predicate"/>.
+    /// Visitor of a <see cref="Conjunction{TEntity}"/> that produce a <see cref="RelationalExpression"/>.
     /// </summary>
     /// <typeparam name="TEntity">Type of the entity.</typeparam>
-    public sealed class ConjunctionVisitor<TEntity> : CompositeVisitor<Predicate>.VisitorBase, 
-                                                      IVisitor<Predicate, Conjunction<TEntity>>
+    public sealed class ConjunctionVisitor<TEntity> : CompositeVisitor<RelationalExpression>.VisitorBase, 
+                                                      IVisitor<RelationalExpression, IPolyadicSpecificationComposition<TEntity>>
         where TEntity : class
     {
         /// <summary>
         /// Initialize a new <see cref="ConjunctionVisitor{TEntity}"/> as part of the <paramref name="composition"/>.
         /// </summary>
         /// <param name="composition">Composite visitor to enhance.</param>
-        public ConjunctionVisitor(CompositeVisitor<Predicate> composition)
+        public ConjunctionVisitor(CompositeVisitor<RelationalExpression> composition)
             : base(composition)
         {
         }
 
-        #region IVisitor implementation
-        Predicate IVisitor<Predicate, Conjunction<TEntity>>.Visit (Conjunction<TEntity> target, IVisitContext context)
+        /// <summary>
+        /// Returns the current visitor if the target 
+        /// </summary>
+        /// <returns>The current visitor or <see langword="null"/> if <paramref name="target"/> is not a disjunction.</returns>
+        /// <param name="target">Expression to visit.</param>
+        /// <typeparam name="TExpression">The type of the expression to visit.</typeparam>
+        protected override IVisitor<RelationalExpression, TExpression> AsVisitor<TExpression>(TExpression target)
         {
-            Predicate[] predicates = new Predicate[target.Count()];
-            int i = 0;
-            foreach(ISpecification<TEntity> specification in target)
+            IVisitor<RelationalExpression, TExpression> result = base.AsVisitor(target);
+            if (null != result)
             {
-                predicates[i++] = VisitInner(specification, context);
+                var composition = target as IPolyadicSpecificationComposition<TEntity>;
+                if(!composition.SpecificationType.GetGenericTypeDefinition().Equals(typeof(Conjunction<>)))
+                    result = null;
             }
-            Predicate result = null;
-            for(int j = predicates.Length - 1; j >= 0; --j)
+            return result;
+        }
+        
+        #region IVisitor implementation
+        RelationalExpression IVisitor<RelationalExpression, IPolyadicSpecificationComposition<TEntity>>.Visit (IPolyadicSpecificationComposition<TEntity> target, IVisitContext context)
+        {
+            RelationalExpression[] relations = new RelationalExpression[target.Operands.Count()];
+            int i = 0;
+            foreach(ISpecification<TEntity> specification in target.Operands)
             {
-                Predicate toAdd = predicates[j];
+                relations[i++] = VisitInner(specification, context);
+            }
+            
+            RelationalExpression result = null;
+            for(int j = relations.Length - 1; j >= 0; --j)
+            {
+                RelationalExpression toAdd = relations[j];
                 if(null != toAdd)
                 {
                     if(null == result)
@@ -66,10 +86,11 @@ namespace Epic.Query.Object.Relational.Visitors
                     }
                     else
                     {
-                        result = new And(toAdd, result);
+                        result = new NaturalJoin(toAdd, result);
                     }
                 }
             }
+            
             return result;
         }
         #endregion
