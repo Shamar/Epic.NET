@@ -4,7 +4,7 @@
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
 //
-//  Copyright (c) 2010-2012 giacomo
+//  Copyright (c) 2010-2013 giacomo
 //
 //  This file is part of Epic.NET.
 //
