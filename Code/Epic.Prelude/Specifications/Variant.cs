@@ -121,13 +121,24 @@ namespace Epic.Specifications
         /// <typeparam name='Other'>
         /// One of types admitted to satisfy the <see cref="InnerSpecification"/>.
         /// </typeparam>
-        /// <exception cref="InvalidCastException">No instance of <typeparamref name="Other"/> can 
-        /// satisfy the <see cref="InnerSpecification"/>.</exception>
         protected override ISpecification<Other> OfAnotherType<Other>()
         {
             if (_thisIsAnUpcastingVariant)
+            {
+                // if this is an upcasting variant we let the inner specification to choose
                 return _innerSpecification.OfType<Other>();
-            return new Variant<FromCandidate, Other>(_innerSpecification);
+            }
+            if (typeof(Other).IsAssignableFrom(typeof(ToCandidate)))
+            {
+                // here we have 
+                // - either ToCandidate : Other : FromCandidate  
+                // - or ToCandidate : FromCandidate : Other
+                // in both cases we don't want to forget that we selected only ToCandidate instances
+                return new Variant<ToCandidate, Other>(this);
+            }
+            // here we have Other : ToCandidate : FromCandidate
+            // we can let the inner specification to choose
+            return _innerSpecification.OfType<Other>();
         }
         
         /// <summary>

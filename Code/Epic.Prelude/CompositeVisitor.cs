@@ -192,6 +192,18 @@ namespace Epic
         {
             private readonly int _position;
             private readonly CompositeVisitor<TResult> _composition;
+
+            /// <summary>
+            /// Provides the name of the composition that own the current visitor.
+            /// </summary>
+            /// <value>The name of the composition.</value>
+            protected string CompositionName
+            {
+                get
+                {
+                    return _composition._name;
+                }
+            }
             
             /// <summary>
             /// Initializes a new instance of the visitor and register it in the <paramref name="composition"/> provided.

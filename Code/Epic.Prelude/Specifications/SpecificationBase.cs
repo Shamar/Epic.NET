@@ -331,8 +331,7 @@ namespace Epic.Specifications
         /// The type of objects that we want to check against the current specification. 
         /// It must either abstract or extend <typeparamref name="Candidate"/>.
         /// </typeparam>
-        /// <exception cref="InvalidCastException"><typeparamref name="Other"/> does not abstract or specialize <typeparamref name="Candidate"/>.</exception>
-        /// <exception cref="InvalidOperationException"><typeparamref name="Other"/> is <see cref="System.Object"/>.</exception>
+        /// <exception cref="EpicException"><typeparamref name="Other"/> is <see cref="System.Object"/>.</exception>
         public ISpecification<Other> OfType<Other>() where Other : class
         {
             ISpecification<Other> other = this as ISpecification<Other>;

@@ -77,10 +77,14 @@
     <Compile Include="Collections\AggregatedOperationFailedException.cs" />
     <Compile Include="Specifications\IPolyadicSpecificationComposition.cs" />
     <Compile Include="Specifications\IMonadicSpecificationComposition.cs" />
+    <Compile Include="Specifications\Visitors\DNFConverter.cs" />
+    <Compile Include="Specifications\Visitors\DeMorganLaws.cs" />
+    <Compile Include="Specifications\Visitors\VariantVisitorBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Folder Include="Extended\" />
     <Folder Include="Extended\Delegates\" />
+    <Folder Include="Specifications\Visitors\" />
   </ItemGroup>
 </Project>

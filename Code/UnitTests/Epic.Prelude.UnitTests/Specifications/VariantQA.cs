@@ -148,12 +148,13 @@ namespace Epic.Specifications
             Assert.AreSame(expectedResult, result);
         }
 
-
         [Test]
-        public void OfType_withAMoreDerivedCandidateOnAnDowncastingVariantSpecification_returnsANewVariantWithTheSameInner ()
+        public void OfType_withAMoreDerivedCandidateOnAnDowncastingVariantSpecification_asksToTheInnerSpecification ()
         {
             // arrange:
+            ISpecification<Fakes.FakeCandidate1Specialization> expectedResult = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Specialization>>();
             ISpecification<Fakes.FakeCandidate1Abstraction> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Abstraction>>();
+            inner.Expect(s => s.OfType<Fakes.FakeCandidate1Specialization>()).Return(expectedResult).Repeat.Once();
             ISpecification<Fakes.FakeCandidate1> toTest = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner);
             
             
@@ -161,8 +162,23 @@ namespace Epic.Specifications
             var result = toTest.OfType<Fakes.FakeCandidate1Specialization>();
             
             // assert:
-            Assert.IsInstanceOf<Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1Specialization>>(result);
-            Assert.AreSame(inner, (result as Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1Specialization>).InnerSpecification);
+            Assert.AreSame(expectedResult, result);
+        }
+
+        [Test]
+        public void OfType_withAnIntermediateCandidateOnAnDowncastingVariantSpecification_returnsANewVariantWithTheCurrentVariantAsInner ()
+        {
+            // arrange:
+            ISpecification<Fakes.FakeCandidate1Abstraction> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Abstraction>>();
+            ISpecification<Fakes.FakeCandidate1Specialization> toTest = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1Specialization>(inner);
+            
+            
+            // act:
+            var result = toTest.OfType<Fakes.FakeCandidate1>();
+            
+            // assert:
+            Assert.IsInstanceOf<Variant<Fakes.FakeCandidate1Specialization, Fakes.FakeCandidate1>>(result);
+            Assert.AreSame(toTest, (result as Variant<Fakes.FakeCandidate1Specialization, Fakes.FakeCandidate1>).InnerSpecification);
         }
     }
 }
