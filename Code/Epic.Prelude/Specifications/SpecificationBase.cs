@@ -353,8 +353,6 @@ namespace Epic.Specifications
         /// <typeparam name='Other'>
         /// Either a specialization or an abstraction of <typeparamref name="Candidate"/>.
         /// </typeparam>
-        /// <exception cref="InvalidCastException"><typeparamref name="Other"/> is neither an
-        /// abstraction nor a specialization of <typeparamref name="Candidate"/>.</exception>
         protected virtual ISpecification<Other> OfAnotherType<Other>() where Other : class
         {
             return new Variant<Candidate, Other>(this);

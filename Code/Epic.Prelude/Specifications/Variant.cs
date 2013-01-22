@@ -148,7 +148,9 @@ namespace Epic.Specifications
         {
             get
             {
-                return _innerSpecification.CandidateType;
+                if (_thisIsAnUpcastingVariant)
+                    return _innerSpecification.CandidateType;
+                return typeof(ToCandidate);
             }
         }
         

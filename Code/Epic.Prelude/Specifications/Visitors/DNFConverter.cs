@@ -40,8 +40,12 @@ namespace Epic.Specifications.Visitors
         public DNFConverter(string name)
             : base(name)
         {
+            // unknown specifications are simply returned
             new EchoingVisitor<ISpecification>(this);
+            // negations are moved inside applying De Morgan's laws
             new DeMorganLaws<TCandidate>(this);
+            // variants are distributed according to their semantics
+            new VariantDNFDistributor<TCandidate>(this);
         }
 
         #region implemented abstract members of CompositeVisitorBase

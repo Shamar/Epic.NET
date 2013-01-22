@@ -101,6 +101,29 @@ namespace Epic.Specifications
             negation = Any<TCandidate>.Specification;
         }
 
+        /// <summary>
+        /// Return a specifications satisfied by any <typeparamref name="Other"/> that
+        /// satisfy this specification.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Specifications.Variant{Candidate, Other}"/> specification if <typeparamref name="Other"/>
+        /// is an abstraction of <typeparamref name="TCandidate"/> or a new <see cref="No{TCandidate}"/>
+        /// closed on <typeparamref name="Other"/> otherwise.
+        /// </returns>
+        /// <typeparam name='Other'>
+        /// Either a specialization or an abstraction of <typeparamref name="TCandidate"/>.
+        /// </typeparam>
+        protected override ISpecification<Other> OfAnotherType<Other>()
+        {
+            if(typeof(Other).IsAssignableFrom(typeof(TCandidate)))
+            {
+                // on upcasting: use a Variant as the base
+                return base.OfAnotherType<Other>(); 
+            }
+            // on downcasting: specialize the semantic
+            return No<Other>.Specification;
+        }
+
         #endregion
 
         #region ISerializable implementation
@@ -131,7 +154,7 @@ namespace Epic.Specifications
                 info.SetType(typeof(Ref));
             }
             
-#endregion
+            #endregion
             
             #region IObjectReference Members
             
@@ -140,7 +163,7 @@ namespace Epic.Specifications
                 return No<TCandidate>.Specification;
             }
             
-#endregion
+            #endregion
         }
     }
 }

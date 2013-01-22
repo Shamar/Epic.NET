@@ -147,6 +147,33 @@ namespace Epic.Specifications
             // assert:
             Assert.AreSame(other, result);
         }
+
+        [Test]
+        public void OfType_withASpecialization_returnASpecializedSpecification()
+        {
+            // arrange:
+            var toTest = Any<Fakes.FakeCandidate1>.Specification;
+
+            // act:
+            var result = toTest.OfType<Fakes.FakeCandidate1Specialization>();
+
+            // assert:
+            Assert.AreSame(Any<Fakes.FakeCandidate1Specialization>.Specification, result);
+        }
+
+        [Test]
+        public void OfType_withAGeneralization_returnAnUpcastingVariant()
+        {
+            // arrange:
+            var toTest = Any<Fakes.FakeCandidate1>.Specification;
+            
+            // act:
+            var result = toTest.OfType<Fakes.FakeCandidate1Abstraction>();
+            
+            // assert:
+            Assert.IsInstanceOf<Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>>(result);
+            Assert.AreSame(toTest, (result as Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>).InnerSpecification);
+        }
     }
 }
 

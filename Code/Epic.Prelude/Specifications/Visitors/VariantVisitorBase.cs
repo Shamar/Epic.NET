@@ -139,7 +139,7 @@ namespace Epic.Specifications.Visitors
         protected abstract TResult VisitUpcastingVariant<FromCandidate, ToCandidate>(Variant<FromCandidate, ToCandidate> target, IVisitContext context) where FromCandidate : class, TCandidate, ToCandidate where ToCandidate : class, TCandidate;
 
         #region nested visitors
-        private sealed class DowncastingVariantVisitor<FromCandidate, ToCandidate> : IVisitor<TResult, Variant<FromCandidate, ToCandidate>> where FromCandidate : class, TCandidate where ToCandidate : class, TCandidate, FromCandidate
+        private struct DowncastingVariantVisitor<FromCandidate, ToCandidate> : IVisitor<TResult, Variant<FromCandidate, ToCandidate>> where FromCandidate : class, TCandidate where ToCandidate : class, TCandidate, FromCandidate
         {
             private readonly VariantVisitorBase<TResult, TCandidate> _composition;
             public DowncastingVariantVisitor(VariantVisitorBase<TResult, TCandidate> composition)
@@ -163,7 +163,7 @@ namespace Epic.Specifications.Visitors
             #endregion
         }
 
-        private sealed class UpcastingVariantVisitor<FromCandidate, ToCandidate> : IVisitor<TResult, Variant<FromCandidate, ToCandidate>>  where FromCandidate : class, TCandidate, ToCandidate where ToCandidate : class, TCandidate
+        private struct UpcastingVariantVisitor<FromCandidate, ToCandidate> : IVisitor<TResult, Variant<FromCandidate, ToCandidate>>  where FromCandidate : class, TCandidate, ToCandidate where ToCandidate : class, TCandidate
         {
             private readonly VariantVisitorBase<TResult, TCandidate> _composition;
             public UpcastingVariantVisitor(VariantVisitorBase<TResult, TCandidate> composition)

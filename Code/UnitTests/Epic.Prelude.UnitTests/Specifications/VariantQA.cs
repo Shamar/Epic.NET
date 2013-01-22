@@ -37,21 +37,20 @@ namespace Epic.Specifications
             ISpecification<Fakes.FakeCandidate1> inner1 = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1>>();
             inner1.Expect(s => s.CandidateType).Return(typeof(Fakes.FakeCandidate1)).Repeat.Once();
             ISpecification<Fakes.FakeCandidate1Abstraction> inner2 = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Abstraction>>();
-            inner2.Expect(s => s.CandidateType).Return(typeof(Fakes.FakeCandidate1Abstraction)).Repeat.Once();
 
             // act:
-            var toTest1 = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner1);
-            var toTest2 = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner2);
+            var toTestUpcasting = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner1);
+            var toTestDowncasting = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner2);
 
             // assert:
-            Assert.IsNotNull(toTest1);
-            Assert.AreSame(inner1, toTest1.InnerSpecification);
-            Assert.AreSame(inner1, (toTest1 as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
-            Assert.AreEqual(typeof(Fakes.FakeCandidate1), (toTest1 as ISpecification<Fakes.FakeCandidate1Abstraction>).CandidateType);
-            Assert.IsNotNull(toTest2);
-            Assert.AreSame(inner2, toTest2.InnerSpecification);
-            Assert.AreSame(inner2, (toTest2 as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
-            Assert.AreEqual(typeof(Fakes.FakeCandidate1Abstraction), (toTest2 as ISpecification<Fakes.FakeCandidate1>).CandidateType);
+            Assert.IsNotNull(toTestUpcasting);
+            Assert.AreSame(inner1, toTestUpcasting.InnerSpecification);
+            Assert.AreSame(inner1, (toTestUpcasting as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
+            Assert.AreEqual(typeof(Fakes.FakeCandidate1), (toTestUpcasting as ISpecification<Fakes.FakeCandidate1Abstraction>).CandidateType);
+            Assert.IsNotNull(toTestDowncasting);
+            Assert.AreSame(inner2, toTestDowncasting.InnerSpecification);
+            Assert.AreSame(inner2, (toTestDowncasting as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
+            Assert.AreEqual(typeof(Fakes.FakeCandidate1), (toTestDowncasting as ISpecification<Fakes.FakeCandidate1>).CandidateType);
         }
 
         [Test]

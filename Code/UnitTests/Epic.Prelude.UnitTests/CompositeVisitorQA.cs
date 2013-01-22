@@ -84,6 +84,14 @@ namespace Epic
                 {
                 }
 
+                public new string CompositionName
+                {
+                    get
+                    {
+                        return base.CompositionName;
+                    }
+                }
+
                 public string CallContinueVisit<TExpression>(TExpression expression, IVisitContext context) where TExpression : class
                 {
                     return base.ContinueVisit(expression, context);
@@ -93,6 +101,21 @@ namespace Epic
                 {
                     return base.VisitInner(expression, context);
                 }
+            }
+
+            [Test]
+            public void CompositionName_inAVisitorDerivedFromVisitorBase_isEqualToTheCompositionsName()
+            {
+                // arrange:
+                string name = "test";
+                CompositeVisitor<string> visitor = new FakeCompositeVisitor<string>(name);
+
+                // act:
+                DummyVisitor toTest = new DummyVisitor(visitor);
+
+
+                // assert:
+                Assert.AreSame(name, toTest.CompositionName);
             }
 
             [Test]

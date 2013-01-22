@@ -80,6 +80,7 @@
     <Compile Include="Specifications\Visitors\DNFConverter.cs" />
     <Compile Include="Specifications\Visitors\DeMorganLaws.cs" />
     <Compile Include="Specifications\Visitors\VariantVisitorBase.cs" />
+    <Compile Include="Specifications\Visitors\VariantDNFDistributor.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
