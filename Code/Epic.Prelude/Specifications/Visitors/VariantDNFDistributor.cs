@@ -28,7 +28,7 @@ namespace Epic.Specifications.Visitors
     /// <summary>
     /// Variant DNF distributor.
     /// </summary>
-    public sealed class VariantDNFDistributor<TCandidate> : VariantVisitorBase<ISpecification, TCandidate> where TCandidate : class
+    internal sealed class VariantDNFDistributor<TCandidate> : VariantVisitorBase<ISpecification, TCandidate> where TCandidate : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VariantDNFDistributor{TCandidate}"/> class.
@@ -58,6 +58,9 @@ namespace Epic.Specifications.Visitors
             Disjunction<FromCandidate> disjunction = innerSpecification as Disjunction<FromCandidate>;
             if(null != disjunction)
                 return DistributeDowncastOverDisjunction<FromCandidate, ToCandidate>(disjunction, context);
+            Negation<TCandidate> negation = innerSpecification as Negation<FromCandidate>;
+            if (null != negation)
+                return DistributeDowncastOverNegation<FromCandidate, ToCandidate>(negation, context);
             return innerSpecification.OfType<ToCandidate>();
         }
 
@@ -81,7 +84,22 @@ namespace Epic.Specifications.Visitors
             return innerSpecification.OfType<ToCandidate>();
         }
 
-        #endregion
+        #endregion implemented abstract members of VariantVisitorBase
+        
+        private ISpecification<ToCandidate> DistributeDowncastOverConjunction<FromCandidate, ToCandidate>(Conjunction<FromCandidate> conjunction, IVisitContext context)
+        {
+            throw new NotImplementedException();
+        }
+        
+        private ISpecification<ToCandidate> DistributeDowncastOverDisjunction<FromCandidate, ToCandidate>(Disjunction<FromCandidate> disjunction, IVisitContext context)
+        {
+            throw new NotImplementedException();
+        }
+        
+        private ISpecification<ToCandidate> DistributeDowncastOverNegation<FromCandidate, ToCandidate>(Negation<FromCandidate> negation, IVisitContext context)
+        {
+            throw new NotImplementedException();
+        }
 
         private ISpecification<ToCandidate> DistributeUpcastOverDisjunction<FromCandidate, ToCandidate>(Disjunction<FromCandidate> conjunction, IVisitContext context)
         {

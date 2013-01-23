@@ -81,6 +81,8 @@
     <Compile Include="Specifications\Visitors\DeMorganLaws.cs" />
     <Compile Include="Specifications\Visitors\VariantVisitorBase.cs" />
     <Compile Include="Specifications\Visitors\VariantDNFDistributor.cs" />
+    <Compile Include="Specifications\Visitors\NegationOfVariantsNormalizer.cs" />
+    <Compile Include="Specifications\Visitors\UpcastingVisitor.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

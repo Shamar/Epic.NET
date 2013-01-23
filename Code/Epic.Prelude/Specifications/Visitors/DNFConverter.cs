@@ -30,7 +30,7 @@ namespace Epic.Specifications.Visitors
     /// Converts a <see cref="ISpecification"/> in the disjunctive normal form.
     /// </summary>
     /// <typeparam name="TCandidate">The type of the objects that can be tested with the specifications produced by this visitor.</typeparam>
-    public class DNFConverter<TCandidate> : CompositeVisitorBase<ISpecification, ISpecification>
+    public class DNFConverter<TCandidate> : CompositeVisitorBase<ISpecification<TCandidate>, ISpecification>
         where TCandidate : class
     {
         /// <summary>
@@ -40,8 +40,8 @@ namespace Epic.Specifications.Visitors
         public DNFConverter(string name)
             : base(name)
         {
-            // unknown specifications are simply returned
-            new EchoingVisitor<ISpecification>(this);
+            // unknown specifications are returned upcasted as ISpecification<TCandidate>
+            new UpcastingVisitor<TCandidate>(this);
             // negations are moved inside applying De Morgan's laws
             new DeMorganLaws<TCandidate>(this);
             // variants are distributed according to their semantics

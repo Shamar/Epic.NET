@@ -85,7 +85,7 @@ namespace Epic.Specifications.Visitors
                         }
                         else
                         {
-                            // target is an upcasting specification
+                            // target is an downcasting specification
                             visitorFactory = typeof(DowncastingVariantVisitor<,>).MakeGenericType(fromToTypes);
                         }
                         typedVisitor = Activator.CreateInstance(visitorFactory, this) as IVisitor<TResult>;

@@ -31,26 +31,26 @@ namespace Epic.Specifications.Visitors
     /// </summary>
     /// <typeparam name="TCandidate">Type of the candidate.</typeparam>
     /// <seealso href="http://en.wikipedia.org/wiki/Negation_normal_form"/>
-    internal sealed class DeMorganLaws<TCandidate> : CompositeVisitor<ISpecification>.VisitorBase, IVisitor<ISpecification, IMonadicSpecificationComposition<TCandidate>>
+    internal sealed class DeMorganLaws<TCandidate> : CompositeVisitor<ISpecification<TCandidate>>.VisitorBase, IVisitor<ISpecification<TCandidate>, IMonadicSpecificationComposition<TCandidate>>
         where TCandidate : class
     {
-        private readonly ConcurrentDictionary<Type, IVisitor<ISpecification>> _orDistributors = new ConcurrentDictionary<Type, IVisitor<ISpecification>>();
-        private readonly ConcurrentDictionary<Type, IVisitor<ISpecification>> _andDistributors = new ConcurrentDictionary<Type, IVisitor<ISpecification>>();
-        public DeMorganLaws(CompositeVisitor<ISpecification> composition)
+        private readonly ConcurrentDictionary<Type, IVisitor<ISpecification<TCandidate>>> _orDistributors = new ConcurrentDictionary<Type, IVisitor<ISpecification<TCandidate>>>();
+        private readonly ConcurrentDictionary<Type, IVisitor<ISpecification<TCandidate>>> _andDistributors = new ConcurrentDictionary<Type, IVisitor<ISpecification<TCandidate>>>();
+        public DeMorganLaws(CompositeVisitor<ISpecification<TCandidate>> composition)
             : base(composition)
         {
         }
 
-        protected override IVisitor<ISpecification, TExpression> AsVisitor<TExpression>(TExpression target)
+        protected override IVisitor<ISpecification<TCandidate>, TExpression> AsVisitor<TExpression>(TExpression target)
         {
-            IVisitor<ISpecification, TExpression> result = base.AsVisitor(target);
+            IVisitor<ISpecification<TCandidate>, TExpression> result = base.AsVisitor(target);
 
             if (null != result)
             {
                 var monadic = target as IMonadicSpecificationComposition<TCandidate>;
                 if(!(monadic.Operand is IPolyadicSpecificationComposition<TCandidate>) || !monadic.SpecificationType.GetGenericTypeDefinition().Equals(typeof(Negation<>)))
                     result = null;
-                ConcurrentDictionary<Type, IVisitor<ISpecification>> distributorsToLookup = null;
+                ConcurrentDictionary<Type, IVisitor<ISpecification<TCandidate>>> distributorsToLookup = null;
                 Type[] candidateTypes = monadic.SpecificationType.GetGenericArguments();
                 if(monadic.Operand.SpecificationType.GetGenericTypeDefinition().Equals(typeof(Disjunction<>)))
                 {
@@ -60,20 +60,20 @@ namespace Epic.Specifications.Visitors
                 {
                     distributorsToLookup = _andDistributors;
                 }
-                IVisitor<ISpecification> visitor = null;
+                IVisitor<ISpecification<TCandidate>> visitor = null;
                 if(!distributorsToLookup.TryGetValue(typeof(TExpression), out visitor))
                 {
                     if(distributorsToLookup == _orDistributors)
                     {
-                        visitor = Activator.CreateInstance(typeof(NegatedOrNormalizer<>).MakeGenericType(candidateTypes), this) as IVisitor<ISpecification>;
+                        visitor = Activator.CreateInstance(typeof(NegatedDisjunctionNormalizer<>).MakeGenericType(candidateTypes), this) as IVisitor<ISpecification<TCandidate>>;
                     }
                     else
                     {
-                        visitor = Activator.CreateInstance(typeof(NegatedAndNormalizer<>).MakeGenericType(candidateTypes), this) as IVisitor<ISpecification>;
+                        visitor = Activator.CreateInstance(typeof(NegatedConjunctionNormalizer<>).MakeGenericType(candidateTypes), this) as IVisitor<ISpecification<TCandidate>>;
                     }
                     distributorsToLookup.TryAdd(typeof(TExpression), visitor);
                 }
-                return visitor as IVisitor<ISpecification, TExpression>;
+                return visitor as IVisitor<ISpecification<TCandidate>, TExpression>;
             }
 
             return result;
@@ -81,7 +81,7 @@ namespace Epic.Specifications.Visitors
 
 
         #region IVisitor implementation
-        ISpecification IVisitor<ISpecification, IMonadicSpecificationComposition<TCandidate>>.Visit(IMonadicSpecificationComposition<TCandidate> target, IVisitContext context)
+        ISpecification IVisitor<ISpecification<TCandidate>, IMonadicSpecificationComposition<TCandidate>>.Visit(IMonadicSpecificationComposition<TCandidate> target, IVisitContext context)
         {
             // this should never happen
             Type[] fromToTypes = target.SpecificationType.GetGenericArguments();
@@ -94,22 +94,22 @@ namespace Epic.Specifications.Visitors
         #endregion
 
         #region nested visitors
-        private struct NegatedAndNormalizer<Candidate> : IVisitor<ISpecification, Negation<Candidate>> where Candidate : class, TCandidate
+        private struct NegatedConjunctionNormalizer<Candidate> : IVisitor<ISpecification<TCandidate>, Negation<Candidate>> where Candidate : class, TCandidate
         {
             private readonly DeMorganLaws<TCandidate> _composition;
-            public NegatedAndNormalizer(DeMorganLaws<TCandidate> composition)
+            public NegatedConjunctionNormalizer(DeMorganLaws<TCandidate> composition)
             {
                 _composition = composition;
             }
 
             #region IVisitor implementation
-            public ISpecification Visit(Negation<Candidate> target, IVisitContext context)
+            public ISpecification<TCandidate> Visit(Negation<Candidate> target, IVisitContext context)
             {
-                var operand = target.Negated as Conjunction<Candidate>;
+                Conjunction<Candidate> operand = target.Negated as Conjunction<Candidate>;
                 ISpecification<Candidate> result = null;
                 foreach(ISpecification<Candidate> specificationToVisit in operand)
                 {
-                    ISpecification<Candidate> specification = _composition.VisitInner(specificationToVisit, context) as ISpecification<Candidate>;
+                    ISpecification<TCandidate> specification = _composition.VisitInner(specificationToVisit, context);
                     if(null == result)
                     {
                         result = specification.Negate();
@@ -123,32 +123,29 @@ namespace Epic.Specifications.Visitors
             }
             #endregion
             #region IVisitor implementation
-            public IVisitor<ISpecification, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class
+            public IVisitor<ISpecification<TCandidate>, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class
             {
-                IVisitor<ISpecification, TExpression> result = this as IVisitor<ISpecification, TExpression>;
-                if (null != result)
-                    return result;
-                return _composition.AsVisitor(target);
+                return (_composition as IVisitor<ISpecification<TCandidate>>).AsVisitor(target);
             }
             #endregion
         }
 
-        private struct NegatedOrNormalizer<Candidate> : IVisitor<ISpecification, Negation<Candidate>> where Candidate : class, TCandidate
+        private struct NegatedDisjunctionNormalizer<Candidate> : IVisitor<ISpecification<TCandidate>, Negation<Candidate>> where Candidate : class, TCandidate
         {
             private readonly DeMorganLaws<TCandidate> _composition;
-            public NegatedOrNormalizer(DeMorganLaws<TCandidate> composition)
+            public NegatedDisjunctionNormalizer(DeMorganLaws<TCandidate> composition)
             {
                 _composition = composition;
             }
             
             #region IVisitor implementation
-            public ISpecification Visit(Negation<Candidate> target, IVisitContext context)
+            public ISpecification<TCandidate> Visit(Negation<Candidate> target, IVisitContext context)
             {
                 var operand = target.Negated as Disjunction<Candidate>;
                 ISpecification<Candidate> result = null;
                 foreach(ISpecification<Candidate> specificationToVisit in operand)
                 {
-                    ISpecification<Candidate> specification = _composition.VisitInner(specificationToVisit, context) as ISpecification<Candidate>;
+                    ISpecification<TCandidate> specification = _composition.VisitInner(specificationToVisit, context);
                     if(null == result)
                     {
                         result = specification.Negate();
@@ -162,12 +159,9 @@ namespace Epic.Specifications.Visitors
             }
             #endregion
             #region IVisitor implementation
-            public IVisitor<ISpecification, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class
+            public IVisitor<ISpecification<TCandidate>, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class
             {
-                IVisitor<ISpecification, TExpression> result = this as IVisitor<ISpecification, TExpression>;
-                if (null != result)
-                    return result;
-                return _composition.AsVisitor(target);
+                return (_composition as IVisitor<ISpecification<TCandidate>>).AsVisitor(target);
             }
             #endregion
         }
