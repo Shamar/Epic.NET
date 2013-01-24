@@ -83,6 +83,7 @@
     <Compile Include="Specifications\Visitors\VariantDNFDistributor.cs" />
     <Compile Include="Specifications\Visitors\NegationOfVariantsNormalizer.cs" />
     <Compile Include="Specifications\Visitors\UpcastingVisitor.cs" />
+    <Compile Include="Specifications\Visitors\ConjunctionDistributor.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
