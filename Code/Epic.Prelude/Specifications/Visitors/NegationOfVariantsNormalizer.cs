@@ -33,23 +33,23 @@ namespace Epic.Specifications.Visitors
     /// <typeparam name="TCandidate">Common ancestor of the candidate types handled by the <see cref="Variant{FromCandidate, ToCandidate}"/>.</typeparam>
     /// <seealso cref="Variant{FromCandidate, ToCandidate}"/>
     /// <seealso cref="Negation{TCandidate}"/>
-    internal sealed class NegationOfVariantsNormalizer<TCandidate> : CompositeVisitor<ISpecification>.VisitorBase, IVisitor<ISpecification, IMonadicSpecificationComposition<TCandidate>>
+    internal sealed class NegationOfVariantsNormalizer<TCandidate> : CompositeVisitor<ISpecification<TCandidate>>.VisitorBase, IVisitor<ISpecification<TCandidate>, IMonadicSpecificationComposition<TCandidate>>
         where TCandidate : class
     {
-        private readonly ConcurrentDictionary<Type, IVisitor<ISpecification>> _visitors = new ConcurrentDictionary<Type, IVisitor<ISpecification>>();
+        private readonly ConcurrentDictionary<Type, IVisitor<ISpecification<TCandidate>>> _visitors = new ConcurrentDictionary<Type, IVisitor<ISpecification<TCandidate>>>();
         /// <summary>
         /// Initializes a new instance of the <see cref="VariantVisitorBase{TResult, TCandidate}"/> class.
         /// </summary>
         /// <param name="composition">Composition.</param>
         /// <exception cref="ArgumentNullException"><paramref name="composition"/> is <see langword="null"/>.</exception>
-        public NegationOfVariantsNormalizer(CompositeVisitor<ISpecification> composition)
+        public NegationOfVariantsNormalizer(CompositeVisitor<ISpecification<TCandidate>> composition)
             : base(composition)
         {
         }
 
-        protected override IVisitor<ISpecification, TExpression> AsVisitor<TExpression>(TExpression target)
+        protected override IVisitor<ISpecification<TCandidate>, TExpression> AsVisitor<TExpression>(TExpression target)
         {
-            IVisitor<ISpecification, TExpression> result = base.AsVisitor(target);
+            IVisitor<ISpecification<TCandidate>, TExpression> result = base.AsVisitor(target);
             
             if (null != result)
             {
@@ -61,7 +61,7 @@ namespace Epic.Specifications.Visitors
                 }
                 else
                 {
-                    IVisitor<ISpecification> typedVisitor = null;
+                    IVisitor<ISpecification<TCandidate>> typedVisitor = null;
                     if(!_visitors.TryGetValue(typeof(TExpression), out typedVisitor))
                     {
                         // no known visitor: we need one
@@ -75,12 +75,12 @@ namespace Epic.Specifications.Visitors
                         else
                         {
                             // target is an downcasting variant
-                            visitorFactory = typeof(DowncastingVariantVisitor<,>).MakeGenericType(fromToTypes);
+                            visitorFactory = typeof(NegationOfDowncastVisitor<,>).MakeGenericType(fromToTypes);
                         }
-                        typedVisitor = Activator.CreateInstance(visitorFactory, this) as IVisitor<ISpecification>;
+                        typedVisitor = Activator.CreateInstance(visitorFactory, this) as IVisitor<ISpecification<TCandidate>>;
                         _visitors.TryAdd(typeof(TExpression), typedVisitor);
                     }
-                    return typedVisitor as IVisitor<ISpecification, TExpression>;
+                    return typedVisitor as IVisitor<ISpecification<TCandidate>, TExpression>;
                 }
             }
             
@@ -89,7 +89,7 @@ namespace Epic.Specifications.Visitors
 
         #region IVisitor implementation
 
-        ISpecification IVisitor<ISpecification, IMonadicSpecificationComposition<TCandidate>>.Visit(IMonadicSpecificationComposition<TCandidate> target, IVisitContext context)
+        ISpecification<TCandidate> IVisitor<ISpecification<TCandidate>, IMonadicSpecificationComposition<TCandidate>>.Visit(IMonadicSpecificationComposition<TCandidate> target, IVisitContext context)
         {
             // this should never happen
             Type[] fromToTypes = target.SpecificationType.GetGenericArguments();
@@ -106,7 +106,7 @@ namespace Epic.Specifications.Visitors
         #endregion
 
         #region nested visitors
-        private struct NegationOfUpcastVisitor<FromCandidate, ToCandidate> : IVisitor<ISpecification, Negation<ToCandidate>> where FromCandidate : class, TCandidate where ToCandidate : class, TCandidate, FromCandidate
+        private struct NegationOfUpcastVisitor<FromCandidate, ToCandidate> : IVisitor<ISpecification<TCandidate>, Negation<ToCandidate>> where FromCandidate : class, TCandidate, ToCandidate where ToCandidate : class, TCandidate
         {
             private readonly NegationOfVariantsNormalizer<TCandidate> _composition;
             public NegationOfUpcastVisitor(NegationOfVariantsNormalizer<TCandidate> composition)
@@ -114,44 +114,42 @@ namespace Epic.Specifications.Visitors
                 _composition = composition;
             }
             #region IVisitor implementation
-            ISpecification IVisitor<ISpecification, Variant<FromCandidate, ToCandidate>>.Visit(Negation<ToCandidate> target, IVisitContext context)
+            ISpecification<TCandidate> IVisitor<ISpecification<TCandidate>, Negation<ToCandidate>>.Visit(Negation<ToCandidate> target, IVisitContext context)
             {
                 Variant<FromCandidate, ToCandidate> upcasting = target.Negated as Variant<FromCandidate, ToCandidate>;
-                return upcasting.InnerSpecification.Negate().OfType<ToCandidate>();
+                return _composition.VisitInner(upcasting.InnerSpecification.Negate(), context);
             }
             #endregion
             #region IVisitor implementation
-            IVisitor<ISpecification, TExpression> IVisitor<ISpecification>.AsVisitor<TExpression>(TExpression target)
+            IVisitor<ISpecification<TCandidate>, TExpression> IVisitor<ISpecification<TCandidate>>.AsVisitor<TExpression>(TExpression target)
             {
-                return _composition.AsVisitor(target);
+                return (_composition as IVisitor<ISpecification<TCandidate>>).AsVisitor<TExpression>(target);
             }
             #endregion
         }
 
-        private struct UpcastingVariantVisitor<FromCandidate, ToCandidate> : IVisitor<TResult, Variant<FromCandidate, ToCandidate>>  where FromCandidate : class, TCandidate, ToCandidate where ToCandidate : class, TCandidate
+        private struct NegationOfDowncastVisitor<FromCandidate, ToCandidate> : IVisitor<ISpecification<TCandidate>, Negation<ToCandidate>> where FromCandidate : class, TCandidate where ToCandidate : class, TCandidate, FromCandidate
         {
-            private readonly VariantVisitorBase<TResult, TCandidate> _composition;
-            public UpcastingVariantVisitor(VariantVisitorBase<TResult, TCandidate> composition)
+            private readonly NegationOfVariantsNormalizer<TCandidate> _composition;
+            public NegationOfDowncastVisitor(NegationOfVariantsNormalizer<TCandidate> composition)
             {
                 _composition = composition;
             }
             #region IVisitor implementation
-            TResult IVisitor<TResult, Variant<FromCandidate, ToCandidate>>.Visit(Variant<FromCandidate, ToCandidate> target, IVisitContext context)
+            ISpecification<TCandidate> IVisitor<ISpecification<TCandidate>, Negation<ToCandidate>>.Visit(Negation<ToCandidate> target, IVisitContext context)
             {
-                return _composition.VisitUpcastingVariant(target, context);
+                Variant<FromCandidate, ToCandidate> downcasting = target.Negated as Variant<FromCandidate, ToCandidate>;
+                var innerNegated = _composition.VisitInner(downcasting.InnerSpecification.Negate(), context);
+                return Any<ToCandidate>.Specification.OfType<TCandidate>().Negate().Or(innerNegated); // by De Morgan's laws
             }
             #endregion
             #region IVisitor implementation
-            IVisitor<TResult, TExpression> IVisitor<TResult>.AsVisitor<TExpression>(TExpression target)
+            IVisitor<ISpecification<TCandidate>, TExpression> IVisitor<ISpecification<TCandidate>>.AsVisitor<TExpression>(TExpression target)
             {
-                IVisitor<TResult, TExpression> result = this as IVisitor<TResult, TExpression>;
-                if (null != result)
-                    return result;
-                return _composition.AsVisitor(target);
+                return (_composition as IVisitor<ISpecification<TCandidate>>).AsVisitor<TExpression>(target);
             }
             #endregion
         }
-
         #endregion nested visitors
     }
 }

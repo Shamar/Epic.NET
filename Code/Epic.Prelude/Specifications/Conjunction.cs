@@ -30,6 +30,7 @@ namespace Epic.Specifications
     /// Specification that is satisfied by any <typeparamref name="TCandidate"/> that is satisfied by all the
     /// specifications.
     /// </summary>
+    /// <remarks>This specification aggregates other specifications but removes duplicates.</remarks>
     /// <typeparam name="TCandidate">The type of the objects that can be tested with this specification.</typeparam>
     /// <seealso cref="IPolyadicSpecificationComposition{TCandidate}"/>
     [Serializable]

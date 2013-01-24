@@ -104,20 +104,9 @@ namespace Epic.Specifications.Visitors
             {
                 ISpecification<TCandidate> result = null;
                 Conjunction<CandidateToUpcast> conjunction = target as Conjunction<CandidateToUpcast>;
-                if(null != conjunction)
-                {
-                    foreach(ISpecification<CandidateToUpcast> unvisitedInner in conjunction)
-                    {
-                        ISpecification<TCandidate> inner = _composition.VisitInner(unvisitedInner, context);
-                        if(null == result)
-                            result = inner;
-                        else
-                            result = result.And(inner)
-                    }
-                    return result;
-                }
                 Disjunction<CandidateToUpcast> disjunction = target as Disjunction<CandidateToUpcast>;
-                if(null != disjunction)
+                Negation<CandidateToUpcast> negation = target as Negation<CandidateToUpcast>;
+                if (null != conjunction)
                 {
                     foreach(ISpecification<CandidateToUpcast> unvisitedInner in conjunction)
                     {
@@ -125,17 +114,31 @@ namespace Epic.Specifications.Visitors
                         if(null == result)
                             result = inner;
                         else
-                            result = result.Or(inner)
+                            result = result.And(inner);
                     }
-                    return result;
                 }
-                Negation<CandidateToUpcast> negation = target as Negation<CandidateToUpcast>;
-                if(null != negation)
+                else if (null != disjunction)
+                {
+                    foreach(ISpecification<CandidateToUpcast> unvisitedInner in disjunction)
+                    {
+                        ISpecification<TCandidate> inner = _composition.VisitInner(unvisitedInner, context);
+                        if(null == result)
+                            result = inner;
+                        else
+                            result = result.Or(inner);
+                    }
+                }
+                else if (null != negation)
                 {
                     ISpecification<TCandidate> inner = _composition.VisitInner(negation.Negated, context);
-                    return inner.Negate();
+                    result = inner.Negate();
                 }
-                return target.OfType<TCandidate>();
+                else
+                {
+                    result = target.OfType<TCandidate>();
+                }
+
+                return _composition.VisitInner(result, context); // TODO: tail call here
             }
 
             #endregion

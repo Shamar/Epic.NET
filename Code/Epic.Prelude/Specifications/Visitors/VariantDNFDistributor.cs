@@ -28,13 +28,13 @@ namespace Epic.Specifications.Visitors
     /// <summary>
     /// Variant DNF distributor.
     /// </summary>
-    internal sealed class VariantDNFDistributor<TCandidate> : VariantVisitorBase<ISpecification, TCandidate> where TCandidate : class
+    internal sealed class VariantDNFDistributor<TCandidate> : VariantVisitorBase<ISpecification<TCandidate>, TCandidate> where TCandidate : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="VariantDNFDistributor{TCandidate}"/> class.
         /// </summary>
         /// <param name="composition">Composition.</param>
-        public VariantDNFDistributor(CompositeVisitor<ISpecification> composition)
+        public VariantDNFDistributor(CompositeVisitor<ISpecification<TCandidate>> composition)
             : base(composition)
         {
         }
@@ -49,19 +49,14 @@ namespace Epic.Specifications.Visitors
         /// <param name="context">Context.</param>
         /// <typeparam name="FromCandidate">The 1st type parameter.</typeparam>
         /// <typeparam name="ToCandidate">The 2nd type parameter.</typeparam>
-        protected override ISpecification VisitDowncastingVariant<FromCandidate, ToCandidate>(Variant<FromCandidate, ToCandidate> target, IVisitContext context)
+        protected override ISpecification<TCandidate> VisitDowncastingVariant<FromCandidate, ToCandidate>(Variant<FromCandidate, ToCandidate> target, IVisitContext context)
         {
-            ISpecification<FromCandidate> innerSpecification = VisitInner(target.InnerSpecification, context);
-            Conjunction<FromCandidate> conjunction = innerSpecification as Conjunction<FromCandidate>;
-            if(null != conjunction)
-                return DistributeDowncastOverConjunction<FromCandidate, ToCandidate>(conjunction, context);
-            Disjunction<FromCandidate> disjunction = innerSpecification as Disjunction<FromCandidate>;
+            ISpecification<TCandidate> innerSpecification = VisitInner(target.InnerSpecification, context);
+            Disjunction<TCandidate> disjunction = innerSpecification as Disjunction<TCandidate>;
             if(null != disjunction)
-                return DistributeDowncastOverDisjunction<FromCandidate, ToCandidate>(disjunction, context);
-            Negation<TCandidate> negation = innerSpecification as Negation<FromCandidate>;
-            if (null != negation)
-                return DistributeDowncastOverNegation<FromCandidate, ToCandidate>(negation, context);
-            return innerSpecification.OfType<ToCandidate>();
+                return DistributeDowncastOverDisjunction<ToCandidate>(disjunction, context);
+            // negations, conjunctions and any other specifications works the same:
+            return Any<ToCandidate>.Specification.OfType<TCandidate>().And(innerSpecification);
         }
 
         /// <summary>
@@ -72,57 +67,24 @@ namespace Epic.Specifications.Visitors
         /// <param name="context">Context.</param>
         /// <typeparam name="FromCandidate">The 1st type parameter.</typeparam>
         /// <typeparam name="ToCandidate">The 2nd type parameter.</typeparam>
-        protected override ISpecification VisitUpcastingVariant<FromCandidate, ToCandidate>(Variant<FromCandidate, ToCandidate> target, IVisitContext context)
+        protected override ISpecification<TCandidate> VisitUpcastingVariant<FromCandidate, ToCandidate>(Variant<FromCandidate, ToCandidate> target, IVisitContext context)
         {
-            ISpecification<FromCandidate> innerSpecification = VisitInner(target.InnerSpecification, context);
-            Conjunction<FromCandidate> conjunction = innerSpecification as Conjunction<FromCandidate>;
-            if(null != conjunction)
-                return DistributeUpcastOverConjunction<FromCandidate, ToCandidate>(conjunction, context);
-            Disjunction<FromCandidate> disjunction = innerSpecification as Disjunction<FromCandidate>;
-            if(null != disjunction)
-                return DistributeUpcastOverDisjunction<FromCandidate, ToCandidate>(disjunction, context);
-            return innerSpecification.OfType<ToCandidate>();
+            return VisitInner(target.InnerSpecification, context);
         }
 
         #endregion implemented abstract members of VariantVisitorBase
-        
-        private ISpecification<ToCandidate> DistributeDowncastOverConjunction<FromCandidate, ToCandidate>(Conjunction<FromCandidate> conjunction, IVisitContext context)
-        {
-            throw new NotImplementedException();
-        }
-        
-        private ISpecification<ToCandidate> DistributeDowncastOverDisjunction<FromCandidate, ToCandidate>(Disjunction<FromCandidate> disjunction, IVisitContext context)
-        {
-            throw new NotImplementedException();
-        }
-        
-        private ISpecification<ToCandidate> DistributeDowncastOverNegation<FromCandidate, ToCandidate>(Negation<FromCandidate> negation, IVisitContext context)
-        {
-            throw new NotImplementedException();
-        }
 
-        private ISpecification<ToCandidate> DistributeUpcastOverDisjunction<FromCandidate, ToCandidate>(Disjunction<FromCandidate> conjunction, IVisitContext context)
+        private ISpecification<TCandidate> DistributeDowncastOverDisjunction<ToCandidate>(Disjunction<TCandidate> disjunction, IVisitContext context) where ToCandidate : class, TCandidate 
         {
-            ISpecification<ToCandidate> result = null;
-            foreach(ISpecification<FromCandidate> specification in conjunction)
+            // apply De Morgan's laws here
+            ISpecification<TCandidate> result = null;
+            ISpecification<TCandidate> anyToCandidate = Any<ToCandidate>.Specification.OfType<TCandidate>();
+            foreach(ISpecification<TCandidate> specification in disjunction)
             {
                 if(null == result)
-                    result = specification.OfType<ToCandidate>();
+                    result = anyToCandidate.And(specification);
                 else
-                    result = result.Or(specification.OfType<ToCandidate>());
-            }
-            return result;
-        }
-
-        private ISpecification<ToCandidate> DistributeUpcastOverConjunction<FromCandidate, ToCandidate>(Conjunction<FromCandidate> conjunction, IVisitContext context)
-        {
-            ISpecification<ToCandidate> result = null;
-            foreach(ISpecification<FromCandidate> specification in conjunction)
-            {
-                if(null == result)
-                    result = specification.OfType<ToCandidate>();
-                else
-                    result = result.And(specification.OfType<ToCandidate>());
+                    result = result.Or(anyToCandidate.And(specification));
             }
             return result;
         }

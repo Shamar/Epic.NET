@@ -46,6 +46,7 @@ namespace Epic.Specifications.Visitors
             new DeMorganLaws<TCandidate>(this);
             // variants are distributed according to their semantics
             new VariantDNFDistributor<TCandidate>(this);
+            new NegationOfVariantsNormalizer<TCandidate>(this);
         }
 
         #region implemented abstract members of CompositeVisitorBase

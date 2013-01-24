@@ -158,7 +158,7 @@ namespace Epic.Specifications.Visitors
                 IVisitor<TResult, TExpression> result = this as IVisitor<TResult, TExpression>;
                 if (null != result)
                     return result;
-                return _composition.AsVisitor(target);
+                return (_composition as IVisitor<TResult>).AsVisitor(target);
             }
             #endregion
         }
@@ -182,7 +182,7 @@ namespace Epic.Specifications.Visitors
                 IVisitor<TResult, TExpression> result = this as IVisitor<TResult, TExpression>;
                 if (null != result)
                     return result;
-                return _composition.AsVisitor(target);
+                return (_composition as IVisitor<TResult>).AsVisitor(target);
             }
             #endregion
         }

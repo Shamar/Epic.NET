@@ -81,7 +81,7 @@ namespace Epic.Specifications.Visitors
 
 
         #region IVisitor implementation
-        ISpecification IVisitor<ISpecification<TCandidate>, IMonadicSpecificationComposition<TCandidate>>.Visit(IMonadicSpecificationComposition<TCandidate> target, IVisitContext context)
+        ISpecification<TCandidate> IVisitor<ISpecification<TCandidate>, IMonadicSpecificationComposition<TCandidate>>.Visit(IMonadicSpecificationComposition<TCandidate> target, IVisitContext context)
         {
             // this should never happen
             Type[] fromToTypes = target.SpecificationType.GetGenericArguments();
@@ -106,7 +106,7 @@ namespace Epic.Specifications.Visitors
             public ISpecification<TCandidate> Visit(Negation<Candidate> target, IVisitContext context)
             {
                 Conjunction<Candidate> operand = target.Negated as Conjunction<Candidate>;
-                ISpecification<Candidate> result = null;
+                ISpecification<TCandidate> result = null;
                 foreach(ISpecification<Candidate> specificationToVisit in operand)
                 {
                     ISpecification<TCandidate> specification = _composition.VisitInner(specificationToVisit, context);
@@ -142,7 +142,7 @@ namespace Epic.Specifications.Visitors
             public ISpecification<TCandidate> Visit(Negation<Candidate> target, IVisitContext context)
             {
                 var operand = target.Negated as Disjunction<Candidate>;
-                ISpecification<Candidate> result = null;
+                ISpecification<TCandidate> result = null;
                 foreach(ISpecification<Candidate> specificationToVisit in operand)
                 {
                     ISpecification<TCandidate> specification = _composition.VisitInner(specificationToVisit, context);
