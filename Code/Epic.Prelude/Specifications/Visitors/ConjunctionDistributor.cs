@@ -59,23 +59,27 @@ namespace Epic.Specifications.Visitors
             }
             if(disjunctions.Count == 0)
                 return toAnalyze;
+            return DistrubuteAndOverOr(disjunctions, otherSpecificationsToDistribute);
+        }
 
+        private static ISpecification<TCandidate> DistrubuteAndOverOr(List<Disjunction<TCandidate>> disjunctions, List<ISpecification<TCandidate>> conjunctedSpecificationsToDistribute)
+        {
             ISpecification<TCandidate> remainder = Any<TCandidate>.Specification;
-            if(otherSpecificationsToDistribute.Count > 0)
+            if(conjunctedSpecificationsToDistribute.Count > 0)
             {
-                foreach(var spec in otherSpecificationsToDistribute)
+                foreach(var spec in conjunctedSpecificationsToDistribute)
                 {
                     remainder = remainder.And(spec);
                 }
             }
-
+            
             List<ISpecification<TCandidate>> conjunctionsToDisjunct = new List<ISpecification<TCandidate>>();
             conjunctionsToDisjunct.Add(remainder);
-
+            
             foreach(var disjunction in disjunctions)
             {
                 List<ISpecification<TCandidate>> newConjunctionsToDisjunct = new List<ISpecification<TCandidate>>();
-
+                
                 foreach(var specification in disjunction)
                 {
                     for(int i = 0; i < conjunctionsToDisjunct.Count; ++i)
@@ -83,16 +87,16 @@ namespace Epic.Specifications.Visitors
                         newConjunctionsToDisjunct.Add(conjunctionsToDisjunct[i].And(specification));
                     }
                 }
-
+                
                 conjunctionsToDisjunct = newConjunctionsToDisjunct;
             }
-
+            
             ISpecification<TCandidate> dnf = conjunctionsToDisjunct[0];
             for(int i = 1; i < conjunctionsToDisjunct.Count; ++i)
             {
                 dnf = dnf.Or(conjunctionsToDisjunct[i]);
             }
-
+            
             return dnf;
         }
     }

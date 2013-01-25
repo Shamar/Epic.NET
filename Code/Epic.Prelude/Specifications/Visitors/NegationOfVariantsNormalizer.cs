@@ -117,6 +117,11 @@ namespace Epic.Specifications.Visitors
             ISpecification<TCandidate> IVisitor<ISpecification<TCandidate>, Negation<ToCandidate>>.Visit(Negation<ToCandidate> target, IVisitContext context)
             {
                 Variant<FromCandidate, ToCandidate> upcasting = target.Negated as Variant<FromCandidate, ToCandidate>;
+                if(upcasting.InnerSpecification is Any<FromCandidate>)
+                {
+                    // to be coherent with NegationOfDowncastVisitor
+                    return upcasting.InnerSpecification.OfType<TCandidate>().Negate();
+                }
                 return _composition.VisitInner(upcasting.InnerSpecification.Negate(), context);
             }
             #endregion
