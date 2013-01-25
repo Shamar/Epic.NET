@@ -57,6 +57,9 @@ namespace Epic.Specifications.Visitors
                 else
                     disjunctions.Add(disjunction);
             }
+            if(disjunctions.Count == 0)
+                return toAnalyze;
+
             ISpecification<TCandidate> remainder = Any<TCandidate>.Specification;
             if(otherSpecificationsToDistribute.Count > 0)
             {
@@ -66,20 +69,31 @@ namespace Epic.Specifications.Visitors
                 }
             }
 
-            switch(disjunctions.Count)
+            List<ISpecification<TCandidate>> conjunctionsToDisjunct = new List<ISpecification<TCandidate>>();
+            conjunctionsToDisjunct.Add(remainder);
+
+            foreach(var disjunction in disjunctions)
             {
-                case 0:
-                    return toAnalyze;
-                case 1:
-                    ISpecification<TCandidate> result = No<TCandidate>.Specification;
-                    foreach(var spec in disjunctions[0])
+                List<ISpecification<TCandidate>> newConjunctionsToDisjunct = new List<ISpecification<TCandidate>>();
+
+                foreach(var specification in disjunction)
+                {
+                    for(int i = 0; i < conjunctionsToDisjunct.Count; ++i)
                     {
-                        result = result.Or(remainder.And(spec));
+                        newConjunctionsToDisjunct.Add(conjunctionsToDisjunct[i].And(specification));
                     }
-                    return result;
-                default:
-                    break;
+                }
+
+                conjunctionsToDisjunct = newConjunctionsToDisjunct;
             }
+
+            ISpecification<TCandidate> dnf = conjunctionsToDisjunct[0];
+            for(int i = 1; i < conjunctionsToDisjunct.Count; ++i)
+            {
+                dnf = dnf.Or(conjunctionsToDisjunct[i]);
+            }
+
+            return dnf;
         }
     }
 }

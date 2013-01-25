@@ -47,6 +47,8 @@ namespace Epic.Specifications.Visitors
             // variants are distributed according to their semantics
             new VariantDNFDistributor<TCandidate>(this);
             new NegationOfVariantsNormalizer<TCandidate>(this);
+            // apply distributive law
+            new ConjunctionDistributor<TCandidate>(this);
         }
 
         #region implemented abstract members of CompositeVisitorBase
