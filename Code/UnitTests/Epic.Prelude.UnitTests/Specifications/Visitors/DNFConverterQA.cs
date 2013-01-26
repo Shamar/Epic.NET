@@ -134,7 +134,7 @@ namespace Epic.Specifications.Visitors
             // arrange:
             var toTest = new DNFConverter<B>("Test");
             var toVisit = Q.OfType<D>().Negate();
-            var expected = Any<D>.Specification.OfType<B>().Negate().Or(U.OfType<B>().Negate());
+            var expected = Any<D>.Specification.OfType<B>().Negate().Or(Q.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
