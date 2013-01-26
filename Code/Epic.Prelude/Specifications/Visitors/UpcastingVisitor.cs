@@ -84,7 +84,9 @@ namespace Epic.Specifications.Visitors
         {
             IMonadicSpecificationComposition<TCandidate> variant = target is Negation<TCandidate> ? null : target as IMonadicSpecificationComposition<TCandidate>;
             if(null != variant)
+            {
                 return VisitInner(variant.Operand, context);
+            }
             return target as ISpecification<TCandidate>; // here it works like an EchoingVisitor<ISpecification<TCandidate>, ISpecification<TCandidate>> (see AsVisitor implementation)
         }
         

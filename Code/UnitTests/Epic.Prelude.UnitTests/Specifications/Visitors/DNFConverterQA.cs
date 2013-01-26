@@ -173,6 +173,57 @@ namespace Epic.Specifications.Visitors
             // assert:
             Assert.AreEqual(expected, result);
         }
+
+        [Test]
+        public void Visit_anUpcastedDowncastedPredicate_returnsAConjunctionOfThePredicateAndTheTypeSelection()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = Q.OfType<D>().OfType<B>();
+            var expected = Any<D>.Specification.OfType<B>().And(Q.OfType<B>());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_anUpcastedDowncastedNegatedPredicate_returnsADisjunctionOfThePredicateAndTheTypeSelection()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = Q.OfType<D>().Negate().OfType<C>();
+            var expected = Any<D>.Specification.OfType<B>().Negate().Or(Q.OfType<B>().Negate());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_aTopcastedDowncastedNegatedPredicate_correctlyApplyTheMorganLaw()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = R.And(S.Or(T)).And(U.OfType<C>().Or(V.OfType<C>()));
+            var expected = R.OfType<B>().And(S.OfType<B>()).And(U.OfType<B>())
+                    .Or(R.OfType<B>().And(T.OfType<B>()).And(U.OfType<B>()))
+                    .Or(R.OfType<B>().And(S.OfType<B>()).And(V.OfType<B>()))
+                    .Or(R.OfType<B>().And(T.OfType<B>()).And(V.OfType<B>()));
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+
+            Console.WriteLine(toVisit);
+            Console.WriteLine(expected);
+            Console.WriteLine(result);
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
     }
 
     #region utilities

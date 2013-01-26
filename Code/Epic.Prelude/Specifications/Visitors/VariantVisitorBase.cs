@@ -77,9 +77,6 @@ namespace Epic.Specifications.Visitors
                     {
                         // no known visitor: we need one
                         Type[] fromToTypes = monadic.SpecificationType.GetGenericArguments();
-                        foreach (var item in fromToTypes) {
-                            Console.WriteLine(item);
-                        }
                         Type visitorFactory;
                         if(fromToTypes[1].IsAssignableFrom(fromToTypes[0]))
                         {
