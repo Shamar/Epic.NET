@@ -44,7 +44,7 @@ namespace Epic.Specifications.Visitors
             new UpcastingVisitor<TCandidate>(this);
             // variants are distributed according to their semantics
             new VariantDNFDistributor<TCandidate>(this);
-            new NegationOfVariantsNormalizer<TCandidate>(this);
+            //new NegationOfVariantsNormalizer<TCandidate>(this);
             // negations are moved inside applying De Morgan's laws
             new DeMorganLaws<TCandidate>(this);
             // apply distributive law

@@ -149,7 +149,7 @@ namespace Epic.Specifications.Visitors
             // arrange:
             var toTest = new DNFConverter<B>("Test");
             var toVisit = R.OfType<D>().Negate().OfType<B>();
-            var expected = Any<D>.Specification.OfType<B>().And(R.OfType<B>().Negate());
+            var expected = Any<D>.Specification.OfType<B>().Negate().And(R.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -163,8 +163,9 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = Q.Or(R.OfType<D>().Negate().OfType<B>());
-            var expected = Q.Or(Any<D>.Specification.OfType<B>().Negate()).Or(R.OfType<B>().Negate());
+            var toVisit = S.Or(R.OfType<D>().Negate().OfType<C>());
+            var expected = S.OfType<B>().Or(Any<D>.Specification.OfType<B>().Negate())
+                                        .Or(R.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -192,6 +193,11 @@ namespace Epic.Specifications.Visitors
             throw new NotImplementedException("This is a mock.");
         }
         #endregion
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
     #endregion utilities
 }

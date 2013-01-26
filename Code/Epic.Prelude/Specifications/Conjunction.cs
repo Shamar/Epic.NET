@@ -202,6 +202,25 @@ namespace Epic.Specifications
             }
         }
         #endregion
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current specification in a mathematical notation.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current specification in a mathematical notation.</returns>
+        public override string ToString()
+        {
+            string[] parts = new string[_specifications.Length];
+            for(int i = 0; i < _specifications.Length; ++i)
+                if (_specifications[i] is IPolyadicSpecificationComposition<TCandidate>)
+                {
+                    parts[i] = "("+_specifications[i].ToString()+")";
+                }
+                else
+                {
+                    parts[i] = _specifications[i].ToString();
+                }
+            return string.Join(" ∧ ", parts);
+        }
     }
 }
 

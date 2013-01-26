@@ -37,8 +37,19 @@ namespace Epic.Specifications
                                          ISerializable
         where TCandidate : class
     {
+        private readonly string _toString;
         private No ()
         {
+            _toString = string.Format("¬(is:{0})", typeof(TCandidate).Name);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current specification in a mathematical notation.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current specification in a mathematical notation.</returns>
+        public override string ToString()
+        {
+            return _toString;
         }
 
         /// <summary>
