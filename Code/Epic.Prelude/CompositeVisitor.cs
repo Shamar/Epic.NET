@@ -136,7 +136,7 @@ namespace Epic
         private IVisitor<TResult, TExpression> GetNextVisitor<TExpression>(TExpression target, int callerPosition) where TExpression : class
         {
             // the visit context is ignored from VisitorFinder<TExpression>: we can simply send null
-            return AcceptCaller<TExpression, IVisitor<TResult, TExpression>>.CallAccept(target, new VisitorFinder<TExpression>(this, callerPosition), null);
+            return AcceptCaller<TExpression, IVisitor<TResult, TExpression>>.CallAccept(target, new VisitorFinder<TExpression>(this, callerPosition), VisitContext.New);
         }
 
         /// <summary>

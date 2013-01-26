@@ -26,6 +26,8 @@ using System;
 using Epic.Math;
 using Rhino.Mocks;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Epic.Collections
 {
@@ -260,6 +262,83 @@ namespace Epic.Collections
             Assert.Throws<ObjectDisposedException>(delegate {
                 SerializationUtilities.Serialize(map);
             });
+        }
+
+        [Test]
+        public void ForEachKnownEntity_withoutAnAction_throwsArgumentNullException()
+        {
+            // arrange:
+            Func<string, int> mapping = s => s.Length;
+            IdentityMap<string, int> map = new IdentityMap<string, int>(mapping);
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                map.ForEachKnownEntity(null);
+            });
+        }
+
+        [Test]
+        public void ForEachKnownEntity_withAnActionAndNoKnownEntity_willNotExecuteTheAction()
+        {
+            // arrange:
+            Func<string, int> mapping = s => s.Length;
+            IdentityMap<string, int> map = new IdentityMap<string, int>(mapping);
+
+            // act:
+            map.ForEachKnownEntity(s => { throw new Exception(); } );
+        }
+
+        [Test]
+        public void ForEachKnownEntity_withAnActionAndManyKnowEntities_executeTheActionAsExpected()
+        {
+            // arrange:
+            List<string> affected = new List<string>();
+            Func<string, int> mapping = s => s.Length;
+            IdentityMap<string, int> map = new IdentityMap<string, int>(mapping);
+            map.Register("A");
+            map.Register("BB");
+
+            // act:
+            map.ForEachKnownEntity(s => { affected.Add(s); } );
+
+            // assert:
+            Assert.AreEqual(2, affected.Count);
+            Assert.AreEqual("A", affected[0]);
+            Assert.AreEqual("BB", affected[1]);
+        }
+
+        [Test]
+        public void ForEachKnownEntity_withAnActionThatThrowsOnSomeOfThem_throwAggregatedOperationFailedException()
+        {
+            // arrange:
+            InvalidOperationException exceptionToThrow = new InvalidOperationException();
+            List<string> affected = new List<string>();
+            Func<string, int> mapping = s => s.Length;
+            IdentityMap<string, int> map = new IdentityMap<string, int>(mapping);
+            map.Register("A");
+            map.Register("BB");
+            AggregatedOperationFailedException<int> resultingException = null;
+            
+            // act:
+            try
+            {
+                map.ForEachKnownEntity(s => { if(s == "A") {affected.Add(s);} else { throw exceptionToThrow;} } );
+            }
+            catch(AggregatedOperationFailedException<int> e)
+            {
+                resultingException = e;
+            }
+            
+            // assert:
+            Assert.AreEqual(1, affected.Count);
+            Assert.AreEqual("A", affected[0]);
+            Assert.IsNotNull(resultingException);
+            Assert.AreEqual(1, resultingException.Count());
+            Assert.AreEqual(mapping("BB"), resultingException.First().Key);
+            Assert.AreSame(exceptionToThrow, resultingException.First().Value);
+            Assert.AreEqual(1, resultingException.SuccessfullyAffectedEntities.Count());
+            Assert.AreEqual(mapping("A"), resultingException.SuccessfullyAffectedEntities.Single());
+            Assert.IsNotNull((resultingException as System.Collections.IEnumerable).GetEnumerator());
         }
     }
 }

@@ -76,6 +76,7 @@
     <Compile Include="EpicExceptionQA.cs" />
     <Compile Include="Extended\Delegates\FuncExtQA.cs" />
     <Compile Include="Extended\Delegates\MissingValuesExceptionQA.cs" />
+    <Compile Include="Specifications\Visitors\DNFConverterQA.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -88,5 +89,6 @@
   <ItemGroup>
     <Folder Include="Extended\" />
     <Folder Include="Extended\Delegates\" />
+    <Folder Include="Specifications\Visitors\" />
   </ItemGroup>
 </Project>

@@ -67,15 +67,15 @@ namespace Epic.Specifications.Visitors
                         // no known visitor: we need one
                         Type[] fromToTypes = monadic.Operand.SpecificationType.GetGenericArguments();
                         Type visitorFactory;
-                        if(fromToTypes[0].IsAssignableFrom(fromToTypes[1]))
+                        if(fromToTypes[1].IsAssignableFrom(fromToTypes[0]))
                         {
                             // target is an upcasting variant
-                            visitorFactory = typeof(NegationOfUpcastVisitor<,>).MakeGenericType(fromToTypes);
+                            visitorFactory = typeof(NegationOfUpcastVisitor<,>).MakeGenericType(typeof(TCandidate), fromToTypes[0], fromToTypes[1]);
                         }
                         else
                         {
                             // target is an downcasting variant
-                            visitorFactory = typeof(NegationOfDowncastVisitor<,>).MakeGenericType(fromToTypes);
+                            visitorFactory = typeof(NegationOfDowncastVisitor<,>).MakeGenericType(typeof(TCandidate), fromToTypes[0], fromToTypes[1]);
                         }
                         typedVisitor = Activator.CreateInstance(visitorFactory, this) as IVisitor<ISpecification<TCandidate>>;
                         _visitors.TryAdd(typeof(TExpression), typedVisitor);

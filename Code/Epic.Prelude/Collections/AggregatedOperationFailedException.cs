@@ -30,6 +30,7 @@ namespace Epic.Collections
     /// An operation that should be executed on one or more entities thrown exceptions
     /// on some of them.
     /// </summary>
+    /// <seealso cref="IIdentityMap{TEntity, TIdentity}.ForEachKnownEntity"/>
     [Serializable]
     public abstract class AggregatedOperationFailedException : EpicException
     {
@@ -50,12 +51,27 @@ namespace Epic.Collections
     public sealed class AggregatedOperationFailedException<TIdentity> : AggregatedOperationFailedException, IEnumerable<KeyValuePair<TIdentity, Exception>> where TIdentity : IEquatable<TIdentity>
     {
         private readonly IEnumerable<KeyValuePair<TIdentity, Exception>> _exceptions;
+        private readonly IEnumerable<TIdentity> _affectedEntities;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Epic.Collections.AggregatedOperationFailedException"/> class.
         /// </summary>
-        public AggregatedOperationFailedException(IEnumerable<KeyValuePair<TIdentity, Exception>> exceptionsOccurred)
+        public AggregatedOperationFailedException(IEnumerable<KeyValuePair<TIdentity, Exception>> exceptionsOccurred, IEnumerable<TIdentity> affectedEntities)
         {
             _exceptions = exceptionsOccurred;
+            _affectedEntities = affectedEntities;
+        }
+
+        /// <summary>
+        /// Enumeraction of the entities that were successfully affected by the operation.
+        /// </summary>
+        /// <value>The entities successfully affected by the operation.</value>
+        public IEnumerable<TIdentity> SuccessfullyAffectedEntities
+        {
+            get
+            {
+                return _affectedEntities;
+            }
         }
 
         #region IEnumerable implementation

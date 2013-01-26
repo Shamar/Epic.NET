@@ -37,7 +37,8 @@ namespace Epic.Specifications.Visitors
         {
             if (   typeObj.IsGenericType
                 && typeof(ISpecification).IsAssignableFrom(typeObj) 
-                && typeof(ISpecification<>).Equals(typeObj.GetGenericTypeDefinition()))
+                && typeof(ISpecification<>).Equals(typeObj.GetGenericTypeDefinition())
+                && typeof(TCandidate).IsAssignableFrom(typeObj.GetGenericArguments()[0]))
             {
                 return true;
             }
@@ -63,16 +64,13 @@ namespace Epic.Specifications.Visitors
                 if(!_visitors.TryGetValue(typeof(TExpression), out typedVisitor))
                 {
                     Type[] specificationsImplemented = typeof(TExpression).FindInterfaces(SpecificationInterfaceFilter, null);
-                    for(int i = 0; i < specificationsImplemented.Length; ++i)
+                    if(specificationsImplemented.Length > 1)
                     {
-                        Type candidateType = specificationsImplemented[i].GetGenericArguments()[0];
-                        if (typeof(TCandidate).IsAssignableFrom(candidateType))
-                        {
-                            typedVisitor = Activator.CreateInstance(typeof(CorrectlyTypedVisitor<>).MakeGenericType(candidateType), this) as IVisitor<ISpecification<TCandidate>>;
-                            _visitors.TryAdd(typeof(TExpression), typedVisitor);
-                            i = specificationsImplemented.Length;
-                        }
+                        string message = string.Format("The DNFConverter cannot handle specifications that implements ISpecification<TCandidate> multiple times with type of candidates that belong to the same type hierarchy. You must provide your own DNF converter for {0} deriving CompositeVisitor<{1}>.VisitorBase.", typeof(TExpression), typeof(TCandidate));
+                        throw new EpicException(message);
                     }
+                    typedVisitor = Activator.CreateInstance(typeof(CorrectlyTypedVisitor<>).MakeGenericType(typeof(TCandidate), specificationsImplemented[0].GetGenericArguments()[0]), this) as IVisitor<ISpecification<TCandidate>>;
+                    _visitors.TryAdd(typeof(TExpression), typedVisitor);
                 }
                 return typedVisitor as IVisitor<ISpecification<TCandidate>, TExpression>;
             }

@@ -188,11 +188,13 @@ namespace Epic.Collections
             if(null == action)
                 throw new ArgumentNullException("action");
             Dictionary<TIdentity, Exception> exceptions = new Dictionary<TIdentity, Exception>();
+            List<TIdentity> successfullyExecuted = new List<TIdentity>();
             foreach(TEntity entity in _map.Values)
             {
                 try
                 {
                     action(entity);
+                    successfullyExecuted.Add(_mapping.ApplyTo(entity));
                 }
                 catch(Exception e)
                 {
@@ -201,7 +203,7 @@ namespace Epic.Collections
             }
             if(exceptions.Count > 0)
             {
-                throw new AggregatedOperationFailedException<TIdentity>(exceptions);
+                throw new AggregatedOperationFailedException<TIdentity>(exceptions, successfullyExecuted);
             }
         }
 

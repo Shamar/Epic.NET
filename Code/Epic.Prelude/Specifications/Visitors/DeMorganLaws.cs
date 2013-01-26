@@ -23,6 +23,7 @@
 //
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Epic.Specifications.Visitors
 {
@@ -43,11 +44,11 @@ namespace Epic.Specifications.Visitors
         ISpecification<TCandidate> IVisitor<ISpecification<TCandidate>, IMonadicSpecificationComposition<TCandidate>>.Visit(IMonadicSpecificationComposition<TCandidate> target, IVisitContext context)
         {
             ISpecification<TCandidate> toAnalyze = ContinueVisit(target, context);
-            return Analyze(toAnalyze);
+            return Analyze(toAnalyze, context);
         }
         #endregion
 
-        private ISpecification<TCandidate> Analyze(ISpecification<TCandidate> toAnalyze)
+        private ISpecification<TCandidate> Analyze(ISpecification<TCandidate> toAnalyze, IVisitContext context)
         {
             Negation<TCandidate> negation = toAnalyze as Negation<TCandidate>;
             Conjunction<TCandidate> negatedConjunction = null == negation ? null : negation.Negated as Conjunction<TCandidate>;
@@ -57,30 +58,30 @@ namespace Epic.Specifications.Visitors
 
             if(null != negatedConjunction)
             {
-                return DisjunctNegationsOf(negatedConjunction);
+                return DisjunctNegationsOf(negatedConjunction, context);
             }
             else
             {
-                return ConjunctNegationsOf(negatedDisjunction);
+                return ConjunctNegationsOf(negatedDisjunction, context);
             }
         }
 
-        private ISpecification<TCandidate> DisjunctNegationsOf(IEnumerable<ISpecification<TCandidate>> specifications)
+        private ISpecification<TCandidate> DisjunctNegationsOf(IEnumerable<ISpecification<TCandidate>> specifications, IVisitContext context)
         {
             ISpecification<TCandidate> result = No<TCandidate>.Specification;
             foreach(var spec in specifications)
             {
-                result = result.Or(VisitInner(spec.Negate()));
+                result = result.Or(VisitInner(spec.Negate(), context));
             }
             return result;
         }
 
-        private ISpecification<TCandidate> ConjunctNegationsOf(IEnumerable<ISpecification<TCandidate>> specifications)
+        private ISpecification<TCandidate> ConjunctNegationsOf(IEnumerable<ISpecification<TCandidate>> specifications, IVisitContext context)
         {
             ISpecification<TCandidate> result = Any<TCandidate>.Specification;
             foreach(var spec in specifications)
             {
-                result = result.And(VisitInner(spec.Negate()));
+                result = result.And(VisitInner(spec.Negate(), context));
             }
             return result;
         }
