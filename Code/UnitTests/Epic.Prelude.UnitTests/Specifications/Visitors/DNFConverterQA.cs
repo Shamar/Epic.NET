@@ -142,6 +142,36 @@ namespace Epic.Specifications.Visitors
             // assert:
             Assert.AreEqual(expected, result);
         }
+
+        [Test]
+        public void Visit_aUpcastedNegatedDowncastedSpecification_worksAsExpected()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = R.OfType<D>().Negate().OfType<B>();
+            var expected = Any<D>.Specification.OfType<B>().And(R.OfType<B>().Negate());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_aNegatedDowncastedSpecificationDisjunctedToAnotherSpecification_worksAsExpected()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = Q.Or(R.OfType<D>().Negate().OfType<B>());
+            var expected = Q.Or(Any<D>.Specification.OfType<B>().Negate()).Or(R.OfType<B>().Negate());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
     }
 
     #region utilities
