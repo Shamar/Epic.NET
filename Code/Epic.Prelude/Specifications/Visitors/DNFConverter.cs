@@ -42,11 +42,11 @@ namespace Epic.Specifications.Visitors
         {
             // unknown specifications are returned upcasted as ISpecification<TCandidate>
             new UpcastingVisitor<TCandidate>(this);
-            // negations are moved inside applying De Morgan's laws
-            new DeMorganLaws<TCandidate>(this);
             // variants are distributed according to their semantics
             new VariantDNFDistributor<TCandidate>(this);
             new NegationOfVariantsNormalizer<TCandidate>(this);
+            // negations are moved inside applying De Morgan's laws
+            new DeMorganLaws<TCandidate>(this);
             // apply distributive law
             new ConjunctionDistributor<TCandidate>(this);
         }

@@ -69,12 +69,12 @@ namespace Epic.Specifications.Visitors
                         Type visitorFactory;
                         if(fromToTypes[1].IsAssignableFrom(fromToTypes[0]))
                         {
-                            // target is an upcasting variant
+                            // target is a negation of an upcasting variant
                             visitorFactory = typeof(NegationOfUpcastVisitor<,>).MakeGenericType(typeof(TCandidate), fromToTypes[0], fromToTypes[1]);
                         }
                         else
                         {
-                            // target is an downcasting variant
+                            // target is a negation of a downcasting variant
                             visitorFactory = typeof(NegationOfDowncastVisitor<,>).MakeGenericType(typeof(TCandidate), fromToTypes[0], fromToTypes[1]);
                         }
                         typedVisitor = Activator.CreateInstance(visitorFactory, this) as IVisitor<ISpecification<TCandidate>>;
@@ -122,6 +122,7 @@ namespace Epic.Specifications.Visitors
                     // to be coherent with NegationOfDowncastVisitor
                     return upcasting.InnerSpecification.OfType<TCandidate>().Negate();
                 }
+
                 return _composition.VisitInner(upcasting.InnerSpecification.Negate(), context);
             }
             #endregion

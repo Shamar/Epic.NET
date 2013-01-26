@@ -58,12 +58,87 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = R.And(S).Negate();
-            var expected = R.OfType<B>().Negate().Or(S.OfType<B>().Negate());
+            var toVisit = R.Or(S).Negate();
+            var expected = R.OfType<B>().Negate().And(S.OfType<B>().Negate());
 
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
 
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_aNegatedConjunction_applyDeMorganLaws()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = R.And(S).Negate();
+            var expected = R.OfType<B>().Negate().Or(S.OfType<B>().Negate());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_aNegatedConjunctionNestedInADisjunction_returnsASimpleDisjunction()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = T.Or(R.And(S).Negate());
+            var expected = T.OfType<B>().Or(R.OfType<B>().Negate()).Or(S.OfType<B>().Negate());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_aNegatedDisjunctionNestedInAConjunction_returnsASimpleConjunction()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = T.And(R.Or(S).Negate());
+            var expected = T.OfType<B>().And(R.OfType<B>().Negate()).And(S.OfType<B>().Negate());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_aNegatedUpcastedSpecification_returnsThatSpecificationUpcastedToTopAndNegated()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = U.OfType<C>().Negate();
+            var expected = U.OfType<B>().Negate();
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_aNegatedDowncastedSpecification_returnsThatSpecificationNegatedAndUpcastedToTopDisjunctedToANegatedSpecificationSatisfiedFromTheDowncastingType()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = Q.OfType<D>().Negate();
+            var expected = Any<D>.Specification.OfType<B>().Negate().Or(U.OfType<B>().Negate());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
             // assert:
             Assert.AreEqual(expected, result);
         }

@@ -66,7 +66,7 @@ namespace Epic.Specifications.Visitors
                     Type[] specificationsImplemented = typeof(TExpression).FindInterfaces(SpecificationInterfaceFilter, null);
                     if(specificationsImplemented.Length > 1)
                     {
-                        string message = string.Format("The DNFConverter cannot handle specifications that implements ISpecification<TCandidate> multiple times with type of candidates that belong to the same type hierarchy. You must provide your own DNF converter for {0} deriving CompositeVisitor<{1}>.VisitorBase.", typeof(TExpression), typeof(TCandidate));
+                        string message = string.Format("The DNFConverter named '{2}' cannot handle specifications that implements ISpecification<TCandidate> multiple times with type of candidates that belong to the same type hierarchy. You must provide your own DNF converter deriving CompositeVisitor<{1}>.VisitorBase for {0}.", typeof(TExpression), typeof(TCandidate), base.CompositionName);
                         throw new EpicException(message);
                     }
                     typedVisitor = Activator.CreateInstance(typeof(CorrectlyTypedVisitor<>).MakeGenericType(typeof(TCandidate), specificationsImplemented[0].GetGenericArguments()[0]), this) as IVisitor<ISpecification<TCandidate>>;
@@ -82,6 +82,9 @@ namespace Epic.Specifications.Visitors
         
         public ISpecification<TCandidate> Visit(ISpecification target, IVisitContext context)
         {
+            IMonadicSpecificationComposition<TCandidate> variant = target is Negation<TCandidate> ? null : target as IMonadicSpecificationComposition<TCandidate>;
+            if(null != variant)
+                return VisitInner(variant.Operand, context);
             return target as ISpecification<TCandidate>; // here it works like an EchoingVisitor<ISpecification<TCandidate>, ISpecification<TCandidate>> (see AsVisitor implementation)
         }
         
@@ -104,6 +107,7 @@ namespace Epic.Specifications.Visitors
                 Conjunction<CandidateToUpcast> conjunction = target as Conjunction<CandidateToUpcast>;
                 Disjunction<CandidateToUpcast> disjunction = target as Disjunction<CandidateToUpcast>;
                 Negation<CandidateToUpcast> negation = target as Negation<CandidateToUpcast>;
+                IMonadicSpecificationComposition<TCandidate> variant = null != negation ? null : target as IMonadicSpecificationComposition<TCandidate>;
                 if (null != conjunction)
                 {
                     foreach(ISpecification<CandidateToUpcast> unvisitedInner in conjunction)
@@ -131,12 +135,16 @@ namespace Epic.Specifications.Visitors
                     ISpecification<TCandidate> inner = _composition.VisitInner(negation.Negated, context);
                     result = inner.Negate();
                 }
+                else if(null != variant)
+                {
+                    result = _composition.VisitInner(variant.Operand, context);
+                }
                 else
                 {
                     result = target.OfType<TCandidate>();
                 }
 
-                return _composition.VisitInner(result, context); // TODO: tail call here
+                return result; // TODO: tail call here
             }
 
             #endregion
