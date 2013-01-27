@@ -57,6 +57,25 @@ namespace Epic.Specifications.Visitors
         }
 
         [Test]
+        public void Visit_anUnexpectedExpression_throwsInvalidOperationException()
+        {
+            // arrange:
+            var toTest = new DNFConverter<Fakes.FakeCandidate1>("Test");
+            InvalidOperationException result = null;
+
+            // assert:
+            try
+            {
+                AcceptCaller<Fakes.FakeCandidate1, ISpecification<Fakes.FakeCandidate1>>.CallAccept(new Fakes.FakeCandidate1(), toTest, VisitContext.New);
+            }
+            catch(InvalidOperationException e)
+            {
+                result = e;
+            }
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
         public void Visit_aNegatedDisjunction_applyDeMorganLaws()
         {
             // arrange:
