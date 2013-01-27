@@ -240,16 +240,28 @@ namespace Epic.Specifications.Visitors
             Assert.AreEqual(expected, result);
         }
 
-        [Test]
-        public void Visit_aComplexMultilevelPredicate_worksAsExpected()
+        static object[] ComplexMultilevelSpecifications =
+        {
+            new object[] {
+                X.And(W.Or(R.And(S.Or(T)))), 
+                X.OfType<B>().And(W.OfType<B>())
+                    .Or(X.OfType<B>().And(R.OfType<B>().And(S.OfType<B>())))
+                        .Or(X.OfType<B>().And(R.OfType<B>()).And(T.OfType<B>()))
+            },
+            new object[] {
+                X.And(W.Or(R.And(S.Or(T)))).OfType<D>(), 
+                Any<D>.Specification.OfType<B>().And(X.OfType<B>().And(W.OfType<B>()))
+                    .Or(Any<D>.Specification.OfType<B>().And(X.OfType<B>().And(R.OfType<B>().And(S.OfType<B>()))))
+                        .Or(Any<D>.Specification.OfType<B>().And(X.OfType<B>().And(R.OfType<B>()).And(T.OfType<B>())))
+            }
+        };   
+
+        [Test, TestCaseSource("ComplexMultilevelSpecifications")]
+        public void Visit_aComplexMultilevelSpecification_worksAsExpected(ISpecification toVisit, ISpecification expected)
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = X.And(W.Or(R.And(S.Or(T))));
-            var expected = X.OfType<B>().And(W.OfType<B>())
-                       .Or(X.OfType<B>().And(R.OfType<B>().And(S.OfType<B>())))
-                       .Or(X.OfType<B>().And(R.OfType<B>()).And(T.OfType<B>()));
-            
+
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
             
@@ -257,9 +269,41 @@ namespace Epic.Specifications.Visitors
             Assert.AreEqual(expected, result);
         }
 
+        [Test]
+        public void Visit_aSpecificationThatImplementISpecificationTwoOrMoreTimes_throwEpicException()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = U.Or(new StrangeSpecification());
+
+            // assert:
+            Assert.Throws<EpicException>(delegate {
+                toVisit.Accept(toTest, VisitContext.New);
+            });
+        }
     }
 
     #region utilities
+    internal class StrangeSpecification : Specifications.SpecificationBase<StrangeSpecification, D, D2>, IEquatable<StrangeSpecification>
+    {
+        #region implemented abstract members of SpecificationBase
+        protected override bool EqualsA(StrangeSpecification otherSpecification)
+        {
+            return true;
+        }
+        protected override bool IsSatisfiedByA(D candidate)
+        {
+            throw new NotImplementedException("This is a mock.");
+        }
+        #endregion
+        #region implemented abstract members of SpecificationBase
+        protected override bool IsSatisfiedByA(D2 candidate)
+        {
+            throw new NotImplementedException("This is a mock.");
+        }
+        #endregion
+    }
+
     internal class NamedPredicate<T> : Specifications.SpecificationBase<NamedPredicate<T>, T>, IEquatable<NamedPredicate<T>> where T : class
     {
         public readonly string Name;

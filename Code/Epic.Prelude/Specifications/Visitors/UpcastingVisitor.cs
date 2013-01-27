@@ -29,6 +29,10 @@ namespace Epic.Specifications.Visitors
     /// <summary>
     /// This visitor uniforms the specifications it recieves to <typeparamref name="TCandidate"/> (that must be the root of the type hierarchy).
     /// </summary>
+    /// <remarks>
+    /// Note that we do not handle Variant here: it's intended to be used with a VariantVisitor that intercept them.
+    /// </remarks>
+    /// <seealso cref="VariantDNFDistributor{TCandidate}"/>
     /// <typeparam name="TCandidate">Root of the types of candidates that the visited specifications can handle.</typeparam>
     internal sealed class UpcastingVisitor<TCandidate> : CompositeVisitor<ISpecification<TCandidate>>.VisitorBase, IVisitor<ISpecification<TCandidate>, ISpecification>
         where TCandidate : class
@@ -82,11 +86,6 @@ namespace Epic.Specifications.Visitors
         
         public ISpecification<TCandidate> Visit(ISpecification target, IVisitContext context)
         {
-            IMonadicSpecificationComposition<TCandidate> variant = target is Negation<TCandidate> ? null : target as IMonadicSpecificationComposition<TCandidate>;
-            if(null != variant)
-            {
-                return VisitInner(variant.Operand, context);
-            }
             return target as ISpecification<TCandidate>; // here it works like an EchoingVisitor<ISpecification<TCandidate>, ISpecification<TCandidate>> (see AsVisitor implementation)
         }
         
@@ -109,7 +108,7 @@ namespace Epic.Specifications.Visitors
                 Conjunction<CandidateToUpcast> conjunction = target as Conjunction<CandidateToUpcast>;
                 Disjunction<CandidateToUpcast> disjunction = target as Disjunction<CandidateToUpcast>;
                 Negation<CandidateToUpcast> negation = target as Negation<CandidateToUpcast>;
-                IMonadicSpecificationComposition<TCandidate> variant = null != negation ? null : target as IMonadicSpecificationComposition<TCandidate>;
+                // NOTE that we do not handle Variant here. This visitor expect to be used with a VariantVisitor that intercept them.
                 if (null != conjunction)
                 {
                     foreach(ISpecification<CandidateToUpcast> unvisitedInner in conjunction)
@@ -136,10 +135,6 @@ namespace Epic.Specifications.Visitors
                 {
                     ISpecification<TCandidate> inner = _composition.VisitInner(negation.Negated, context);
                     result = inner.Negate();
-                }
-                else if(null != variant)
-                {
-                    result = _composition.VisitInner(variant.Operand, context);
                 }
                 else
                 {
