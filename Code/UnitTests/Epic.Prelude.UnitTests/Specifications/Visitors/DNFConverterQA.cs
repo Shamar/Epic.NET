@@ -35,13 +35,16 @@ namespace Epic.Specifications.Visitors
     [TestFixture]
     public class DNFConverterQA
     {
-        public static readonly ISpecification<A> P = new NamedPredicate<A>("P");
+        public static readonly ISpecification<B> P = new NamedPredicate<B>("P");
         public static readonly ISpecification<B> Q = new NamedPredicate<B>("Q");
         public static readonly ISpecification<C> R = new NamedPredicate<C>("R");
         public static readonly ISpecification<C> S = new NamedPredicate<C>("S");
         public static readonly ISpecification<C> T = new NamedPredicate<C>("T");
         public static readonly ISpecification<D> U = new NamedPredicate<D>("U");
         public static readonly ISpecification<D2> V = new NamedPredicate<D2>("V");
+        public static readonly ISpecification<C> W = new NamedPredicate<C>("W");
+        public static readonly ISpecification<C> X = new NamedPredicate<C>("X");
+
 
         [Test]
         public void Initialization_withAName_works()
@@ -218,12 +221,42 @@ namespace Epic.Specifications.Visitors
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
 
-            Console.WriteLine(toVisit);
-            Console.WriteLine(expected);
-            Console.WriteLine(result);
             // assert:
             Assert.AreEqual(expected, result);
         }
+
+        [Test]
+        public void Visit_aDowncastedNegatedPredicate_returnsAConjunctionOfTypeSelectionAndTheNegatedUpcast()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = R.Negate().OfType<D>();
+            var expected = Any<D>.Specification.OfType<B>().And(R.OfType<B>().Negate());
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void Visit_aComplexMultilevelPredicate_worksAsExpected()
+        {
+            // arrange:
+            var toTest = new DNFConverter<B>("Test");
+            var toVisit = X.And(W.Or(R.And(S.Or(T))));
+            var expected = X.OfType<B>().And(W.OfType<B>())
+                       .Or(X.OfType<B>().And(R.OfType<B>().And(S.OfType<B>())))
+                       .Or(X.OfType<B>().And(R.OfType<B>()).And(T.OfType<B>()));
+            
+            // act:
+            var result = toVisit.Accept(toTest, VisitContext.New);
+            
+            // assert:
+            Assert.AreEqual(expected, result);
+        }
+
     }
 
     #region utilities
