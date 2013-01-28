@@ -113,7 +113,7 @@ namespace Epic.Specifications
         public override string ToString()
         {
             string negated = _negated.ToString();
-            if (_negated is IPolyadicSpecificationComposition<TCandidate>)
+            if (_negated is IPolyadicSpecificationComposition<TCandidate> || _negated is IMonadicSpecificationComposition<TCandidate>)
                 negated = "(" + negated + ")";
             return "¬" + negated;
         }

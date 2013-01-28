@@ -30,6 +30,41 @@ namespace Epic.Specifications
     [TestFixture()]
     public class VariantQA : RhinoMocksFixtureBase
     {
+        public static readonly ISpecification<Fakes.FakeCandidate1> q = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("q");
+        public static readonly ISpecification<Fakes.FakeCandidate1> r = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("r");
+        static object[] ToStringSource =
+        {
+            new object[] {
+                q.OfType<Fakes.FakeCandidate1Abstraction>(), 
+                "q⇗FakeCandidate1Abstraction"
+            },
+            new object[] {
+                q.OfType<Fakes.FakeCandidate1Specialization>(), 
+                "q⇘FakeCandidate1Specialization"
+            },
+            new object[] {
+                q.And(r).OfType<Fakes.FakeCandidate1Abstraction>(), 
+                "(q ∧ r)⇗FakeCandidate1Abstraction"
+            },
+            new object[] {
+                q.Or(r).OfType<Fakes.FakeCandidate1Specialization>(), 
+                "(q ∨ r)⇘FakeCandidate1Specialization"
+            },
+            new object[] {
+                q.Negate().OfType<Fakes.FakeCandidate1Abstraction>(), 
+                "(¬q)⇗FakeCandidate1Abstraction"
+            }
+        };
+        
+        [Test, TestCaseSource("ToStringSource")]
+        public void ToString_OfAVariant_works(ISpecification toTest, string expression)
+        {
+            // act:
+            string result = toTest.ToString();
+            
+            // assert:
+            Assert.AreEqual(expression, result);
+        }
         [Test]
         public void Initialize_withASpecification_works ()
         {

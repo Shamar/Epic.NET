@@ -61,7 +61,6 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new BrokenDNFVisitor<Fakes.FakeCandidate1>();
-            InvalidOperationException result = null;
 
             // assert:
             Assert.Throws<InvalidOperationException>(delegate {

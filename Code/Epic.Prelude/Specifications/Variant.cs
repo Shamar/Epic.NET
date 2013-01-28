@@ -174,9 +174,12 @@ namespace Epic.Specifications
         /// <returns>A <see cref="System.String"/> that represents the current specification in a mathematical notation.</returns>
         public override string ToString()
         {
+            string inner = _innerSpecification.ToString();
+            if (_innerSpecification is IPolyadicSpecificationComposition<FromCandidate> || _innerSpecification is IMonadicSpecificationComposition<FromCandidate>)
+                inner = "(" + inner + ")";
             if(_thisIsAnUpcastingVariant)
-                return "("+_innerSpecification.ToString() + "⇗" + typeof(ToCandidate).Name+")";
-            return "("+_innerSpecification.ToString() + "⇘" + typeof(ToCandidate).Name+")";
+                return inner + "⇗" + typeof(ToCandidate).Name;
+            return inner + "⇘" + typeof(ToCandidate).Name;
         }
     }
 }

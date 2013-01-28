@@ -141,7 +141,7 @@ namespace Epic.Specifications.Visitors
                     result = target.OfType<TCandidate>();
                 }
 
-                return result; // TODO: tail call here
+                return result;
             }
 
             #endregion

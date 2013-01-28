@@ -30,6 +30,32 @@ namespace Epic.Specifications
     [TestFixture()]
     public class NegationQA : RhinoMocksFixtureBase
     {
+
+        public static readonly ISpecification<Fakes.FakeCandidate1> p = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("p");
+        public static readonly ISpecification<Fakes.FakeCandidate1> q = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("q");
+        public static readonly ISpecification<Fakes.FakeCandidate1> r = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("r");
+        static object[] ToStringSource =
+        {
+            new object[] {
+                p.Negate(), 
+                "¬p"
+            },
+            new object[] {
+                q.And(r).Negate(), 
+                "¬(q ∧ r)"
+            }
+        };
+        
+        [Test, TestCaseSource("ToStringSource")]
+        public void ToString_OfANegation_works(Negation<Fakes.FakeCandidate1> toTest, string expression)
+        {
+            // act:
+            string result = toTest.ToString();
+            
+            // assert:
+            Assert.AreEqual(expression, result);
+        }
+
         [Test]
         public void Initialize_withASpecification_works ()
         {

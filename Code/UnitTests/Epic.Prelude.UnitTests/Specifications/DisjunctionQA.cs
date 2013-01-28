@@ -32,6 +32,10 @@ namespace Epic.Specifications
     [TestFixture()]
     public class DisjunctionQA : RhinoMocksFixtureBase
     {
+        public static readonly ISpecification<Fakes.FakeCandidate1> p = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("p");
+        public static readonly ISpecification<Fakes.FakeCandidate1> q = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("q");
+        public static readonly ISpecification<Fakes.FakeCandidate1> r = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("r");
+
         [Test]
         public void Initialize_withoutAnyArgument_throwsArgumentNullException ()
         {
@@ -107,6 +111,28 @@ namespace Epic.Specifications
             Assert.AreSame(first, toTest.ElementAt(0));
             Assert.AreSame(second, toTest.ElementAt(1));
             Assert.AreSame(third, toTest.ElementAt(2));
+        }
+
+        static object[] ToStringSource =
+        {
+            new object[] {
+                p.Or(q), 
+                "p ∨ q"
+            },
+            new object[] {
+                p.Or(q.And(r)), 
+                "p ∨ (q ∧ r)"
+            }
+        };
+        
+        [Test, TestCaseSource("ToStringSource")]
+        public void ToString_OfADisjunction_works(Disjunction<Fakes.FakeCandidate1> toTest, string expression)
+        {
+            // act:
+            string result = toTest.ToString();
+            
+            // assert:
+            Assert.AreEqual(expression, result);
         }
 
         [Test]

@@ -114,7 +114,7 @@ namespace Epic.Specifications
         }
 
 
-        static object[] ComplexMultilevelSpecifications =
+        static object[] ToStringSource =
         {
             new object[] {
                 p.And(q), 
@@ -126,7 +126,7 @@ namespace Epic.Specifications
             }
         };
 
-        [Test, TestCaseSource("ComplexMultilevelSpecifications")]
+        [Test, TestCaseSource("ToStringSource")]
         public void ToString_OfAConjunction_works(Conjunction<Fakes.FakeCandidate1> toTest, string expression)
         {
             // act:
