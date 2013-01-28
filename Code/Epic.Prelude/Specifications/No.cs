@@ -40,7 +40,7 @@ namespace Epic.Specifications
         private readonly string _toString;
         private No ()
         {
-            _toString = string.Format("¬(is:{0})", typeof(TCandidate).Name);
+            _toString = string.Format("¬({0})", Any<TCandidate>.Specification);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Epic.Specifications
         /// <summary>
         /// Singleton instance of the specification.
         /// </summary>
-        public static No<TCandidate> Specification = new No<TCandidate>();
+        public static ISpecification<TCandidate> Specification = new No<TCandidate>();
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 

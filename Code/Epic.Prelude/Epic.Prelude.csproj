@@ -44,6 +44,8 @@
     <Compile Include="CompositeVisitorBase.cs" />
     <Compile Include="IVisitContext.cs" />
     <Compile Include="IVisitor.cs" />
+    <Compile Include="Specifications\Visitors\InvariantDNFConverter.cs" />
+    <Compile Include="Specifications\Visitors\LogicOperatorVisitor.cs" />
     <Compile Include="VisitableBase.cs" />
     <Compile Include="VisitContext.cs" />
     <Compile Include="AssemblyInfo.cs" />
@@ -85,9 +87,5 @@
     <Compile Include="Specifications\Visitors\ConjunctionDistributor.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Extended\" />
-    <Folder Include="Extended\Delegates\" />
-    <Folder Include="Specifications\Visitors\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -297,7 +297,7 @@ namespace Epic.Specifications
         /// </remarks>
         /// <returns>A new <see cref="ISpecification{Candidate}"/> that is satisfied if and only if the
         /// current specification is not satisfied.</returns>
-        ISpecification<Candidate> ISpecification<Candidate>.Negate()
+        public ISpecification<Candidate> Negate()
         {
             ISpecification<Candidate> negated;
             BuildNegation(out negated);

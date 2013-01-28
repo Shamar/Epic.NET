@@ -1,5 +1,5 @@
 //
-//  Normalizer.cs
+//  DNFConverter.cs
 //
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>
@@ -27,9 +27,10 @@ using Epic.Visitors;
 namespace Epic.Specifications.Visitors
 {
     /// <summary>
-    /// Converts a <see cref="ISpecification"/> in the disjunctive normal form.
+    /// Converts a <see cref="ISpecification"/> of any candidate type derived from <typeparamref name="TCandidate"/> in the disjunctive normal form.
     /// </summary>
     /// <typeparam name="TCandidate">The type of the objects that can be tested with the specifications produced by this visitor.</typeparam>
+    /// <seealso cref="InvariantDNFConverter{TCandidate}"/>
     public class DNFConverter<TCandidate> : CompositeVisitorBase<ISpecification<TCandidate>, ISpecification>
         where TCandidate : class
     {
@@ -46,7 +47,7 @@ namespace Epic.Specifications.Visitors
             new VariantDNFDistributor<TCandidate>(this);
             // negations are moved inside applying De Morgan's laws
             new DeMorganLaws<TCandidate>(this);
-            // apply distributive law
+            // conjunction are moved inside applying the distributive law
             new ConjunctionDistributor<TCandidate>(this);
         }
 

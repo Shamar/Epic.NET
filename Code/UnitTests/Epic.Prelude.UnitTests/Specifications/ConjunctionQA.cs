@@ -1,4 +1,4 @@
-//
+﻿//
 //  ConjunctionQA.cs
 //
 //  Author:
@@ -32,6 +32,10 @@ namespace Epic.Specifications
     [TestFixture()]
     public class ConjunctionQA : RhinoMocksFixtureBase
     {
+        public static readonly ISpecification<Fakes.FakeCandidate1> p = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("p");
+        public static readonly ISpecification<Fakes.FakeCandidate1> q = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("q");
+        public static readonly ISpecification<Fakes.FakeCandidate1> r = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("r");
+
         [Test]
         public void Initialize_withoutAnyArgument_throwsArgumentNullException ()
         {
@@ -107,6 +111,29 @@ namespace Epic.Specifications
             Assert.AreSame(first, toTest.ElementAt(0));
             Assert.AreSame(second, toTest.ElementAt(1));
             Assert.AreSame(third, toTest.ElementAt(2));
+        }
+
+
+        static object[] ComplexMultilevelSpecifications =
+        {
+            new object[] {
+                p.And(q), 
+                "p ∧ q"
+            },
+            new object[] {
+                p.And(q.Or(r)), 
+                "p ∧ (q ∨ r)"
+            }
+        };
+
+        [Test, TestCaseSource("ComplexMultilevelSpecifications")]
+        public void ToString_OfAConjunction_works(Conjunction<Fakes.FakeCandidate1> toTest, string expression)
+        {
+            // act:
+            string result = toTest.ToString();
+
+            // assert:
+            Assert.AreEqual(expression, result);
         }
 
         [Test]

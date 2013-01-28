@@ -35,15 +35,15 @@ namespace Epic.Specifications.Visitors
     [TestFixture]
     public class DNFConverterQA
     {
-        public static readonly ISpecification<B> P = new NamedPredicate<B>("P");
-        public static readonly ISpecification<B> Q = new NamedPredicate<B>("Q");
-        public static readonly ISpecification<C> R = new NamedPredicate<C>("R");
-        public static readonly ISpecification<C> S = new NamedPredicate<C>("S");
-        public static readonly ISpecification<C> T = new NamedPredicate<C>("T");
-        public static readonly ISpecification<D> U = new NamedPredicate<D>("U");
-        public static readonly ISpecification<D2> V = new NamedPredicate<D2>("V");
-        public static readonly ISpecification<C> W = new NamedPredicate<C>("W");
-        public static readonly ISpecification<C> X = new NamedPredicate<C>("X");
+        public static readonly ISpecification<B> p = new Fakes.NamedSpecification<B>("p");
+        public static readonly ISpecification<B> q = new Fakes.NamedSpecification<B>("q");
+        public static readonly ISpecification<C> r = new Fakes.NamedSpecification<C>("r");
+        public static readonly ISpecification<C> s = new Fakes.NamedSpecification<C>("s");
+        public static readonly ISpecification<C> t = new Fakes.NamedSpecification<C>("t");
+        public static readonly ISpecification<D> u = new Fakes.NamedSpecification<D>("u");
+        public static readonly ISpecification<D2> v = new Fakes.NamedSpecification<D2>("v");
+        public static readonly ISpecification<C> w = new Fakes.NamedSpecification<C>("w");
+        public static readonly ISpecification<C> x = new Fakes.NamedSpecification<C>("x");
 
 
         [Test]
@@ -60,19 +60,13 @@ namespace Epic.Specifications.Visitors
         public void Visit_anUnexpectedExpression_throwsInvalidOperationException()
         {
             // arrange:
-            var toTest = new DNFConverter<Fakes.FakeCandidate1>("Test");
+            var toTest = new BrokenDNFVisitor<Fakes.FakeCandidate1>();
             InvalidOperationException result = null;
 
             // assert:
-            try
-            {
+            Assert.Throws<InvalidOperationException>(delegate {
                 AcceptCaller<Fakes.FakeCandidate1, ISpecification<Fakes.FakeCandidate1>>.CallAccept(new Fakes.FakeCandidate1(), toTest, VisitContext.New);
-            }
-            catch(InvalidOperationException e)
-            {
-                result = e;
-            }
-            Assert.IsNotNull(result);
+            });
         }
 
         [Test]
@@ -80,8 +74,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = R.Or(S).Negate();
-            var expected = R.OfType<B>().Negate().And(S.OfType<B>().Negate());
+            var toVisit = r.Or(s).Negate();
+            var expected = r.OfType<B>().Negate().And(s.OfType<B>().Negate());
 
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -95,8 +89,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = R.And(S).Negate();
-            var expected = R.OfType<B>().Negate().Or(S.OfType<B>().Negate());
+            var toVisit = r.And(s).Negate();
+            var expected = r.OfType<B>().Negate().Or(s.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -110,8 +104,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = T.Or(R.And(S).Negate());
-            var expected = T.OfType<B>().Or(R.OfType<B>().Negate()).Or(S.OfType<B>().Negate());
+            var toVisit = t.Or(r.And(s).Negate());
+            var expected = t.OfType<B>().Or(r.OfType<B>().Negate()).Or(s.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -125,8 +119,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = T.And(R.Or(S).Negate());
-            var expected = T.OfType<B>().And(R.OfType<B>().Negate()).And(S.OfType<B>().Negate());
+            var toVisit = t.And(r.Or(s).Negate());
+            var expected = t.OfType<B>().And(r.OfType<B>().Negate()).And(s.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -140,8 +134,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = U.OfType<C>().Negate();
-            var expected = U.OfType<B>().Negate();
+            var toVisit = u.OfType<C>().Negate();
+            var expected = u.OfType<B>().Negate();
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -155,8 +149,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = Q.OfType<D>().Negate();
-            var expected = Any<D>.Specification.OfType<B>().Negate().Or(Q.OfType<B>().Negate());
+            var toVisit = q.OfType<D>().Negate();
+            var expected = Any<D>.Specification.OfType<B>().Negate().Or(q.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -170,8 +164,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = R.OfType<D>().Negate().OfType<B>();
-            var expected = Any<D>.Specification.OfType<B>().Negate().And(R.OfType<B>().Negate());
+            var toVisit = r.OfType<D>().Negate().OfType<B>();
+            var expected = Any<D>.Specification.OfType<B>().Negate().And(r.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -185,9 +179,9 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = S.Or(R.OfType<D>().Negate().OfType<C>());
-            var expected = S.OfType<B>().Or(Any<D>.Specification.OfType<B>().Negate())
-                                        .Or(R.OfType<B>().Negate());
+            var toVisit = s.Or(r.OfType<D>().Negate().OfType<C>());
+            var expected = s.OfType<B>().Or(Any<D>.Specification.OfType<B>().Negate())
+                                        .Or(r.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -201,8 +195,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = Q.OfType<D>().OfType<B>();
-            var expected = Any<D>.Specification.OfType<B>().And(Q.OfType<B>());
+            var toVisit = q.OfType<D>().OfType<B>();
+            var expected = Any<D>.Specification.OfType<B>().And(q.OfType<B>());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -216,8 +210,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = Q.OfType<D>().Negate().OfType<C>();
-            var expected = Any<D>.Specification.OfType<B>().Negate().Or(Q.OfType<B>().Negate());
+            var toVisit = q.OfType<D>().Negate().OfType<C>();
+            var expected = Any<D>.Specification.OfType<B>().Negate().Or(q.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -231,11 +225,11 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = R.And(S.Or(T)).And(U.OfType<C>().Or(V.OfType<C>()));
-            var expected = R.OfType<B>().And(S.OfType<B>()).And(U.OfType<B>())
-                    .Or(R.OfType<B>().And(T.OfType<B>()).And(U.OfType<B>()))
-                    .Or(R.OfType<B>().And(S.OfType<B>()).And(V.OfType<B>()))
-                    .Or(R.OfType<B>().And(T.OfType<B>()).And(V.OfType<B>()));
+            var toVisit = r.And(s.Or(t)).And(u.OfType<C>().Or(v.OfType<C>()));
+            var expected = r.OfType<B>().And(s.OfType<B>()).And(u.OfType<B>())
+                    .Or(r.OfType<B>().And(t.OfType<B>()).And(u.OfType<B>()))
+                    .Or(r.OfType<B>().And(s.OfType<B>()).And(v.OfType<B>()))
+                    .Or(r.OfType<B>().And(t.OfType<B>()).And(v.OfType<B>()));
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -249,8 +243,8 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = R.Negate().OfType<D>();
-            var expected = Any<D>.Specification.OfType<B>().And(R.OfType<B>().Negate());
+            var toVisit = r.Negate().OfType<D>();
+            var expected = Any<D>.Specification.OfType<B>().And(r.OfType<B>().Negate());
             
             // act:
             var result = toVisit.Accept(toTest, VisitContext.New);
@@ -262,16 +256,16 @@ namespace Epic.Specifications.Visitors
         static object[] ComplexMultilevelSpecifications =
         {
             new object[] {
-                X.And(W.Or(R.And(S.Or(T)))), 
-                X.OfType<B>().And(W.OfType<B>())
-                    .Or(X.OfType<B>().And(R.OfType<B>().And(S.OfType<B>())))
-                        .Or(X.OfType<B>().And(R.OfType<B>()).And(T.OfType<B>()))
+                x.And(w.Or(r.And(s.Or(t)))), 
+                x.OfType<B>().And(w.OfType<B>())
+                    .Or(x.OfType<B>().And(r.OfType<B>().And(s.OfType<B>())))
+                        .Or(x.OfType<B>().And(r.OfType<B>()).And(t.OfType<B>()))
             },
             new object[] {
-                X.And(W.Or(R.And(S.Or(T)))).OfType<D>(), 
-                Any<D>.Specification.OfType<B>().And(X.OfType<B>().And(W.OfType<B>()))
-                    .Or(Any<D>.Specification.OfType<B>().And(X.OfType<B>().And(R.OfType<B>().And(S.OfType<B>()))))
-                        .Or(Any<D>.Specification.OfType<B>().And(X.OfType<B>().And(R.OfType<B>()).And(T.OfType<B>())))
+                x.And(w.Or(r.And(s.Or(t)))).OfType<D>(), 
+                Any<D>.Specification.OfType<B>().And(x.OfType<B>().And(w.OfType<B>()))
+                    .Or(Any<D>.Specification.OfType<B>().And(x.OfType<B>().And(r.OfType<B>().And(s.OfType<B>()))))
+                        .Or(Any<D>.Specification.OfType<B>().And(x.OfType<B>().And(r.OfType<B>()).And(t.OfType<B>())))
             }
         };   
 
@@ -293,7 +287,7 @@ namespace Epic.Specifications.Visitors
         {
             // arrange:
             var toTest = new DNFConverter<B>("Test");
-            var toVisit = U.Or(new StrangeSpecification());
+            var toVisit = u.Or(new StrangeSpecification());
 
             // assert:
             Assert.Throws<EpicException>(delegate {
@@ -303,6 +297,25 @@ namespace Epic.Specifications.Visitors
     }
 
     #region utilities
+    internal class BrokenDNFVisitor<T> : DNFConverter<T>, IVisitor<ISpecification<T>, T>
+        where T : class
+    {
+        public BrokenDNFVisitor()
+            : base("Broken")
+        {
+        }
+
+        public ISpecification<T> Visit(T target, IVisitContext context)
+        {
+            if (null == target)
+                throw new ArgumentNullException("target");
+            if (null == context)
+                throw new ArgumentNullException("context");
+            IVisitor<ISpecification<T>, T> visitor = GetFirstVisitor(target);
+            return visitor.Visit(target, context);
+        }
+    }
+
     internal class StrangeSpecification : Specifications.SpecificationBase<StrangeSpecification, D, D2>, IEquatable<StrangeSpecification>
     {
         #region implemented abstract members of SpecificationBase
@@ -323,29 +336,6 @@ namespace Epic.Specifications.Visitors
         #endregion
     }
 
-    internal class NamedPredicate<T> : Specifications.SpecificationBase<NamedPredicate<T>, T>, IEquatable<NamedPredicate<T>> where T : class
-    {
-        public readonly string Name;
-        public NamedPredicate(string name)
-        {
-            Name = name;
-        }
-        #region implemented abstract members of SpecificationBase
-        protected override bool EqualsA(NamedPredicate<T> otherSpecification)
-        {
-            return Name.Equals(otherSpecification.Name);
-        }
-        protected override bool IsSatisfiedByA(T candidate)
-        {
-            throw new NotImplementedException("This is a mock.");
-        }
-        #endregion
-
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
     #endregion utilities
 }
 

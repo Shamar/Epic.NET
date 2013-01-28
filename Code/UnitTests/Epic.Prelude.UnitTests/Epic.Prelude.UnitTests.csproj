@@ -43,6 +43,8 @@
     <Compile Include="AcceptCallerQA.cs" />
     <Compile Include="CompositeVisitorBaseQA.cs" />
     <Compile Include="CompositeVisitorQA.cs" />
+    <Compile Include="Fakes\NamedSpecification.cs" />
+    <Compile Include="Specifications\Visitors\InvariantDNFConverterQA.cs" />
     <Compile Include="VisitableBaseQA.cs" />
     <Compile Include="VisitContextQA.cs" />
     <Compile Include="VisitorBaseQA.cs" />
@@ -86,9 +88,5 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Extended\" />
-    <Folder Include="Extended\Delegates\" />
-    <Folder Include="Specifications\Visitors\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

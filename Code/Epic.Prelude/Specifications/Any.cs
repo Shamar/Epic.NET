@@ -59,7 +59,7 @@ namespace Epic.Specifications
         /// <summary>
         /// Singleton instance of the specification.
         /// </summary>
-        public static Any<TCandidate> Specification = new Any<TCandidate>();
+        public static ISpecification<TCandidate> Specification = new Any<TCandidate>();
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 

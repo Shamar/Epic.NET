@@ -65,6 +65,19 @@ namespace Epic.Specifications
             Assert.IsNotNull (deserialized);
             Assert.AreSame(Any<Fakes.FakeCandidate1>.Specification, deserialized);
         }
+
+        [Test]
+        public void ToString_worksAsExpected()
+        {
+            // arrange:
+            var toTest = Any<Fakes.FakeCandidate1>.Specification;
+
+            // act:
+            string result = toTest.ToString();
+
+            // assert:
+            Assert.AreEqual(string.Format("is:{0}", typeof(Fakes.FakeCandidate1).Name), result);
+        }
         
         [Test]
         public void IsSatisfiedBy_aCandidate_returnTrue ()

@@ -112,7 +112,10 @@ namespace Epic.Specifications
         /// <returns>A <see cref="System.String"/> that represents the current specification in a mathematical notation.</returns>
         public override string ToString()
         {
-            return "¬"+_negated.ToString();
+            string negated = _negated.ToString();
+            if (_negated is IPolyadicSpecificationComposition<TCandidate>)
+                negated = "(" + negated + ")";
+            return "¬" + negated;
         }
     }
 }
