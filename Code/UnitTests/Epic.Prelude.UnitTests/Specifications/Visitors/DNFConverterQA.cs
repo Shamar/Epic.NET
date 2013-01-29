@@ -265,6 +265,14 @@ namespace Epic.Specifications.Visitors
                 Any<D>.Specification.OfType<B>().And(x.OfType<B>().And(w.OfType<B>()))
                     .Or(Any<D>.Specification.OfType<B>().And(x.OfType<B>().And(r.OfType<B>().And(s.OfType<B>()))))
                         .Or(Any<D>.Specification.OfType<B>().And(x.OfType<B>().And(r.OfType<B>()).And(t.OfType<B>())))
+            },
+            new object[] {
+                t.Or(r.Negate().And(s)).Negate(),
+                t.OfType<B>().Negate().And(r.OfType<B>()).Or(t.OfType<B>().Negate().And(s.OfType<B>().Negate()))
+            },
+            new object[] {
+                t.Or(r.Negate().Or(s)).Negate(),
+                t.OfType<B>().Negate().And(r.OfType<B>()).And(s.OfType<B>().Negate())
             }
         };   
 

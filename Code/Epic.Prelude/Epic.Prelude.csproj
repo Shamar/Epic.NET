@@ -85,6 +85,7 @@
     <Compile Include="Specifications\Visitors\VariantDNFDistributor.cs" />
     <Compile Include="Specifications\Visitors\UpcastingVisitor.cs" />
     <Compile Include="Specifications\Visitors\ConjunctionDistributor.cs" />
+    <Compile Include="Visitors\NestedVisitorBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

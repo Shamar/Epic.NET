@@ -23,6 +23,7 @@
 //
 using System;
 using System.Collections.Concurrent;
+using Epic.Visitors;
 
 namespace Epic.Specifications.Visitors
 {
@@ -91,18 +92,17 @@ namespace Epic.Specifications.Visitors
         
         #endregion
 
-        private struct CorrectlyTypedVisitor<CandidateToUpcast> : IVisitor<ISpecification<TCandidate>, ISpecification<CandidateToUpcast>>
+        private sealed class CorrectlyTypedVisitor<CandidateToUpcast> : NestedVisitorBase<ISpecification<TCandidate>, ISpecification<CandidateToUpcast>, UpcastingVisitor<TCandidate>>
             where CandidateToUpcast : class, TCandidate
         {
-            private readonly UpcastingVisitor<TCandidate> _composition;
             public CorrectlyTypedVisitor(UpcastingVisitor<TCandidate> composition)
+                : base(composition)
             {
-                _composition = composition;
             }
 
-            #region IVisitor implementation
+            #region implemented abstract members of NestedVisitorBase
 
-            public ISpecification<TCandidate> Visit(ISpecification<CandidateToUpcast> target, IVisitContext context)
+            protected override ISpecification<TCandidate> Visit(ISpecification<CandidateToUpcast> target, IVisitContext context, UpcastingVisitor<TCandidate> outerVisitor)
             {
                 ISpecification<TCandidate> result = null;
                 Conjunction<CandidateToUpcast> conjunction = target as Conjunction<CandidateToUpcast>;
@@ -113,7 +113,7 @@ namespace Epic.Specifications.Visitors
                 {
                     foreach(ISpecification<CandidateToUpcast> unvisitedInner in conjunction)
                     {
-                        ISpecification<TCandidate> inner = _composition.VisitInner(unvisitedInner, context);
+                        ISpecification<TCandidate> inner = outerVisitor.VisitInner(unvisitedInner, context);
                         if(null == result)
                             result = inner;
                         else
@@ -124,7 +124,7 @@ namespace Epic.Specifications.Visitors
                 {
                     foreach(ISpecification<CandidateToUpcast> unvisitedInner in disjunction)
                     {
-                        ISpecification<TCandidate> inner = _composition.VisitInner(unvisitedInner, context);
+                        ISpecification<TCandidate> inner = outerVisitor.VisitInner(unvisitedInner, context);
                         if(null == result)
                             result = inner;
                         else
@@ -133,24 +133,15 @@ namespace Epic.Specifications.Visitors
                 }
                 else if (null != negation)
                 {
-                    ISpecification<TCandidate> inner = _composition.VisitInner(negation.Negated, context);
+                    ISpecification<TCandidate> inner = outerVisitor.VisitInner(negation.Negated, context);
                     result = inner.Negate();
                 }
                 else
                 {
                     result = target.OfType<TCandidate>();
                 }
-
+                
                 return result;
-            }
-
-            #endregion
-
-            #region IVisitor implementation
-
-            public IVisitor<ISpecification<TCandidate>, TExpression> AsVisitor<TExpression>(TExpression target) where TExpression : class
-            {
-                return (_composition as IVisitor<ISpecification<TCandidate>>).AsVisitor<TExpression>(target);
             }
 
             #endregion

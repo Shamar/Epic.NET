@@ -22,6 +22,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Epic.Visitors;
 
 namespace Epic.Fakes
 {
@@ -63,6 +64,26 @@ namespace Epic.Fakes
         }
         
         #endregion templates for tests
+
+        public class FakeNested : NestedVisitorBase<TResult, TExpression, FakeVisitor<TResult, TExpression>>
+        {
+            public FakeNested(FakeVisitor<TResult, TExpression> composition)
+                : base(composition)
+            {
+            }
+
+            public virtual TResult CallToVisit(TExpression target, IVisitContext context, FakeVisitor<TResult, TExpression> outerVisitor)
+            {
+                return outerVisitor.Visit(target, context);
+            }
+
+            #region implemented abstract members of NestedVisitorBase
+            protected override TResult Visit(TExpression target, IVisitContext context, FakeVisitor<TResult, TExpression> outerVisitor)
+            {
+                return CallToVisit(target, context, outerVisitor);
+            }
+            #endregion
+        }
     }
 }
 

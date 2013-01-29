@@ -23,6 +23,7 @@
 //
 using System;
 using System.Collections.Concurrent;
+using Epic.Visitors;
 
 namespace Epic.Specifications.Visitors
 {
@@ -32,7 +33,7 @@ namespace Epic.Specifications.Visitors
     /// <typeparam name="TResult">Type of the result produced from the visits.</typeparam>
     /// <typeparam name="TCandidate">Common ancestor of the candidate types handled by the <see cref="Variant{FromCandidate, ToCandidate}"/>.</typeparam>
     /// <seealso cref="Variant{FromCandidate, ToCandidate}"/>
-    public abstract class VariantVisitorBase<TResult, TCandidate> : CompositeVisitor<TResult>.VisitorBase, IVisitor<TResult, IMonadicSpecificationComposition<TCandidate>>
+    public abstract class VariantVisitorBase<TResult, TCandidate> : CompositeVisitor<TResult>.VisitorBase
         where TCandidate : class
     {
         private readonly ConcurrentDictionary<Type, IVisitor<TResult>> _visitors;
@@ -65,11 +66,9 @@ namespace Epic.Specifications.Visitors
         /// </typeparam>
         protected sealed override IVisitor<TResult, TExpression> AsVisitor<TExpression>(TExpression target)
         {
-            IVisitor<TResult, TExpression> result = base.AsVisitor(target);
-            
-            if (null != result)
+            IMonadicSpecificationComposition<TCandidate> monadic = target as IMonadicSpecificationComposition<TCandidate>;
+            if (null != monadic)
             {
-                var monadic = target as IMonadicSpecificationComposition<TCandidate>;
                 if(monadic.SpecificationType.GetGenericTypeDefinition().Equals(typeof(Variant<,>)))
                 {
                     IVisitor<TResult> typedVisitor = null;
@@ -93,32 +92,10 @@ namespace Epic.Specifications.Visitors
                     }
                     return typedVisitor as IVisitor<TResult, TExpression>;
                 }
-                else
-                {
-                    return null;
-                }
             }
             
-            return result;
+            return null;
         }
-
-        #region IVisitor implementation
-
-        TResult IVisitor<TResult, IMonadicSpecificationComposition<TCandidate>>.Visit(IMonadicSpecificationComposition<TCandidate> target, IVisitContext context)
-        {
-            // this should never happen
-            Type[] fromToTypes = target.SpecificationType.GetGenericArguments();
-            string visitMethod = fromToTypes[0].IsAssignableFrom(fromToTypes[1]) ? "Downcasting" : "Upcasting"; 
-            string message = string.Format("The visitor of type {0} in the composition '{1}' has a bug: it reached the Visit() method instead of calling {2}Visitor<{3}, {4}>.",
-                                           this.GetType(),
-                                           CompositionName,
-                                           visitMethod,
-                                           fromToTypes[0],
-                                           fromToTypes[1]);
-            throw new EpicException(message);
-        }
-
-        #endregion
 
         /// <summary>
         /// Visits a downcasting <see cref="Variant{FromCandidate, ToCandidate}"/>.
@@ -143,51 +120,37 @@ namespace Epic.Specifications.Visitors
         protected abstract TResult VisitUpcastingVariant<FromCandidate, ToCandidate>(Variant<FromCandidate, ToCandidate> target, IVisitContext context) where FromCandidate : class, TCandidate, ToCandidate where ToCandidate : class, TCandidate;
 
         #region nested visitors
-        private struct DowncastingVariantVisitor<FromCandidate, ToCandidate> : IVisitor<TResult, Variant<FromCandidate, ToCandidate>> where FromCandidate : class, TCandidate where ToCandidate : class, TCandidate, FromCandidate
+        private sealed class DowncastingVariantVisitor<FromCandidate, ToCandidate> : NestedVisitorBase<TResult, Variant<FromCandidate, ToCandidate>, VariantVisitorBase<TResult, TCandidate>> where FromCandidate : class, TCandidate where ToCandidate : class, TCandidate, FromCandidate
         {
-            private readonly VariantVisitorBase<TResult, TCandidate> _composition;
             public DowncastingVariantVisitor(VariantVisitorBase<TResult, TCandidate> composition)
+                : base(composition)
             {
-                _composition = composition;
             }
-            #region IVisitor implementation
-            TResult IVisitor<TResult, Variant<FromCandidate, ToCandidate>>.Visit(Variant<FromCandidate, ToCandidate> target, IVisitContext context)
+
+            #region implemented abstract members of NestedVisitorBase
+
+            protected override TResult Visit(Variant<FromCandidate, ToCandidate> target, IVisitContext context, VariantVisitorBase<TResult, TCandidate> outerVisitor)
             {
-                return _composition.VisitDowncastingVariant(target, context);
+                return outerVisitor.VisitDowncastingVariant(target, context);
             }
-            #endregion
-            #region IVisitor implementation
-            IVisitor<TResult, TExpression> IVisitor<TResult>.AsVisitor<TExpression>(TExpression target)
-            {
-                IVisitor<TResult, TExpression> result = this as IVisitor<TResult, TExpression>;
-                if (null != result)
-                    return result;
-                return (_composition as IVisitor<TResult>).AsVisitor(target);
-            }
+
             #endregion
         }
 
-        private struct UpcastingVariantVisitor<FromCandidate, ToCandidate> : IVisitor<TResult, Variant<FromCandidate, ToCandidate>>  where FromCandidate : class, TCandidate, ToCandidate where ToCandidate : class, TCandidate
+        private sealed class UpcastingVariantVisitor<FromCandidate, ToCandidate> : NestedVisitorBase<TResult, Variant<FromCandidate, ToCandidate>, VariantVisitorBase<TResult, TCandidate>>  where FromCandidate : class, TCandidate, ToCandidate where ToCandidate : class, TCandidate
         {
-            private readonly VariantVisitorBase<TResult, TCandidate> _composition;
             public UpcastingVariantVisitor(VariantVisitorBase<TResult, TCandidate> composition)
+                : base(composition)
             {
-                _composition = composition;
             }
-            #region IVisitor implementation
-            TResult IVisitor<TResult, Variant<FromCandidate, ToCandidate>>.Visit(Variant<FromCandidate, ToCandidate> target, IVisitContext context)
+            
+            #region implemented abstract members of NestedVisitorBase
+            
+            protected override TResult Visit(Variant<FromCandidate, ToCandidate> target, IVisitContext context, VariantVisitorBase<TResult, TCandidate> outerVisitor)
             {
-                return _composition.VisitUpcastingVariant(target, context);
+                return outerVisitor.VisitUpcastingVariant(target, context);
             }
-            #endregion
-            #region IVisitor implementation
-            IVisitor<TResult, TExpression> IVisitor<TResult>.AsVisitor<TExpression>(TExpression target)
-            {
-                IVisitor<TResult, TExpression> result = this as IVisitor<TResult, TExpression>;
-                if (null != result)
-                    return result;
-                return (_composition as IVisitor<TResult>).AsVisitor(target);
-            }
+            
             #endregion
         }
 

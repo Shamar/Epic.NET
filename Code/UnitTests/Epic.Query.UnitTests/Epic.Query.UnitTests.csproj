@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -54,6 +54,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Relational\Operations\UnionQA.cs" />
+    <Compile Include="Relational\Operations\NaturalJoinQA.cs" />
     <Compile Include="Relational\PredicateQA.cs" />
     <Compile Include="Relational\BaseRelationQA.cs" />
     <Compile Include="Relational\ConstantQA.cs" />
@@ -81,8 +83,5 @@
     <Compile Include="Relational\Operations\ThetaJoinQA.cs" />
     <Compile Include="Relational\RelationalExpressionQA.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Fakes\" />
-    <Folder Include="Relational\Operations\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

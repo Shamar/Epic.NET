@@ -136,6 +136,14 @@ namespace Epic.Specifications.Visitors
                     .Or(r.And(t).And(u))
                     .Or(r.And(s).And(v))
                     .Or(r.And(t).And(v))
+            },
+            new object[] {
+                w.Or(r.Negate().And(s)).Negate(),
+                w.Negate().And(r).Or(w.Negate().And(s.Negate()))
+            },
+            new object[] {
+                w.Or(r.Negate().Or(s)).Negate(),
+                w.Negate().And(r).And(s.Negate())
             }
         };   
 

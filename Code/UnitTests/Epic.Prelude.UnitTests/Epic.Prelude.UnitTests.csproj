@@ -79,6 +79,7 @@
     <Compile Include="Extended\Delegates\FuncExtQA.cs" />
     <Compile Include="Extended\Delegates\MissingValuesExceptionQA.cs" />
     <Compile Include="Specifications\Visitors\DNFConverterQA.cs" />
+    <Compile Include="Visitors\NestedVisitorBaseQA.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
