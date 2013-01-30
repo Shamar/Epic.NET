@@ -186,15 +186,14 @@ namespace Epic.Query.Object
         /// </summary>
         /// <remarks>
         /// This method can be used to subscribe
-        /// entity's events or to return a proxy wrapping the original entity.
+        /// entity's events or to replace the original entity with a proxy enabling AOP.
         /// It will be called just befor registering the entity in the identity map.
         /// </remarks>
         /// <param name='entity'>
         /// Entity to instrument.
         /// </param>
-        /// <returns>Either <paramref name="entity"/> or an "instrumented" copy.</returns>
         /// <seealso cref="CleanUp"/>
-        protected abstract TEntity Instrument(TEntity entity);
+        protected abstract void Instrument(ref TEntity entity);
 
         /// <summary>
         /// Cleans up the instrumentation out of <paramref name="entity"/>.
@@ -203,7 +202,7 @@ namespace Epic.Query.Object
         /// This method should revert the operations executed by <see cref="Instrument"/>
         /// </remarks>
         /// <param name='entity'>
-        /// Entity instrumented entity.
+        /// Instrumented entity.
         /// </param>
         /// <seealso cref="Instrument"/>
         protected abstract void CleanUp(TEntity entity);
@@ -254,7 +253,8 @@ namespace Epic.Query.Object
                 for(int i = 0; i < ids.Length; ++i)
                 {
                     var id = ids[i];
-                    var e = Instrument(loadedEntities[i]);
+                    var e = loadedEntities[i];
+                    Instrument(ref entity);
                     _identityMap.Register(e);
                     results[toLoad[id]] = e;
                 }
