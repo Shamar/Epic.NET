@@ -71,6 +71,8 @@ namespace Epic.Query.Object
         /// producing a <typeparamref name="TResult"/> on evaluation.</exception>
         TDeferred IDeferrer.Defer<TDeferred, TResult>(Expression<TResult> expression)
         {
+            if(null == expression)
+                throw new ArgumentNullException("expression");
             IMapping<Expression<TResult>, TDeferred> mapping = this as IMapping<Expression<TResult>, TDeferred>;
             if (null == mapping)
             {
@@ -91,29 +93,39 @@ namespace Epic.Query.Object
         /// Result of the evaluation of <paramref name="expression"/>.
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="expression"/> is <see langword="null"/>.</exception>
-        /// <exception cref="DeferredEvaluationException{TResult}">The deferrer was unable to evaluate the <paramref name="expression"/>.</exception>
+        /// <exception cref="DeferredEvaluationException{TResult}">The current deferrer was unable to evaluate the <paramref name="expression"/>.</exception>
         TResult IDeferrer.Evaluate<TResult>(Expression<TResult> expression)
         {
             if (null == expression)
                 throw new ArgumentNullException("expression");
             try
             {
-                IVisitor<TResult, Expression<TResult>> visitor = Enterprise.Environment.Get(new InstanceName<IVisitor<TResult, Expression<TResult>>>(Name));
-                return visitor.Visit(expression, VisitContext.New);
+                return Evaluate(expression);
             }
-            catch(Epic.Collections.KeyNotFoundException<InstanceName<IVisitor<TResult, Expression<TResult>>>> visitorNotFoundInEnvironment)
+            catch(DeferredEvaluationException)
             {
-                string message = string.Format("Cannot find a visitor named {1} for {0} in the Enterprise.Environment.", typeof(TResult), Name);
-                throw new DeferredEvaluationException<TResult>(expression, message, visitorNotFoundInEnvironment);
+                throw;
             }
-            catch(NonExhaustiveVisitorException nonExhaustiveVisitor)
+            catch(Exception e)
             {
-                string message = string.Format("The Visitor<{0}, Expression<{0}>> named {1} in the Enterprise.Environment is not able to fully visit the expression.", typeof(TResult), Name);
-                throw new DeferredEvaluationException<TResult>(expression, message, nonExhaustiveVisitor);
+                string message = string.Format("An unexpected exception has been thrown while evaluating a {0}.", expression.GetType());
+                throw new DeferredEvaluationException<TResult>(expression, message, e);
             }
         }
 
         #endregion
+
+        /// <summary>
+        /// Evaluate the specified expression.
+        /// </summary>
+        /// <param name="expression">Expression to evaluate (will never be <see langword="null"/>).</param>
+        /// <typeparam name="TResult">Type of the result of the evaluation.</typeparam>
+        /// <exception cref="DeferredEvaluationException{TResult}">The current deferrer 
+        /// was unable to evaluate the <paramref name="expression"/>.</exception>
+        /// <remarks>All exceptions thrown by the implementation of this method
+        /// except <see cref="DeferredEvaluationException"/> will be
+        /// wrapped in a <see cref="DeferredEvaluationException{TResult}"/> by the caller.</remarks>
+        protected abstract TResult Evaluate<TResult>(Expression<TResult> expression);
     }
 }
 
