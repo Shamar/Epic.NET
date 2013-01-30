@@ -138,7 +138,8 @@ namespace Epic.Query.Object
                     try
                     {
                         TEntity entity = _loader.Load(identity).Single();
-                        _identityMap.Register(Instrument(entity));
+                        Instrument(ref entity);
+                        _identityMap.Register(entity);
                     }
                     catch (Exception e)
                     {
@@ -254,7 +255,7 @@ namespace Epic.Query.Object
                 {
                     var id = ids[i];
                     var e = loadedEntities[i];
-                    Instrument(ref entity);
+                    Instrument(ref e);
                     _identityMap.Register(e);
                     results[toLoad[id]] = e;
                 }

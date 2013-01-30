@@ -64,6 +64,7 @@
     <Compile Include="ContravariantOrderQA.cs" />
     <Compile Include="DeferrerBaseQA.cs" />
     <Compile Include="Fakes\FakeDeferrer.cs" />
+    <Compile Include="DeferredEvaluationExceptionQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Query.Object\Epic.Query.Object.csproj">
