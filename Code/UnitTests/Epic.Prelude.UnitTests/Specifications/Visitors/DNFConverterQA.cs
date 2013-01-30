@@ -57,13 +57,13 @@ namespace Epic.Specifications.Visitors
         }
 
         [Test]
-        public void Visit_anUnexpectedExpression_throwsInvalidOperationException()
+        public void Visit_anUnexpectedExpression_throwsNonExhaustiveVisitorException()
         {
             // arrange:
             var toTest = new BrokenDNFVisitor<Fakes.FakeCandidate1>();
 
             // assert:
-            Assert.Throws<InvalidOperationException>(delegate {
+            Assert.Throws<NonExhaustiveVisitorException<Fakes.FakeCandidate1>>(delegate {
                 AcceptCaller<Fakes.FakeCandidate1, ISpecification<Fakes.FakeCandidate1>>.CallAccept(new Fakes.FakeCandidate1(), toTest, VisitContext.New);
             });
         }
@@ -297,7 +297,7 @@ namespace Epic.Specifications.Visitors
             var toVisit = u.Or(new StrangeSpecification());
 
             // assert:
-            Assert.Throws<EpicException>(delegate {
+            Assert.Throws<NonExhaustiveVisitorException<StrangeSpecification>>(delegate {
                 toVisit.Accept(toTest, VisitContext.New);
             });
         }

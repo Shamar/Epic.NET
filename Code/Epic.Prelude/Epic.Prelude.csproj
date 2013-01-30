@@ -86,6 +86,7 @@
     <Compile Include="Specifications\Visitors\UpcastingVisitor.cs" />
     <Compile Include="Specifications\Visitors\ConjunctionDistributor.cs" />
     <Compile Include="Visitors\NestedVisitorBase.cs" />
+    <Compile Include="NonExhaustiveVisitorException.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />

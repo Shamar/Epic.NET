@@ -36,7 +36,7 @@ namespace Epic
 	/// </para>
 	/// <para>
 	/// <see cref="EpicException"/> extends <see cref="InvalidOperationException"/>
-	/// becouse when the infrastructure has a problem, it's always due to the combined 
+	/// because when the infrastructure has a problem, it's always due to the combined 
 	/// state of the infrastructural code itself (where infrastructural is everything 
 	/// but the domain model itself).
 	/// </para>

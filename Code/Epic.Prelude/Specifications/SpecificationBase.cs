@@ -68,7 +68,7 @@ namespace Epic.Specifications
         {
             if (!(this is TSpecification))
             {
-                string message = string.Format("The specification {0} must implement {1} becouse it extends SpecificationBase<{1}, {2}>.", this.GetType(), typeof(TSpecification), typeof(Candidate));
+                string message = string.Format("The specification {0} must implement {1} because it extends SpecificationBase<{1}, {2}>.", this.GetType(), typeof(TSpecification), typeof(Candidate));
                 throw new InvalidOperationException(message);
             }
         }

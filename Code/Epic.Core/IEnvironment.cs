@@ -54,7 +54,9 @@ namespace Epic
 		/// <returns>
 		/// The required object.
 		/// </returns>
-        /// <exception cref="System.Collections.Generic.KeyNotFoundException">The provided <paramref name="name"/> do not match any property of the environment.</exception>
+        /// <typeparam name="TObject">Type of the needed object.</typeparam>
+        /// <exception cref="Epic.Collections.KeyNotFoundException{TKey}">The provided <paramref name="name"/> does 
+        /// not match any property of the environment. The exception will be closed on <see cref="InstanceName{TObject}"/>.</exception>
 		TObject Get<TObject>(InstanceName<TObject> name);
 	}
 }

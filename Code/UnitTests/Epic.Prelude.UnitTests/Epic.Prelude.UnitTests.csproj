@@ -80,6 +80,12 @@
     <Compile Include="Extended\Delegates\MissingValuesExceptionQA.cs" />
     <Compile Include="Specifications\Visitors\DNFConverterQA.cs" />
     <Compile Include="Visitors\NestedVisitorBaseQA.cs" />
+    <Compile Include="EpicExceptionQABase.cs" />
+    <Compile Include="NonExhaustiveVisitorExceptionQA.cs" />
+    <Compile Include="Collections\AggregatedOperationFailedExceptionQA.cs" />
+    <Compile Include="EquatableDictionary.cs" />
+    <Compile Include="EquatableEnumerable.cs" />
+    <Compile Include="EquatableException.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

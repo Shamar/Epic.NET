@@ -61,7 +61,7 @@ namespace Epic
         }
         
         [Test]
-        public void GetFirstVisitor_forAnUnknowType_throwsInvalidOperationException()
+        public void GetFirstVisitor_forAnUnknowType_throwsNonExhaustiveVisitorException()
         {
             // arrange:
             string name = "test";
@@ -69,7 +69,7 @@ namespace Epic
             CompositeVisitor<object> visitor = new FakeCompositeVisitor<object>(name);
 
             // assert:
-            Assert.Throws<InvalidOperationException>(delegate { 
+            Assert.Throws<NonExhaustiveVisitorException<Expression<Func<string, int>>>>(delegate { 
                 visitor.GetFirstVisitor(target);
             }, "No visitor available for the expression {0} (of type: {2}) in the composition '{1}'.", target, name, target.GetType());
         }

@@ -23,19 +23,16 @@
 //  
 using System;
 using System.Runtime.Serialization;
+using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object
 {
     /// <summary>
-    /// Exception thrown when a request to <see cref="IDeferrer.Defer{TDeferred, TResult}"/> is invalid because of the type arguments.
+    /// Exception thrown when a request to <see cref="IDeferrer.Evaluate{TResult}"/> fails.
     /// </summary>
-    /// <remarks>
-    /// The <see cref="DeferringException"/> is designed to be cought only: to throw it all <see cref="IDeferrer"/> implementation
-    /// must create an instance of <see cref="DeferringException{TDeferred, TResult}"/> instead.
-    /// </remarks>
-    /// <seealso cref="DeferringException{TDeferred, TResult}"/>
+    /// <seealso cref="DeferredEvaluationException{TResult}"/>
     [Serializable]
-    public abstract class DeferringException : EpicException
+    public abstract class DeferredEvaluationException : EpicException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DeferringException"/> class.
@@ -43,7 +40,7 @@ namespace Epic.Query.Object
         /// <param name='message'>
         /// The message that describes the error. 
         /// </param>
-        internal DeferringException(string message)
+        internal DeferredEvaluationException(string message)
             : base(message)
         {
         }
@@ -59,7 +56,7 @@ namespace Epic.Query.Object
         /// If the <paramref name="inner"/> parameter is not a <see langword="null"/> reference, the current 
         /// exception is raised in a catch block that handles the inner exception. 
         /// </param>
-        internal DeferringException(string message, Exception inner)
+        internal DeferredEvaluationException(string message, Exception inner)
             : base(message, inner)
         {
         }
@@ -73,44 +70,51 @@ namespace Epic.Query.Object
         /// <param name='context'>
         /// Streaming context.
         /// </param>
-        internal DeferringException(SerializationInfo info, StreamingContext context)
+        internal DeferredEvaluationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
         
         /// <summary>
-        /// The type of the <see cref="IDeferred{TResult}"/>.
-        /// </summary>
-        public abstract Type DeferredType { get; }
-        
-        
-        /// <summary>
         /// The type of the expected result of the <see cref="IDeferred{TResult}"/>.
         /// </summary>
         public abstract Type ResultType { get; }
+
+        /// <summary>
+        /// Gets the unevaluated expression.
+        /// </summary>
+        /// <value>The unevaluated expression.</value>
+        public Expression UnevaluatedExpression { get { return GetUnevaluatedExpression(); } }
+
+        internal abstract Expression GetUnevaluatedExpression();
     }
     
     /// <summary>
-    /// Exception thrown when a request to <see cref="IDeferrer.Defer{TDeferred, TResult}"/> is invalid because of the type arguments.
+    /// Exception thrown when a request to <see cref="IDeferrer.Evaluate{TResult}"/> fails.
     /// </summary>
+    /// <typeparam name="TResult">Type of the desired result of the evaluation that failed.</typeparam>
     [Serializable] 
-    public sealed class DeferringException<TDeferred, TResult> : DeferringException
-        where TDeferred : IDeferred<TResult>
+    public sealed class DeferredEvaluationException<TResult> : DeferredEvaluationException
     {
+        private readonly Expression<TResult> _unevaluatedExpression;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DeferringException{TDeferred, TResult}"/> class.
         /// </summary>
+        /// <param name="unevaluatedExpression">Expression that the <see cref="IDeferrer"/> was unable to evaluate.</param>
         /// <param name='message'>
         /// Message.
         /// </param>
-        public DeferringException(string message)
+        internal DeferredEvaluationException(Expression<TResult> unevaluatedExpression, string message)
             : base(message)
         {
+            _unevaluatedExpression = unevaluatedExpression;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeferringException"/> class.
         /// </summary>
+        /// <param name="unevaluatedExpression">Expression that the <see cref="IDeferrer"/> was unable to evaluate.</param>
         /// <param name='message'>
         /// The message that describes the error. 
         /// </param>
@@ -119,26 +123,18 @@ namespace Epic.Query.Object
         /// If the <paramref name="inner"/> parameter is not a <see langword="null"/> reference, the current 
         /// exception is raised in a catch block that handles the inner exception. 
         /// </param>
-        public DeferringException(string message, Exception inner)
+        internal DeferredEvaluationException(Expression<TResult> unevaluatedExpression, string message, Exception inner)
             : base(message, inner)
         {
         }
 
-        private DeferringException(SerializationInfo info, StreamingContext context)
+        private DeferredEvaluationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
         
         #region implemented abstract members of Epic.Query.Object.UnknownDeferredException
-        /// <summary>
-        /// The type of the <see cref="IDeferred{TResult}"/>.
-        /// </summary>
-        public override Type DeferredType {
-            get {
-                return typeof(TDeferred);
-            }
-        }
-        
+
         /// <summary>
         /// The type of the expected result of the <see cref="IDeferred{TResult}"/>.
         /// </summary>
@@ -148,6 +144,23 @@ namespace Epic.Query.Object
             }
         }
         #endregion
+
+        internal override Expression GetUnevaluatedExpression()
+        {
+            return _unevaluatedExpression;
+        }
+
+        /// <summary>
+        /// Gets the unevaluated expression.
+        /// </summary>
+        /// <value>The unevaluated expression.</value>
+        public new Expression<TResult> UnevaluatedExpression
+        {
+            get
+            {
+                return _unevaluatedExpression;
+            }
+        }
     }
 }
 

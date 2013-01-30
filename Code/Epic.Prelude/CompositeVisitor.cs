@@ -114,8 +114,7 @@ namespace Epic
                 if(null != foundVisitor)
                     return foundVisitor;
             }
-            string message = string.Format("No visitor available for the expression {0} (of type: {2}) in the composition '{1}'.", target, _name, typeof(TExpression));
-            throw new InvalidOperationException(message);
+            throw new NonExhaustiveVisitorException<TExpression>(_name, target);
         }
 
         /// <summary>

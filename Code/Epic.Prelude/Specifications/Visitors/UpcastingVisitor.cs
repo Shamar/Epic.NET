@@ -72,7 +72,7 @@ namespace Epic.Specifications.Visitors
                     if(specificationsImplemented.Length > 1)
                     {
                         string message = string.Format("The DNFConverter named '{2}' cannot handle specifications that implements ISpecification<TCandidate> multiple times with type of candidates that belong to the same type hierarchy. You must provide your own DNF converter deriving CompositeVisitor<{1}>.VisitorBase for {0}.", typeof(TExpression), typeof(TCandidate), base.CompositionName);
-                        throw new EpicException(message);
+                        throw new NonExhaustiveVisitorException<TExpression>(CompositionName, target, message);
                     }
                     typedVisitor = Activator.CreateInstance(typeof(CorrectlyTypedVisitor<>).MakeGenericType(typeof(TCandidate), specificationsImplemented[0].GetGenericArguments()[0]), this) as IVisitor<ISpecification<TCandidate>>;
                     _visitors.TryAdd(typeof(TExpression), typedVisitor);

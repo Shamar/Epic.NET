@@ -73,6 +73,7 @@
     <Compile Include="ContravariantOrder.cs" />
     <Compile Include="SearchableRepositoryBase.cs" />
     <Compile Include="DeferrerBase.cs" />
+    <Compile Include="DeferredEvaluationException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

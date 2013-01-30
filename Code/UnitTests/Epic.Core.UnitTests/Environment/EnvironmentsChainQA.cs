@@ -24,6 +24,7 @@
 using System;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Epic.Collections;
 using System.Collections.Generic;
 namespace Epic.Environment
 {
@@ -69,7 +70,7 @@ namespace Epic.Environment
 			secondMockLink.Expect(l => l.TryGet<TObject>(name, out varPlaceHolder)).Return(false).Repeat.Once();
 			
 			// assert:
-			Assert.Throws<KeyNotFoundException>(delegate { underTest.Get<TObject>(name); });
+			Assert.Throws<KeyNotFoundException<InstanceName<TObject>>>(delegate { underTest.Get<TObject>(name); });
 			foreach(object mock in mocks)
 				mock.VerifyAllExpectations();
 		}

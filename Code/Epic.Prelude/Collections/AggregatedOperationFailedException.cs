@@ -23,6 +23,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Epic.Collections
 {
@@ -38,6 +39,11 @@ namespace Epic.Collections
         /// Initializes a new instance of the <see cref="Epic.Collections.AggregatedOperationFailedException"/> class.
         /// </summary>
         internal AggregatedOperationFailedException()
+        {
+        }
+
+        internal AggregatedOperationFailedException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }
@@ -60,6 +66,25 @@ namespace Epic.Collections
         {
             _exceptions = exceptionsOccurred;
             _affectedEntities = affectedEntities;
+        }
+
+        private AggregatedOperationFailedException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            _exceptions = (IEnumerable<KeyValuePair<TIdentity, Exception>>)info.GetValue("E", typeof(IEnumerable<KeyValuePair<TIdentity, Exception>>));
+            _affectedEntities = (IEnumerable<TIdentity>)info.GetValue("I", typeof(IEnumerable<TIdentity>));
+        }
+
+        /// <summary>
+        /// Gets the object data.
+        /// </summary>
+        /// <param name="info">Info.</param>
+        /// <param name="context">Context.</param>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("E", _exceptions, typeof(IEnumerable<KeyValuePair<TIdentity, Exception>>));
+            info.AddValue("I", _affectedEntities, typeof(IEnumerable<TIdentity>));
         }
 
         /// <summary>

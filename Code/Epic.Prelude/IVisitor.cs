@@ -77,6 +77,8 @@ namespace Epic
         /// <exception cref="ArgumentNullException">
         /// <paramref name="target"/> or <paramref name="context"/> is <see langword="null"/>
         /// </exception>
+        /// <exception cref="NonExhaustiveVisitorException">The current visitor can not handle 
+        /// one of the components of <paramref name="target"/>.</exception>
         TResult Visit(TExpression target, IVisitContext context);
     }
 }

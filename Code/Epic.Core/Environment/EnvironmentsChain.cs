@@ -22,7 +22,8 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
-using System.Collections.Generic;
+using Epic.Collections;
+
 namespace Epic.Environment
 {
 	/// <summary>
@@ -78,7 +79,7 @@ namespace Epic.Environment
 					return result;
 			}
 			string message = string.Format("Can not find any {0} named {1} in the environment.", typeof(TObject).FullName, name);
-			throw new KeyNotFoundException(message);
+            throw new KeyNotFoundException<InstanceName<TObject>>(name, message);
 		}
 		
 		#endregion

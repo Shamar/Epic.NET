@@ -45,7 +45,7 @@ namespace Epic.Specifications
         {
             if (typeof(ToCandidate).Equals(typeof(FromCandidate)))
             {
-                string message = string.Format("Cannot create a Variant<{1}, {0}> specification, becouse the two type arguments are equals.", typeof(FromCandidate), typeof(ToCandidate));
+                string message = string.Format("Cannot create a Variant<{1}, {0}> specification, because the two type arguments are equals.", typeof(FromCandidate), typeof(ToCandidate));
                 throw new EpicException(message);
             }
             _thisIsAnUpcastingVariant = typeof(ToCandidate).IsAssignableFrom(typeof(FromCandidate));
