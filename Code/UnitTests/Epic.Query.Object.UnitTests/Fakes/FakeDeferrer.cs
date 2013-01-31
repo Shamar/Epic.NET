@@ -31,6 +31,15 @@ namespace Epic.Query.Object.UnitTests.Fakes
             : base(name)
         {
         }
+
+        #region implemented abstract members of DeferrerBase
+
+        protected override IVisitor<TResult> GetVisitorFor<TResult>(Epic.Query.Object.Expressions.Expression<TResult> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
 

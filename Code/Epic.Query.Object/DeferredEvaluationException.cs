@@ -1,5 +1,5 @@
 //  
-//  DeferringException.cs
+//  DeferredEvaluationException.cs
 //  
 //  Author:
 //       Giacomo Tesio <giacomo@tesio.it>

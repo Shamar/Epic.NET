@@ -100,11 +100,13 @@ namespace Epic.Query.Object
                 throw new ArgumentNullException("expression");
             try
             {
-                return Evaluate(expression);
+                IVisitor<TResult> visitor = GetVisitorFor<TResult>(expression);
+                return expression.Accept(visitor, VisitContext.New);
             }
-            catch(DeferredEvaluationException)
+            catch(NonExhaustiveVisitorException nonExhaustiveVisitor)
             {
-                throw;
+                string message = string.Format("The Visitor<{0}, Expression<{0}>> named {1} in the Enterprise.Environment is not able to fully visit the expression.", typeof(TResult), Name);
+                throw new DeferredEvaluationException<TResult>(expression, message, nonExhaustiveVisitor);
             }
             catch(Exception e)
             {
@@ -116,16 +118,14 @@ namespace Epic.Query.Object
         #endregion
 
         /// <summary>
-        /// Evaluate the specified expression.
+        /// Provide the visitor able to visit the specified expression.
         /// </summary>
         /// <param name="expression">Expression to evaluate (will never be <see langword="null"/>).</param>
         /// <typeparam name="TResult">Type of the result of the evaluation.</typeparam>
-        /// <exception cref="DeferredEvaluationException{TResult}">The current deferrer 
-        /// was unable to evaluate the <paramref name="expression"/>.</exception>
         /// <remarks>All exceptions thrown by the implementation of this method
         /// except <see cref="DeferredEvaluationException"/> will be
         /// wrapped in a <see cref="DeferredEvaluationException{TResult}"/> by the caller.</remarks>
-        protected abstract TResult Evaluate<TResult>(Expression<TResult> expression);
+        protected abstract IVisitor<TResult> GetVisitorFor<TResult>(Expression<TResult> expression);
     }
 }
 

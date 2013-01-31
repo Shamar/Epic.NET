@@ -32,6 +32,23 @@ namespace Epic.Query.Object.UnitTests
     [TestFixture()]
     public class DeferredEvaluationExceptionQA : EpicExceptionQABase<DeferredEvaluationException<string>>
     {
+        [Test]
+        public void Initialize_withoutInnerException_works()
+        {
+            // arrange:
+            Expression<string> unexpectedExpression = new Fakes.FakeExpression<string>("unexpectedExpression");
+            string message = "Message.";
+
+            // act:
+            DeferredEvaluationException<string> toTest = new DeferredEvaluationException<string>(unexpectedExpression, message);
+
+            // assert:
+            Assert.AreSame(unexpectedExpression, toTest.UnevaluatedExpression);
+            Assert.AreSame(unexpectedExpression, (toTest as DeferredEvaluationException).UnevaluatedExpression);
+            Assert.AreSame(typeof(string), (toTest as DeferredEvaluationException).ResultType);
+            Assert.AreSame(message, toTest.Message);
+        }
+
         #region implemented abstract members of EpicExceptionQABase
 
         protected override IEnumerable<DeferredEvaluationException<string>> ExceptionsToSerialize
@@ -41,7 +58,7 @@ namespace Epic.Query.Object.UnitTests
                 string innerMessage = "Test inner.";
                 string message = "Test message.";
                 EquatableException inner = new EquatableException(innerMessage);
-                yield return new DeferredEvaluationException<string>("unexpectedExpression", message, inner);
+                yield return new DeferredEvaluationException<string>(new Fakes.FakeExpression<string>("unexpectedExpression"), message, inner);
             }
         }
 

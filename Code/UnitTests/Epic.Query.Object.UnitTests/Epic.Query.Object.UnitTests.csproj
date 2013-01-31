@@ -65,6 +65,7 @@
     <Compile Include="DeferrerBaseQA.cs" />
     <Compile Include="Fakes\FakeDeferrer.cs" />
     <Compile Include="DeferredEvaluationExceptionQA.cs" />
+    <Compile Include="SearchableRepositoryBaseQA.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Epic.Query.Object\Epic.Query.Object.csproj">
