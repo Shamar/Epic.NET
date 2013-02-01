@@ -46,6 +46,18 @@ namespace Epic.Query.Object
                 _checkNull = i => { if (null == i) { throw new ArgumentNullException("identity"); } };
         }
 
+        /// <summary>
+        /// Throws an <see cref="ObjectDisposedException"/> if the current instance was disposed.
+        /// </summary>
+        protected void ThrowIfDisposed()
+        {
+            if(_disposed)
+            {
+                string message = string.Format("The SearchableRepository<{0}, {1}> has been disposed.", typeof(TEntity), typeof(TIdentity));
+                throw new ObjectDisposedException(message);
+            }
+        }
+
         private readonly IIdentityMap<TEntity, TIdentity> _identityMap;
         private readonly IEntityLoader<TEntity, TIdentity> _loader;
         private readonly IMapping<TEntity, TIdentity> _identification;
@@ -132,6 +144,7 @@ namespace Epic.Query.Object
         {
             get
             {
+                ThrowIfDisposed();
                 _checkNull(identity);
                 if(!_identityMap.Knows(identity))
                 {
@@ -166,6 +179,7 @@ namespace Epic.Query.Object
         /// <exception cref="ArgumentNullException"><paramref name="satifyingSpecification"/> is <see langword="null"/>.</exception>
         public ISearch<TSpecializedEntity, TIdentity> Search<TSpecializedEntity>(ISpecification<TSpecializedEntity> satifyingSpecification) where TSpecializedEntity : class, TEntity
         {
+            ThrowIfDisposed();
             IDeferrer deferrer = Enterprise.Environment.Get<IDeferrer>(new InstanceName<IDeferrer>(_deferrerName));
             IRepository<TSpecializedEntity, TIdentity> justThis = this as IRepository<TSpecializedEntity, TIdentity>;
             if(null != justThis)
@@ -231,8 +245,11 @@ namespace Epic.Query.Object
 
         IEnumerable<TEntity> IEntityLoader<TEntity, TIdentity>.Load(params TIdentity[] identities)
         {
+            ThrowIfDisposed();
             if(null == identities)
                 throw new ArgumentNullException("identities");
+            if(identities.Length == 0)
+                return Enumerable.Empty<TEntity>();
             Dictionary<TIdentity, int> toLoad = new Dictionary<TIdentity, int>();
             TEntity[] results = new TEntity[identities.Length];
             for(int i = 0; i < identities.Length; ++i)
