@@ -180,6 +180,8 @@ namespace Epic.Query.Object
         public ISearch<TSpecializedEntity, TIdentity> Search<TSpecializedEntity>(ISpecification<TSpecializedEntity> satifyingSpecification) where TSpecializedEntity : class, TEntity
         {
             ThrowIfDisposed();
+            if (null == satifyingSpecification)
+                throw new ArgumentNullException("satifyingSpecification");
             IDeferrer deferrer = Enterprise.Environment.Get<IDeferrer>(new InstanceName<IDeferrer>(_deferrerName));
             IRepository<TSpecializedEntity, TIdentity> justThis = this as IRepository<TSpecializedEntity, TIdentity>;
             if(null != justThis)

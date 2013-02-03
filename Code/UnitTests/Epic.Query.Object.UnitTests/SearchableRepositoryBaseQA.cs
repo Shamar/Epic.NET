@@ -29,6 +29,8 @@ using Epic.Math;
 using Challenge00.DDDSample.Cargo;
 using System.Linq;
 using Epic.Specifications;
+using System.Collections.Generic;
+using Epic.Environment;
 
 namespace Epic.Query.Object.UnitTests
 {
@@ -235,6 +237,26 @@ namespace Epic.Query.Object.UnitTests
         }
 
         [Test]
+        public void Identify_withAnyEntity_callsTheIdentificationMapping()
+        {
+            // arrange:
+            string deferrerName = "Test";
+            TrackingId id = new TrackingId("TEST");
+            ICargo cargo = GenerateStrictMock<ICargo>();
+            IMapping<ICargo, TrackingId> identification = GenerateStrictMock<IMapping<ICargo, TrackingId>>();
+            identification.Expect(i => i.ApplyTo(cargo)).Return(id).Repeat.Once();
+            IIdentityMap<ICargo, TrackingId> identityMap = GenerateStrictMock<IIdentityMap<ICargo, TrackingId>>();
+            IEntityLoader<ICargo, TrackingId> loader = GenerateStrictMock<IEntityLoader<ICargo, TrackingId>>();
+            Fakes.FakeSearchableRepository<ICargo, TrackingId> toTest = GeneratePartialMock<Fakes.FakeSearchableRepository<ICargo, TrackingId>>(identityMap, loader, identification, deferrerName);
+
+            // act:
+            var r = toTest.CallIdentify(cargo);
+            
+            // assert:
+            Assert.AreSame(id, r);
+        }
+
+        [Test]
         public void Dispose_withEntitiesInTheMap_callCleanUpOnThem()
         {
             // arrange:
@@ -274,6 +296,82 @@ namespace Epic.Query.Object.UnitTests
             Assert.Throws<ObjectDisposedException>(delegate {
                 var r = searchableRepo.Search<ICargo>(specification);
             });
+        }
+
+        [Test]
+        public void Search_withoutASpecification_throwsArgumentNullException()
+        {
+            // arrange:
+            string deferrerName = "Test";
+            IMapping<ICargo, TrackingId> identification = GenerateStrictMock<IMapping<ICargo, TrackingId>>();
+            IIdentityMap<ICargo, TrackingId> identityMap = GenerateStrictMock<IIdentityMap<ICargo, TrackingId>>();
+            IEntityLoader<ICargo, TrackingId> loader = GenerateStrictMock<IEntityLoader<ICargo, TrackingId>>();
+            Fakes.FakeSearchableRepository<ICargo, TrackingId> searchableRepo = GeneratePartialMock<Fakes.FakeSearchableRepository<ICargo, TrackingId>>(identityMap, loader, identification, deferrerName);
+
+            // assert:
+            Assert.Throws<ArgumentNullException>(delegate {
+                var r = searchableRepo.Search<ICargo>(null);
+            });
+        }
+
+        [Test]
+        public void Search_withASpecificationOfTheBaseType_returnsADeferredProducedByTheDeferrer()
+        {
+            // arrange:
+            ISpecification<ICargo> specification = GenerateStrictMock<ISpecification<ICargo>>();
+            IDeferrer deferrer = GenerateStrictMock<IDeferrer>();
+            ISearch<ICargo, TrackingId> expectedResult = GenerateStrictMock<ISearch<ICargo, TrackingId>>();
+            deferrer.Expect(d => d.Defer<ISearch<ICargo, TrackingId>, IEnumerable<ICargo>>(null)).IgnoreArguments().Return(expectedResult).Repeat.Once();
+            string deferrerName = "Test";
+            TestUtilities.ResetEnterprise();
+            string appName = "SampleApp";
+            EnvironmentBase environment = MockRepository.GenerateStrictMock<EnvironmentBase>();
+            environment.Expect(e => e.Get<IDeferrer>(new InstanceName<IDeferrer>(deferrerName))).Return(deferrer).Repeat.Once();
+            IOrganization organization = MockRepository.GenerateStrictMock<IOrganization>();
+            EnterpriseBase appSingleton = MockRepository.GeneratePartialMock<EnterpriseBase>(appName);
+            appSingleton.Expect(a => a.Environment).Return(environment).Repeat.Once();
+            appSingleton.Expect(a => a.Organization).Return(organization).Repeat.Once();
+            Enterprise.Initialize(appSingleton);
+            IMapping<ICargo, TrackingId> identification = GenerateStrictMock<IMapping<ICargo, TrackingId>>();
+            IIdentityMap<ICargo, TrackingId> identityMap = GenerateStrictMock<IIdentityMap<ICargo, TrackingId>>();
+            IEntityLoader<ICargo, TrackingId> loader = GenerateStrictMock<IEntityLoader<ICargo, TrackingId>>();
+            Fakes.FakeSearchableRepository<ICargo, TrackingId> searchableRepo = GeneratePartialMock<Fakes.FakeSearchableRepository<ICargo, TrackingId>>(identityMap, loader, identification, deferrerName);
+
+            // act:
+            var result = searchableRepo.Search(specification);
+
+            // assert:
+            Assert.AreSame(expectedResult, result);
+        }
+
+        [Test]
+        public void Search_withASpecificationOfADerivedType_returnsADeferredProducedByTheDeferrer()
+        {
+            // arrange:
+            ISpecification<ISpecializedCargo> specification = GenerateStrictMock<ISpecification<ISpecializedCargo>>();
+            IDeferrer deferrer = GenerateStrictMock<IDeferrer>();
+            ISearch<ISpecializedCargo, TrackingId> expectedResult = GenerateStrictMock<ISearch<ISpecializedCargo, TrackingId>>();
+            deferrer.Expect(d => d.Defer<ISearch<ISpecializedCargo, TrackingId>, IEnumerable<ISpecializedCargo>>(null)).IgnoreArguments().Return(expectedResult).Repeat.Once();
+            string deferrerName = "Test";
+            TestUtilities.ResetEnterprise();
+            string appName = "SampleApp";
+            EnvironmentBase environment = MockRepository.GenerateStrictMock<EnvironmentBase>();
+            environment.Expect(e => e.Get<IDeferrer>(new InstanceName<IDeferrer>(deferrerName))).Return(deferrer).Repeat.Once();
+            IOrganization organization = MockRepository.GenerateStrictMock<IOrganization>();
+            EnterpriseBase appSingleton = MockRepository.GeneratePartialMock<EnterpriseBase>(appName);
+            appSingleton.Expect(a => a.Environment).Return(environment).Repeat.Once();
+            appSingleton.Expect(a => a.Organization).Return(organization).Repeat.Once();
+            Enterprise.Initialize(appSingleton);
+            IMapping<ICargo, TrackingId> identification = GenerateStrictMock<IMapping<ICargo, TrackingId>>();
+            IIdentityMap<ICargo, TrackingId> identityMap = GenerateStrictMock<IIdentityMap<ICargo, TrackingId>>();
+            IEntityLoader<ICargo, TrackingId> loader = GenerateStrictMock<IEntityLoader<ICargo, TrackingId>>();
+            Fakes.FakeSearchableRepository<ICargo, TrackingId> searchableRepo = GeneratePartialMock<Fakes.FakeSearchableRepository<ICargo, TrackingId>>(identityMap, loader, identification, deferrerName);
+            
+            // act:
+            var result = searchableRepo.Search(specification);
+            
+            // assert:
+            Assert.AreSame(expectedResult, result);
         }
     }
 }
