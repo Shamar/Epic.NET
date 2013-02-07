@@ -64,15 +64,8 @@
     <Compile Include="DeferringException.cs" />
     <Compile Include="ISlicedSearch.cs" />
     <Compile Include="OrderCriterionBase.cs" />
-    <Compile Include="Relational\Visitors\SourceVisitor.cs" />
-    <Compile Include="Relational\Visitors\ConjunctionVisitor.cs" />
-    <Compile Include="Relational\Visitors\DisjunctionVisitor.cs" />
-    <Compile Include="Relational\Visitors\NegationVisitor.cs" />
-    <Compile Include="Relational\Mappings\IIdentityMapping.cs" />
-    <Compile Include="Relational\Mappings\IdentityMapping.cs" />
     <Compile Include="ContravariantOrder.cs" />
     <Compile Include="SearchableRepositoryBase.cs" />
-    <Compile Include="DeferrerBase.cs" />
     <Compile Include="DeferredEvaluationException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -92,8 +85,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
-    <Folder Include="Relational\" />
-    <Folder Include="Relational\Visitors\" />
-    <Folder Include="Relational\Mappings\" />
   </ItemGroup>
 </Project>
