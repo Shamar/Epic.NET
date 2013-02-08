@@ -100,7 +100,7 @@ namespace Epic
         /// </param>
         internal static TResult SimulateAccept(TUnvisitable unvisitable, IVisitor<TResult> visitor, IVisitContext context)
         {
-            // no null check here, becouse (being this method internal) a NullReferenceException from here is a bug in Epic.
+            // no null check here, because (being this method internal) a NullReferenceException from here is a bug in Epic.
             Func<TUnvisitable, IVisitor<TResult>, IVisitContext, TResult> del = null;
             if (!_delegates.TryGetValue(unvisitable.GetType(), out del))
             {

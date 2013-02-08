@@ -52,8 +52,8 @@ namespace Epic.Query.Relational.Predicates
         /// The <see cref="ScalarPredicateBase"/> to compare with the current <see cref="Epic.Query.Relational.Predicates.Greater"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ScalarPredicateBase"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.Predicates.Greater"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="ScalarPredicateBase"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.Predicates.Greater"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (ScalarPredicateBase other)
         {
@@ -67,8 +67,8 @@ namespace Epic.Query.Relational.Predicates
         /// The <see cref="Greater"/> to compare with the current <see cref="Greater"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Greater"/> is equal to the current
-        /// <see cref="Greater"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Greater"/> is equal to the current
+        /// <see cref="Greater"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals(Greater other)
         {

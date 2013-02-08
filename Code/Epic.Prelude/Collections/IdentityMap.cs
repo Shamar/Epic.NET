@@ -34,9 +34,7 @@ namespace Epic.Collections
     /// <typeparam name="TEntity">Type of the entity of interest.</typeparam>
     /// <typeparam name="TIdentity">Type of the identity of <typeparamref name="TEntity"/>.</typeparam>
     [Serializable]
-    public sealed class IdentityMap<TEntity, TIdentity> : IIdentityMap<TEntity, TIdentity>, ISerializable
-        where TEntity : class
-        where TIdentity : IEquatable<TIdentity>
+    public sealed class IdentityMap<TEntity, TIdentity> : IIdentityMap<TEntity, TIdentity>, ISerializable where TEntity : class where TIdentity : IEquatable<TIdentity>
     {
         private readonly IMapping<TEntity, TIdentity> _mapping;
         private Dictionary<TIdentity, TEntity> _map;
@@ -166,7 +164,7 @@ namespace Epic.Collections
         /// <param name='entity'>
         /// Identity of the entity of interest.
         /// </param>
-        /// <returns><c>true</c>if the map knows the specified entity, <c>false</c> otherwise.</returns>
+        /// <returns><see langword="true"/>if the map knows the specified entity, <see langword="false"/> otherwise.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="entity"/> is <see langword="null"/>.</exception>
         public bool Knows(TIdentity entity)
         {
@@ -175,6 +173,40 @@ namespace Epic.Collections
                 throw new ArgumentNullException("entity");
             return _map.ContainsKey(entity);
         }
+
+        /// <summary>
+        /// Execute <paramref name="action"/> to each known entity.
+        /// </summary>
+        /// <param name='action'>
+        /// Action to execute on each known entity.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null"/>.</exception>
+        /// <exception cref="AggregatedOperationFailedException{TIdentity}">An exception
+        /// occurred during the application of <paramref name="action"/> to one or more known entities.</exception>
+        public void ForEachKnownEntity(Action<TEntity> action)
+        {
+            if(null == action)
+                throw new ArgumentNullException("action");
+            Dictionary<TIdentity, Exception> exceptions = new Dictionary<TIdentity, Exception>();
+            List<TIdentity> successfullyExecuted = new List<TIdentity>();
+            foreach(TEntity entity in _map.Values)
+            {
+                try
+                {
+                    action(entity);
+                    successfullyExecuted.Add(_mapping.ApplyTo(entity));
+                }
+                catch(Exception e)
+                {
+                    exceptions[_mapping.ApplyTo(entity)] = e;
+                }              
+            }
+            if(exceptions.Count > 0)
+            {
+                throw new AggregatedOperationFailedException<TIdentity>(exceptions, successfullyExecuted);
+            }
+        }
+
         #endregion
     }
 }

@@ -30,7 +30,7 @@ using System.Collections.Generic;
 namespace Epic.Query.Object.UnitTests
 {
     [TestFixture()]
-    public class DeferringExceptionQA
+    public class DeferringExceptionQA : EpicExceptionQABase<DeferringException>
     {
         private static string DefaultMessage = "An error occurred in the infrastructure.";
 
@@ -80,33 +80,20 @@ namespace Epic.Query.Object.UnitTests
             Assert.AreEqual(typeof(IEnumerable<ICargo>), e.ResultType);
         }
         
-        [Test]
-        public void Serialization_works()
-        {
-            string message = "Test message.";
-            Exception inner = new Exception();
-            DeferringException e = new DeferringException<ISearch<ICargo, TrackingId>, IEnumerable<ICargo>>(message, inner);
+        #region implemented abstract members of EpicExceptionQABase
 
-            System.IO.Stream stream = SerializationUtilities.Serialize(e);
-            Assert.IsNotNull(stream);
-        }
-        
-        [Test]
-        public void Deserialization_works()
+        protected override IEnumerable<DeferringException> ExceptionsToSerialize
         {
-            string innerMessage = "Test inner.";
-            string message = "Test message.";
-            Exception inner = new Exception(innerMessage);
-            DeferringException e = new DeferringException<ISearch<ICargo, TrackingId>, IEnumerable<ICargo>>(message, inner);
-
-            System.IO.Stream stream = SerializationUtilities.Serialize(e);
-            DeferringException deserialized = SerializationUtilities.Deserialize<DeferringException<ISearch<ICargo, TrackingId>, IEnumerable<ICargo>>>(stream);
-            
-            Assert.AreEqual(message, deserialized.Message);
-            Assert.AreEqual(innerMessage, deserialized.InnerException.Message);
-            Assert.AreEqual(typeof(ISearch<ICargo, TrackingId>), deserialized.DeferredType);
-            Assert.AreEqual(typeof(IEnumerable<ICargo>), deserialized.ResultType);
+            get
+            {
+                string innerMessage = "Test inner.";
+                string message = "Test message.";
+                EquatableException inner = new EquatableException(innerMessage);
+                yield return new DeferringException<ISearch<ICargo, TrackingId>, IEnumerable<ICargo>>(message, inner);
+            }
         }
+
+        #endregion
     }
 }
 

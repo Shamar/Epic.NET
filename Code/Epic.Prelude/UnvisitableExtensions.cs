@@ -163,7 +163,7 @@ namespace Epic
                 throw new ArgumentNullException("context");
             if (typeof(TBaseClass).IsSealed)
             {
-                string message = string.Format("Cannot use {0} as the base class of a visitable hierarchy becouse it is sealed.", typeof(TBaseClass));
+                string message = string.Format("Cannot use {0} as the base class of a visitable hierarchy because it is sealed.", typeof(TBaseClass));
                 throw new InvalidOperationException(message);
             }
             TResult result;

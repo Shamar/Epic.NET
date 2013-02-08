@@ -24,6 +24,7 @@
 using System;
 using System.Runtime.Serialization;
 using Epic.Query.Object.Expressions;
+using System.Collections.Generic;
 
 
 namespace Epic.Query.Object.UnitTests.Fakes
@@ -31,28 +32,45 @@ namespace Epic.Query.Object.UnitTests.Fakes
     [Serializable]
     public class FakeExpression<TValue> : Expression<TValue>
     {
+        public readonly TValue Value;
         public FakeExpression ()
         {
+        }
+
+        public FakeExpression (TValue value)
+        {
+            Value = value;
         }
 
         public FakeExpression(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+            Value = (TValue)info.GetValue("V", typeof(TValue));
         }
 
         public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
         {
-            throw new System.NotImplementedException ();
+            return AcceptMe(this, visitor, context);
         }
 
         #region implemented abstract members of Epic.Query.Object.Expressions.Expression
         protected override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            throw new System.NotImplementedException();
+            info.AddValue("V", Value, typeof(TValue));
         }
         #endregion
 
-
+        public override bool Equals(object obj)
+        {
+            FakeExpression<TValue> other = obj as FakeExpression<TValue>;
+            if(null == other)
+                return false;
+            return EqualityComparer<TValue>.Default.Equals(Value, other.Value);
+        }
+        public override int GetHashCode()
+        {
+            return typeof(TValue).GetHashCode();
+        }
     }
 }
 

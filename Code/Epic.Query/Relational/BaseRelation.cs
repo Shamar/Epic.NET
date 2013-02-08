@@ -60,8 +60,8 @@ namespace Epic.Query.Relational
         /// The <see cref="RelationalExpression"/> to compare with the current <see cref="Epic.Query.Relational.BaseRelation"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.BaseRelation"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationalExpression"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.BaseRelation"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (RelationalExpression other)
         {
@@ -77,8 +77,8 @@ namespace Epic.Query.Relational
         /// The <see cref="Epic.Query.Relational.BaseRelation"/> to compare with the current <see cref="Epic.Query.Relational.BaseRelation"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Epic.Query.Relational.BaseRelation"/> has the same name of the current
-        /// <see cref="Epic.Query.Relational.BaseRelation"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Epic.Query.Relational.BaseRelation"/> has the same name of the current
+        /// <see cref="Epic.Query.Relational.BaseRelation"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (BaseRelation other)
         {

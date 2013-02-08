@@ -65,8 +65,8 @@ namespace Epic.Query.Relational.Predicates
         /// The <see cref="UnaryPredicateBase"/> to compare with the current <see cref="UnaryPredicateBase"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="UnaryPredicateBase"/> is equal to the current
-        /// <see cref="UnaryPredicateBase"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="UnaryPredicateBase"/> is equal to the current
+        /// <see cref="UnaryPredicateBase"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public abstract bool Equals(UnaryPredicateBase other);
 
@@ -77,8 +77,8 @@ namespace Epic.Query.Relational.Predicates
         /// The <see cref="Predicate"/> to compare with the current <see cref="UnaryPredicateBase"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Predicate"/> is equal to the current
-        /// <see cref="UnaryPredicateBase"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Predicate"/> is equal to the current
+        /// <see cref="UnaryPredicateBase"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals(Predicate other)
         {

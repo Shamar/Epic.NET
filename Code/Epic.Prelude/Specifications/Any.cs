@@ -41,14 +41,25 @@ namespace Epic.Specifications
                                           ISerializable
         where TCandidate : class
     {
+        private readonly string _toString;
         private Any ()
         {
+            _toString = string.Format("is:{0}", typeof(TCandidate).Name);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current specification in a mathematical notation.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current specification in a mathematical notation.</returns>
+        public override string ToString()
+        {
+            return _toString;
         }
 
         /// <summary>
         /// Singleton instance of the specification.
         /// </summary>
-        public static Any<TCandidate> Specification = new Any<TCandidate>();
+        public static ISpecification<TCandidate> Specification = new Any<TCandidate>();
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 
@@ -56,7 +67,7 @@ namespace Epic.Specifications
         /// Determines that this specification is satisfied by any candidate.
         /// </summary>
         /// <returns>
-        /// Always <c>true</c>, since the base class grant that no <see langword="null"/> candidate will reach this method.
+        /// Always <see langword="true"/>, since the base class grant that no <see langword="null"/> candidate will reach this method.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.
@@ -103,6 +114,29 @@ namespace Epic.Specifications
         protected override void BuildNegation(out ISpecification<TCandidate> negation)
         {
             negation = No<TCandidate>.Specification;
+        }
+
+        /// <summary>
+        /// Return a specifications satisfied by any <typeparamref name="Other"/> that
+        /// satisfy this specification.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Specifications.Variant{Candidate, Other}"/> specification if <typeparamref name="Other"/>
+        /// is an abstraction of <typeparamref name="TCandidate"/> or a new <see cref="Any{TCandidate}"/>
+        /// closed on <typeparamref name="Other"/> otherwise.
+        /// </returns>
+        /// <typeparam name='Other'>
+        /// Either a specialization or an abstraction of <typeparamref name="TCandidate"/>.
+        /// </typeparam>
+        protected override ISpecification<Other> OfAnotherType<Other>()
+        {
+            if(typeof(Other).IsAssignableFrom(typeof(TCandidate)))
+            {
+                // on upcasting: use a Variant as the base
+                return base.OfAnotherType<Other>(); 
+            }
+            // on downcasting: specialize the semantic
+            return Any<Other>.Specification;
         }
 
         #endregion

@@ -43,6 +43,8 @@
     <Compile Include="AcceptCallerQA.cs" />
     <Compile Include="CompositeVisitorBaseQA.cs" />
     <Compile Include="CompositeVisitorQA.cs" />
+    <Compile Include="Fakes\NamedSpecification.cs" />
+    <Compile Include="Specifications\Visitors\InvariantDNFConverterQA.cs" />
     <Compile Include="VisitableBaseQA.cs" />
     <Compile Include="VisitContextQA.cs" />
     <Compile Include="VisitorBaseQA.cs" />
@@ -73,8 +75,17 @@
     <Compile Include="UnvisitableWrapperQA.cs" />
     <Compile Include="Visitors\EchoingVisitorQA.cs" />
     <Compile Include="Visitors\SimpleFormatterQA.cs" />
+    <Compile Include="EpicExceptionQA.cs" />
     <Compile Include="Extended\Delegates\FuncExtQA.cs" />
     <Compile Include="Extended\Delegates\MissingValuesExceptionQA.cs" />
+    <Compile Include="Specifications\Visitors\DNFConverterQA.cs" />
+    <Compile Include="Visitors\NestedVisitorBaseQA.cs" />
+    <Compile Include="EpicExceptionQABase.cs" />
+    <Compile Include="NonExhaustiveVisitorExceptionQA.cs" />
+    <Compile Include="Collections\AggregatedOperationFailedExceptionQA.cs" />
+    <Compile Include="EquatableDictionary.cs" />
+    <Compile Include="EquatableEnumerable.cs" />
+    <Compile Include="EquatableException.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -84,8 +95,5 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Extended\" />
-    <Folder Include="Extended\Delegates\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

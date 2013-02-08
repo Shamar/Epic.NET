@@ -27,7 +27,7 @@ using NUnit.Framework;
 namespace Epic
 {
 	[TestFixture]
-	public class EpicExceptionQA
+    public class EpicExceptionQA : EpicExceptionQABase<EpicException>
 	{
 		private static string DefaultMessage = "An error occurred in the infrastructure.";
 		
@@ -76,32 +76,20 @@ namespace Epic
 			Assert.AreEqual(message, e.Message);
 			Assert.AreSame(inner, e.InnerException);
 		}
-		
-		[Test]
-		public void Serialization_works()
-		{
-			string message = "Test message.";
-			Exception inner = new Exception();
-			EpicException e = new EpicException(message, inner);
 
-			System.IO.Stream stream = SerializationUtilities.Serialize(e);
-			Assert.IsNotNull(stream);
-		}
-		
-		[Test]
-		public void Deserialization_works()
-		{
-			string innerMessage = "Test inner.";
-			string message = "Test message.";
-			Exception inner = new Exception(innerMessage);
-			EpicException e = new EpicException(message, inner);
-
-			System.IO.Stream stream = SerializationUtilities.Serialize(e);
-			EpicException deserialized = SerializationUtilities.Deserialize<EpicException>(stream);
-			
-			Assert.AreEqual(message, deserialized.Message);
-			Assert.AreEqual(innerMessage, deserialized.InnerException.Message);
-		}
+        #region implemented abstract members of EpicExceptionQABase
+        protected override System.Collections.Generic.IEnumerable<EpicException> ExceptionsToSerialize
+        {
+            get
+            {
+                string innerMessage = "Test inner.";
+                string message = "Test message.";
+                Exception inner = new Exception(innerMessage);
+                EpicException e = new EpicException(message, inner);
+                yield return e; 
+            }
+        }
+        #endregion		
 	}
 }
 

@@ -25,11 +25,22 @@ using System;
 namespace Epic.Specifications
 {
     /// <summary>
+    /// Common interface for specifications.
+    /// </summary>
+    public interface ISpecification : IVisitable
+    {
+        /// <summary>
+        /// Gets the type of the specification.
+        /// </summary>
+        Type SpecificationType { get; }
+    }
+
+    /// <summary>
     /// Specificaiton interface.  
     /// </summary>
     /// <typeparam name="TCandidate">The (reference) type of the objects 
     /// that can satisfy the specification.</typeparam>
-    public interface ISpecification<TCandidate> : IEquatable<ISpecification<TCandidate>>, IVisitable
+    public interface ISpecification<TCandidate> : IEquatable<ISpecification<TCandidate>>, ISpecification
         where TCandidate : class
     {
         /// <summary>
@@ -39,18 +50,13 @@ namespace Epic.Specifications
         Type CandidateType { get; }
 
         /// <summary>
-        /// Gets the type of the specification.
-        /// </summary>
-        Type SpecificationType { get; }
-
-        /// <summary>
         /// Check if the <typeparamref name="TCandidate"/> satisfy the specification. 
         /// </summary>
         /// <param name="candidate">
         /// A <typeparamref name="TCandidate"/>.
         /// </param>
         /// <returns>
-        /// Returns <c>true</c> when <paramref name="candidate"/> satisfies the specification, <c>false</c> otherwise.
+        /// Returns <see langword="true"/> when <paramref name="candidate"/> satisfies the specification, <see langword="false"/> otherwise.
         /// Note that <see langword="null"/> can not satisfy any specification.
         /// </returns>
         bool IsSatisfiedBy(TCandidate candidate);

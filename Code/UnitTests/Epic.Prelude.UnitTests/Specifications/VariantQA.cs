@@ -30,6 +30,41 @@ namespace Epic.Specifications
     [TestFixture()]
     public class VariantQA : RhinoMocksFixtureBase
     {
+        public static readonly ISpecification<Fakes.FakeCandidate1> q = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("q");
+        public static readonly ISpecification<Fakes.FakeCandidate1> r = new Fakes.NamedSpecification<Fakes.FakeCandidate1>("r");
+        static object[] ToStringSource =
+        {
+            new object[] {
+                q.OfType<Fakes.FakeCandidate1Abstraction>(), 
+                "q⇗FakeCandidate1Abstraction"
+            },
+            new object[] {
+                q.OfType<Fakes.FakeCandidate1Specialization>(), 
+                "q⇘FakeCandidate1Specialization"
+            },
+            new object[] {
+                q.And(r).OfType<Fakes.FakeCandidate1Abstraction>(), 
+                "(q ∧ r)⇗FakeCandidate1Abstraction"
+            },
+            new object[] {
+                q.Or(r).OfType<Fakes.FakeCandidate1Specialization>(), 
+                "(q ∨ r)⇘FakeCandidate1Specialization"
+            },
+            new object[] {
+                q.Negate().OfType<Fakes.FakeCandidate1Abstraction>(), 
+                "(¬q)⇗FakeCandidate1Abstraction"
+            }
+        };
+        
+        [Test, TestCaseSource("ToStringSource")]
+        public void ToString_OfAVariant_works(ISpecification toTest, string expression)
+        {
+            // act:
+            string result = toTest.ToString();
+            
+            // assert:
+            Assert.AreEqual(expression, result);
+        }
         [Test]
         public void Initialize_withASpecification_works ()
         {
@@ -37,19 +72,20 @@ namespace Epic.Specifications
             ISpecification<Fakes.FakeCandidate1> inner1 = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1>>();
             inner1.Expect(s => s.CandidateType).Return(typeof(Fakes.FakeCandidate1)).Repeat.Once();
             ISpecification<Fakes.FakeCandidate1Abstraction> inner2 = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Abstraction>>();
-            inner2.Expect(s => s.CandidateType).Return(typeof(Fakes.FakeCandidate1Abstraction)).Repeat.Once();
 
             // act:
-            var toTest1 = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner1);
-            var toTest2 = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner2);
+            var toTestUpcasting = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner1);
+            var toTestDowncasting = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner2);
 
             // assert:
-            Assert.IsNotNull(toTest1);
-            Assert.AreSame(inner1, toTest1.InnerSpecification);
-            Assert.AreEqual(typeof(Fakes.FakeCandidate1), (toTest1 as ISpecification<Fakes.FakeCandidate1Abstraction>).CandidateType);
-            Assert.IsNotNull(toTest2);
-            Assert.AreSame(inner2, toTest2.InnerSpecification);
-            Assert.AreEqual(typeof(Fakes.FakeCandidate1Abstraction), (toTest2 as ISpecification<Fakes.FakeCandidate1>).CandidateType);
+            Assert.IsNotNull(toTestUpcasting);
+            Assert.AreSame(inner1, toTestUpcasting.InnerSpecification);
+            Assert.AreSame(inner1, (toTestUpcasting as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
+            Assert.AreEqual(typeof(Fakes.FakeCandidate1), (toTestUpcasting as ISpecification<Fakes.FakeCandidate1Abstraction>).CandidateType);
+            Assert.IsNotNull(toTestDowncasting);
+            Assert.AreSame(inner2, toTestDowncasting.InnerSpecification);
+            Assert.AreSame(inner2, (toTestDowncasting as IMonadicSpecificationComposition<Fakes.FakeCandidate1Abstraction>).Operand);
+            Assert.AreEqual(typeof(Fakes.FakeCandidate1), (toTestDowncasting as ISpecification<Fakes.FakeCandidate1>).CandidateType);
         }
 
         [Test]
@@ -61,17 +97,6 @@ namespace Epic.Specifications
             });
         }
 
-        [Test]
-        public void Initialize_withUnrelatedCandidateTypes_throwTypeInitializationException ()
-        {
-            // arrange:
-            ISpecification<Fakes.FakeCandidate1> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1>>();
-            
-            // act:
-            Assert.Throws<TypeInitializationException>(delegate() {
-                new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate2>(inner);
-            });
-        }
 
         [Test]
         public void Initialize_withTwoEqualsCandidateTypes_throwTypeInitializationException ()
@@ -126,20 +151,68 @@ namespace Epic.Specifications
         }
 
         [Test]
-        public void OfType_withANotImplementedCandidate_asksToTheInnerSpecification ()
+        public void OfType_withANotImplementedCandidate_returnsANoSpecification ()
         {
             // arrange:
-            ISpecification<Fakes.FakeCandidate2> expectedResult = GenerateStrictMock<ISpecification<Fakes.FakeCandidate2>>();
             ISpecification<Fakes.FakeCandidate1> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1>>();
-            inner.Expect(s => s.OfType<Fakes.FakeCandidate2>()).Return(expectedResult).Repeat.Once();
+            ISpecification<Fakes.FakeCandidate1Abstraction> toTest = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner);
+            
+            
+            // act:
+            var result = toTest.OfType<Fakes.FakeCandidate2>();
+            
+            // assert:
+            Assert.AreSame(No<Fakes.FakeCandidate2>.Specification, result);
+        }
+
+        [Test]
+        public void OfType_withAMoreDerivedCandidateOnAnUpcastingVariantSpecification_asksToTheInnerSpecification ()
+        {
+            // arrange:
+            ISpecification<Fakes.FakeCandidate1Specialization> expectedResult = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Specialization>>();
+            ISpecification<Fakes.FakeCandidate1> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1>>();
+            inner.Expect(s => s.OfType<Fakes.FakeCandidate1Specialization>()).Return(expectedResult).Repeat.Once();
             ISpecification<Fakes.FakeCandidate1Abstraction> toTest = new Variant<Fakes.FakeCandidate1, Fakes.FakeCandidate1Abstraction>(inner);
 
 
             // act:
-            var result = toTest.OfType<Fakes.FakeCandidate2>();
+            var result = toTest.OfType<Fakes.FakeCandidate1Specialization>();
 
             // assert:
             Assert.AreSame(expectedResult, result);
+        }
+
+        [Test]
+        public void OfType_withAMoreDerivedCandidateOnAnDowncastingVariantSpecification_asksToTheInnerSpecification ()
+        {
+            // arrange:
+            ISpecification<Fakes.FakeCandidate1Specialization> expectedResult = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Specialization>>();
+            ISpecification<Fakes.FakeCandidate1Abstraction> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Abstraction>>();
+            inner.Expect(s => s.OfType<Fakes.FakeCandidate1Specialization>()).Return(expectedResult).Repeat.Once();
+            ISpecification<Fakes.FakeCandidate1> toTest = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1>(inner);
+            
+            
+            // act:
+            var result = toTest.OfType<Fakes.FakeCandidate1Specialization>();
+            
+            // assert:
+            Assert.AreSame(expectedResult, result);
+        }
+
+        [Test]
+        public void OfType_withAnIntermediateCandidateOnAnDowncastingVariantSpecification_returnsANewVariantWithTheCurrentVariantAsInner ()
+        {
+            // arrange:
+            ISpecification<Fakes.FakeCandidate1Abstraction> inner = GenerateStrictMock<ISpecification<Fakes.FakeCandidate1Abstraction>>();
+            ISpecification<Fakes.FakeCandidate1Specialization> toTest = new Variant<Fakes.FakeCandidate1Abstraction, Fakes.FakeCandidate1Specialization>(inner);
+            
+            
+            // act:
+            var result = toTest.OfType<Fakes.FakeCandidate1>();
+            
+            // assert:
+            Assert.IsInstanceOf<Variant<Fakes.FakeCandidate1Specialization, Fakes.FakeCandidate1>>(result);
+            Assert.AreSame(toTest, (result as Variant<Fakes.FakeCandidate1Specialization, Fakes.FakeCandidate1>).InnerSpecification);
         }
     }
 }

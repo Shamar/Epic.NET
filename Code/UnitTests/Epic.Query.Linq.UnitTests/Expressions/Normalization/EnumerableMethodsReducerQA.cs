@@ -259,7 +259,7 @@ namespace Epic.Query.Linq.Expressions.Normalization
         }
 
         [Test, TestCaseSource(typeof(Samples), "NotReduceableEnumerableMethodCallExpressions")]
-        public void Visit_anEnumerableMethodThatCanNotBeReducedBecouseOfItsArguments_returnsAMethodCallExpressionToTheSameMethod(MethodCallExpression expressionToVisit)
+        public void Visit_anEnumerableMethodThatCanNotBeReducedBecauseOfItsArguments_returnsAMethodCallExpressionToTheSameMethod(MethodCallExpression expressionToVisit)
         {
             // arrange:
             IVisitContext context = GenerateStrictMock<IVisitContext>();

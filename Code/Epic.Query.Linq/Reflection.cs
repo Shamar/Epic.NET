@@ -45,7 +45,7 @@ namespace Epic.Query.Linq
 		/// The item type of <paramref name="enumerableType"/>.
 		/// </returns>
 		/// <param name='itemType'>
-		/// When the method returns <c>true</c>, itemType will contains the item type.
+		/// When the method returns <see langword="true"/>, itemType will contains the item type.
 		/// </param>
 		/// <param name='enumerableType'>
 		/// Type to inspect.
@@ -99,7 +99,7 @@ namespace Epic.Query.Linq
 		/// Determines whether the <paramref name="enumerableType"/>'s generic type definition is <see cref="IEnumerable{T}"/>.
 		/// </summary>
 		/// <returns>
-		/// <c>true</c> if the <paramref name="enumerableType"/>'s generic type definition is <see cref="IEnumerable{T}"/>; otherwise, <c>false</c>.
+		/// <see langword="true"/> if the <paramref name="enumerableType"/>'s generic type definition is <see cref="IEnumerable{T}"/>; otherwise, <see langword="false"/>.
 		/// </returns>
 		/// <param name='enumerableType'>
 		/// Type to check.

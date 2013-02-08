@@ -27,35 +27,36 @@ namespace Epic.Specifications
 {
     /// <summary>
     /// Specification that is satisfied by any <typeparamref name="ToCandidate"/> that is a 
-    /// <typeparamref name="FromCanditate"/> satisfing the inner specification.
+    /// <typeparamref name="FromCandidate"/> satisfing the inner specification.
     /// </summary>
     /// <typeparam name="ToCandidate">Type of the objects that can be tested with this specification.</typeparam>
-    /// <typeparam name="FromCanditate">Type of the objects that can be tested with inner specification.</typeparam>
+    /// <typeparam name="FromCandidate">Type of the objects that can be tested with inner specification.</typeparam>
+    /// <seealso cref="IMonadicSpecificationComposition{TCandidate}"/>
     [Serializable]
-    public sealed class Variant<FromCanditate, ToCandidate> : SpecificationBase<Variant<FromCanditate, ToCandidate>, ToCandidate>,
-                                                              IEquatable<Variant<FromCanditate, ToCandidate>>
+    public sealed class Variant<FromCandidate, ToCandidate> : SpecificationBase<Variant<FromCandidate, ToCandidate>, ToCandidate>,
+                                                              IEquatable<Variant<FromCandidate, ToCandidate>>,
+                                                              IMonadicSpecificationComposition<ToCandidate>
         where ToCandidate : class
-        where FromCanditate : class
+        where FromCandidate : class
     {
-        static Variant ()
+        private static readonly bool _thisIsAnUpcastingVariant;
+
+        static Variant()
         {
-            if (!typeof(ToCandidate).IsAssignableFrom (typeof(FromCanditate)) && !typeof(FromCanditate).IsAssignableFrom (typeof(ToCandidate))) {
-                string message = string.Format ("Cannot cast neither from {0} to {1} nor from {1} to {0}.", typeof(FromCanditate), typeof(ToCandidate));
-                throw new InvalidCastException (message);
-            }
-            if (typeof(ToCandidate).Equals(typeof(FromCanditate)))
+            if (typeof(ToCandidate).Equals(typeof(FromCandidate)))
             {
-                string message = string.Format("Cannot create a Variant<{1}, {0}> specification, becouse the two type arguments are equals.", typeof(FromCanditate), typeof(ToCandidate));
-                throw new InvalidCastException (message);
+                string message = string.Format("Cannot create a Variant<{1}, {0}> specification, because the two type arguments are equals.", typeof(FromCandidate), typeof(ToCandidate));
+                throw new EpicException(message);
             }
+            _thisIsAnUpcastingVariant = typeof(ToCandidate).IsAssignableFrom(typeof(FromCandidate));
         }
         
-        private readonly ISpecification<FromCanditate> _innerSpecification;
+        private readonly ISpecification<FromCandidate> _innerSpecification;
 
         /// <summary>
         /// The <see cref="ISpecification{TInitial}"/> that must be satisfied by <typeparamref name="ToCandidate"/> for this specification.
         /// </summary>
-        public ISpecification<FromCanditate> InnerSpecification
+        public ISpecification<FromCandidate> InnerSpecification
         {
             get
             {
@@ -64,49 +65,49 @@ namespace Epic.Specifications
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Variant{ToCandidate, FromCanditate}"/> class.
+        /// Initializes a new instance of the <see cref="Variant{ToCandidate, FromCandidate}"/> class.
         /// </summary>
         /// <param name='innerSpecification'>
         /// Specification that must be satisfied by any <typeparamref name="ToCandidate"/> to satisfy the current specification.
         /// </param>
         /// <exception cref="ArgumentNullException"><paramref name="innerSpecification"/> is <see langword="null"/>.</exception>
-        public Variant (ISpecification<FromCanditate> innerSpecification)
+        internal Variant(ISpecification<FromCandidate> innerSpecification)
         {
             if (null == innerSpecification)
-                throw new ArgumentNullException ("innerSpecification");
+                throw new ArgumentNullException("innerSpecification");
             _innerSpecification = innerSpecification;
         }
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
         
         /// <summary>
-        /// Determines whether the specified <see cref="Variant{ToCandidate, FromCanditate}"/> is equal to the current one.
+        /// Determines whether the specified <see cref="Variant{ToCandidate, FromCandidate}"/> is equal to the current one.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if <paramref name="otherSpecification"/> has the same <see cref="InnerSpecification"/> 
-        /// of the current instance, <c>false</c> otherwise.
+        /// <see langword="true"/>, if <paramref name="otherSpecification"/> has the same <see cref="InnerSpecification"/> 
+        /// of the current instance, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='otherSpecification'>
         /// Other specification.
         /// </param>
-        protected override bool EqualsA(Variant<FromCanditate, ToCandidate> otherSpecification)
+        protected override bool EqualsA(Variant<FromCandidate, ToCandidate> otherSpecification)
         {
-            return _innerSpecification.Equals (otherSpecification._innerSpecification);
+            return _innerSpecification.Equals(otherSpecification._innerSpecification);
         }
         
         /// <summary>
         /// Determines whether this specification is satisfied by a the specified <paramref name="candidate"/>.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if <paramref name="candidate"/> is a <typeparamref name="FromCanditate"/> that satisfy 
-        /// the <see cref="InnerSpecification"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if <paramref name="candidate"/> is a <typeparamref name="FromCandidate"/> that satisfy 
+        /// the <see cref="InnerSpecification"/>; otherwise, <see langword="false"/>.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.
         /// </param>
-        protected override bool IsSatisfiedByA (ToCandidate candidate)
+        protected override bool IsSatisfiedByA(ToCandidate candidate)
         {
-            return _innerSpecification.IsSatisfiedBy (candidate as FromCanditate);
+            return _innerSpecification.IsSatisfiedBy(candidate as FromCandidate);
         }
         
         /// <summary>
@@ -120,22 +121,66 @@ namespace Epic.Specifications
         /// <typeparam name='Other'>
         /// One of types admitted to satisfy the <see cref="InnerSpecification"/>.
         /// </typeparam>
-        /// <exception cref="InvalidCastException">No instance of <typeparamref name="Other"/> can 
-        /// satisfy the <see cref="InnerSpecification"/>.</exception>
-        protected override ISpecification<Other> OfAnotherType<Other> ()
+        protected override ISpecification<Other> OfAnotherType<Other>()
         {
-            return _innerSpecification.OfType<Other> ();
+            if (_thisIsAnUpcastingVariant)
+            {
+                // if this is an upcasting variant we let the inner specification to choose
+                return _innerSpecification.OfType<Other>();
+            }
+            if (typeof(Other).IsAssignableFrom(typeof(ToCandidate)))
+            {
+                // here we have 
+                // - either ToCandidate : Other : FromCandidate  
+                // - or ToCandidate : FromCandidate : Other
+                // in both cases we don't want to forget that we selected only ToCandidate instances
+                return new Variant<ToCandidate, Other>(this);
+            }
+            // here we have Other : ToCandidate : FromCandidate
+            // we can let the inner specification to choose
+            return _innerSpecification.OfType<Other>();
         }
         
         /// <summary>
         /// <see cref="ISpecification{TInitial}.CandidateType"/>.
         /// </summary>
-        protected override Type FirstCandidateType {
-            get {
-                return _innerSpecification.CandidateType;
+        protected override Type FirstCandidateType
+        {
+            get
+            {
+                if (_thisIsAnUpcastingVariant)
+                    return _innerSpecification.CandidateType;
+                return typeof(ToCandidate);
             }
         }
+        
         #endregion
+
+        #region IMonadicSpecificationComposition implementation
+        
+        ISpecification IMonadicSpecificationComposition<ToCandidate>.Operand
+        {
+            get
+            {
+                return _innerSpecification;
+            }
+        }
+
+        #endregion
+        
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current specification in a mathematical notation.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current specification in a mathematical notation.</returns>
+        public override string ToString()
+        {
+            string inner = _innerSpecification.ToString();
+            if (_innerSpecification is IPolyadicSpecificationComposition<FromCandidate> || _innerSpecification is IMonadicSpecificationComposition<FromCandidate>)
+                inner = "(" + inner + ")";
+            if(_thisIsAnUpcastingVariant)
+                return inner + "⇗" + typeof(ToCandidate).Name;
+            return inner + "⇘" + typeof(ToCandidate).Name;
+        }
     }
 }
 

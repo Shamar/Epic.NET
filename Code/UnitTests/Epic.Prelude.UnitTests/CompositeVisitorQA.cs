@@ -61,7 +61,7 @@ namespace Epic
         }
         
         [Test]
-        public void GetFirstVisitor_forAnUnknowType_throwsInvalidOperationException()
+        public void GetFirstVisitor_forAnUnknowType_throwsNonExhaustiveVisitorException()
         {
             // arrange:
             string name = "test";
@@ -69,7 +69,7 @@ namespace Epic
             CompositeVisitor<object> visitor = new FakeCompositeVisitor<object>(name);
 
             // assert:
-            Assert.Throws<InvalidOperationException>(delegate { 
+            Assert.Throws<NonExhaustiveVisitorException<Expression<Func<string, int>>>>(delegate { 
                 visitor.GetFirstVisitor(target);
             }, "No visitor available for the expression {0} (of type: {2}) in the composition '{1}'.", target, name, target.GetType());
         }
@@ -84,6 +84,14 @@ namespace Epic
                 {
                 }
 
+                public new string CompositionName
+                {
+                    get
+                    {
+                        return base.CompositionName;
+                    }
+                }
+
                 public string CallContinueVisit<TExpression>(TExpression expression, IVisitContext context) where TExpression : class
                 {
                     return base.ContinueVisit(expression, context);
@@ -93,6 +101,21 @@ namespace Epic
                 {
                     return base.VisitInner(expression, context);
                 }
+            }
+
+            [Test]
+            public void CompositionName_inAVisitorDerivedFromVisitorBase_isEqualToTheCompositionsName()
+            {
+                // arrange:
+                string name = "test";
+                CompositeVisitor<string> visitor = new FakeCompositeVisitor<string>(name);
+
+                // act:
+                DummyVisitor toTest = new DummyVisitor(visitor);
+
+
+                // assert:
+                Assert.AreSame(name, toTest.CompositionName);
             }
 
             [Test]

@@ -56,8 +56,8 @@ namespace Epic.Query.Relational
         /// The <see cref="RelationFunction"/> to compare with the current <see cref="Epic.Query.Relational.RelationFunction"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="RelationFunction"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.RelationFunction"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationFunction"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.RelationFunction"/>; otherwise, <see langword="false"/>.
         /// </returns>
         /// <exception cref='NotImplementedException'>
         /// Is thrown when the not implemented exception.
@@ -71,8 +71,8 @@ namespace Epic.Query.Relational
         /// The <see cref="RelationalExpression"/> to compare with the current <see cref="RelationFunction"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
-        /// <see cref="RelationFunction"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationalExpression"/> is equal to the current
+        /// <see cref="RelationFunction"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (RelationalExpression other)
         {

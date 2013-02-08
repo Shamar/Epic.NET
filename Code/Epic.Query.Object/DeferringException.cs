@@ -27,7 +27,7 @@ using System.Runtime.Serialization;
 namespace Epic.Query.Object
 {
     /// <summary>
-    /// Exception thrown when a request to <see cref="IDeferrer.Defer{TDeferred, TResult}"/> is invalid becouse of the type arguments.
+    /// Exception thrown when a request to <see cref="IDeferrer.Defer{TDeferred, TResult}"/> is invalid because of the type arguments.
     /// </summary>
     /// <remarks>
     /// The <see cref="DeferringException"/> is designed to be cought only: to throw it all <see cref="IDeferrer"/> implementation
@@ -91,7 +91,7 @@ namespace Epic.Query.Object
     }
     
     /// <summary>
-    /// Exception thrown when a request to <see cref="IDeferrer.Defer{TDeferred, TResult}"/> is invalid becouse of the type arguments.
+    /// Exception thrown when a request to <see cref="IDeferrer.Defer{TDeferred, TResult}"/> is invalid because of the type arguments.
     /// </summary>
     [Serializable] 
     public sealed class DeferringException<TDeferred, TResult> : DeferringException

@@ -88,8 +88,8 @@ namespace Epic.Query.Relational
         /// The <see cref="RelationAttribute"/> to compare with the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="RelationAttribute"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationAttribute"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (RelationAttribute other)
         {
@@ -104,8 +104,8 @@ namespace Epic.Query.Relational
         /// The <see cref="Scalar"/> to compare with the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Scalar"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Scalar"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals(Scalar other)
         {
@@ -119,8 +119,8 @@ namespace Epic.Query.Relational
         /// The <see cref="System.Object"/> to compare with the current <see cref="Epic.Query.Relational.RelationAttribute"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="Epic.Query.Relational.RelationAttribute"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (object obj)
         {

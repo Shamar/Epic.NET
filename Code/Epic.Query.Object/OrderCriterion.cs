@@ -44,6 +44,7 @@ namespace Epic.Query.Object
                                                     IComparer<TEntity>,
                                                     IEquatable<OrderCriterion<TEntity>>,
                                                     ISerializable
+        where TEntity : class
     {
         internal OrderCriterion ()
             : base()
@@ -51,12 +52,21 @@ namespace Epic.Query.Object
         }
 
         /// <summary>
+        /// Returns the current order criterion wrapped to handle any <typeparamref name="TSpecializedEntity"/>.
+        /// </summary>
+        /// <returns>The current <see cref="OrderCriterion{TEntity}"/> wrapped to handle any <typeparamref name="TSpecializedEntity"/>.</returns>
+        /// <typeparam name='TSpecializedEntity'>
+        /// Type of the entities to order.
+        /// </typeparam>
+        public abstract OrderCriterion<TSpecializedEntity> For<TSpecializedEntity>() where TSpecializedEntity : class, TEntity;
+
+        /// <summary>
         /// Returns a criterion that chain the <paramref name="other"/> order criterion after this.
         /// </summary>
         /// <param name='other'>
         /// Another order criterion.
         /// </param>
-        /// <returns>A criterion that chain the <paramref name="other"/> order criterion after this.</returns>
+        /// <returns>A criterion that chain the <paramref name="other"/> order criterion after the current one.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is <see langword="null"/></exception>
         public abstract OrderCriterion<TEntity> Chain(OrderCriterion<TEntity> other);
 
@@ -72,11 +82,16 @@ namespace Epic.Query.Object
         /// Compare the specified x and y.
         /// </summary>
         /// <param name='x'>
-        /// The x entity.
+        /// The first entity.
         /// </param>
         /// <param name='y'>
-        /// The y entity.
+        /// The second entity.
         /// </param>
+        /// <returns><c>0</c> if <paramref name="x"/> and <paramref name="y"/> are equivalent
+        /// for the current order criterion, a positive number if 
+        /// <paramref name="x"/> goes after <paramref name="y"/> and a negative number 
+        /// if <paramref name="x"/> goes before <paramref name="y"/>.</returns>
+        /// <exception cref="InvalidOperationException"><paramref name="x"/> and <paramref name="y"/> cannot be sorted by the current criterion.</exception>
         public abstract int Compare (TEntity x, TEntity y);
 
         #endregion
@@ -89,7 +104,7 @@ namespace Epic.Query.Object
         /// grant that it is not <see langword="null"/>, <see langword="this"/> and that it has the same type of the current instance.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if equals was safed, <c>false</c> otherwise.
+        /// <see langword="true"/>, if the current criterion and <paramref name="other"/> are equivalent, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='other'>
         /// Other.
@@ -109,8 +124,8 @@ namespace Epic.Query.Object
         /// The <see cref="OrderCriterion{TEntity}"/> to compare with the current <see cref="OrderCriterion{TEntity}"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="OrderCriterion{TEntity}"/> is equal to the current
-        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="OrderCriterion{TEntity}"/> is equal to the current
+        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (OrderCriterion<TEntity> other)
         {
@@ -134,8 +149,8 @@ namespace Epic.Query.Object
         /// The <see cref="System.Object"/> to compare with the current <see cref="OrderCriterion{TEntity}"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="System.Object"/> is equal to the current
-        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="System.Object"/> is equal to the current
+        /// <see cref="OrderCriterion{TEntity}"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public sealed override bool Equals (object obj)
         {

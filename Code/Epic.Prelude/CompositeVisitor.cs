@@ -114,8 +114,7 @@ namespace Epic
                 if(null != foundVisitor)
                     return foundVisitor;
             }
-            string message = string.Format("No visitor available for the expression {0} (of type: {2}) in the composition '{1}'.", target, _name, typeof(TExpression));
-            throw new InvalidOperationException(message);
+            throw new NonExhaustiveVisitorException<TExpression>(_name, target);
         }
 
         /// <summary>
@@ -136,7 +135,7 @@ namespace Epic
         private IVisitor<TResult, TExpression> GetNextVisitor<TExpression>(TExpression target, int callerPosition) where TExpression : class
         {
             // the visit context is ignored from VisitorFinder<TExpression>: we can simply send null
-            return AcceptCaller<TExpression, IVisitor<TResult, TExpression>>.CallAccept(target, new VisitorFinder<TExpression>(this, callerPosition), null);
+            return AcceptCaller<TExpression, IVisitor<TResult, TExpression>>.CallAccept(target, new VisitorFinder<TExpression>(this, callerPosition), VisitContext.New);
         }
 
         /// <summary>
@@ -192,6 +191,18 @@ namespace Epic
         {
             private readonly int _position;
             private readonly CompositeVisitor<TResult> _composition;
+
+            /// <summary>
+            /// Provides the name of the composition that own the current visitor.
+            /// </summary>
+            /// <value>The name of the composition.</value>
+            protected string CompositionName
+            {
+                get
+                {
+                    return _composition._name;
+                }
+            }
             
             /// <summary>
             /// Initializes a new instance of the visitor and register it in the <paramref name="composition"/> provided.

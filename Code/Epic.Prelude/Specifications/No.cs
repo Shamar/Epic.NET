@@ -37,14 +37,25 @@ namespace Epic.Specifications
                                          ISerializable
         where TCandidate : class
     {
+        private readonly string _toString;
         private No ()
         {
+            _toString = string.Format("¬({0})", Any<TCandidate>.Specification);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current specification in a mathematical notation.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current specification in a mathematical notation.</returns>
+        public override string ToString()
+        {
+            return _toString;
         }
 
         /// <summary>
         /// Singleton instance of the specification.
         /// </summary>
-        public static No<TCandidate> Specification = new No<TCandidate>();
+        public static ISpecification<TCandidate> Specification = new No<TCandidate>();
 
         #region implemented abstract members of Epic.Specifications.SpecificationBase
 
@@ -52,7 +63,7 @@ namespace Epic.Specifications
         /// Determines that this specification cannot be satisfied by any candidate.
         /// </summary>
         /// <returns>
-        /// Always <c>false</c>.
+        /// Always <see langword="false"/>.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.
@@ -101,6 +112,29 @@ namespace Epic.Specifications
             negation = Any<TCandidate>.Specification;
         }
 
+        /// <summary>
+        /// Return a specifications satisfied by any <typeparamref name="Other"/> that
+        /// satisfy this specification.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="Specifications.Variant{Candidate, Other}"/> specification if <typeparamref name="Other"/>
+        /// is an abstraction of <typeparamref name="TCandidate"/> or a new <see cref="No{TCandidate}"/>
+        /// closed on <typeparamref name="Other"/> otherwise.
+        /// </returns>
+        /// <typeparam name='Other'>
+        /// Either a specialization or an abstraction of <typeparamref name="TCandidate"/>.
+        /// </typeparam>
+        protected override ISpecification<Other> OfAnotherType<Other>()
+        {
+            if(typeof(Other).IsAssignableFrom(typeof(TCandidate)))
+            {
+                // on upcasting: use a Variant as the base
+                return base.OfAnotherType<Other>(); 
+            }
+            // on downcasting: specialize the semantic
+            return No<Other>.Specification;
+        }
+
         #endregion
 
         #region ISerializable implementation
@@ -131,8 +165,8 @@ namespace Epic.Specifications
                 info.SetType(typeof(Ref));
             }
             
-#endregion
-            
+            #endregion
+
             #region IObjectReference Members
             
             public object GetRealObject(StreamingContext context)
@@ -140,7 +174,7 @@ namespace Epic.Specifications
                 return No<TCandidate>.Specification;
             }
             
-#endregion
+            #endregion
         }
     }
 }

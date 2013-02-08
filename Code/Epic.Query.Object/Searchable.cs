@@ -85,6 +85,7 @@ namespace Epic.Query.Object
         /// </typeparam>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> 
         /// is <see langword="null"/>.</exception>
+        /// <exception cref="DeferredEvaluationException{TResult}">The deferred evaluation failed.</exception>
         public static IEnumerable<TIdentity> Identify<TEntity, TIdentity>(this ISearch<TEntity, TIdentity> search)
             where TEntity : class
             where TIdentity : IEquatable<TIdentity>
@@ -109,6 +110,7 @@ namespace Epic.Query.Object
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="search"/> 
         /// is <see langword="null"/>.</exception>
+        /// <exception cref="DeferredEvaluationException{TResult}">The deferred evaluation failed.</exception>
         public static uint Count<TItem>(this IDeferred<IEnumerable<TItem>> search)
         {
             if(null == search)

@@ -33,10 +33,12 @@ We adopted an idiomatic convention with the following rules:
 - commands must be void;
 - should a command returns a value, it will go through an +out+ parameter that 
   will have a meaningful name;
-- properties are readonly (thus they are always query);
-- entity's queries should never throw exceptions (argument validation apart);
+- properties are readonly (thus they are always query) and their meaning map to 
+  qualities of the object exposing them;
+- access to properties should never throw exceptions (lazy loading is an anti-pattern);
 - commands must be well documented and thrown exceptions should be
-  listed and explained already in the interfaces.
+  listed and explained already in the interfaces;
+- commands can also raise (documented) events.
  
 CAUTION: This is probably the major concern in the choice of C# for modeling 
 tasks. Checked exceptions would be valuable for us! We want that clients breaks

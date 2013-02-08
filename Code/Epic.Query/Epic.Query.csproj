@@ -70,6 +70,9 @@
     <Compile Include="Relational\Operations\OuterJoin.cs" />
     <Compile Include="Relational\Operations\ThetaJoin.cs" />
     <Compile Include="Relational\RelationalExpression.cs" />
+    <Compile Include="Relational\AlgebraicExpression.cs" />
+    <Compile Include="Relational\Operations\NaturalJoin.cs" />
+    <Compile Include="Relational\Operations\Union.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

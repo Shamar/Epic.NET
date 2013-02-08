@@ -24,15 +24,14 @@
 using System;
 using Epic.Query.Relational.Predicates;
 
-
 namespace Epic.Query.Relational.Operations
 {
     /// <summary>
-    /// This class models the Inner Join operation, which joins two relations and returns those
+    /// This class models the Theta join operation, which joins two relations and returns those
     /// record matching a given condition.
     /// </summary>
     [Serializable]
-    public sealed class ThetaJoin: RelationalExpression, IEquatable<ThetaJoin>
+    public sealed class ThetaJoin : RelationalExpression, IEquatable<ThetaJoin>
     {
         private readonly RelationalExpression _leftRelation;
         private readonly RelationalExpression _rightRelation;
@@ -51,7 +50,7 @@ namespace Epic.Query.Relational.Operations
         /// Predicate used to join the two Relations.
         /// </param>
         /// <exception cref="ArgumentNullException">Thrown when any argument is <see langword="null"/></exception> 
-        public ThetaJoin (RelationalExpression leftRelation, RelationalExpression rightRelation, Predicate predicate):
+        public ThetaJoin(RelationalExpression leftRelation, RelationalExpression rightRelation, Predicate predicate):
             base(RelationType.ThetaJoin)
         {
             if (null == leftRelation)
@@ -97,12 +96,12 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="RelationalExpression"/> to compare with the current <see cref="ThetaJoin"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="RelationalExpression"/> is equal to the current
-        /// <see cref="ThetaJoin"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="RelationalExpression"/> is equal to the current
+        /// <see cref="ThetaJoin"/>; otherwise, <see langword="false"/>.
         /// </returns>
-        public override bool Equals (RelationalExpression other)
+        public override bool Equals(RelationalExpression other)
         {
-            return Equals (other as ThetaJoin);
+            return Equals(other as ThetaJoin);
         }
 
         /// <summary>
@@ -113,16 +112,17 @@ namespace Epic.Query.Relational.Operations
         /// The <see cref="ThetaJoin"/> to compare with the current <see cref="ThetaJoin"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="ThetaJoin"/> is equal to the
-        /// current <see cref="ThetaJoin"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="ThetaJoin"/> is equal to the
+        /// current <see cref="ThetaJoin"/>; otherwise, <see langword="false"/>.
         /// </returns>
-        public bool Equals (ThetaJoin other)
+        public bool Equals(ThetaJoin other)
         {
-            if (null == other) return false;
+            if (null == other)
+                return false;
 
-            return this.LeftRelation.Equals (other.LeftRelation) &&
-                this.RightRelation.Equals (other.RightRelation) &&
-                    this.Predicate.Equals (other.Predicate) ;
+            return this.LeftRelation.Equals(other.LeftRelation) &&
+                this.RightRelation.Equals(other.RightRelation) &&
+                this.Predicate.Equals(other.Predicate);
         }
 
         /// <summary>
@@ -132,10 +132,10 @@ namespace Epic.Query.Relational.Operations
         /// A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a
         /// hash table.
         /// </returns>
-        public override int GetHashCode ()
+        public override int GetHashCode()
         {
-            return this.LeftRelation.GetHashCode () ^ this.RightRelation.GetHashCode () ^
-                this.Predicate.GetHashCode() ;
+            return this.LeftRelation.GetHashCode() ^ this.RightRelation.GetHashCode() ^
+                this.Predicate.GetHashCode();
         }
 
         /// <summary>
@@ -151,9 +151,9 @@ namespace Epic.Query.Relational.Operations
         /// The type of the result of the visit.
         /// </typeparam>
         /// <returns>Result of the visit.</returns>
-        public override TResult Accept<TResult> (IVisitor<TResult> visitor, IVisitContext context)
+        public override TResult Accept<TResult>(IVisitor<TResult> visitor, IVisitContext context)
         {
-            return AcceptMe (this, visitor, context);
+            return AcceptMe(this, visitor, context);
         }
     }
 }

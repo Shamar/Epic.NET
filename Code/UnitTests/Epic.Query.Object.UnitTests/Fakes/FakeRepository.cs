@@ -23,6 +23,8 @@
 //  
 using System;
 using Epic.Specifications;
+using Epic.Collections;
+using Epic.Math;
 
 
 namespace Epic.Query.Object.UnitTests.Fakes
@@ -30,19 +32,19 @@ namespace Epic.Query.Object.UnitTests.Fakes
     [Serializable]
     public class FakeRepository<TEntity, TIdentity> : ISearchableRepository<TEntity, TIdentity>
         where TIdentity : IEquatable<TIdentity>
-        where TEntity : class
+            where TEntity : class
     {
         public FakeRepository ()
         {
         }
-
+        
         #region ISearchableRepository implementation
         public virtual ISearch<TSpecializedEntity, TIdentity> Search<TSpecializedEntity> (ISpecification<TSpecializedEntity> satifyingSpecification) where TSpecializedEntity : class, TEntity
         {
             throw new System.NotImplementedException ();
         }
         #endregion
-
+        
         #region IRepository implementation
         public virtual TEntity this[TIdentity identity] {
             get {
@@ -50,7 +52,7 @@ namespace Epic.Query.Object.UnitTests.Fakes
             }
         }
         #endregion
-
+        
         #region ISearchableRepository implementation
         ISearch<TSpecializedEntity, TIdentity> ISearchableRepository<TEntity, TIdentity>.Search<TSpecializedEntity> (ISpecification<TSpecializedEntity> satifyingSpecification)
         {
@@ -58,5 +60,56 @@ namespace Epic.Query.Object.UnitTests.Fakes
         }
         #endregion
     }
+
+    [Serializable]
+    public class FakeSearchableRepository<TEntity, TIdentity> : SearchableRepositoryBase<TEntity, TIdentity>
+        where TIdentity : IEquatable<TIdentity>
+            where TEntity : class
+    {
+        public FakeSearchableRepository (IIdentityMap<TEntity, TIdentity> identityMap, 
+                                         IEntityLoader<TEntity, TIdentity> loader,
+                                         IMapping<TEntity, TIdentity> identification,
+                                         string deferrerName)
+            : base(identityMap, loader, identification, deferrerName)
+        {
+        }
+        
+        public virtual void CallInstrument(ref TEntity entity)
+        {
+        }
+        
+        public virtual void CallCleanUp(TEntity entity)
+        {
+        }
+        
+        public virtual void CallDispose()
+        {
+        }
+
+        public TIdentity CallIdentify(TEntity entity)
+        {
+            return Identify(entity);
+        }
+        
+        #region implemented abstract members of SearchableRepositoryBase
+        
+        protected override void Instrument(ref TEntity entity)
+        {
+            CallInstrument(ref entity);
+        }
+        
+        protected override void CleanUp(TEntity entity)
+        {
+            CallCleanUp(entity);
+        }
+        
+        protected override void Dispose()
+        {
+            CallDispose();
+        }
+        
+        #endregion
+    }
+
 }
 

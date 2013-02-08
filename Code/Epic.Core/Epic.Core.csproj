@@ -49,7 +49,6 @@
     <Compile Include="Environment\EnvironmentChainLinkBase.cs" />
     <Compile Include="InstanceName.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="EpicException.cs" />
     <Compile Include="ObserverBase.cs" />
     <Compile Include="IOrganization.cs" />
     <Compile Include="Organization\OrganizationBase.cs" />
@@ -66,4 +65,10 @@
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Epic.Prelude\Epic.Prelude.csproj">
+      <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
+      <Name>Epic.Prelude</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

@@ -40,6 +40,7 @@ namespace Epic.Query.Object
         /// <param name='expression'>
         /// Expression to defer.
         /// </param>
+        /// <returns>A <typeparamref name="TDeferred"/> representing a computation that will produce a <typeparamref name="TResult"/>.</returns>
         /// <typeparam name='TDeferred'>
         /// The type of the <see cref="IDeferred{TResult}"/> to create.
         /// </typeparam>
@@ -58,6 +59,7 @@ namespace Epic.Query.Object
         /// <param name='expression'>
         /// Expression to evaluate.
         /// </param>
+        /// <returns>The result of the computation represented by <paramref name="expression"/>.</returns>
         /// <typeparam name='TResult'>
         /// Result of the evaluation of <paramref name="expression"/>.
         /// </typeparam>

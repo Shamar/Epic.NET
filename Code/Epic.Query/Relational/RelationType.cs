@@ -35,6 +35,11 @@ namespace Epic.Query.Relational
         /// Base Relation (in SQL, tipically a table).
         /// </summary>
         BaseRelation,
+
+        /// <summary>
+        /// Natural join (in SQL, an INNER NATURAL JOIN).
+        /// </summary>
+        NaturalJoin,
         
         /// <summary>
         /// Selection (in SQL, the relation produced by a WHERE statement).

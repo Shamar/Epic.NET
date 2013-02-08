@@ -54,8 +54,8 @@ namespace Epic.Query.Relational.Predicates
         /// The <see cref="BinaryPredicateBase"/> to compare with the current <see cref="Predicates.And"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="BinaryPredicateBase"/> is equal to the
-        /// current <see cref="Predicates.And"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="BinaryPredicateBase"/> is equal to the
+        /// current <see cref="Predicates.And"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals (BinaryPredicateBase other)
         {
@@ -69,8 +69,8 @@ namespace Epic.Query.Relational.Predicates
         /// The <see cref="Predicates.And"/> to compare with the current <see cref="Predicates.And"/>.
         /// </param>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="Predicates.And"/> is equal to the current
-        /// <see cref="Predicates.And"/>; otherwise, <c>false</c>.
+        /// <see langword="true"/> if the specified <see cref="Predicates.And"/> is equal to the current
+        /// <see cref="Predicates.And"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public bool Equals (And other)
         {

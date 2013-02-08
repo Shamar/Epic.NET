@@ -31,9 +31,7 @@ namespace Epic.Query
 	/// </summary>
 	/// <typeparam name="TEntity">Type of the entity that the loader can load.</typeparam>
 	/// <typeparam name="TIdentity">Type used to identify each <typeparamref name="TEntity"/>.</typeparam>
-	public interface IEntityLoader<TEntity, TIdentity>
-		where TEntity : class
-		where TIdentity : IEquatable<TIdentity>
+	public interface IEntityLoader<TEntity, TIdentity> where TEntity : class where TIdentity : IEquatable<TIdentity>
 	{
 		/// <summary>
 		/// Load the specified entities.

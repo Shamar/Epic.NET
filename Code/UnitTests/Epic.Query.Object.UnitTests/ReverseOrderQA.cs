@@ -223,6 +223,22 @@ namespace Epic.Query.Object.UnitTests
             // assert:
             Assert.AreSame(expectedResult, result);
         }
+      
+        [Test]
+        public void For_aMoreSpecializedEntity_delegateToTheInner ()
+        {
+            // arrange:
+            OrderCriterion<ICargo> reversed = new Fakes.FakeCriterion<ICargo>(10);
+            ReverseOrder<ICargo> toTest = new ReverseOrder<ICargo>(reversed);
+
+            // act:
+            var result = toTest.For<ISpecializedCargo>();
+            
+            // assert:
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ContravariantOrder<ICargo, ISpecializedCargo>>(result);
+        }
+
     }
 }
 

@@ -31,8 +31,6 @@ using Rhino.Mocks;
 
 namespace Epic.Query.Object.UnitTests.Expressions
 {
-    public interface ISpecializedCargo : ICargo {}
-
     [TestFixture]
     public class SourceDowncastQA : RhinoMocksFixtureBase
     {

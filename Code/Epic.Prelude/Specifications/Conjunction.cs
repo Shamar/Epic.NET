@@ -30,11 +30,14 @@ namespace Epic.Specifications
     /// Specification that is satisfied by any <typeparamref name="TCandidate"/> that is satisfied by all the
     /// specifications.
     /// </summary>
+    /// <remarks>This specification aggregates other specifications but removes duplicates.</remarks>
     /// <typeparam name="TCandidate">The type of the objects that can be tested with this specification.</typeparam>
+    /// <seealso cref="IPolyadicSpecificationComposition{TCandidate}"/>
     [Serializable]
     public sealed class Conjunction<TCandidate> : SpecificationBase<Conjunction<TCandidate>, TCandidate>,
                                                   IEquatable<Conjunction<TCandidate>>,
-                                                  IEnumerable<ISpecification<TCandidate>>
+                                                  IEnumerable<ISpecification<TCandidate>>,
+                                                  IPolyadicSpecificationComposition<TCandidate>
         where TCandidate : class
     {
         private readonly ISpecification<TCandidate>[] _specifications;
@@ -52,7 +55,7 @@ namespace Epic.Specifications
         /// are <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException"><paramref name="first"/> and <paramref name="second"/>
         /// are equal.</exception>
-        public Conjunction(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
+        internal Conjunction(ISpecification<TCandidate> first, ISpecification<TCandidate> second)
         {
             if (null == first)
                 throw new ArgumentNullException("first");
@@ -76,12 +79,12 @@ namespace Epic.Specifications
                 // No need to check that the second is not included in first, since AndAlso already check this.
                 specifications.Add(second);
             }
-            else if(null == firstAnd)
+            else if (null == firstAnd)
             {
-                for(int i = 0; i < secondAnd._specifications.Length; ++i)
+                for (int i = 0; i < secondAnd._specifications.Length; ++i)
                 {
-                    ISpecification<TCandidate> toAdd = secondAnd._specifications[i];
-                    if(!first.Equals(toAdd))
+                    ISpecification<TCandidate> toAdd = secondAnd._specifications [i];
+                    if (!first.Equals(toAdd))
                     {
                         specifications.Add(toAdd);
                     }
@@ -89,13 +92,13 @@ namespace Epic.Specifications
             }
             else
             {
-                for(int i = 0; i < secondAnd._specifications.Length; ++i)
+                for (int i = 0; i < secondAnd._specifications.Length; ++i)
                 {
                     bool alreadyPresent = false;
-                    ISpecification<TCandidate> toAdd = secondAnd._specifications[i];
-                    for(int j = 0; j < firstAnd._specifications.Length && !alreadyPresent; ++j)
+                    ISpecification<TCandidate> toAdd = secondAnd._specifications [i];
+                    for (int j = 0; j < firstAnd._specifications.Length && !alreadyPresent; ++j)
                     {
-                        if(toAdd.Equals(firstAnd._specifications[j]))
+                        if (toAdd.Equals(firstAnd._specifications [j]))
                         {
                             alreadyPresent = true;
                         }
@@ -122,18 +125,18 @@ namespace Epic.Specifications
         /// <param name='other'>
         /// Another specification.
         /// </param>
-        protected override ISpecification<TCandidate> AndAlso (ISpecification<TCandidate> other)
+        protected override ISpecification<TCandidate> AndAlso(ISpecification<TCandidate> other)
         {
             Conjunction<TCandidate> otherAnd = other as Conjunction<TCandidate>;
-            if(null == otherAnd)
+            if (null == otherAnd)
             {
-                for(int i = 0; i < _specifications.Length; ++i)
+                for (int i = 0; i < _specifications.Length; ++i)
                 {
-                    if(other.Equals(_specifications[i]))
+                    if (other.Equals(_specifications [i]))
                         return this;
                 }
             }
-            return base.AndAlso (other);
+            return base.AndAlso(other);
         }
 
         /// <summary>
@@ -141,18 +144,18 @@ namespace Epic.Specifications
         /// to <paramref name="otherSpecification"/>.
         /// </summary>
         /// <returns>
-        /// <c>true</c>, if each of disjuncted specification are equal 
-        /// to the corresponding one in <paramref name="otherSpecification"/>, <c>false</c> otherwise.
+        /// <see langword="true"/>, if each of disjuncted specification are equal 
+        /// to the corresponding one in <paramref name="otherSpecification"/>, <see langword="false"/> otherwise.
         /// </returns>
         /// <param name='otherSpecification'>
         /// Another specification.
         /// </param>
-        protected override bool EqualsA (Conjunction<TCandidate> otherSpecification)
+        protected override bool EqualsA(Conjunction<TCandidate> otherSpecification)
         {
-            if(_specifications.Length != otherSpecification._specifications.Length)
+            if (_specifications.Length != otherSpecification._specifications.Length)
                 return false;
-            for(int i = 0; i < _specifications.Length; ++i)
-                if(!_specifications[i].Equals(otherSpecification._specifications[i]))
+            for (int i = 0; i < _specifications.Length; ++i)
+                if (!_specifications [i].Equals(otherSpecification._specifications [i]))
                     return false;
             return true;
         }
@@ -161,15 +164,15 @@ namespace Epic.Specifications
         /// Determines whether this specification is satisfied by <paramref name="candidate"/>.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if <paramref name="candidate"/> satisfies all the conjuncted specifications; otherwise, <c>false</c>.
+        /// <see langword="true"/> if <paramref name="candidate"/> satisfies all the conjuncted specifications; otherwise, <see langword="false"/>.
         /// </returns>
         /// <param name='candidate'>
         /// Candidate.
         /// </param>
-        protected override bool IsSatisfiedByA (TCandidate candidate)
+        protected override bool IsSatisfiedByA(TCandidate candidate)
         {
-            for(int i = 0; i < _specifications.Length; ++i)
-                if(!_specifications[i].IsSatisfiedBy(candidate))
+            for (int i = 0; i < _specifications.Length; ++i)
+                if (!_specifications [i].IsSatisfiedBy(candidate))
                     return false;
             return true;
         }
@@ -177,18 +180,47 @@ namespace Epic.Specifications
         #endregion
 
         #region IEnumerable implementation
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return _specifications.GetEnumerator();
         }
         #endregion
 
         #region IEnumerable implementation
-        IEnumerator<ISpecification<TCandidate>> IEnumerable<ISpecification<TCandidate>>.GetEnumerator ()
+        IEnumerator<ISpecification<TCandidate>> IEnumerable<ISpecification<TCandidate>>.GetEnumerator()
         {
             return (_specifications as IEnumerable<ISpecification<TCandidate>>).GetEnumerator();
         }
         #endregion
+
+        #region IPolyadicSpecificationComposition implementation
+        IEnumerable<ISpecification> IPolyadicSpecificationComposition<TCandidate>.Operands
+        {
+            get
+            {
+                return _specifications;
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current specification in a mathematical notation.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current specification in a mathematical notation.</returns>
+        public override string ToString()
+        {
+            string[] parts = new string[_specifications.Length];
+            for(int i = 0; i < _specifications.Length; ++i)
+                if (_specifications[i] is IPolyadicSpecificationComposition<TCandidate>)
+                {
+                    parts[i] = "("+_specifications[i].ToString()+")";
+                }
+                else
+                {
+                    parts[i] = _specifications[i].ToString();
+                }
+            return string.Join(" ∧ ", parts);
+        }
     }
 }
 
