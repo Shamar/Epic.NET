@@ -166,7 +166,7 @@ namespace Epic.Specifications
             }
             
             #endregion
-            
+
             #region IObjectReference Members
             
             public object GetRealObject(StreamingContext context)

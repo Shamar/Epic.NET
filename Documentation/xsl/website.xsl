@@ -206,6 +206,9 @@
     </div>
     <div id="main">
       <div id="content">
+      <xsl:if test="$filename != 'manual.html'">
+        <iframe src="http://www.ohloh.net/p/486199/widgets/project_users_logo.html" scrolling="no" style="height: 40px; width: 140px; border: none; float: right" frameBorder="0"></iframe>
+      </xsl:if>
       <xsl:if test="$filename = 'manual.html'">
         <ul class="menu">
           <li><a href="/index.html">Overview</a></li>

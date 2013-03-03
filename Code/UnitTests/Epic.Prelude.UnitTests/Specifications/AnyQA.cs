@@ -78,7 +78,7 @@ namespace Epic.Specifications
             // assert:
             Assert.AreEqual(string.Format("is:{0}", typeof(Fakes.FakeCandidate1).Name), result);
         }
-        
+
         [Test]
         public void IsSatisfiedBy_aCandidate_returnTrue ()
         {
@@ -189,4 +189,3 @@ namespace Epic.Specifications
         }
     }
 }
-

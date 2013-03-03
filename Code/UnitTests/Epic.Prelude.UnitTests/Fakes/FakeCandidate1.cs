@@ -40,6 +40,4 @@ namespace Epic.Fakes
     public class FakeCandidate1UnrelatedSpecialization : FakeCandidate1
     {
     }
-
 }
-

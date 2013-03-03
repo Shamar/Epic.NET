@@ -1,4 +1,4 @@
-﻿//
+//
 //  ConjunctionQA.cs
 //
 //  Author:
