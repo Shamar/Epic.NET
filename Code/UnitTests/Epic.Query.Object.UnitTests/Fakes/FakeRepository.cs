@@ -85,6 +85,11 @@ namespace Epic.Query.Object.UnitTests.Fakes
         public virtual void CallDispose()
         {
         }
+
+        public TIdentity CallIdentify(TEntity entity)
+        {
+            return Identify(entity);
+        }
         
         #region implemented abstract members of SearchableRepositoryBase
         
