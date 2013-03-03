@@ -61,7 +61,8 @@ namespace Epic.Visitors
         #region IVisitor implementation
         IVisitor<TResult, ExpressionToVisit> IVisitor<TResult>.AsVisitor<ExpressionToVisit>(ExpressionToVisit target)
         {
-            return _outerVisitor.AsVisitor(target);
+            IVisitor<TResult> outerVisitor = _outerVisitor; // this assignment is currently needed by Mono
+            return outerVisitor.AsVisitor(target);
         }
         #endregion
     }
