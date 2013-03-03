@@ -61,7 +61,8 @@ namespace Epic.Visitors
         #region IVisitor implementation
         IVisitor<TResult, ExpressionToVisit> IVisitor<TResult>.AsVisitor<ExpressionToVisit>(ExpressionToVisit target)
         {
-            return _outerVisitor.AsVisitor(target);
+            IVisitor<TResult> visitor = _outerVisitor;
+            return visitor.AsVisitor(target);
         }
         #endregion
     }
