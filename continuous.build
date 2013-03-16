@@ -8,6 +8,7 @@
 	<property name="nant.include.dir" value="${path::combine(path::combine(repository.rootdirectory, 'Tools'), 'NantScripts')}" />
 
 	<include buildfile="${path::combine(nant.include.dir, 'Properties.include')}" if="${not property::exists('epic.infofile')}"/>
+	<include buildfile="${path::combine(nant.include.dir, 'RunNUnit.include')}" />
 	
     <target name="continuous" depends="clean-builddirectory">
         <tstamp />
@@ -18,10 +19,8 @@
         <trycatch>
             <try>
                 <call target="build-code" />
-                <call target="build-samples" />
                 
                 <call target="test-code" cascade="false"/>
-                <call target="test-samples" cascade="false" />
                 <call target="documentation" cascade="false" />
             </try>
             <finally>
@@ -87,23 +86,17 @@
     </target>
     
     <target name="build-code">
-        <nant buildfile="Code/nant.build" target="build-code" />
+        <echo message="Building Epic.NET in ${path::get-full-path('.')}." />
+        <exec program="${msbuild.path}"        
+              commandline="Epic.sln /t:${build.target} /p:Configuration=${build.configuration} /v:${build.verbosity}" 
+              workingdir="${path::get-full-path('.')}" />
     </target>
     
-    <target name="build-samples">
-        <foreach item="Folder" in="${samples.dir}" property="sample">
-            <nant buildfile="${path::combine(sample, 'nant.build')}"  target="build-code"/>
-        </foreach>
-    </target>
-
     <target name="test-code">
-        <nant buildfile="Code/nant.build" target="run-tests" />
-    </target>
-
-    <target name="test-samples">
-        <foreach item="Folder" in="${samples.dir}" property="sample">
-            <nant buildfile="${path::combine(sample, 'nant.build')}"  target="run-tests"/>
-        </foreach>
+        <property name="working.dir" value="${repository.testdirectory}" />
+        <property name="component.name" value="Epic"/>
+        <property name="tests.to.run" value="${path::combine(repository.rootdirectory, 'Epic.nunit')}" />
+        <call target="run-nunit"/>
     </target>
     
     <target name="documentation" depends="api,manual">

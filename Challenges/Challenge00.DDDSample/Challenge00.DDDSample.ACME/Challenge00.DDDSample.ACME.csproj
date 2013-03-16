@@ -14,7 +14,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>..\..\..\build\bin\Debug</OutputPath>
+    <OutputPath>..\..\..\build\samples\00\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -23,16 +23,13 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>..\..\..\build\bin\Release</OutputPath>
+    <OutputPath>..\..\..\build\samples\00\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Epic.Prelude">
-      <HintPath>..\..\..\build\bin\Debug\Epic.Prelude.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -49,6 +46,10 @@
     <ProjectReference Include="..\Challenge00.DDDSample\Challenge00.DDDSample.csproj">
       <Project>{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}</Project>
       <Name>Challenge00.DDDSample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Code\Epic.Prelude\Epic.Prelude.csproj">
+      <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
+      <Name>Epic.Prelude</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

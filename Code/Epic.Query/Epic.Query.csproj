@@ -79,10 +79,12 @@
     <ProjectReference Include="..\Epic.Prelude\Epic.Prelude.csproj">
       <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
       <Name>Epic.Prelude</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Epic.Core\Epic.Core.csproj">
       <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
       <Name>Epic.Core</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

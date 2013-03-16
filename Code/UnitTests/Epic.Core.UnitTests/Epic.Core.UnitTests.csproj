@@ -36,9 +36,6 @@
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="Challenge00.DDDSample">
-      <HintPath>..\..\..\build\bin\Debug\Challenge00.DDDSample.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -68,13 +65,17 @@
       <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
       <Name>Epic.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Epic.Prelude\Epic.Prelude.csproj">
+      <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
+      <Name>Epic.Prelude</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Epic.Prelude.UnitTests\Epic.Prelude.UnitTests.csproj">
       <Project>{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}</Project>
       <Name>Epic.Prelude.UnitTests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Epic.Prelude\Epic.Prelude.csproj">
-      <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
-      <Name>Epic.Prelude</Name>
+    <ProjectReference Include="..\..\..\Challenges\Challenge00.DDDSample\Challenge00.DDDSample\Challenge00.DDDSample.csproj">
+      <Project>{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}</Project>
+      <Name>Challenge00.DDDSample</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

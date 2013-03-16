@@ -36,9 +36,6 @@
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\..\3rdParties\Rhino.Mocks\Rhino.Mocks.dll</HintPath>
     </Reference>
-    <Reference Include="Challenge00.DDDSample">
-      <HintPath>..\..\..\build\bin\Debug\Challenge00.DDDSample.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -90,6 +87,10 @@
     <ProjectReference Include="..\Epic.Core.UnitTests\Epic.Core.UnitTests.csproj">
       <Project>{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}</Project>
       <Name>Epic.Core.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Challenges\Challenge00.DDDSample\Challenge00.DDDSample\Challenge00.DDDSample.csproj">
+      <Project>{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}</Project>
+      <Name>Challenge00.DDDSample</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

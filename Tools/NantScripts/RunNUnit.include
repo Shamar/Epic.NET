@@ -9,6 +9,7 @@
             <exec workingdir="${working.dir}"
                   program="${nunit.path}">
                 <arg line="${tests.to.run}" /> 
+                <arg line="-config:${build.configuration}"/>
                 <arg value="-nologo" />
                 <arg value="-xml=${results-file}.xml" />
                 <environment>

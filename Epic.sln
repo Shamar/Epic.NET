@@ -1,0 +1,177 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Challenges", "Challenges", "{14728474-E66B-4C9B-BDA2-7D7ECFDB2B8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DDDSample", "DDDSample", "{6DB513DC-4201-422D-B221-90D0B5CD02B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample", "Challenges\Challenge00.DDDSample\Challenge00.DDDSample\Challenge00.DDDSample.csproj", "{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.ACME", "Challenges\Challenge00.DDDSample\Challenge00.DDDSample.ACME\Challenge00.DDDSample.ACME.csproj", "{AE1E1387-36B9-4000-A2DC-1887B8E7F905}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.Default", "Challenges\Challenge00.DDDSample\Challenge00.DDDSample.Default\Challenge00.DDDSample.Default.csproj", "{47C7912D-2CF9-4464-BCF6-641A6867577D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.UnitTests", "Challenges\Challenge00.DDDSample\UnitTests\Challenge00.DDDSample.UnitTests\Challenge00.DDDSample.UnitTests.csproj", "{C63A1855-8414-4711-B4DF-D3372ACD7069}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.ACME.UnitTests", "Challenges\Challenge00.DDDSample\UnitTests\Challenge00.DDDSample.ACME.UnitTests\Challenge00.DDDSample.ACME.UnitTests.csproj", "{8A174BD0-1139-4442-9452-856FC36CC1CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Challenge00.DDDSample.Default.UnitTests", "Challenges\Challenge00.DDDSample\UnitTests\Challenge00.DDDSample.Default.UnitTests\Challenge00.DDDSample.Default.UnitTests.csproj", "{E26B8AEF-2856-4040-BE65-97B7735ADABE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{51144655-2C00-4877-B945-E89C93F14BAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Core.UnitTests", "Code\UnitTests\Epic.Core.UnitTests\Epic.Core.UnitTests.csproj", "{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Prelude.UnitTests", "Code\UnitTests\Epic.Prelude.UnitTests\Epic.Prelude.UnitTests.csproj", "{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query.Linq.UnitTests", "Code\UnitTests\Epic.Query.Linq.UnitTests\Epic.Query.Linq.UnitTests.csproj", "{02C38623-6934-439B-ABA9-FFDEFB4D9842}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query.UnitTests", "Code\UnitTests\Epic.Query.UnitTests\Epic.Query.UnitTests.csproj", "{148CECBF-1B45-48FF-9F15-4E5CB52EDEFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query.Object.UnitTests", "Code\UnitTests\Epic.Query.Object.UnitTests\Epic.Query.Object.UnitTests.csproj", "{49AC817F-032C-4AE0-8803-32BA0CCB30D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Prelude", "Code\Epic.Prelude\Epic.Prelude.csproj", "{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Core", "Code\Epic.Core\Epic.Core.csproj", "{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query", "Code\Epic.Query\Epic.Query.csproj", "{45E26C2D-47BD-42D7-8326-CE92777D79A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query.Linq", "Code\Epic.Query.Linq\Epic.Query.Linq.csproj", "{7B1F063C-C646-4C14-962A-28325218420F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Epic.Query.Object", "Code\Epic.Query.Object\Epic.Query.Object.csproj", "{AF70504F-1F69-4A9C-B9C7-47F68F20C8C8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02C38623-6934-439B-ABA9-FFDEFB4D9842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02C38623-6934-439B-ABA9-FFDEFB4D9842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02C38623-6934-439B-ABA9-FFDEFB4D9842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02C38623-6934-439B-ABA9-FFDEFB4D9842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148CECBF-1B45-48FF-9F15-4E5CB52EDEFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148CECBF-1B45-48FF-9F15-4E5CB52EDEFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148CECBF-1B45-48FF-9F15-4E5CB52EDEFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148CECBF-1B45-48FF-9F15-4E5CB52EDEFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45E26C2D-47BD-42D7-8326-CE92777D79A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E26C2D-47BD-42D7-8326-CE92777D79A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E26C2D-47BD-42D7-8326-CE92777D79A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E26C2D-47BD-42D7-8326-CE92777D79A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47C7912D-2CF9-4464-BCF6-641A6867577D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47C7912D-2CF9-4464-BCF6-641A6867577D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47C7912D-2CF9-4464-BCF6-641A6867577D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47C7912D-2CF9-4464-BCF6-641A6867577D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49AC817F-032C-4AE0-8803-32BA0CCB30D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49AC817F-032C-4AE0-8803-32BA0CCB30D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49AC817F-032C-4AE0-8803-32BA0CCB30D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49AC817F-032C-4AE0-8803-32BA0CCB30D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B1F063C-C646-4C14-962A-28325218420F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B1F063C-C646-4C14-962A-28325218420F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B1F063C-C646-4C14-962A-28325218420F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B1F063C-C646-4C14-962A-28325218420F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A174BD0-1139-4442-9452-856FC36CC1CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A174BD0-1139-4442-9452-856FC36CC1CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A174BD0-1139-4442-9452-856FC36CC1CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A174BD0-1139-4442-9452-856FC36CC1CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF70504F-1F69-4A9C-B9C7-47F68F20C8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF70504F-1F69-4A9C-B9C7-47F68F20C8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF70504F-1F69-4A9C-B9C7-47F68F20C8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF70504F-1F69-4A9C-B9C7-47F68F20C8C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C63A1855-8414-4711-B4DF-D3372ACD7069}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E26B8AEF-2856-4040-BE65-97B7735ADABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E26B8AEF-2856-4040-BE65-97B7735ADABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E26B8AEF-2856-4040-BE65-97B7735ADABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E26B8AEF-2856-4040-BE65-97B7735ADABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6DB513DC-4201-422D-B221-90D0B5CD02B0} = {14728474-E66B-4C9B-BDA2-7D7ECFDB2B8D}
+		{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88} = {6DB513DC-4201-422D-B221-90D0B5CD02B0}
+		{AE1E1387-36B9-4000-A2DC-1887B8E7F905} = {6DB513DC-4201-422D-B221-90D0B5CD02B0}
+		{47C7912D-2CF9-4464-BCF6-641A6867577D} = {6DB513DC-4201-422D-B221-90D0B5CD02B0}
+		{C63A1855-8414-4711-B4DF-D3372ACD7069} = {6DB513DC-4201-422D-B221-90D0B5CD02B0}
+		{8A174BD0-1139-4442-9452-856FC36CC1CA} = {6DB513DC-4201-422D-B221-90D0B5CD02B0}
+		{E26B8AEF-2856-4040-BE65-97B7735ADABE} = {6DB513DC-4201-422D-B221-90D0B5CD02B0}
+		{1398B551-55A9-4D30-AD3E-BA12E2DEDEBF} = {51144655-2C00-4877-B945-E89C93F14BAE}
+		{E8A2F061-A13F-4F97-AB03-7856D86A3D8B} = {51144655-2C00-4877-B945-E89C93F14BAE}
+		{02C38623-6934-439B-ABA9-FFDEFB4D9842} = {51144655-2C00-4877-B945-E89C93F14BAE}
+		{148CECBF-1B45-48FF-9F15-4E5CB52EDEFD} = {51144655-2C00-4877-B945-E89C93F14BAE}
+		{49AC817F-032C-4AE0-8803-32BA0CCB30D6} = {51144655-2C00-4877-B945-E89C93F14BAE}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Code\Epic.Prelude\Epic.Prelude.csproj
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$1.ResourceNamePolicy = MSBuild
+		$0.TextStylePolicy = $2
+		$2.inheritsSet = VisualStudio
+		$2.inheritsScope = text/plain
+		$2.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $3
+		$3.IndentSwitchBody = True
+		$3.AnonymousMethodBraceStyle = NextLine
+		$3.PropertyBraceStyle = NextLine
+		$3.PropertyGetBraceStyle = NextLine
+		$3.PropertySetBraceStyle = NextLine
+		$3.EventBraceStyle = NextLine
+		$3.EventAddBraceStyle = NextLine
+		$3.EventRemoveBraceStyle = NextLine
+		$3.StatementBraceStyle = NextLine
+		$3.ElseNewLinePlacement = NewLine
+		$3.CatchNewLinePlacement = NewLine
+		$3.FinallyNewLinePlacement = NewLine
+		$3.WhileNewLinePlacement = NewLine
+		$3.ArrayInitializerBraceStyle = NextLine
+		$3.BeforeMethodDeclarationParentheses = False
+		$3.BeforeMethodCallParentheses = False
+		$3.BeforeConstructorDeclarationParentheses = False
+		$3.BeforeDelegateDeclarationParentheses = False
+		$3.AfterDelegateDeclarationParameterComma = True
+		$3.NewParentheses = False
+		$3.inheritsSet = Mono
+		$3.inheritsScope = text/x-csharp
+		$3.scope = text/x-csharp
+		$0.TextStylePolicy = $4
+		$4.FileWidth = 120
+		$4.inheritsSet = VisualStudio
+		$4.inheritsScope = text/plain
+		$4.scope = text/plain
+		$0.StandardHeader = $5
+		$5.Text = "@ \n ${FileName}\n \n Author:\n      ${AuthorName} <${AuthorEmail}>\n\n Copyright (c) 2010-${Year} Giacomo Tesio\n\n This file is part of Epic.NET.\n\n Epic.NET is free software: you can redistribute it and/or modify\n it under the terms of the GNU Affero General Public License as published by\n the Free Software Foundation, either version 3 of the License, or\n (at your option) any later version.\n\n Epic.NET is distributed in the hope that it will be useful,\n but WITHOUT ANY WARRANTY; without even the implied warranty of\n MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n GNU Affero General Public License for more details.\n\n You should have received a copy of the GNU Affero General Public License\n along with this program.  If not, see <http://www.gnu.org/licenses/>.\n "
+		$5.IncludeInNewFiles = True
+		$0.VersionControlPolicy = $6
+		$6.inheritsSet = Mono
+		$0.ChangeLogPolicy = $7
+		$7.UpdateMode = None
+		$7.MessageStyle = $8
+		$8.LineAlign = 0
+		$7.inheritsSet = Mono
+	EndGlobalSection
+EndGlobal

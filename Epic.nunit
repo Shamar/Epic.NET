@@ -1,0 +1,23 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Default" />
+  <Config name="Debug" appbase="build\tests\" binpathtype="Auto" runtimeFramework="v4.0">
+    <assembly path="Debug\Epic.Prelude.UnitTests.dll" />
+    <assembly path="Debug\Epic.Core.UnitTests.dll" />
+    <assembly path="Debug\Epic.Query.UnitTests.dll" />
+    <assembly path="Debug\Epic.Query.Linq.UnitTests.dll" />
+    <assembly path="Debug\Epic.Query.Object.UnitTests.dll" />
+    <assembly path="samples\00\Debug\Challenge00.DDDSample.ACME.UnitTests.dll" />
+    <assembly path="samples\00\Debug\Challenge00.DDDSample.Default.UnitTests.dll" />
+    <assembly path="samples\00\Debug\Challenge00.DDDSample.UnitTests.dll" />
+  </Config>
+  <Config name="Release" appbase="build\tests\" binpathtype="Auto" runtimeFramework="v4.0">
+    <assembly path="Release\Epic.Prelude.UnitTests.dll" />
+    <assembly path="Release\Epic.Core.UnitTests.dll" />
+    <assembly path="Release\Epic.Query.UnitTests.dll" />
+    <assembly path="Release\Epic.Query.Linq.UnitTests.dll" />
+    <assembly path="Release\Epic.Query.Object.UnitTests.dll" />
+    <assembly path="samples\00\Release\Challenge00.DDDSample.ACME.UnitTests.dll" />
+    <assembly path="samples\00\Release\Challenge00.DDDSample.Default.UnitTests.dll" />
+    <assembly path="samples\00\Release\Challenge00.DDDSample.UnitTests.dll" />
+  </Config>
+</NUnitProject>

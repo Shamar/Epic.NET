@@ -39,9 +39,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Challenge00.DDDSample">
-      <HintPath>..\..\..\build\bin\Debug\Challenge00.DDDSample.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -64,6 +61,10 @@
     <ProjectReference Include="..\..\Epic.Query.Linq\Epic.Query.Linq.csproj">
       <Project>{7B1F063C-C646-4C14-962A-28325218420F}</Project>
       <Name>Epic.Query.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Challenges\Challenge00.DDDSample\Challenge00.DDDSample\Challenge00.DDDSample.csproj">
+      <Project>{6F84C6F6-EDDD-41F6-9DA0-7A289F2FBC88}</Project>
+      <Name>Challenge00.DDDSample</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

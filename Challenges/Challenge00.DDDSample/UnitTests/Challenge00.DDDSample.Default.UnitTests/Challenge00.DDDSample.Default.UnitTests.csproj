@@ -14,7 +14,7 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>..\..\..\..\build\tests\Debug</OutputPath>
+    <OutputPath>..\..\..\..\build\tests\samples\00\Debug</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -22,7 +22,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>..\..\..\..\build\tests\Release</OutputPath>
+    <OutputPath>..\..\..\..\build\tests\samples\00\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
