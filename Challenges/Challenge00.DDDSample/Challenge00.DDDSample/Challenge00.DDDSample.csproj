@@ -59,11 +59,8 @@
     <Compile Include="Cargo\HandlingEventArgs.cs" />
     <Compile Include="Cargo\Handling\EventType.cs" />
     <Compile Include="Cargo\Handling\IEvent.cs" />
-    <Compile Include="Role\IPortAuthority.cs" />
-    <Compile Include="Role\ICustomer.cs" />
     <Compile Include="IUser.cs" />
     <Compile Include="Username.cs" />
-    <Compile Include="Role\ILongshoreman.cs" />
     <Compile Include="Cargo\RoutingException.cs" />
     <Compile Include="Cargo\AlreadyClaimedException.cs" />
     <Compile Include="Location\WrongLocationException.cs" />
@@ -75,7 +72,6 @@
     <Folder Include="Location\" />
     <Folder Include="Voyage\" />
     <Folder Include="Cargo\Handling\" />
-    <Folder Include="Role\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

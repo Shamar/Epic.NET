@@ -22,6 +22,10 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //  
 using System;
+using Epic.Query.Object;
+using Challenge00.DDDSample.Cargo;
+
+
 namespace Challenge00.DDDSample.ACME
 {
 	/// <summary>
@@ -32,7 +36,7 @@ namespace Challenge00.DDDSample.ACME
 	/// </remarks>
 	public interface IEmployee : IUser
 	{
-
+        ISearchableRepository<ICargo, TrackingId> Cargos { get; }
 	}
 }
 

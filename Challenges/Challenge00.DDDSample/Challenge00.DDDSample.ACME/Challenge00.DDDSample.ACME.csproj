@@ -40,6 +40,9 @@
     <Compile Include="ItalianExceptionsFormatter.cs" />
     <Compile Include="IEmployee.cs" />
     <Compile Include="EnglishExceptionsFormatter.cs" />
+    <Compile Include="ICustomer.cs" />
+    <Compile Include="ILongshoreman.cs" />
+    <Compile Include="IPortAuthority.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -50,6 +53,18 @@
     <ProjectReference Include="..\..\..\Code\Epic.Prelude\Epic.Prelude.csproj">
       <Project>{05F67FFC-37A0-4CDC-BC67-E32CBFBE22A7}</Project>
       <Name>Epic.Prelude</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Code\Epic.Core\Epic.Core.csproj">
+      <Project>{A7F7A6D3-943F-480D-ADF2-7E846DD62D8C}</Project>
+      <Name>Epic.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Code\Epic.Query\Epic.Query.csproj">
+      <Project>{45E26C2D-47BD-42D7-8326-CE92777D79A4}</Project>
+      <Name>Epic.Query</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Code\Epic.Query.Object\Epic.Query.Object.csproj">
+      <Project>{AF70504F-1F69-4A9C-B9C7-47F68F20C8C8}</Project>
+      <Name>Epic.Query.Object</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
