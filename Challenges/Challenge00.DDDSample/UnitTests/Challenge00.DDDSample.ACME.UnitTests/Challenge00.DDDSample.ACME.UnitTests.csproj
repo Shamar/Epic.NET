@@ -34,11 +34,16 @@
       <HintPath>..\..\..\..\3rdParties\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\..\..\3rdParties\Sqlite\System.Data.SQLite.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ItalianExceptionsMessagesQA.cs" />
     <Compile Include="EnglishExceptionsMessagesQA.cs" />
     <Compile Include="FormatQA.cs" />
+    <Compile Include="TestUtilities.cs" />
+    <Compile Include="CargoDeferrerQA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -58,5 +63,11 @@
       <Project>{AE1E1387-36B9-4000-A2DC-1887B8E7F905}</Project>
       <Name>Challenge00.DDDSample.ACME</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SQL\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SQL\DDDSample.Sqlite.01.sql" />
   </ItemGroup>
 </Project>

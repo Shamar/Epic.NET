@@ -59,7 +59,6 @@
     <Compile Include="OrderCriteriaQA.cs" />
     <Compile Include="ReverseOrderQA.cs" />
     <Compile Include="ContravariantOrderQA.cs" />
-    <Compile Include="DeferrerBaseQA.cs" />
     <Compile Include="DeferredEvaluationExceptionQA.cs" />
     <Compile Include="SearchableRepositoryBaseQA.cs" />
   </ItemGroup>
