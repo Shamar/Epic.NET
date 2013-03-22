@@ -27,12 +27,13 @@ using Epic.Query.Object.Expressions;
 using Epic.Math;
 using System.Collections.Generic;
 using Challenge00.DDDSample.Cargo;
+using Epic;
 
 namespace Challenge00.DDDSample.ACME
 {
 
     public class CargoDeferrer : IDeferrer, IMapping<Expression<IEnumerable<ICargo>>, IEnumerable<ICargo>>
-     
+    {
         private readonly IVisitor<SqlExpression, IVisitable> _visitor;
         public CargoDeferrer()
         {
