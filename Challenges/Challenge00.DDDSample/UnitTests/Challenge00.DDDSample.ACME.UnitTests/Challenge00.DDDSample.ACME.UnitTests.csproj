@@ -43,7 +43,6 @@
     <Compile Include="EnglishExceptionsMessagesQA.cs" />
     <Compile Include="FormatQA.cs" />
     <Compile Include="TestUtilities.cs" />
-    <Compile Include="CargoDeferrerQA.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

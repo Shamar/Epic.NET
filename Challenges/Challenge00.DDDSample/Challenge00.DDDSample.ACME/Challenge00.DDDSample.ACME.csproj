@@ -43,7 +43,6 @@
     <Compile Include="ICustomer.cs" />
     <Compile Include="ILongshoreman.cs" />
     <Compile Include="IPortAuthority.cs" />
-    <Compile Include="CargoDeferrer.cs" />
     <Compile Include="SqlExpression.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
