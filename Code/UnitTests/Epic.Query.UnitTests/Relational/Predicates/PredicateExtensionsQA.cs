@@ -109,17 +109,57 @@ namespace Epic.Query.Relational.Predicates
         }
 
         [Test]
-        public void NotMethod_FromPredicateObject_ReturnsPredicate()
+        public void NotMethod_FromPredicateDisjunction_ReturnsConjunctionOfPredicateNegation()
+        {
+            // arrange:
+            FakePredicate predicate1 = new FakePredicate();
+            FakePredicate predicate2 = new FakePredicate();
+            Or or = predicate1.Or(predicate2);
+
+            // act:
+            Predicate result = or.Not(); 
+
+            // assert:
+            Assert.IsInstanceOf<And>(result);
+            And and = result as And;
+            Assert.IsInstanceOf<Not>(and.Right);
+            Assert.IsInstanceOf<Not>(and.Left);
+            Assert.IsTrue ((and.Left as Not).Operand.Equals (predicate1));
+            Assert.IsTrue ((and.Right as Not).Operand.Equals (predicate2));
+        }
+        
+        [Test]
+        public void NotMethod_FromPredicateConjunction_ReturnsDisjunctionOfPredicateNegation()
+        {
+            // arrange:
+            FakePredicate predicate1 = new FakePredicate();
+            FakePredicate predicate2 = new FakePredicate();
+            And or = predicate1.And(predicate2);
+
+            // act:
+            Predicate result = or.Not(); 
+
+            // assert:
+            Assert.IsInstanceOf<Or>(result);
+            Or and = result as Or;
+            Assert.IsInstanceOf<Not>(and.Right);
+            Assert.IsInstanceOf<Not>(and.Left);
+            Assert.IsTrue ((and.Left as Not).Operand.Equals (predicate1));
+            Assert.IsTrue ((and.Right as Not).Operand.Equals (predicate2));
+        }
+
+        [Test]
+        public void NotMethod_FromPredicateObject_ReturnsNegatedPredicate()
         {
             // arrange:
             FakePredicate predicate = new FakePredicate();
 
             // act:
-            Not not = predicate.Not();
+            Predicate not = predicate.Not();
 
             // assert:
-            Assert.IsTrue (not.Operand.Equals (predicate));
-
+            Assert.IsInstanceOf<Not>(not);
+            Assert.IsTrue ((not as Not).Operand.Equals (predicate));
         }
 
         [Test]
@@ -134,9 +174,8 @@ namespace Epic.Query.Relational.Predicates
 
             Predicate composition = scalar1.Greater (scalar2).And (scalar1.Less (scalar3)).Not ();
 
-            Assert.IsAssignableFrom(
-                typeof(Not),
-                composition);
+            // assert:
+            Assert.IsInstanceOf<Or>(composition); // by DeMorgan's law
 
         }
     }

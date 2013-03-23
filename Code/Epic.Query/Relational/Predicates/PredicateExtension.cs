@@ -38,8 +38,17 @@ namespace Epic.Query.Relational.Predicates
         /// </param>
         /// <returns>A negation of <paramref name="predicate"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is <see langword="null"/></exception>
-        public static Not Not(this Predicate predicate)
+        public static Predicate Not(this Predicate predicate)
         {
+            Not negation = predicate as Not;
+            if (null != negation)
+                return negation.Operand;
+            And conjunction = predicate as And;
+            if (null != conjunction)
+                return conjunction.Left.Not().Or(conjunction.Right.Not()); // By DeMorgan's law
+            Or disjunction = predicate as Or;
+            if (null != disjunction)
+                return disjunction.Left.Not().And(disjunction.Right.Not()); // By DeMorgan's law
             return new Not(predicate);
         }
 

@@ -36,7 +36,6 @@ namespace Epic.Query.Relational.Operations
     {
         private readonly RelationalExpression fakeRelation1 = new Fakes.FakeRelation(RelationType.BaseRelation, "firstRelation");
         private readonly RelationalExpression fakeRelation2 = new Fakes.FakeRelation(RelationType.BaseRelation, "secondRelation");
-        private readonly Predicate predicate = new Fakes.FakePredicate();
 
         [Test]
         public void Initialize_WithEitherArgumentNull_Fails()
