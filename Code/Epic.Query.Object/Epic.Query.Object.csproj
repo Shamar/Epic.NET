@@ -67,6 +67,7 @@
     <Compile Include="ContravariantOrder.cs" />
     <Compile Include="SearchableRepositoryBase.cs" />
     <Compile Include="DeferredEvaluationException.cs" />
+    <Compile Include="Relational\Visitors\SourceVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -88,5 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
+    <Folder Include="Relational\" />
+    <Folder Include="Relational\Visitors\" />
   </ItemGroup>
 </Project>
