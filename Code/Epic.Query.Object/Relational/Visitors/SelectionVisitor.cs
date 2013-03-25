@@ -33,10 +33,10 @@ namespace Epic.Query.Object.Relational.Visitors
     public sealed class SelectionVisitor<TEntity> : CompositeVisitor<RelationalExpression>.VisitorBase, IVisitor<RelationalExpression, Selection<TEntity>> where TEntity : class
     {
         private readonly Dictionary<Type, IVisitor<RelationalExpression>> _visitors;
-        private readonly IVisitor<ISpecification<TEntity>, RelationalExpression> _specificationMapper;
-        private readonly DNFConverter<TEntity> _specificationNormalizer;
+        private readonly IVisitor<RelationalExpression, ISpecification<TEntity>> _specificationMapper;
+        private readonly IVisitor<ISpecification<TEntity>> _specificationNormalizer;
 
-        public SelectionVisitor(CompositeVisitor<RelationalExpression> composition, DNFConverter<TEntity> specificationNormalizer, IVisitor<RelationalExpression, ISpecification<TEntity>> specificationMapper)
+        public SelectionVisitor(CompositeVisitor<RelationalExpression> composition, IVisitor<ISpecification<TEntity>> specificationNormalizer, IVisitor<RelationalExpression, ISpecification<TEntity>> specificationMapper)
             : base(composition)
         {
             if (specificationNormalizer == null)
@@ -47,7 +47,6 @@ namespace Epic.Query.Object.Relational.Visitors
             _specificationMapper = specificationMapper;
         }
 
-         
         #region IVisitor implementation
 
         RelationalExpression IVisitor<RelationalExpression, Selection<TEntity>>.Visit(Selection<TEntity> target, IVisitContext context)
