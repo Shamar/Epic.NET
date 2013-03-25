@@ -86,6 +86,7 @@
     <Compile Include="EquatableDictionary.cs" />
     <Compile Include="EquatableEnumerable.cs" />
     <Compile Include="EquatableException.cs" />
+    <Compile Include="ActiveVisitContextQA.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
