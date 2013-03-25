@@ -36,7 +36,7 @@ namespace Epic.Query.Object.Relational.Visitors
         private readonly IVisitor<ISpecification<TEntity>, RelationalExpression> _specificationMapper;
         private readonly DNFConverter<TEntity> _specificationNormalizer;
 
-        public SelectionVisitor(CompositeVisitor<RelationalExpression> composition, DNFConverter<TEntity> specificationNormalizer, IVisitor<ISpecification<TEntity>, RelationalExpression> specificationMapper)
+        public SelectionVisitor(CompositeVisitor<RelationalExpression> composition, DNFConverter<TEntity> specificationNormalizer, IVisitor<RelationalExpression, ISpecification<TEntity>> specificationMapper)
             : base(composition)
         {
             if (specificationNormalizer == null)
@@ -53,7 +53,9 @@ namespace Epic.Query.Object.Relational.Visitors
         RelationalExpression IVisitor<RelationalExpression, Selection<TEntity>>.Visit(Selection<TEntity> target, IVisitContext context)
         {
             RelationalExpression source = VisitInner(target.Source, context);
-            ISpecification<TEntity> normalizedSpecification = target.Accept(_specificationNormalizer, context);
+            ISpecification<TEntity> normalizedSpecification = target.Specification.Accept(_specificationNormalizer, context);
+            RelationalExpression selection = normalizedSpecification.Accept(_specificationMapper, context);
+
             throw new NotImplementedException();
         }
 
