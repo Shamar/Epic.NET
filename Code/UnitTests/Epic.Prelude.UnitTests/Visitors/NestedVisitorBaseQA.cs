@@ -38,7 +38,7 @@ namespace Epic.Visitors
             Fakes.FakeVisitor<object, string> outer = GeneratePartialMock<Fakes.FakeVisitor<object, string>>(composition);
 
             // act:
-            Fakes.FakeVisitor<object, string>.FakeNested nested = new Epic.Fakes.FakeVisitor<object, string>.FakeNested(outer);
+            new Epic.Fakes.FakeVisitor<object, string>.FakeNested(outer);
         }
 
         [Test]

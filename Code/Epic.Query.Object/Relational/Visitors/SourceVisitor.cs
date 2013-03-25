@@ -23,8 +23,8 @@
 //
 using System;
 using Epic.Query.Relational;
-using Epic.Query.Object.Expressions;
 using Epic.Query.Relational.Operations;
+using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object.Relational.Visitors
 {

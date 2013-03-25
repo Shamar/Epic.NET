@@ -62,6 +62,11 @@ namespace Epic.Query.Relational
         Union,
 
         /// <summary>
+        /// Intersection.
+        /// </summary>
+        Intersection,
+
+        /// <summary>
         /// Rename.
         /// </summary>
         Rename,

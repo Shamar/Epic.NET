@@ -22,10 +22,10 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 using System;
-using Epic.Query.Relational;
-using Epic.Query.Object.Expressions;
 using System.Collections.Generic;
+using Epic.Query.Relational;
 using Epic.Visitors;
+using Epic.Query.Object.Expressions;
 
 namespace Epic.Query.Object.Relational.Visitors
 {
