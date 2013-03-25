@@ -75,7 +75,7 @@ namespace Epic.Query.Object.UnitTests
             string deferrerName = "Test";
 
             // act:
-            SearchableRepositoryBase<TEntity, TIdentity> toTest = new Fakes.FakeSearchableRepository<TEntity, TIdentity>(identityMap, loader, identification, deferrerName);
+            new Fakes.FakeSearchableRepository<TEntity, TIdentity>(identityMap, loader, identification, deferrerName);
         }
 
         [Test]
@@ -124,7 +124,6 @@ namespace Epic.Query.Object.UnitTests
         {
             // arrange:
             TrackingId id = new TrackingId("TEST");
-            ICargo expectedResult = GenerateStrictMock<ICargo>();
             string deferrerName = "Test";
             Exception loadingException = new Exception();
             IMapping<ICargo, TrackingId> identification = GenerateStrictMock<IMapping<ICargo, TrackingId>>();
@@ -214,7 +213,7 @@ namespace Epic.Query.Object.UnitTests
             
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-                var r = toTest.Load(null);
+                toTest.Load(null);
             });
         }
 
@@ -288,13 +287,13 @@ namespace Epic.Query.Object.UnitTests
 
             // assert:
             Assert.Throws<ObjectDisposedException>(delegate {
-                var r = (searchableRepo as IEntityLoader<ICargo, TrackingId>).Load(new TrackingId[] { id1, id2 });
+                (searchableRepo as IEntityLoader<ICargo, TrackingId>).Load(new TrackingId[] { id1, id2 });
             });
             Assert.Throws<ObjectDisposedException>(delegate {
                 var r = searchableRepo[id1];
             });
             Assert.Throws<ObjectDisposedException>(delegate {
-                var r = searchableRepo.Search<ICargo>(specification);
+                searchableRepo.Search<ICargo>(specification);
             });
         }
 
@@ -310,7 +309,7 @@ namespace Epic.Query.Object.UnitTests
 
             // assert:
             Assert.Throws<ArgumentNullException>(delegate {
-                var r = searchableRepo.Search<ICargo>(null);
+                searchableRepo.Search<ICargo>(null);
             });
         }
 
