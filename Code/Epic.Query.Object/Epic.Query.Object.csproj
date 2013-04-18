@@ -69,7 +69,6 @@
     <Compile Include="DeferredEvaluationException.cs" />
     <Compile Include="Relational\Visitors\SourceVisitor.cs" />
     <Compile Include="Relational\Visitors\SourceDowncastVisitor.cs" />
-    <Compile Include="Relational\Visitors\SelectionVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
