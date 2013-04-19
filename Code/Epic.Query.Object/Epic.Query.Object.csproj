@@ -67,8 +67,6 @@
     <Compile Include="ContravariantOrder.cs" />
     <Compile Include="SearchableRepositoryBase.cs" />
     <Compile Include="DeferredEvaluationException.cs" />
-    <Compile Include="Relational\Visitors\SourceVisitor.cs" />
-    <Compile Include="Relational\Visitors\SourceDowncastVisitor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

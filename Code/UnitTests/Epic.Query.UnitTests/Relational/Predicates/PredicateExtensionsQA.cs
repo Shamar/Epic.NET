@@ -163,6 +163,21 @@ namespace Epic.Query.Relational.Predicates
         }
 
         [Test]
+        public void NotMethod_FromNegatedPredicateObject_ReturnsOriginalPredicate()
+        {
+            // arrange:
+            FakePredicate original = new FakePredicate();
+            Predicate negated = new Not(original);
+
+            // act:
+            Predicate result = negated.Not();
+
+            // assert:
+            Assert.IsInstanceOf<FakePredicate>(original);
+            Assert.AreSame(original, result);
+        }
+
+        [Test]
         public void ExtensionMethod_TestConcatenation_Works()
         {
             // arrange:
